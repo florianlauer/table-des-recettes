@@ -30,3 +30,4 @@ dist-ssr
 .devenv
 .direnv
 !.envrc
+.gstack/

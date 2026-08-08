@@ -22,16 +22,47 @@ hypothèse jamais vérifiée : qu'un modèle vision sait segmenter une feuille p
 extraits de magazine recollés et en sortir du JSON propre. Si l'hypothèse est fausse, le
 modèle de données, la file de validation et le cycle de vie des photos sont tous à revoir.
 
-Protocole :
+**Protocole — échelle de modèles, du moins cher au meilleur.** On ne compare pas des candidats
+en parallèle : on monte les échelons jusqu'au premier qui passe, et on s'arrête là.
 
-1. Trois photos réelles — une page mono-recette, une page multi-recettes recollée, une page
-   difficile (colonnes, texte sur photo).
-2. Deux modèles vision candidats via OpenRouter, en sortie structurée JSON schema.
-3. Comparaison manuelle : segmentation correcte ? quantités justes ? étapes complètes ?
-   hallucinations ?
+1. **Jeu d'essai** : trois photos réelles — une page mono-recette, une page multi-recettes
+   recollée, une page difficile (colonnes, texte sur photo).
+2. **Échelon le plus bas** : le modèle le moins cher satisfaisant *simultanément* deux
+   contraintes — entrée **vision** et **sortie structurée stricte**. Beaucoup de modèles bon
+   marché ne cochent qu'une des deux cases ; le bas de l'échelle est défini par cette
+   intersection, pas par le prix seul.
+3. **Évaluation contre les critères ci-dessous.** Si l'échelon échoue, on monte d'un cran et on
+   recommence. Le premier échelon qui passe est retenu.
+
+### Critères de succès (mesurables)
+
+Sur les trois pages du jeu d'essai :
+
+| Critère | Seuil |
+|---|---|
+| Segmentation | Nombre de recettes détectées = nombre réel, sur les trois pages |
+| Titre | Exact, sans reformulation |
+| Ingrédients | Toutes les lignes présentes, aucune inventée, aucune fusionnée |
+| Étapes | Toutes présentes, dans l'ordre |
+| Sortie structurée | Réponse valide contre le schéma du premier coup, sans refus ni troncature |
+
+Critère d'arbitrage final, celui qui compte vraiment : **corriger une recette extraite doit
+prendre moins de temps que la saisir à la main.** Si ce n'est pas le cas, le modèle n'a pas sa
+place, quel que soit son prix.
 
 Sorties du spike, toutes réutilisées en production : le modèle et le provider retenus, le
 schéma JSON réel, le prompt, et les réponses brutes conservées comme **fixtures de test**.
+
+### Choix du modèle en production
+
+**Un seul modèle, figé en variable d'environnement.** Aucune escalade à l'exécution : le
+runtime ne porte ni logique de repli, ni sélection dynamique, ni état supplémentaire.
+
+Ce choix est révisable sans rien réécrire. La journalisation par tentative (modèle, provider,
+version de prompt et de schéma, usage, coût, latence) donne la donnée réelle : si le taux
+d'échec ou le volume de correction manuelle dérive après quelques dizaines de recettes, on monte
+d'un échelon en changeant la variable d'environnement, et les fixtures du spike servent de
+non-régression.
 
 ### Volet 2 — embellissement d'image
 
@@ -39,11 +70,17 @@ Même raisonnement, hypothèse différente : un modèle d'édition d'image sait-
 photo de plat prise en photo dans un magazine — corriger la perspective, retirer la trame
 d'impression et les reflets, restituer les couleurs — **sans réinventer le plat** ?
 
+Même échelle, même règle : on part du modèle d'édition d'image le moins cher et on monte
+seulement si le résultat ne passe pas.
+
 1. Deux ou trois photos réelles de plats, prises depuis une page de magazine.
-2. Un modèle d'édition d'image (famille Gemini image de Google, ou équivalent), avec un prompt
+2. Échelon le plus bas d'abord (famille Gemini image de Google, ou équivalent), avec un prompt
    de restauration explicite.
-3. Jugement à l'œil : le plat est-il le même ? le dressage, la vaisselle, les ingrédients
-   visibles sont-ils préservés ?
+3. Critère de succès, jugé à l'œil mais binaire : **le plat est-il reconnaissable comme le
+   même ?** Dressage, vaisselle et ingrédients visibles préservés. Un rendu plus beau mais
+   montrant un autre plat est un échec, pas un compromis.
+4. Si l'échelon échoue, on monte d'un cran. Le premier qui passe est figé en variable
+   d'environnement, comme pour l'extraction.
 
 **À vérifier en premier :** la couverture d'OpenRouter en modèles à *sortie image* est plus
 étroite que sa couverture en texte et en vision. Si le modèle retenu n'y est pas routable, il
@@ -56,12 +93,13 @@ au spike, pas à l'implémentation.
 | Sujet | Décision | Raison |
 |---|---|---|
 | Visibilité | Public mais `noindex` | Contenu issu d'œuvres protégées : accessible à qui a le lien, invisible des moteurs. Le SSR est conservé pour pouvoir indexer un jour sans réécriture. |
-| Filtres | Type de plat + recherche sur le titre | Chaque filtre supplémentaire est de la correction manuelle à chaque scan. |
+| Filtres | Type de plat + recherche sur le titre **et les ingrédients** | Chaque filtre supplémentaire est de la correction manuelle à chaque scan. Les ingrédients, eux, sont déjà extraits : les rendre cherchables ne coûte rien à la saisie et sert le membre du foyer qui ne connaît pas le corpus. |
 | Photos | Rétention limitée (30 à 90 jours) puis purge | Aucune archive permanente, mais une fenêtre pour rattraper une recette que le modèle a manquée sur une page qu'il a par ailleurs bien traitée. |
 | Portions | Ligne brute canonique + structure optionnelle | La ligne du magazine fait foi ; le recalcul est un confort d'affichage, pas le format d'archivage. |
 | Authentification | Secret partagé, vérifié côté serveur | Un seul utilisateur. Ni comptes, ni sessions, ni fournisseur d'identité. |
 | Sauvegarde | Export automatique versionné dans git | Les corrections manuelles sont la donnée la plus coûteuse à reproduire, et la seule qui subsiste après purge des photos. |
 | Illustration | Photo du plat optionnelle, uploadée à part, embellie sur demande et validée à la main | Découplée du scan pour rester possible après publication. Le modèle invente forcément (couleurs, hors-champ) : l'originale est conservée et rien n'est publié sans acceptation explicite. |
+| Choix des modèles | Un seul modèle par usage, le moins cher qui passe les critères, figé en variable d'environnement | L'escalade se joue au spike, pas à l'exécution : le runtime ne porte aucune logique de repli. Révisable en changeant une variable, avec les fixtures du spike comme non-régression. |
 
 ## Stack
 
@@ -123,7 +161,7 @@ Index : `by_status`, `by_purge_after`.
 | `servings` | `number?` | portions d'origine ; absent = pas de curseur |
 | `ingredients` | `Ingredient[]` | voir ci-dessous |
 | `steps` | `string[]` | une entrée = une étape |
-| `source` | `string?` | ex. « Cuisine Actuelle n°412 » |
+| `searchText` | `string` | dénormalisé, maintenu à l'écriture : titre + `raw` des ingrédients, normalisé sans accents. Porte l'index de recherche plein texte |
 | `status` | `"review" \| "published"` | |
 | `publishedAt` | `number?` | |
 | `imageStorageId` | `Id<"_storage">?` | photo du plat, uploadée à part — **permanente**, jamais purgée |
@@ -148,8 +186,19 @@ n'entrent dans aucun triplet : « 2 à 3 gousses », « 1/2 à 3/4 de sachet »,
 à normaliser arbitrairement, et l'original serait perdu — définitivement, une fois les photos
 purgées. Ici, le modèle annote ce qu'il peut et laisse le reste.
 
-Index : `by_status_type`, `by_slug`, `by_scan`, et un index de recherche plein texte sur
-`title` filtré sur `status`.
+Index : `by_status_type`, `by_slug`, `by_scan`, et un index de recherche plein texte filtré sur
+`status`.
+
+**La recherche porte sur le titre et sur les ingrédients**, pas sur le titre seul : un membre du
+foyer qui ne connaît pas le corpus cherche « courgette », pas un intitulé qu'il n'a jamais lu.
+Convex n'indexe qu'un champ texte par index de recherche ; il faut donc un champ dénormalisé
+`searchText` maintenu à l'écriture, concaténant le titre et les `raw` des ingrédients, et c'est
+lui qui porte l'index. La normalisation — accents retirés, casse repliée — se fait à l'écriture
+sur ce champ **et** sur la requête, pas à la lecture.
+
+L'interface doit pouvoir dire **pourquoi** une recette remonte : la requête renvoie donc, à côté
+de la recette, la ligne d'ingrédient qui contient le terme, quand la correspondance ne vient pas
+du titre.
 
 ### Source unique de vérité
 
@@ -286,8 +335,12 @@ Sur la fiche recette, un sélecteur de nombre de personnes applique un facteur
 
 **Vitrine**
 
-- `/` — liste des recettes publiées, filtre par type, recherche sur le titre.
-- `/recette/$slug` — fiche : ingrédients avec sélecteur de portions, étapes, source.
+- `/` — liste des recettes publiées groupée par lettre, filtre par type, recherche sur le titre
+  et les ingrédients.
+- `/recette/$slug` — fiche : ingrédients avec sélecteur de portions, étapes.
+
+Aucune provenance n'est conservée : le magazine ou le livre d'origine n'est ni extrait, ni
+stocké, ni affiché. Une recette n'est identifiée que par son titre et son type.
 
 **Administration**
 

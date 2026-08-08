@@ -12,20 +12,31 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
 
 - [ ] **T1 · P1 · spike** (human ~2h / CC ~30min) — Valider l'extraction vision multi-recettes
   - **Origine** : Architecture, issue 1 — l'hypothèse centrale du projet n'a jamais été vérifiée
-  - **Livrables** : modèle et provider retenus, schéma JSON réel, prompt, réponses brutes
-    conservées comme fixtures de test
-  - **Vérifier** : 3 photos réelles (mono-recette, multi-recettes recollée, page difficile),
-    2 modèles candidats, segmentation et quantités contrôlées à la main
+  - **Méthode** : échelle du moins cher au meilleur. On ne compare pas des candidats en
+    parallèle, on monte les échelons jusqu'au premier qui passe et on s'arrête. L'échelon le
+    plus bas est le modèle le moins cher supportant **simultanément** vision et sortie
+    structurée stricte — beaucoup de modèles bon marché ne cochent qu'une des deux cases
+  - **Jeu d'essai** : 3 photos réelles — mono-recette, multi-recettes recollée, page difficile
+  - **Critères de succès** : nombre de recettes détectées = nombre réel · titre exact ·
+    toutes les lignes d'ingrédients présentes, aucune inventée ni fusionnée · étapes complètes
+    et dans l'ordre · réponse valide contre le schéma du premier coup
+  - **Critère d'arbitrage final** : corriger une recette extraite doit prendre **moins de temps
+    que la saisir à la main**. Sinon le modèle est rejeté, quel que soit son prix
+  - **Livrables** : modèle et provider retenus (figés en variable d'environnement), schéma JSON
+    réel, prompt, réponses brutes conservées comme fixtures de test
 
 - [ ] **T13 · P1 · spike** (human ~1h / CC ~20min) — Valider l'embellissement d'image
   - **Origine** : ajout de périmètre post-review — même raisonnement que T1, hypothèse non
     vérifiée avant construction d'interface
-  - **Livrables** : modèle d'édition retenu, prompt de restauration, verdict sur la routabilité
-    via OpenRouter (sa couverture en modèles à sortie image est plus étroite qu'en texte — si le
-    modèle n'y est pas, il faut une clé Google directe, donc un second fournisseur)
-  - **Vérifier** : sur 2-3 photos de plats prises depuis une page de magazine, le plat, le
-    dressage, la vaisselle et les ingrédients visibles sont-ils préservés ? Si le modèle
-    réinvente le plat, la fonctionnalité n'a pas de sens
+  - **Méthode** : même échelle que T1 — le modèle d'édition le moins cher d'abord, on monte
+    seulement s'il échoue
+  - **Critère de succès, binaire** : sur 2-3 photos de plats prises depuis une page de magazine,
+    le plat est-il reconnaissable comme **le même** ? Dressage, vaisselle et ingrédients visibles
+    préservés. Un rendu plus beau montrant un autre plat est un échec, pas un compromis
+  - **Livrables** : modèle d'édition retenu (figé en variable d'environnement), prompt de
+    restauration, verdict sur la routabilité via OpenRouter (sa couverture en modèles à sortie
+    image est plus étroite qu'en texte — si le modèle n'y est pas, il faut une clé Google
+    directe, donc un second fournisseur)
 
 > Rien d'autre ne démarre avant T1, **sauf** les fonctions pures (T6 partiellement, T5) qui ne
 > dépendent d'aucun résultat du spike. T13 est indépendant de T1 et peut tourner en parallèle.
@@ -41,6 +52,9 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
   - **Vérifier** : le JSON schema OpenRouter et les types du formulaire dérivent du même Zod ;
     les fixtures du spike se rejouent contre lui ; le choix du pont (`convex-helpers` /
     `zodOutputToConvex`) est explicite, pas implicite
+  - **Attention** : `searchText` est un champ **dénormalisé côté Convex uniquement** — titre +
+    `raw` des ingrédients, normalisé sans accents, recalculé à chaque écriture. Il ne fait pas
+    partie du schéma d'extraction Zod et ne doit jamais être demandé au modèle
 
 - [ ] **T3 · P1 · convex** (human ~3h / CC ~30min) — Finalisation atomique avec `attemptId`
   - **Origine** : Codex #9, #10, #11 — la sérialisation décrite ne sérialisait rien, les retries
@@ -110,9 +124,13 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
 - [ ] **T11 · P2 · extraction** (human ~1h / CC ~10min) — Durcissement de l'appel OpenRouter
   - **Origine** : Codex #15 — la sortie structurée garantit la forme, pas la vérité
   - **Fichiers** : `convex/extract.ts`
-  - **Vérifier** : `strict: true` et `require_parameters: true` ; modèle et provider figés ;
-    refus et troncatures traités comme des échecs ; modèle, provider, version de prompt/schéma,
-    usage, coût et latence journalisés **par tentative**
+  - **Vérifier** : `strict: true` et `require_parameters: true` ; modèle et provider figés en
+    variable d'environnement ; refus et troncatures traités comme des échecs ; modèle, provider,
+    version de prompt/schéma, usage, coût et latence journalisés **par tentative**
+  - **Pourquoi la journalisation compte ici** : c'est elle qui dira, après quelques dizaines de
+    recettes, si le modèle bon marché retenu au spike tient en usage réel. Si le taux d'échec ou
+    le volume de correction dérive, on monte d'un échelon en changeant la variable — les
+    fixtures du spike servent de non-régression
 
 - [ ] **T14 · P2 · illustration** (human ~5h / CC ~1h) — Photo du plat : upload, embellissement, validation
   - **Origine** : ajout de périmètre post-review
