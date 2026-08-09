@@ -1377,6 +1377,7 @@ export function withSearchText<
 
 ```ts
 // convex/seed.ts
+import { v } from "convex/values";
 import { internalMutation } from "./_generated/server";
 import { withSearchText } from "./lib/recipeWrites";
 import { resolveSlugCollision, slugify } from "../src/lib/slug";
@@ -1556,7 +1557,8 @@ const RECIPES = [
 
 export const run = internalMutation({
   args: {},
-  returns: null,
+  // `returns: null` est refusé au déploiement : Convex attend un validateur, pas la valeur.
+  returns: v.null(),
   handler: async (ctx) => {
     // La garde est une variable d'environnement du déploiement, pas un argument : un argument
     // voyage dans la commande copiée-collée et ne prouve rien sur le backend réellement visé.
@@ -1595,7 +1597,16 @@ export const run = internalMutation({
 });
 ```
 
+Le typecheck de `convex/` ne connaît pas `process`, alors que le runtime Convex l'expose. Déclarer **uniquement** ce qui existe, plutôt que de tirer `@types/node` : sinon `fs` et `path` type-checkent et plantent à l'exécution.
+
+```ts
+// convex/env.d.ts
+declare const process: { env: Record<string, string | undefined> };
+```
+
 - [ ] **Step 4 : Exécuter le seed**
+
+Lancer d'abord `npx convex run seed:run` **sans** le drapeau : la commande doit échouer sur « Seed refusé ». C'est la seule preuve que la garde est active.
 
 ```bash
 npx convex env set ALLOW_DESTRUCTIVE_SEED true
