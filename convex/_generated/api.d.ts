@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as devImages from "../devImages.js";
 import type * as lib_recipeWrites from "../lib/recipeWrites.js";
 import type * as recipes from "../recipes.js";
 import type * as seed from "../seed.js";
@@ -19,6 +20,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  devImages: typeof devImages;
   "lib/recipeWrites": typeof lib_recipeWrites;
   recipes: typeof recipes;
   seed: typeof seed;

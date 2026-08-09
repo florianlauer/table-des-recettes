@@ -2727,22 +2727,35 @@ attach "crepes-de-sarrasin" "docs/design/samples/crepes.jpg"
 attach "gratin-dauphinois"  "docs/design/samples/gratin.jpg"
 ```
 
-Le déploiement doit porter le drapeau, sans quoi les trois mutations refusent d'écrire :
+- [ ] **Step 4 : Vérifier que la garde mord, puis poser le drapeau**
+
+Une garde qu'on n'a jamais vue refuser n'est pas une garde. Déployer, puis exécuter le script
+**avant** de poser le drapeau :
+
+```bash
+npx convex dev --once
+chmod +x scripts/seed-images.sh
+./scripts/seed-images.sh
+```
+
+Expected : échec sur `generateUploadUrl`, avec `ALLOW_DEV_IMAGES n'est pas "true" sur ce
+déploiement`. Si le script réussit ici, la garde ne protège rien — ne pas continuer.
+
+Poser ensuite le drapeau, sans quoi les trois mutations refusent d'écrire :
 
 ```bash
 npx convex env set ALLOW_DEV_IMAGES true
 ```
 
-- [ ] **Step 4 : Exécuter le script**
+- [ ] **Step 5 : Exécuter le script**
 
 ```bash
-chmod +x scripts/seed-images.sh
 ./scripts/seed-images.sh
 ```
 
 Expected : deux lignes de confirmation, une par recette.
 
-- [ ] **Step 5 : Vérifier le rendu**
+- [ ] **Step 6 : Vérifier le rendu**
 
 Run: `npm run dev`
 
@@ -2752,7 +2765,17 @@ Contrôler :
 - les autres recettes n'ont ni cadre vide, ni espace réservé ;
 - taper une recherche fait disparaître les deux photos.
 
-- [ ] **Step 6 : Point d'arrêt — relecture puis commit manuel**
+La mesure vaut mieux que l'œil pour la hauteur — l'écart de largeur est justement ce qui
+rend l'égalité de hauteur difficile à juger de visu :
+
+```js
+Array.from(document.querySelectorAll(".row__photo"))
+  .map((i) => `${i.getBoundingClientRect().width}x${i.getBoundingClientRect().height}`)
+```
+
+Expected : deux largeurs différentes, la même hauteur `200`.
+
+- [ ] **Step 7 : Point d'arrêt — relecture puis commit manuel**
 
 Relire le diff (`git diff`), puis committer **à la main**. Suggestion de message :
 
