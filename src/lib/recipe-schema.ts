@@ -32,6 +32,57 @@ export const extractionSchema = z.strictObject({
 
 export type Extraction = z.infer<typeof extractionSchema>;
 
+export type SchemaRepair = { path: string; from: string; to: number | null };
+
+// `strict: true` n'est pas contraignant sur OpenRouter : gemini-2.5-flash-lite a rendu
+// « 6 à 8 personnes » dans un champ déclaré `number`, chez google-ai-studio comme chez
+// google-vertex. La réparation ne couvre que ce cas — une chaîne dans un champ numérique — et
+// n'invente rien : sans nombre en tête, la valeur devient null au lieu d'être devinée.
+function repairNumber(value: unknown): { value: number | null; from: string } | null {
+  if (typeof value !== "string") return null;
+  const leading = /^\s*(\d+(?:[.,]\d+)?)/.exec(value);
+  return { value: leading?.[1] ? Number(leading[1].replace(",", ".")) : null, from: value };
+}
+
+export function repairExtraction(input: unknown): { value: unknown; repairs: SchemaRepair[] } {
+  const repairs: SchemaRepair[] = [];
+  if (!input || typeof input !== "object" || !Array.isArray((input as { recipes?: unknown }).recipes)) {
+    return { value: input, repairs };
+  }
+
+  const recipes = (input as { recipes: unknown[] }).recipes.map((recipe, recipeIndex) => {
+    if (!recipe || typeof recipe !== "object") return recipe;
+    const repaired = { ...(recipe as Record<string, unknown>) };
+
+    const servings = repairNumber(repaired.servings);
+    if (servings) {
+      repairs.push({ path: `recipes.${recipeIndex}.servings`, from: servings.from, to: servings.value });
+      repaired.servings = servings.value;
+    }
+
+    if (Array.isArray(repaired.ingredients)) {
+      repaired.ingredients = repaired.ingredients.map((ingredient, ingredientIndex) => {
+        if (!ingredient || typeof ingredient !== "object") return ingredient;
+        const line = { ...(ingredient as Record<string, unknown>) };
+        const quantity = repairNumber(line.quantity);
+        if (quantity) {
+          repairs.push({
+            path: `recipes.${recipeIndex}.ingredients.${ingredientIndex}.quantity`,
+            from: quantity.from,
+            to: quantity.value,
+          });
+          line.quantity = quantity.value;
+        }
+        return line;
+      });
+    }
+
+    return repaired;
+  });
+
+  return { value: { ...(input as Record<string, unknown>), recipes }, repairs };
+}
+
 export type DomainExtraction = {
   recipes: Array<{
     title: string;
