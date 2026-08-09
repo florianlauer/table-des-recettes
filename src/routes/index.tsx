@@ -1,0 +1,164 @@
+import { convexQuery } from '@convex-dev/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import { z } from 'zod'
+import { api } from '../../convex/_generated/api'
+import type { PublishedRecipeRow } from '../../convex/recipes'
+import { groupByLetter } from '../lib/groupByLetter'
+import { RECIPE_TYPES, TYPE_FILTER_LABELS, TYPE_LABELS } from '../lib/recipeTypes'
+import type { RecipeType } from '../lib/recipeTypes'
+
+const searchSchema = z.object({
+  q: z.string().optional(),
+  type: z.enum(RECIPE_TYPES).optional(),
+})
+
+export const Route = createFileRoute('/')({
+  validateSearch: searchSchema,
+  // Without this loader `useSuspenseQuery` only resolves client-side: the page would arrive
+  // empty under SSR, which contradicts the decision to keep SSR.
+  loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
+  loader: async ({ context, deps }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(convexQuery(api.recipes.countsByType, {})),
+      context.queryClient.ensureQueryData(browseOptions(deps)),
+    ])
+  },
+  component: IndexPage,
+})
+
+/** A single query for the index: the list ↔ search switch lives in Convex. */
+function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
+  return convexQuery(api.recipes.browse, { query: q?.trim() || undefined, type })
+}
+
+function IndexPage() {
+  const { q, type } = Route.useSearch()
+  const navigate = Route.useNavigate()
+  const searching = Boolean(q && q.trim())
+
+  // The field is driven locally, the URL follows 250 ms behind. Typing "courgette" must not
+  // stack nine history entries nor nine Convex subscriptions — but replacing everything would
+  // also erase the empty index, and the back button would leave the site instead of returning
+  // to it. So only entering the search is pushed; subsequent keystrokes replace.
+  const [draft, setDraft] = useState(q ?? '')
+  useEffect(() => setDraft(q ?? ''), [q])
+  useEffect(() => {
+    const current = q ?? ''
+    if (draft === current) return
+    const id = setTimeout(() => {
+      navigate({
+        search: (prev) => ({ ...prev, q: draft || undefined }),
+        replace: current !== '',
+      })
+    }, 250)
+    return () => clearTimeout(id)
+  }, [draft, q, navigate])
+
+  const counts = useSuspenseQuery(convexQuery(api.recipes.countsByType, {})).data
+  const listed = useSuspenseQuery(browseOptions({ q, type })).data
+
+  return (
+    <main className="page">
+      <header className="masthead">
+        <h1 className="masthead__title">La table des recettes</h1>
+        <p className="masthead__count">{counts.total} recettes</p>
+      </header>
+
+      <input
+        className="search"
+        type="search"
+        value={draft}
+        placeholder="Rechercher une recette"
+        aria-label="Rechercher une recette"
+        onChange={(e) => setDraft(e.target.value)}
+      />
+
+      <nav className="filters" aria-label="Types de plat">
+        <button
+          className="filters__item"
+          aria-current={type === undefined}
+          onClick={() => navigate({ search: (prev) => ({ ...prev, type: undefined }) })}
+        >
+          Toutes <span className="filters__count">{counts.total}</span>
+        </button>
+        {RECIPE_TYPES.filter((t) => counts.byType[t]).map((t) => (
+          <button
+            key={t}
+            className="filters__item"
+            data-type={t}
+            aria-current={type === t}
+            onClick={() => navigate({ search: (prev) => ({ ...prev, type: t }) })}
+          >
+            {TYPE_FILTER_LABELS[t]} <span className="filters__count">{counts.byType[t]}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/*
+        The list is rebuilt 250 ms after a keystroke, silently. Without this the only feedback
+        for the search is visual — a screen reader announces nothing at all while typing.
+      */}
+      <p className="visually-hidden" role="status">
+        {searching ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}` : ''}
+      </p>
+
+      {listed.length === 0 ? (
+        <p className="empty">
+          {counts.total === 0 ? 'Aucune recette publiée.' : 'Aucune recette ne correspond.'}
+        </p>
+      ) : searching ? (
+        <ol className="index index--flat">
+          {listed.map((recipe) => (
+            <RecipeRow key={recipe.id} recipe={recipe} showImage={false} />
+          ))}
+        </ol>
+      ) : (
+        groupByLetter(listed).map((group) => (
+          <section
+            className="group"
+            key={group.letter}
+            aria-labelledby={`groupe-${group.letter}`}
+          >
+            <h2 className="group__letter" id={`groupe-${group.letter}`}>
+              {group.letter}
+            </h2>
+            <ol className="index">
+              {group.items.map((recipe) => (
+                <RecipeRow key={recipe.id} recipe={recipe} showImage />
+              ))}
+            </ol>
+          </section>
+        ))
+      )}
+    </main>
+  )
+}
+
+function RecipeRow({
+  recipe,
+  showImage,
+}: {
+  recipe: PublishedRecipeRow
+  showImage: boolean
+}) {
+  return (
+    <li className="row">
+      <div className="row__body">
+        <Link to="/recette/$slug" params={{ slug: recipe.slug }} className="row__title">
+          {recipe.title}
+        </Link>
+        <span className="row__type" data-type={recipe.type}>
+          {TYPE_LABELS[recipe.type]}
+        </span>
+        {recipe.matchedIngredient ? (
+          <p className="row__reason">{recipe.matchedIngredient}</p>
+        ) : null}
+        {showImage && recipe.imageUrl ? (
+          <img className="row__photo" src={recipe.imageUrl} alt="" loading="lazy" />
+        ) : null}
+      </div>
+    </li>
+  )
+}

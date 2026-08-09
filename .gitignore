@@ -31,3 +31,22 @@ dist-ssr
 .direnv
 !.envrc
 .gstack/
+
+# TanStack Start / Nitro
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# impeccable : état de cache régénérable
+.impeccable/hook.cache.json
+.impeccable/config.local.json
+
+# convex : bundles de skills d'agent, vendorisés en double et régénérables
+# via `npx convex ai-files install`
+.claude/skills/
+.agents/
+skills-lock.json
