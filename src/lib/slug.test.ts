@@ -2,37 +2,37 @@ import { describe, expect, test } from "vitest";
 import { resolveSlugCollision, slugify } from "./slug";
 
 describe("slugify", () => {
-  test("met en minuscules et relie par des tirets", () => {
+  test("lowercases and joins with hyphens", () => {
     expect(slugify("Crêpes de sarrasin")).toBe("crepes-de-sarrasin");
   });
 
-  test("décompose les ligatures", () => {
+  test("expands ligatures", () => {
     expect(slugify("Œufs à la coque")).toBe("oeufs-a-la-coque");
   });
 
-  test("absorbe la ponctuation", () => {
+  test("absorbs punctuation", () => {
     expect(slugify("Poulet basquaise, façon express !")).toBe("poulet-basquaise-facon-express");
   });
 
-  test("titre sans caractère exploitable", () => {
+  test("title with no usable character", () => {
     expect(slugify("!!!")).toBe("");
   });
 });
 
 describe("resolveSlugCollision", () => {
-  test("renvoie la base quand elle est libre", () => {
+  test("returns the base when it is free", () => {
     expect(resolveSlugCollision("tarte", [])).toBe("tarte");
   });
 
-  test("suffixe à partir de 2", () => {
+  test("suffixes from 2 onwards", () => {
     expect(resolveSlugCollision("tarte", ["tarte"])).toBe("tarte-2");
   });
 
-  test("saute les suffixes déjà pris", () => {
+  test("skips suffixes already taken", () => {
     expect(resolveSlugCollision("tarte", ["tarte", "tarte-2", "tarte-3"])).toBe("tarte-4");
   });
 
-  test("ignore les slugs sans rapport", () => {
+  test("ignores unrelated slugs", () => {
     expect(resolveSlugCollision("tarte", ["gratin", "gratin-2"])).toBe("tarte");
   });
 });

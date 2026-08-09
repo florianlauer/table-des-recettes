@@ -1,5 +1,5 @@
-// Générique sur l'identifiant : côté Convex il s'agit d'un `Id<"_storage">` (une chaîne
-// marquée), et `ctx.storage.getUrl` refuse une `string` nue. Élargir ici casserait l'appel.
+// Generic over the id: on the Convex side it is an `Id<"_storage">` (a branded string),
+// and `ctx.storage.getUrl` rejects a bare `string`. Widening here would break the call.
 export type RecipeImages<T extends string = string> = {
   imageStorageId?: T | null;
   beautifiedStorageId?: T | null;

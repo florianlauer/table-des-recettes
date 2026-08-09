@@ -2,49 +2,49 @@ import { describe, expect, test } from "vitest";
 import { buildSearchText, normalizeText, stemToken, toSearchTokens } from "./normalize";
 
 describe("normalizeText", () => {
-  test("retire les accents", () => {
+  test("strips accents", () => {
     expect(normalizeText("Crêpes de sarrasin")).toBe("crepes de sarrasin");
   });
 
-  test("décompose les ligatures", () => {
+  test("expands ligatures", () => {
     expect(normalizeText("Œufs à la coque")).toBe("oeufs a la coque");
   });
 
-  test("réduit la ponctuation et les espaces multiples", () => {
+  test("collapses punctuation and repeated spaces", () => {
     expect(normalizeText("Tarte  fine, aux poireaux !")).toBe("tarte fine aux poireaux");
   });
 
-  test("chaîne vide", () => {
+  test("empty string", () => {
     expect(normalizeText("   ")).toBe("");
   });
 });
 
 describe("stemToken", () => {
-  test("retire le pluriel des mots de plus de trois lettres", () => {
+  test("strips the plural from words longer than three letters", () => {
     expect(stemToken("courgettes")).toBe("courgette");
     expect(stemToken("choux")).toBe("chou");
   });
 
-  test("laisse les mots courts intacts", () => {
+  test("leaves short words untouched", () => {
     expect(stemToken("aux")).toBe("aux");
     expect(stemToken("des")).toBe("des");
   });
 });
 
 describe("toSearchTokens", () => {
-  test("singulier et pluriel produisent le même jeton", () => {
+  test("singular and plural produce the same token", () => {
     expect(toSearchTokens("Courgettes")).toBe(toSearchTokens("courgette"));
   });
 });
 
 describe("buildSearchText", () => {
-  test("concatène le titre et les lignes brutes", () => {
+  test("concatenates the title and the raw lines", () => {
     const result = buildSearchText("Riz au lait", [{ raw: "200 g de riz rond" }]);
     expect(result).toContain("riz");
     expect(result).toContain("rond");
   });
 
-  test("un ingrédient devient cherchable au pluriel comme au singulier", () => {
+  test("an ingredient becomes searchable in both plural and singular", () => {
     const result = buildSearchText("Gratin", [{ raw: "3 courgettes" }]);
     expect(result.split(" ")).toContain(toSearchTokens("courgette"));
   });

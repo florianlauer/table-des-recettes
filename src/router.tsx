@@ -9,8 +9,8 @@ export function getRouter() {
   const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined
   if (!convexUrl) throw new Error('VITE_CONVEX_URL absent — lancer `npx convex dev`')
 
-  // Routeur et clients naissent tous les trois ici, jamais au niveau module : un
-  // `QueryClient` créé à l'import serait partagé entre toutes les requêtes du serveur.
+  // Router and clients are all three born here, never at module level: a `QueryClient`
+  // created at import time would be shared across every request the server handles.
   const convexQueryClient = new ConvexQueryClient(convexUrl)
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -33,8 +33,8 @@ export function getRouter() {
     ),
   })
 
-  // Sans cette intégration, le loader remplit un cache serveur que le client jette :
-  // la page se re-télécharge intégralement à l'hydratation.
+  // Without this integration the loader fills a server cache the client throws away:
+  // the page re-downloads in full on hydration.
   setupRouterSsrQueryIntegration({ router, queryClient })
 
   return router

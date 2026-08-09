@@ -9,7 +9,7 @@ export const RECIPE_TYPES = [
 
 export type RecipeType = (typeof RECIPE_TYPES)[number];
 
-/** Sur une fiche : le type de CETTE recette. Singulier. */
+/** On a recipe page: the type of THIS recipe. Singular. */
 export const TYPE_LABELS: Record<RecipeType, string> = {
   entree: "Entrée",
   plat: "Plat",
@@ -19,7 +19,7 @@ export const TYPE_LABELS: Record<RecipeType, string> = {
   autre: "Autre",
 };
 
-/** Dans la ligne de filtres : une collection. Pluriel. */
+/** In the filter row: a collection. Plural. */
 export const TYPE_FILTER_LABELS: Record<RecipeType, string> = {
   entree: "Entrées",
   plat: "Plats",

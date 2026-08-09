@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
 
-test("le harnais de test fonctionne", () => {
+test("the test harness runs", () => {
   expect(1 + 1).toBe(2);
 });

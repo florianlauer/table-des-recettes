@@ -2,9 +2,9 @@ import { v } from "convex/values";
 import { internalMutation } from "./_generated/server";
 
 /**
- * `attach` remplace puis supprime une image. Être interne ne protège de rien ici : la CLI
- * s'authentifie en administrateur, et une variable d'environnement mal pointée suffirait à
- * détruire les photos d'un déploiement réel. Le déploiement doit donc se déclarer lui-même.
+ * `attach` replaces and then deletes an image. Being internal protects nothing here: the CLI
+ * authenticates as an admin, and a mistargeted environment variable would be enough to destroy
+ * a real deployment's photos. So the deployment has to declare itself.
  */
 function assertDevDeployment() {
   if (process.env.ALLOW_DEV_IMAGES !== "true") {
@@ -33,12 +33,12 @@ export const attach = internalMutation({
       .withIndex("by_slug", (q) => q.eq("slug", slug))
       .unique();
     if (!doc) {
-      // Le fichier est déjà dans le stockage : sans ce nettoyage il resterait orphelin,
-      // sans plus aucune référence pour le retrouver.
+      // The file is already in storage: without this cleanup it would be orphaned, with no
+      // reference left to find it again.
       await ctx.storage.delete(storageId);
       throw new Error(`Recette introuvable : ${slug}`);
     }
-    // Une réexécution du script remplacerait le pointeur en laissant l'ancien fichier derrière.
+    // Re-running the script would swap the pointer and leave the old file behind.
     if (doc.imageStorageId) await ctx.storage.delete(doc.imageStorageId);
     await ctx.db.patch(doc._id, { imageStorageId: storageId });
     return null;
@@ -46,20 +46,19 @@ export const attach = internalMutation({
 });
 
 /**
- * Filet du script : si `attach` échoue après l'upload — panne CLI, slug mal orthographié,
- * interruption — le blob est déjà stocké et plus personne ne connaît son identifiant.
+ * Safety net for the script: if `attach` fails after the upload — CLI outage, misspelled slug,
+ * interruption — the blob is already stored and nobody knows its id any more.
  */
 export const discardOrphan = internalMutation({
   args: { slug: v.string(), storageId: v.id("_storage") },
   returns: v.null(),
   handler: async (ctx, { slug, storageId }) => {
     assertDevDeployment();
-    // `attach` peut avoir été validée par Convex alors que la CLI a perdu la réponse et
-    // rendu un échec : le `trap` du script appellerait alors ce nettoyage sur un fichier
-    // désormais référencé, et casserait la recette qu'on voulait servir. La vérification
-    // et la suppression tiennent dans la même mutation, donc rien ne s'intercale entre
-    // les deux. Le slug suffit à trancher — pas besoin d'un index sur `imageStorageId`
-    // dans le schéma de production pour un besoin de développement.
+    // `attach` may have been committed by Convex while the CLI lost the response and reported
+    // a failure: the script's `trap` would then call this cleanup on a now-referenced file and
+    // break the very recipe we wanted to serve. The check and the delete sit in the same
+    // mutation, so nothing interleaves between them. The slug is enough to decide — no need for
+    // an `imageStorageId` index in the production schema to serve a development need.
     const doc = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", slug))

@@ -8,7 +8,7 @@ import { TYPE_LABELS } from '../lib/recipeTypes'
 
 export const Route = createFileRoute('/recette/$slug')({
   loader: async ({ context, params }) => {
-    // Sans `notFound()`, un slug inconnu répondrait HTTP 200 avec un message dans le corps.
+    // Without `notFound()`, an unknown slug would answer HTTP 200 with a message in the body.
     const recipe = await context.queryClient.ensureQueryData(
       convexQuery(api.recipes.getBySlug, { slug: params.slug }),
     )
@@ -30,25 +30,24 @@ function RecipePage() {
   const recipe = useSuspenseQuery(convexQuery(api.recipes.getBySlug, { slug })).data
   const [target, setTarget] = useState<number | null>(null)
 
-  // Le loader a déjà levé `notFound()` si la recette n'existe pas.
+  // The loader already threw `notFound()` if the recipe does not exist.
   if (!recipe) return null
 
   const servings = recipe.servings
   const current = target ?? servings ?? 0
   const factor = servings ? servingsFactor(servings, current) : 1
 
-  // Calculé une seule fois : le marqueur de ligne et la note de bas de liste doivent
-  // dépendre exactement du même prédicat, sinon une dague peut apparaître sans explication.
+  // Computed once: the line marker and the footnote must depend on exactly the same
+  // predicate, otherwise a dagger can appear with nothing explaining it.
   const lines = recipe.ingredients.map((ingredient) => scaleIngredient(ingredient, factor))
   const showNote = factor !== 1 && lines.some((line) => !line.scaled)
 
   return (
     <main className="page recipe">
       {/*
-        Les deux colonnes de la double page sont deux vrais conteneurs, pas des
-        enfants directs placés par `grid-column` : sans wrapper, l'auto-placement
-        de la grille donne une ligne à chacun et la colonne de droite descend au
-        lieu de commencer en haut, face au titre.
+        The two columns of the spread are real containers, not direct children placed with
+        `grid-column`: without a wrapper, grid auto-placement gives each one its own row and
+        the right column drops down instead of starting at the top, facing the title.
       */}
       <div className="recipe__left">
         <Link to="/" className="back">

@@ -27,8 +27,8 @@ export function buildSearchText(
   return toSearchTokens([title, ...ingredients.map((i) => i.raw)].join(" "));
 }
 
-// Convex refuse une requête de recherche au-delà de 16 termes ou 32 caractères par terme.
-// Sans ce garde-fou, un copier-coller un peu long fait échouer la query côté serveur.
+// Convex rejects a search query beyond 16 terms or 32 characters per term. Without this
+// guard, a slightly long copy-paste makes the query fail server-side.
 const MAX_QUERY_TERMS = 16;
 const MAX_TERM_LENGTH = 32;
 

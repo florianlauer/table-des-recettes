@@ -6,10 +6,10 @@ export type Ingredient = {
 };
 
 const NUMBER_IN_RAW = /\d+(?:[.,]\d+)?/;
-// « 2 à 3 gousses », « 2-3 gousses », « 1 1/2 tasse » : le nombre trouvé n'est pas seul.
-// Deux formes distinctes : le séparateur suit immédiatement le nombre (`à 3`, `-3`), ou bien
-// c'est un nombre mixte et le séparateur n'arrive qu'après le nombre SUIVANT (`1 1/2`).
-// Ne garder que la première laissait « 1 1/2 tasse » doubler en « 2 1/2 tasse ».
+// "2 à 3 gousses", "2-3 gousses", "1 1/2 tasse": the number found is not alone. Two
+// distinct shapes: the separator immediately follows the number (`à 3`, `-3`), or it is a
+// mixed number and the separator only comes after the NEXT one (`1 1/2`). Keeping only the
+// first shape let "1 1/2 tasse" double into "2 1/2 tasse".
 const RANGE_OR_FRACTION = /^\s*(?:(?:à|a|-|–|\/)\s*\d|\d+\s*\/\s*\d)/i;
 
 export function servingsFactor(original: number, target: number): number {
@@ -32,16 +32,15 @@ export function formatQuantity(value: number): string {
 }
 
 /**
- * Recalcule la quantité et **rien d'autre** : le texte qui suit le nombre est reproduit
- * au caractère près, sans accord.
+ * Recalculates the quantity and **nothing else**: the text following the number is
+ * reproduced character for character, with no grammatical agreement.
  *
- * L'accord automatique a existé puis a été retiré. Il demandait un lexique d'invariables,
- * de pluriels irréguliers, d'adjectifs antéposés et de formes élidées — et il a produit un
- * défaut neuf à chacune des cinq relectures du plan (« 1 gro œufs », « 1 beau œuf »).
- * Le domaine est plus profond que le besoin : le recalcul est déclaré *best-effort* dans
- * `CONTEXT.md`, et « 1 gousses » reste lisible là où une règle grammaticale à demi juste
- * échoue silencieusement. Si l'accord revient un jour, il devra venir de l'ingestion, qui
- * connaît le mot, et non du rendu, qui ne voit qu'une chaîne.
+ * Automatic agreement existed and was then removed. It required lexicons of invariables,
+ * irregular plurals, prenominal adjectives and elided forms — and it produced a fresh defect
+ * at every one of the plan's five reviews ("1 gro œufs", "1 beau œuf"). The domain is deeper
+ * than the need: scaling is declared *best-effort* in `CONTEXT.md`, and "1 gousses" stays
+ * readable where a half-correct grammar rule fails silently. If agreement ever comes back it
+ * must come from ingestion, which knows the word, not from rendering, which only sees a string.
  */
 export function scaleIngredient(
   ingredient: Ingredient,
@@ -54,19 +53,19 @@ export function scaleIngredient(
   if (!Number.isFinite(quantity) || quantity <= 0) return unchanged;
   if (!Number.isFinite(factor) || factor <= 0) return unchanged;
 
-  // Portions inchangées : la ligne brute fait foi et doit ressortir au caractère près.
-  // Sans ce retour, « 1,50 L » deviendrait « 1,5 L ». `scaled: true` : rien n'a échoué.
+  // Servings unchanged: the raw line is authoritative and must come back character for
+  // character. Without this return, "1,50 L" would become "1,5 L". `scaled: true`: nothing failed.
   if (factor === 1) return { text: raw, scaled: true };
 
   const match = NUMBER_IN_RAW.exec(raw);
   if (!match) return unchanged;
 
-  // La ligne brute fait foi. Si le premier nombre ne correspond pas à l'annotation, on ne
-  // sait pas lequel remplacer — « 200 g de chocolat à 70 % ».
+  // The raw line is authoritative. If the first number does not match the annotation, we do
+  // not know which one to replace — "200 g de chocolat à 70 %".
   if (Number(match[0].replace(",", ".")) !== quantity) return unchanged;
 
-  // Et même quand il correspond, il peut n'être que la borne basse d'une plage ou le
-  // numérateur d'une fraction : « 2 à 3 gousses » annoté 2 deviendrait « 4 à 3 gousses ».
+  // And even when it matches, it may only be the lower bound of a range or the numerator of
+  // a fraction: "2 à 3 gousses" annotated 2 would become "4 à 3 gousses".
   const after = raw.slice(match.index + match[0].length);
   if (RANGE_OR_FRACTION.test(after)) return unchanged;
 

@@ -16,8 +16,8 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute('/')({
   validateSearch: searchSchema,
-  // Sans ce loader, `useSuspenseQuery` se résout côté client seulement : la page
-  // arriverait vide en SSR, ce qui contredit la décision de garder le SSR.
+  // Without this loader `useSuspenseQuery` only resolves client-side: the page would arrive
+  // empty under SSR, which contradicts the decision to keep SSR.
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
     await Promise.all([
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/')({
   component: IndexPage,
 })
 
-/** Une seule query pour l'index : la bascule liste ↔ recherche vit dans Convex. */
+/** A single query for the index: the list ↔ search switch lives in Convex. */
 function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
   return convexQuery(api.recipes.browse, { query: q?.trim() || undefined, type })
 }
@@ -38,11 +38,10 @@ function IndexPage() {
   const navigate = Route.useNavigate()
   const searching = Boolean(q && q.trim())
 
-  // Le champ est piloté localement, l'URL suit avec 250 ms de retard. Taper « courgette »
-  // ne doit empiler ni neuf entrées d'historique ni neuf abonnements Convex — mais tout
-  // remplacer effacerait aussi l'index vide, et le bouton retour quitterait le site au
-  // lieu d'y revenir. Seule l'entrée dans la recherche est donc empilée ; les frappes
-  // suivantes remplacent.
+  // The field is driven locally, the URL follows 250 ms behind. Typing "courgette" must not
+  // stack nine history entries nor nine Convex subscriptions — but replacing everything would
+  // also erase the empty index, and the back button would leave the site instead of returning
+  // to it. So only entering the search is pushed; subsequent keystrokes replace.
   const [draft, setDraft] = useState(q ?? '')
   useEffect(() => setDraft(q ?? ''), [q])
   useEffect(() => {

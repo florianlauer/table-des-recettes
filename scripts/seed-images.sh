@@ -2,29 +2,29 @@
 # scripts/seed-images.sh
 set -euo pipefail
 
-command -v jq >/dev/null || { echo "jq requis (déclaré dans devenv.nix)" >&2; exit 1; }
+command -v jq >/dev/null || { echo "jq required (declared in devenv.nix)" >&2; exit 1; }
 
 attach() {
   local slug="$1" file="$2"
-  [ -f "$file" ] || { echo "Fichier absent : $file" >&2; exit 1; }
+  [ -f "$file" ] || { echo "Missing file: $file" >&2; exit 1; }
 
-  # `npx convex run` s'authentifie en administrateur : il atteint les fonctions internes.
+  # `npx convex run` authenticates as an admin: it can reach internal functions.
   local upload_url
   upload_url=$(npx convex run devImages:generateUploadUrl | jq -er '.')
 
-  # --fail-with-body : sans lui, curl rend 0 sur un HTTP 500 et le corps d'erreur
-  # deviendrait l'identifiant de stockage.
+  # --fail-with-body: without it, curl returns 0 on an HTTP 500 and the error body would
+  # become the storage id.
   local storage_id
   storage_id=$(curl -sS --fail-with-body -X POST "$upload_url" \
     -H "Content-Type: image/jpeg" \
     --data-binary "@$file" | jq -er '.storageId')
 
-  # À partir d'ici le blob existe. Toute sortie avant l'attachement doit le supprimer,
-  # sinon il reste dans le stockage sans référence.
+  # From here on the blob exists. Any exit before the attach must delete it, otherwise it
+  # stays in storage with no reference.
   # shellcheck disable=SC2064
   trap "npx convex run devImages:discardOrphan '{\"slug\":\"$slug\",\"storageId\":\"$storage_id\"}' >/dev/null 2>&1 || true" EXIT
 
-  # `attach` supprime aussi l'ancien fichier, et supprime le nouveau si le slug est introuvable.
+  # `attach` also deletes the old file, and deletes the new one if the slug is not found.
   npx convex run devImages:attach "{\"slug\":\"$slug\",\"storageId\":\"$storage_id\"}"
   trap - EXIT
   echo "$slug ← $file"

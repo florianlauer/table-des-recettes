@@ -68,8 +68,8 @@ const RECIPES = [
     ],
   },
   {
-    // Le tableau de vérification de la tâche 9 cherche « courgette » sur le déploiement
-    // réel : sans cette recette, le contrôle ne peut pas passer.
+    // Task 9's verification table searches for "courgette" against the real deployment:
+    // without this recipe the check cannot pass.
     title: "Tian de courgettes",
     type: "plat" as const,
     servings: 4,
@@ -180,9 +180,9 @@ export const run = internalMutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    // La garde est une variable d'environnement du déploiement, pas un argument : un argument
-    // voyage dans la commande copiée-collée et ne prouve rien sur le backend réellement visé.
-    // À poser une seule fois, sur le déploiement de développement :
+    // The guard is a deployment environment variable, not an argument: an argument travels in
+    // a copy-pasted command and proves nothing about the backend actually targeted. Set once,
+    // on the development deployment:
     //   npx convex env set ALLOW_DESTRUCTIVE_SEED true
     if (process.env.ALLOW_DESTRUCTIVE_SEED !== "true") {
       throw new Error(
@@ -192,8 +192,8 @@ export const run = internalMutation({
 
     const existing = await ctx.db.query("recipes").collect();
     for (const row of existing) {
-      // Supprimer les fichiers avant les documents, sinon ils restent orphelins
-      // dans le stockage sans plus aucune référence pour les retrouver.
+      // Delete the files before the documents, otherwise they stay orphaned in storage with
+      // no reference left to find them again.
       if (row.imageStorageId) await ctx.storage.delete(row.imageStorageId);
       if (row.beautifiedStorageId) await ctx.storage.delete(row.beautifiedStorageId);
       await ctx.db.delete(row._id);

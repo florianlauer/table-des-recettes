@@ -3,13 +3,13 @@ import type { QueryClient } from '@tanstack/react-query'
 
 import appCss from '../styles/app.css?url'
 
-// Le contexte est typé ici, sinon les `loader` des routes ne voient pas `queryClient`.
+// The context is typed here, otherwise route loaders cannot see `queryClient`.
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      // Décision de cadrage de la spec : la vitrine n'est pas indexée.
+      // Scoping decision from the spec: the storefront is not indexed.
       { name: 'robots', content: 'noindex, nofollow' },
       { title: 'La table des recettes' },
     ],

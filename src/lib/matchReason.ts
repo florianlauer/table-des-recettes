@@ -8,10 +8,10 @@ export function findMatchingIngredient(
   const terms = queryTokens.split(" ").filter(Boolean);
   if (terms.length === 0) return null;
 
-  // Ne chercher une raison que pour ce que le titre n'explique pas déjà. Tester
-  // « le titre couvre-t-il TOUS les termes ? » puis repartir de la liste complète
-  // faisait rendre « 4 courgettes » sur « courgette ail » pour « Tian de courgettes » :
-  // la ligne du seul terme qui n'avait pas besoin d'explication, et l'ail masqué.
+  // Only look for a reason among the terms the title does not already explain. Testing
+  // "does the title cover ALL terms?" and then falling back to the full list returned
+  // "4 courgettes" for the query "courgette ail" on "Tian de courgettes": the line of the
+  // one term that needed no explanation, with the garlic hidden.
   const titleTokens = toSearchTokens(title).split(" ");
   const unexplained = terms.filter((term) => !titleTokens.includes(term));
   if (unexplained.length === 0) return null;

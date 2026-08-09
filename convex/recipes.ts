@@ -12,10 +12,9 @@ import { pickDisplayImage } from "../src/lib/displayImage";
 type StorageCtx = Pick<QueryCtx, "storage">;
 
 /**
- * Une ligne d'index. `matchedIngredient` répond à « pourquoi cette ligne est là » :
- * hors recherche, ou quand le titre suffit à l'expliquer, la réponse est `null`. Le champ
- * est donc toujours présent — c'est ce qui permet à `browse` de n'avoir qu'une seule forme.
- * `slug` y est obligatoire — voir ADR 0001.
+ * An index row. `matchedIngredient` answers "why is this row here": outside a search, or when
+ * the title already explains it, the answer is `null`. The field is therefore always present —
+ * which is what lets `browse` have a single shape. `slug` is required here — see ADR 0001.
  */
 export const publishedRecipeRow = v.object({
   id: v.string(),
@@ -36,9 +35,9 @@ export const publishedRecipe = v.object({
 });
 
 /**
- * Énuméré à la main plutôt que dérivé de `RECIPE_TYPES` : le handler construit un
- * `Record<RecipeType, number>`, donc un type ajouté d'un côté et pas de l'autre casse
- * la compilation. La dérive est attrapée sans rendre le validateur illisible.
+ * Spelled out by hand rather than derived from `RECIPE_TYPES`: the handler builds a
+ * `Record<RecipeType, number>`, so a type added on one side and not the other breaks the
+ * build. Drift is caught without making the validator unreadable.
  */
 const typeCounts = v.object({
   total: v.number(),
@@ -62,8 +61,8 @@ async function imageUrl(ctx: StorageCtx, doc: Doc<"recipes">): Promise<string | 
 }
 
 /**
- * Franchit la frontière brouillon → recette publiée. Une recette publiée sans slug est
- * un invariant rompu : on lève plutôt que de fabriquer un lien mort (ADR 0001).
+ * Crosses the draft → published boundary. A published recipe without a slug is a broken
+ * invariant: we throw rather than manufacture a dead link (ADR 0001).
  */
 async function toRow(
   ctx: StorageCtx,
@@ -86,8 +85,8 @@ async function toRow(
 }
 
 /**
- * L'unique lecture de l'index. La bascule liste ↔ recherche vit ici, du côté qui la
- * possède : une requête vide n'est pas un mode séparé, c'est l'absence de filtre textuel.
+ * The single read behind the index. The list ↔ search switch lives here, on the side that owns
+ * it: an empty query is not a separate mode, it is the absence of a text filter.
  */
 export const browse = query({
   args: { query: v.optional(v.string()), type: v.optional(recipeType) },
@@ -123,8 +122,8 @@ export const countsByType = query({
       .query("recipes")
       .withIndex("by_status_type", (q) => q.eq("status", "published"))
       .collect();
-    // Compteur exhaustif sur l'union fermée : un type sans recette vaut 0, il ne
-    // disparaît pas de la forme. La ligne de filtres n'a donc pas à deviner.
+    // Exhaustive over the closed union: a type with no recipe counts 0, it does not vanish
+    // from the shape. The filter row therefore has nothing to guess.
     const byType = Object.fromEntries(RECIPE_TYPES.map((t) => [t, 0])) as Record<
       Doc<"recipes">["type"],
       number
@@ -143,8 +142,8 @@ export const getBySlug = query({
       .withIndex("by_slug", (q) => q.eq("slug", slug))
       .unique();
     if (!doc || doc.status !== "published") return null;
-    // Le type de sortie n'expose que ce dont la vitrine a besoin : les champs
-    // d'administration (scanId, beautifyAttemptId, beautifyError) ne partent jamais au client.
+    // The output type only exposes what the storefront needs: the admin fields (scanId,
+    // beautifyAttemptId, beautifyError) never reach the client.
     return {
       ...(await toRow(ctx, doc, "")),
       servings: doc.servings ?? null,

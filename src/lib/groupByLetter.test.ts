@@ -2,29 +2,29 @@ import { describe, expect, test } from "vitest";
 import { groupByLetter, initialLetter } from "./groupByLetter";
 
 describe("initialLetter", () => {
-  test("majuscule de la première lettre normalisée", () => {
+  test("uppercases the normalized first letter", () => {
     expect(initialLetter("crêpes")).toBe("C");
   });
 
-  test("les accents ne créent pas de groupe séparé", () => {
+  test("accents do not create a separate group", () => {
     expect(initialLetter("Éclairs")).toBe("E");
   });
 
-  test("les ligatures non plus", () => {
+  test("neither do ligatures", () => {
     expect(initialLetter("Œufs mimosa")).toBe("O");
   });
 
-  test("un titre commençant par un chiffre tombe dans #", () => {
+  test("a title starting with a digit falls into #", () => {
     expect(initialLetter("4 saisons")).toBe("#");
   });
 });
 
 describe("groupByLetter", () => {
-  test("liste vide", () => {
+  test("empty list", () => {
     expect(groupByLetter([])).toEqual([]);
   });
 
-  test("trie et regroupe", () => {
+  test("sorts and groups", () => {
     const result = groupByLetter([
       { title: "Gratin dauphinois" },
       { title: "Clafoutis aux cerises" },
@@ -39,7 +39,7 @@ describe("groupByLetter", () => {
     ]);
   });
 
-  test("un groupe d'un seul élément est un groupe valide", () => {
+  test("a single-item group is still a valid group", () => {
     const result = groupByLetter([{ title: "Tartiflette" }]);
     expect(result).toHaveLength(1);
     expect(result[0]?.letter).toBe("T");

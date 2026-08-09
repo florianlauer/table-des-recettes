@@ -1,8 +1,8 @@
 import { buildSearchText } from "../../src/lib/normalize";
 
 /**
- * Seul point d'entrée autorisé pour écrire le couple (titre, ingrédients).
- * Dérive systématiquement `searchText` : jamais d'insert ni de patch sans passer par ici.
+ * The only authorised entry point for writing the (title, ingredients) pair.
+ * Always derives `searchText`: never insert or patch without going through here.
  */
 export function withSearchText<
   T extends { title: string; ingredients: readonly { raw: string }[] },
