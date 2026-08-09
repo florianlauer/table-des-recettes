@@ -37,7 +37,7 @@ export async function normalizeImage({ inputPath, outputPath }: { inputPath: str
   return metadata;
 }
 
-// Hors dépôt et hors iCloud : les originaux portent le GPS du domicile.
+// Outside the repo and outside iCloud: the originals carry the home GPS coordinates.
 export const INBOX_DIRECTORY = resolve(homedir(), "Downloads", "table-des-recettes-inbox");
 
 async function findInboxImage(stem: string): Promise<string> {
@@ -51,7 +51,7 @@ async function findInboxImage(stem: string): Promise<string> {
         await access(candidate);
         return candidate;
       } catch {
-        // Les originaux peuvent conserver la casse produite par le téléphone.
+        // The originals may keep whatever casing the phone produced.
       }
     }
   }
@@ -59,8 +59,8 @@ async function findInboxImage(stem: string): Promise<string> {
 }
 
 async function main(): Promise<void> {
-  // Le second argument découple le rôle dans le protocole (A..D) du nom que tu as donné à la
-  // photo : « mono1 » ou « complexe » dit quel cas la page couvre, « A » ne le dirait plus.
+  // The second argument decouples the protocol role (A..D) from the name given to the photo:
+  // "mono1" or "complexe" says which case the page covers, whereas "A" no longer would.
   const page = process.argv[2];
   if (!page || !/^[a-z][a-z0-9-]*$/i.test(page)) {
     throw new Error("Usage : npm run ingest -- <role> [source] (ex. « B duo1 », ou « A » si le fichier s'appelle déjà A).");

@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-// OpenRouter facture en USD : plafond et réserve restent donc dans cette devise unique.
+// OpenRouter bills in USD, so the cap and the reserve stay in that single currency.
 export const BUDGET_CAP_USD = 5;
 export const PROBE_RESERVE_USD = 0.25;
 
