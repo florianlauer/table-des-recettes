@@ -4,8 +4,10 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
+import type { PublishedRecipeRow } from '../../convex/recipes'
 import { groupByLetter } from '../lib/groupByLetter'
 import { RECIPE_TYPES, TYPE_FILTER_LABELS, TYPE_LABELS } from '../lib/recipeTypes'
+import type { RecipeType } from '../lib/recipeTypes'
 
 const searchSchema = z.object({
   q: z.string().optional(),
@@ -18,21 +20,18 @@ export const Route = createFileRoute('/')({
   // arriverait vide en SSR, ce qui contredit la décision de garder le SSR.
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
-    await context.queryClient.ensureQueryData(convexQuery(api.recipes.countsByType, {}))
-    // Deux appels distincts plutôt qu'un ternaire en argument : les deux queries ne
-    // rendent pas la même forme, et TypeScript refuse d'unifier leurs options.
-    if (deps.q?.trim()) {
-      await context.queryClient.ensureQueryData(
-        convexQuery(api.recipes.search, { query: deps.q, type: deps.type }),
-      )
-    } else {
-      await context.queryClient.ensureQueryData(
-        convexQuery(api.recipes.listPublished, { type: deps.type }),
-      )
-    }
+    await Promise.all([
+      context.queryClient.ensureQueryData(convexQuery(api.recipes.countsByType, {})),
+      context.queryClient.ensureQueryData(browseOptions(deps)),
+    ])
   },
   component: IndexPage,
 })
+
+/** Une seule query pour l'index : la bascule liste ↔ recherche vit dans Convex. */
+function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
+  return convexQuery(api.recipes.browse, { query: q?.trim() || undefined, type })
+}
 
 function IndexPage() {
   const { q, type } = Route.useSearch()
@@ -59,15 +58,7 @@ function IndexPage() {
   }, [draft, q, navigate])
 
   const counts = useSuspenseQuery(convexQuery(api.recipes.countsByType, {})).data
-
-  // Un seul hook, deux queries : l'appel conditionnel est interdit. Les deux options ne
-  // diffèrent que par `matchedIngredient`, absent hors recherche — d'où l'élargissement
-  // vers la forme la plus large, que `RecipeRow` traite déjà comme facultative.
-  const searchOptions = convexQuery(api.recipes.search, { query: q ?? '', type })
-  const listOptions = convexQuery(api.recipes.listPublished, { type })
-  const listed = useSuspenseQuery(
-    searching ? searchOptions : (listOptions as unknown as typeof searchOptions),
-  ).data
+  const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
   return (
     <main className="page">
@@ -135,21 +126,12 @@ function IndexPage() {
   )
 }
 
-type RowRecipe = {
-  id: string
-  title: string
-  slug: string
-  type: keyof typeof TYPE_LABELS
-  imageUrl: string | null
-  matchedIngredient?: string | null
-}
-
 function RecipeRow({
   recipe,
   letter,
   showImage,
 }: {
-  recipe: RowRecipe
+  recipe: PublishedRecipeRow
   letter?: string
   showImage: boolean
 }) {

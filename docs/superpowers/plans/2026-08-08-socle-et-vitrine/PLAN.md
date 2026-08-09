@@ -1640,13 +1640,18 @@ feat(convex): add schema and development seed
 
 ### Task 8 : Convex — queries publiques
 
+> **Amendé après livraison.** La revue de qualité de code du round 6 (voir `REVIEW-LOG.md`) a
+> fusionné `listPublished` et `search` en une seule query `browse({ query?, type? })`, et ajouté
+> les validateurs de sortie. Les blocs de code ci-dessous décrivent l'état intermédiaire, pas le
+> code final : lire `convex/recipes.ts` pour la forme retenue.
+
 **Files:**
 - Create: `convex/recipes.ts`
 - Test: `convex/recipes.test.ts`
 
 **Interfaces:**
 - Consumes: le schéma de la tâche 7, `toSearchTokens` de `src/lib/normalize.ts`, `findMatchingIngredient` de `src/lib/matchReason.ts`
-- Produces: `api.recipes.listPublished({ type? })`, `api.recipes.countsByType({})`, `api.recipes.getBySlug({ slug })`, `api.recipes.search({ query, type? })`
+- Produces: `api.recipes.browse({ query?, type? })`, `api.recipes.countsByType({})`, `api.recipes.getBySlug({ slug })`
 
 - [ ] **Step 1 : Écrire les tests qui échouent**
 
@@ -1940,6 +1945,11 @@ feat(convex): add public recipe queries with tolerant search
 ---
 
 ### Task 9 : Surface `/` — index groupé, filtres, recherche
+
+> **Amendé après livraison.** Le round 6 (voir `REVIEW-LOG.md`) a supprimé le double
+> `convexQuery` et le cast `as unknown as` au profit d'un unique `browseOptions()` adossé à
+> `api.recipes.browse`, et remplacé le type local `RowRecipe` par `PublishedRecipeRow` dérivé du
+> validateur Convex. Lire `src/routes/index.tsx` pour la forme retenue.
 
 **Files:**
 - Modify: `src/routes/__root.tsx` (providers Convex et Query)

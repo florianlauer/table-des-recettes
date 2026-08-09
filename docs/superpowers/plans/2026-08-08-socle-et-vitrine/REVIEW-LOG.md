@@ -249,3 +249,66 @@ faux, c'est une preuve que le domaine est plus profond que le besoin : le recalc
 est déclaré *best-effort* dans `CONTEXT.md`, et une ligne mal accordée reste lisible. Si un
 sixième défaut d'accord apparaît à l'implémentation, le bon réflexe n'est pas d'élargir encore
 la règle mais de supprimer l'accord automatique.
+
+---
+
+## Round 6 — Codex, revue de qualité de code sur l'implémentation
+
+Après livraison des 11 tâches, `thermo-nuclear-code-quality-review` passée à Codex
+(`gpt-5.6-sol`, sandbox read-only, thread `019fe6cc-a669-7732-9c22-82dc5aff0be0`). Portée : le
+code écrit à la main du diff `main..HEAD`, hors généré, vendoré et prose. Verdict `REVISE` —
+2 bloquants, 3 élevés. Aucun fichier ne franchit les 1 000 lignes.
+
+### Appliqués
+
+**1. Les modes liste et recherche assemblés côté UI par un double cast.** `search` et
+`listPublished` rendaient deux formes différentes, la bascule était dupliquée dans le loader
+**et** dans le composant, et le raccord tenait par un `as unknown as`. Le cast masquait le
+désaccord que TypeScript signalait : trois contrats pour une seule notion, « les recettes
+affichées par l'index ».
+
+Remplacées par une query unique `browse({ query?, type? })` dont chaque ligne porte toujours
+`matchedIngredient: string | null`. Une requête vide n'est pas un mode séparé, c'est l'absence
+de filtre textuel. Disparaissent : le cast, le `if/else` du loader, `searchOptions`,
+`listOptions` et le type `RowRecipe` recopié à la main.
+
+Le raisonnement qui avait mené au cast — « un champ toujours nul hors recherche serait un
+mensonge » — était faux. Le champ répond à « pourquoi cette ligne est là » ; hors recherche,
+`null` est la réponse exacte.
+
+**2. Les tests de recherche contournaient la frontière d'écriture qu'ils devaient certifier.**
+Les fixtures écrivaient des `searchText` déjà stemmés à la main. Les tests seraient donc restés
+verts si `withSearchText()` cessait de normaliser les ingrédients : l'ADR du stemming symétrique
+n'était vérifiée que sur une moitié préparée d'avance.
+
+Toutes les fixtures passent désormais par `withSearchText()`. Seule exception conservée : la
+recette publiée sans slug, qui fabrique volontairement l'invariant rompu. Vérifié par sabotage —
+neutraliser `stemToken` fait bien échouer le test de recherche par ingrédient, ce qui n'était pas
+le cas avant.
+
+**3. Contrats publics déclarés plusieurs fois, validés nulle part.** Les quatre queries n'avaient
+aucun `returns`, et `countsByType` effaçait l'union fermée en `Record<string, number>`. Ajout des
+validateurs de sortie `publishedRecipeRow` / `publishedRecipe` / `typeCounts`, type dérivé par
+`Infer`, compteur exhaustif sur `RecipeType`. Le validateur des compteurs est énuméré à la main :
+le handler construit un `Record<RecipeType, number>`, donc un type ajouté d'un seul côté casse la
+compilation — la dérive est attrapée sans rendre le validateur illisible.
+
+### Différés, avec motif
+
+**Le moteur morphologique de `src/lib/scale.ts`** (classé bloquant par Codex). L'observation est
+juste : 120 lignes d'exceptions françaises dans le chemin de rendu, et `label` est ignoré alors
+qu'il existe au schéma. Mais le remède proposé — décider de la scalabilité à l'ingestion et
+stocker `singularSuffix` / `pluralSuffix` — ne dit pas **qui produit ces suffixes**. Si c'est le
+même `singularize`, le code ne disparaît pas, il déménage : ce que la grille appelle elle-même
+déplacer la complexité au lieu de la supprimer. À trancher dans le contrat d'ingestion du spike
+T1, pas ici.
+
+À noter : ces constantes existent parce que les rounds 4 et 5 ci-dessus, **par Codex**, avaient
+signalé `3 gros œufs → 1 gro œufs` puis `3 beaux œufs → 1 bel œuf` comme des défauts. Un Codex a
+exigé la morphologie, l'autre veut la supprimer. C'est exactement le point noté en résolution du
+round 5 : le domaine est plus profond que le besoin.
+
+**`matchedIngredient` singulier ne peut pas expliquer une recherche multi-ingrédients.** Exact,
+mais c'est une décision de design et non de qualité de code : `DESIGN.md` dit « afficher **la**
+ligne d'ingrédient qui a produit la correspondance ». Passer à N lignes change la densité de
+l'index. Renvoyé à l'arbitrage produit.
