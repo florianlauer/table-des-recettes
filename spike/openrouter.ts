@@ -1,6 +1,12 @@
 import { readFile } from "node:fs/promises";
 
-import { extractionSchema, type Extraction, RECIPE_SCHEMA_VERSION } from "../src/lib/recipe-schema.js";
+import {
+  extractionSchema,
+  repairExtraction,
+  type Extraction,
+  RECIPE_SCHEMA_VERSION,
+  type SchemaRepair,
+} from "../src/lib/recipe-schema.js";
 import { type BudgetCounter } from "./budget.js";
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from "./json-schema.js";
 import { EXTRACTION_PROMPT, PROMPT_VERSION } from "./prompt.js";
@@ -31,6 +37,9 @@ export type PassSuccess = {
   latencyMs: number;
   actualCostUsd: number;
   servedProvider: string;
+  // Une passe réparée reste un succès, mais elle n'est pas de la même qualité qu'une passe conforme :
+  // sans cette trace, les deux seraient indiscernables dans les artefacts.
+  repairs: SchemaRepair[];
 };
 
 export type PassFailure = {
@@ -93,6 +102,8 @@ function actualCost(raw: OpenRouterResponse): number | null {
   return typeof raw.usage?.cost === "number" && Number.isFinite(raw.usage.cost) ? raw.usage.cost : null;
 }
 
+const MANDATORY_REASONING = /reasoning is mandatory/i;
+
 export function normalizeProviderIdentifier(provider: string): string {
   return provider.toLocaleLowerCase("en").replace(/[\s_-]/g, "");
 }
@@ -106,6 +117,8 @@ export async function runVisionPass({
   budget,
   maximumEstimatedCostUsd,
   dataCollection,
+  supportsTemperature = true,
+  disableReasoning = false,
   maxTokens = MAX_OUTPUT_TOKENS,
   fetchImpl = fetch,
   sleep = (milliseconds: number) => new Promise((resolveSleep) => setTimeout(resolveSleep, milliseconds)),
@@ -114,13 +127,21 @@ export async function runVisionPass({
 }: {
   model: string;
   providerSlug: string;
-  // La réponse renvoie le nom d'affichage ("Google"), jamais le slug de routage ("google-vertex").
+  // The response returns the display name ("Google"), never the routing slug ("google-vertex").
   providerName: string;
   imagePath: string;
   apiKey: string;
   budget: BudgetCounter;
   maximumEstimatedCostUsd: number;
   dataCollection: string | null;
+  // Reasoning models reject `temperature` instead of ignoring it: sending it turns a capable endpoint
+  // into a 400. Their determinism comes from the model, not from the parameter.
+  supportsTemperature?: boolean;
+  // Transcribing a page is a reading task, not a puzzle, and a model that thinks freely truncates its
+  // own answer. `effort: "low"` is measurably a no-op — alibaba returned *more* reasoning tokens with
+  // it than without — so the only lever that works is switching reasoning off. Endpoints that make it
+  // mandatory answer 400, and the call retries once without the field.
+  disableReasoning?: boolean;
   maxTokens?: number;
   fetchImpl?: Fetch;
   sleep?: (milliseconds: number) => Promise<void>;
@@ -132,6 +153,7 @@ export async function runVisionPass({
   const startedAt = performance.now();
   let totalCost = 0;
   let lastTransient = "Erreur transitoire inconnue";
+  let reasoningOff = disableReasoning;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
     budget.assertCanSpend(maximumEstimatedCostUsd);
@@ -153,7 +175,8 @@ export async function runVisionPass({
               ],
             },
           ],
-          temperature: 0,
+          ...(supportsTemperature ? { temperature: 0 } : {}),
+          ...(reasoningOff ? { reasoning: { enabled: false } } : {}),
           max_tokens: maxTokens,
           response_format: {
             type: "json_schema",
@@ -177,6 +200,13 @@ export async function runVisionPass({
           budget.record(reportedCost);
           totalCost += reportedCost;
           await onCostRecorded();
+        }
+        // Refusing to switch reasoning off says nothing about the model's ability to read a page:
+        // the request is simply retried as it would have been sent without the field.
+        if (reasoningOff && MANDATORY_REASONING.test(errorMessage)) {
+          reasoningOff = false;
+          attempt -= 1;
+          continue;
         }
         if (isTransientStatus(response.status) || isTransientMessage(errorMessage)) {
           lastTransient = `HTTP ${response.status}: ${errorMessage}`;
@@ -255,7 +285,8 @@ export async function runVisionPass({
           actualCostUsd: totalCost,
         };
       }
-      const validated = extractionSchema.safeParse(parsedJson);
+      const { value: repairedJson, repairs } = repairExtraction(parsedJson);
+      const validated = extractionSchema.safeParse(repairedJson);
       if (!validated.success) {
         return {
           status: "failure",
@@ -275,6 +306,7 @@ export async function runVisionPass({
         latencyMs: performance.now() - startedAt,
         actualCostUsd: totalCost,
         servedProvider: raw.provider,
+        repairs,
       };
     } catch (error) {
       const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
