@@ -396,3 +396,34 @@ mauvaise attribution corromprait le verdict. 28 tests verts.
 
 Vérifié : classifieur conservateur conforme, `npm run verify` rejoué par moi, 28 tests, 6 fichiers.
 Aucun problème matériel restant. Build accepté, en attente du gate humain sur le diff.
+
+### Post-build — deux bugs révélés par le catalogue réel
+
+Question de l'utilisateur : « quelle est la liste des modèles qu'on va tester ? ». Elle n'existait
+pas — par construction, l'échelle se dérive de l'API. En la calculant pour de vrai sur le catalogue
+public OpenRouter (2026-08-09, sans clé), **125 modèles** passent le filtre vision + sortie
+structurée stricte, de `google/gemma-4-26b-a4b-it:free` (0 USD) à `anthropic/claude-opus-4.1:batch`
+(0,105 USD/page) — une amplitude de ×350. L'exercice a fait tomber deux bugs qu'aucun test hors
+réseau ne pouvait attraper.
+
+1. **L'échelle serait née avec 3 barreaux au lieu de 123.** `pricing.request` est absent des 125
+   modèles et `pricing.image` de 100 : OpenRouter omet la clé au lieu d'écrire `"0"`. `parsePricing`
+   renvoyait `null` dès qu'un des quatre postes manquait, donc **tout** le catalogue tombait dans la
+   file « prix incertain », plafonnée à trois sondes. La règle « un poste absent n'est pas zéro »
+   reste juste pour un prix vraiment inconnu ; ici l'absence de `request` *signifie* zéro et celle
+   de `image` signifie « facturée en tokens de prompt ». Le garde-fou ne porte plus que sur `prompt`
+   et `completion`.
+2. **`provider.only` recevait une valeur non routable.** `providerSlug()` prenait `provider_name`
+   (`"Google"`, un nom d'affichage) alors que le slug de routage vit dans `tag`
+   (`"google-vertex/global"` → `google-vertex`). Pire, la réponse renvoie le nom d'affichage : la
+   vérification du provider servi comparait donc deux registres différents et aurait levé une
+   `HarnessError` sur chaque appel. L'échelle porte désormais les deux identifiants — `providerSlug`
+   pour router, `providerName` pour vérifier.
+
+Fixtures de test réécrites sur les formes réelles du catalogue plutôt que sur des formes
+supposées — c'est précisément l'écart entre les deux qui avait laissé passer les bugs. 31 tests.
+
+Décision produit prise au passage : **pas de traduction dans le prompt d'extraction**. Traduire est
+une reformulation, ce que les critères de succès interdisent ; la vérité terrain de la page
+d'acceptation étant transcrite depuis la page, une sortie traduite échouerait l'identité sur tous
+les champs et rendrait l'arbitrage temps immesurable. Le prompt v1 reste gelé.

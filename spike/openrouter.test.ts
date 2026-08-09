@@ -49,15 +49,18 @@ describe("classification des appels OpenRouter", () => {
   async function execute({
     fetchImpl,
     providerSlug = "provider-a",
+    providerName = "Provider A",
     budget = new BudgetCounter(),
   }: {
     fetchImpl: typeof fetch;
     providerSlug?: string;
+    providerName?: string;
     budget?: BudgetCounter;
   }) {
     return runVisionPass({
       model: "author/model",
       providerSlug,
+      providerName,
       imagePath,
       apiKey: "test-key",
       budget,
@@ -114,15 +117,28 @@ describe("classification des appels OpenRouter", () => {
     expect(budget.spent).toBe(0.01);
   });
 
-  it("accepte le display name correspondant au slug normalisé", async () => {
+  it("accepte le display name servi, à la casse et aux séparateurs près", async () => {
     const fetchMock = vi.fn(async () => jsonResponse(successBody({ provider: "DeepInfra" }))) as unknown as typeof fetch;
-    await expect(execute({ fetchImpl: fetchMock, providerSlug: "deepinfra" })).resolves.toMatchObject({ status: "success" });
+    await expect(
+      execute({ fetchImpl: fetchMock, providerSlug: "deepinfra", providerName: "DeepInfra" }),
+    ).resolves.toMatchObject({ status: "success" });
+  });
+
+  // Le slug de routage et le nom servi diffèrent réellement chez Google : comparer la réponse au
+  // slug ferait échouer tous les appels de ces endpoints.
+  it("accepte un display name qui ne ressemble pas au slug de routage", async () => {
+    const fetchMock = vi.fn(async () => jsonResponse(successBody({ provider: "Google" }))) as unknown as typeof fetch;
+    await expect(
+      execute({ fetchImpl: fetchMock, providerSlug: "google-vertex", providerName: "Google" }),
+    ).resolves.toMatchObject({ status: "success" });
   });
 
   it("arrête le harnais pour un provider réellement différent après avoir compté le coût", async () => {
     const fetchMock = vi.fn(async () => jsonResponse(successBody({ provider: "Together AI" }))) as unknown as typeof fetch;
     const budget = new BudgetCounter();
-    await expect(execute({ fetchImpl: fetchMock, providerSlug: "deepinfra", budget })).rejects.toThrow(HarnessError);
+    await expect(
+      execute({ fetchImpl: fetchMock, providerSlug: "deepinfra", providerName: "DeepInfra", budget }),
+    ).rejects.toThrow(HarnessError);
     expect(budget.spent).toBe(0.001);
   });
 

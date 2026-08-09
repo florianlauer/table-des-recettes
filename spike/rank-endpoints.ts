@@ -14,7 +14,11 @@ const REPRESENTATIVE_COMPLETION_TOKENS = 2500;
 const MAX_COMPLETION_TOKENS = 8000;
 const MAX_UNCERTAIN_PROBES = 3;
 
-type Pricing = { prompt: number; completion: number; image: number; request: number };
+// Une page de 2000 px consomme ~1100 tokens de prompt chez les modèles qui ne facturent pas
+// l'image à part. Approximation assumée : seul le coût relevé par tentative fait foi.
+const IMAGE_TOKENS_ESTIMATE = 1100;
+
+type Pricing = { prompt: number; completion: number; imagePerImage: number | null; request: number };
 
 type ApiModel = {
   id?: string;
@@ -38,6 +42,7 @@ type ApiEndpoint = {
 export type LadderEntry = {
   model: string;
   providerSlug: string;
+  providerName: string;
   dataCollection: string | null;
   rankingCostUsd: number;
   maximumCallCostUsd: number;
@@ -47,6 +52,7 @@ export type LadderEntry = {
 type UncertainEndpoint = {
   model: string;
   providerSlug: string;
+  providerName: string;
   dataCollection: string | null;
   capacity: number;
 };
@@ -63,8 +69,15 @@ function modalities(value: ApiModel | ApiEndpoint): string[] {
   return value.input_modalities ?? value.architecture?.input_modalities ?? [];
 }
 
+// `provider.only` route sur le slug porté par `tag` ("google-vertex/global" → "google-vertex").
+// `provider_name` est un nom d'affichage ("Google") qu'OpenRouter ne sait pas router.
 function providerSlug(endpoint: ApiEndpoint): string | null {
-  return endpoint.provider_name ?? endpoint.provider ?? endpoint.tag ?? endpoint.name ?? null;
+  const tag = endpoint.tag?.split("/")[0];
+  return tag ?? endpoint.provider ?? endpoint.name ?? null;
+}
+
+function providerDisplayName(endpoint: ApiEndpoint): string | null {
+  return endpoint.provider_name ?? endpoint.provider ?? endpoint.tag?.split("/")[0] ?? endpoint.name ?? null;
 }
 
 function parsePrice(value: string | number | null | undefined): number | null {
@@ -75,20 +88,28 @@ function parsePrice(value: string | number | null | undefined): number | null {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
+// OpenRouter omet une clé de tarif au lieu d'écrire "0" : `request` absent signifie « aucun frais
+// par requête », `image` absent signifie « image facturée comme des tokens de prompt ». Les traiter
+// comme inconnus enverrait 100 % du catalogue dans la file des sondes, qui n'a que trois places.
+// Le garde-fou « un poste absent n'est pas zéro » ne garde donc que les deux tarifs de fond.
 function parsePricing(pricing: ApiEndpoint["pricing"]): Pricing | null {
   const prompt = parsePrice(pricing?.prompt);
   const completion = parsePrice(pricing?.completion);
-  const image = parsePrice(pricing?.image);
-  const request = parsePrice(pricing?.request);
-  if (prompt === null || completion === null || image === null || request === null) {
+  if (prompt === null || completion === null) {
     return null;
   }
-  return { prompt, completion, image, request };
+  return {
+    prompt,
+    completion,
+    imagePerImage: parsePrice(pricing?.image),
+    request: parsePrice(pricing?.request) ?? 0,
+  };
 }
 
 function cost({ pricing, completionTokens }: { pricing: Pricing; completionTokens: number }): number {
   const promptTokens = Math.ceil(EXTRACTION_PROMPT.length / 4);
-  return pricing.prompt * promptTokens + pricing.image + pricing.request + pricing.completion * completionTokens;
+  const imageCost = pricing.imagePerImage ?? pricing.prompt * IMAGE_TOKENS_ESTIMATE;
+  return pricing.prompt * promptTokens + imageCost + pricing.request + pricing.completion * completionTokens;
 }
 
 async function getJson<T>({ url, apiKey, fetchImpl }: { url: string; apiKey: string; fetchImpl: typeof fetch }): Promise<T> {
@@ -129,8 +150,9 @@ export async function discoverEndpoints({
     const endpoints = Array.isArray(data) ? data : data?.endpoints ?? [];
     for (const endpoint of endpoints) {
       const slug = providerSlug(endpoint);
-      if (!slug) {
-        excluded.push({ model: model.id, providerSlug: "inconnu", reason: "providerSlug absent" });
+      const displayName = providerDisplayName(endpoint);
+      if (!slug || !displayName) {
+        excluded.push({ model: model.id, providerSlug: "inconnu", reason: "identifiant de provider absent" });
         continue;
       }
       const supportsImage = modalities(endpoint).includes("image") || modalities(model).includes("image");
@@ -146,6 +168,7 @@ export async function discoverEndpoints({
         uncertain.push({
           model: model.id,
           providerSlug: slug,
+          providerName: displayName,
           dataCollection,
           capacity: endpoint.context_length ?? 0,
         });
@@ -154,6 +177,7 @@ export async function discoverEndpoints({
       known.push({
         model: model.id,
         providerSlug: slug,
+        providerName: displayName,
         dataCollection,
         rankingCostUsd: cost({ pricing, completionTokens: REPRESENTATIVE_COMPLETION_TOKENS }),
         maximumCallCostUsd: cost({ pricing, completionTokens: MAX_COMPLETION_TOKENS }),
@@ -200,6 +224,7 @@ export async function buildLadder({
     const result = await runVisionPass({
       model: endpoint.model,
       providerSlug: endpoint.providerSlug,
+      providerName: endpoint.providerName,
       imagePath: probeImagePath,
       apiKey,
       budget,
@@ -221,6 +246,7 @@ export async function buildLadder({
     known.push({
       model: endpoint.model,
       providerSlug: endpoint.providerSlug,
+      providerName: endpoint.providerName,
       dataCollection: endpoint.dataCollection,
       rankingCostUsd: result.actualCostUsd,
       maximumCallCostUsd: result.actualCostUsd * (MAX_COMPLETION_TOKENS / 512),

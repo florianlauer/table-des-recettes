@@ -243,6 +243,7 @@ async function main(): Promise<void> {
     const result = await runVisionPass({
       model: endpoint.model,
       providerSlug: endpoint.providerSlug,
+      providerName: endpoint.providerName,
       imagePath: resolve(`spike/fixtures/pages/${page}.jpg`),
       apiKey,
       budget,

@@ -106,6 +106,11 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
       qu'au calcul de budget (étape 15).
     - Un poste tarifaire absent ou inconnu n'est **pas** traité comme zéro : l'endpoint sort de
       l'échelle principale et rejoint la **file « prix incertain »**.
+      **Précision issue du catalogue réel (2026-08-09)** : cette règle ne vaut que pour `prompt` et
+      `completion`. OpenRouter *omet* une clé au lieu d'écrire `"0"` — `request` est absent des 125
+      modèles vision+strict et `image` de 100 d'entre eux, où l'image est facturée comme des tokens
+      de prompt. Appliquer la règle aux quatre postes enverrait 100 % du catalogue dans une file de
+      trois sondes, et l'échelle naîtrait avec 3 barreaux au lieu de 123.
 13. **Résorber la file « prix incertain » AVANT l'escalade**, pas après. Un endpoint au prix inconnu
     peut être le moins cher de tous : le sonder seulement au moment d'un verdict négatif le rendrait
     invisible dès qu'un endpoint connu passe, ce qui contredit frontalement « le moins cher qui

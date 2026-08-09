@@ -100,6 +100,7 @@ export function normalizeProviderIdentifier(provider: string): string {
 export async function runVisionPass({
   model,
   providerSlug,
+  providerName,
   imagePath,
   apiKey,
   budget,
@@ -113,6 +114,8 @@ export async function runVisionPass({
 }: {
   model: string;
   providerSlug: string;
+  // La réponse renvoie le nom d'affichage ("Google"), jamais le slug de routage ("google-vertex").
+  providerName: string;
   imagePath: string;
   apiKey: string;
   budget: BudgetCounter;
@@ -231,9 +234,11 @@ export async function runVisionPass({
       }
       if (
         typeof raw.provider !== "string" ||
-        normalizeProviderIdentifier(raw.provider) !== normalizeProviderIdentifier(providerSlug)
+        normalizeProviderIdentifier(raw.provider) !== normalizeProviderIdentifier(providerName)
       ) {
-        throw new HarnessError(`Provider demandé ${providerSlug}, servi ${String(raw.provider)}. Arrêt du harnais.`);
+        throw new HarnessError(
+          `Provider demandé ${providerSlug} (${providerName}), servi ${String(raw.provider)}. Arrêt du harnais.`,
+        );
       }
 
       let parsedJson: unknown;
