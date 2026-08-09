@@ -1,0 +1,15 @@
+{
+  "model": "qwen/qwen3-vl-8b-thinking",
+  "requestedProvider": "alibaba",
+  "page": "b",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "inconclusive",
+  "reason": "transient_error",
+  "detail": "AbortError: This operation was aborted",
+  "attempts": 3,
+  "latencyMs": 449893.351959,
+  "actualCostUsd": 0
+}

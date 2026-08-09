@@ -1,0 +1,158 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "c",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Canette de Challans",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Challans",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Challans"
+          },
+          {
+            "raw": "1 dizaine d’oignons grelots",
+            "quantity": 1,
+            "unit": "dizaine",
+            "label": "d’oignons grelots"
+          },
+          {
+            "raw": "1 vingtaine de pommes de terre grenaille",
+            "quantity": 1,
+            "unit": "vingtaine",
+            "label": "de pommes de terre grenaille"
+          },
+          {
+            "raw": "200 g de marrons",
+            "quantity": 200,
+            "unit": "g",
+            "label": "de marrons"
+          },
+          {
+            "raw": "1 tranche épaisse de lard (250 g env.)",
+            "quantity": 1,
+            "unit": "tranche",
+            "label": "épaisse de lard (250 g env.)"
+          },
+          {
+            "raw": "2 gousses d’ail",
+            "quantity": 2,
+            "unit": "gousses",
+            "label": "d’ail"
+          },
+          {
+            "raw": "1 potimarron",
+            "quantity": 1,
+            "unit": null,
+            "label": "potimarron"
+          },
+          {
+            "raw": "½ verre de bouillon de légumes",
+            "quantity": 0.5,
+            "unit": "verre",
+            "label": "de bouillon de légumes"
+          },
+          {
+            "raw": "huile d’olive",
+            "quantity": null,
+            "unit": null,
+            "label": "huile d’olive"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d’huile d’olive.",
+          "Préchauffez le four à 180 °C (th. 6).",
+          "Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d’ail et des lamelles épaisses de potimarron.",
+          "Arrosez d’un généreux filet d’huile d’olive, salez et poivrez.",
+          "Posez la canette bien dorée au milieu de tous les légumes.",
+          "Enfournez et montez la température à 220 °C (th. 7-8).",
+          "Laissez cuire 35 min puis déglacez avec le bouillon de légumes.",
+          "Présentez dans un plat et servez."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306192-s0keuFz4YwAMMQlVyMD9",
+    "object": "chat.completion",
+    "created": 1786306192,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Canette de Challans\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"1 canette de Challans\",\"quantity\":1,\"unit\":null,\"label\":\"canette de Challans\"},{\"raw\":\"1 dizaine d’oignons grelots\",\"quantity\":1,\"unit\":\"dizaine\",\"label\":\"d’oignons grelots\"},{\"raw\":\"1 vingtaine de pommes de terre grenaille\",\"quantity\":1,\"unit\":\"vingtaine\",\"label\":\"de pommes de terre grenaille\"},{\"raw\":\"200 g de marrons\",\"quantity\":200,\"unit\":\"g\",\"label\":\"de marrons\"},{\"raw\":\"1 tranche épaisse de lard (250 g env.)\",\"quantity\":1,\"unit\":\"tranche\",\"label\":\"épaisse de lard (250 g env.)\"},{\"raw\":\"2 gousses d’ail\",\"quantity\":2,\"unit\":\"gousses\",\"label\":\"d’ail\"},{\"raw\":\"1 potimarron\",\"quantity\":1,\"unit\":null,\"label\":\"potimarron\"},{\"raw\":\"½ verre de bouillon de légumes\",\"quantity\":0.5,\"unit\":\"verre\",\"label\":\"de bouillon de légumes\"},{\"raw\":\"huile d’olive\",\"quantity\":null,\"unit\":null,\"label\":\"huile d’olive\"},{\"raw\":\"sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre du moulin\"}],\"steps\":[\"Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d’huile d’olive.\",\"Préchauffez le four à 180 °C (th. 6).\",\"Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d’ail et des lamelles épaisses de potimarron.\",\"Arrosez d’un généreux filet d’huile d’olive, salez et poivrez.\",\"Posez la canette bien dorée au milieu de tous les légumes.\",\"Enfournez et montez la température à 220 °C (th. 7-8).\",\"Laissez cuire 35 min puis déglacez avec le bouillon de légumes.\",\"Présentez dans un plat et servez.\"]}]}",
+          "refusal": null,
+          "reasoning": null,
+          "reasoning_details": [
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6WGByVkkh1_a2QKnHXH06JU_fWATT3fGUrpSUSkO8-lL7u4m-cw71FDEmWJXEBPcFpitbThVX9Y1XMR57q7YJJQVkb2R3I5O2ISSQB_Bj_kUMGvUhTpHfIbYkxIAe1_viakpYqm8BMMmm2aq-zVvmAJvkWcQDm1cf_iUsxsh-8p6vwjIBujx1pnDOou7evXG0ijEXE53nw8DVUyiflCIRmCi5K9tpJjGvu2iR1sA03ppxA7X7XBbojLUCU6n4MVajGPt4tJ-aVGpWVUQt-QwrBYJtERRFDZ_h5gmx0g19ftbrzAJ6tLPMFvaFTw96IKSuZf4zomuO0aU_4wc6bH4YB1wwZ09L-h73l0wmWUKWuzdFjR0klUIxaI-rs0SvWTnf2ZdGuNvx4T1U83t7XDjdowrpkvbpd12rWXiBhmb7tWqjWc3Vb4y8moYydaGbzy3Yr_ZORTFJS71tMHKNawFyKOIbHOe_fjFVSInQkAIPsNvMhFPt0202zx218vPP9g35MAYTzwYRthdVc86FygVHZYrp8f6Yzy7EFGrJXkcK5URCR8zJ6RUDCuxKFIUYIpA_RzSJ-5J_-VUHI1MKVXKd5Z-PRmvCniYyPaVGkykLTBMdJ9Cn03T_qAfKvDyv7D_yMRB5VgklFTk-j7C-tVwwXzYBDtPG-y7mtMbMzuINKnWNue4K5CO2K8Pa9K7e3f4xb4llkAcxldA24CUC5XmpWwS9NqzaIMY7sByM7bY6TtRLPvoqK_URr-Kcjdf8kLzFfcELUHoBMg-P18NVGM1rDIHNCqDvWlSgUBHDEROrA-_GoOMW8l7947yPgKpKyxyrbMdcLTYznJUNaCxXH5rjE_gYXhbTatUNHEwr-j6tLUEXp6jLgOQqE4eoOe0-nk2kelv7TeQjDAlj5v_kgBM3OaaF4DMDis3zXYZnOE0xDnttleTfqwNGjB9ELD2dtXFsmjl80VykuDVhbcXcfGwzc0mzB5ihfnoYYNCSPAgcIYZokR0Umtwv0kh5vBtGTvryTfdTYcyeEoprk4uKUMQhP7MOB7pqZHWYdlSOfeclO6QAaa-lirYGNFw8gqBkuHn_ZRdQLUoNNUOdbzi6iWlJc-vDKzloSKpCW1fzLh0EYTtUKSqXIhtGAyDi95J1DMCDOMQCCLHFMBcg1_rWY-XiWqQJjVDWzu_0NULC230F8Tk_jHSzohrNM5vRSK-ey5o2_5vAAgfQzRTAYmU2Mqo7wGNIcj194kVAOiPQyjiNHvIJdeWry25U_dVg-nTKgZ8Say7MulI1XjKoyFasex3Vd_S7xbsfBPWeVPZhRZlHs8vCTjNh9iI7rC8Y2lCuxv7YKfXlrW5rRjFgM-SQQSCOUpJGYGUqUBqCzO82-K_BCjMQN5PLrOHjaZiXDe4mNk18EOrJgzI_WDfandcrO4YU8NFWa_u4GXhfW9otYS175dqh-4xLQSxiZFYA7EPwKNGn87WAFU966Q04x5h_jGNJZenW-cmgyh5akFV4yoY3d-idiEMWjtp6hAUVoZGjdOqFW6McSfryRSIDMSlTcHoCCNXIc5JpRrBAgmlIF-ZBpegZgImBgLW61MR0MkGXIqtwEbpKFGhHS3a8JIpgQtgf5Va0VOpZTg2u6kAeYlKevBmR5Thd3FtKXd1CKmRwqctnI0u11sndEwXHl6yOFTQWznzkeGhyJXjm5hGlJmIVpdKlMsAXYPNs2DlvQm4jXkgqvy7rvzRYlGArWCdE4qWNSd4wWxPXkfn33t8dQ-ZQCpQ9blGDglZzNfVxXqv5ZpfuSp0oJh4IDxcpNysSEBnn106jx8kuQEbfp4Eo-ZDCmlfdmNPXlPcRAiNkm8dLFFamOOxWmz5eeN7EutE_uiGWhHAf3EwYgE4go9d7Cm4dgFNTW0JB6scMEPOD4XlzEWeN6YFgrGAJ_Mq3WpdCUhOcxNCmPTBH4DgGuNy0t6q7HPqMvvMljo0_-6KguEVNzONwFk6I3wncRYNPnM69HNehylqZ0zqQqOGCmRxAzBzYvQiKHx87JAhFmOPyppLH3P9UxmN4KMy2wJCaID4IRhUfnQ6oHj4rexrqzgvF4ke-3hGlilYdLexteD0Yt_v2v4Nfg2Nj1J3Reyr38PbHpqY_yz1BgWi4KbUbm-keMHpdOVfAahfxJ7B79C6GPY543BwvgKxWLeGO4GtSwDw7JrjhRw1UqdPG_JPR212d1gLDdVHHPOuE0BZ7nZbpZHOEFRJn_3UgHKaZk3YaISQT_sbK7GWtPvIh3FXpYmzBaWkdCGI5ieoWPjACqvwqGs6fcijlBmSPUUcYaUhnavezch1CDraIIadkoxyuiF6wSthyTvuBkzztI5Iiih5-SKBiLSx38-_9IhaRUxq8FwHfF74sB0F1qV7vmikJn86EDoID0WqJgBMl35YLrZdAs1NbNRUoBmTMyGvwLLKonrzQMFEy2JZ5zMdVovBarVwpeCIpFgPI2MHuiXMCyna4F2iKO2Eym11RdSmjkBpM0mVLVJ673647PYSQf_2l9zrjr17SDRIxx5-A6GiACQVJ6guFatvNo_-3xshVQOTpXoxL5Dyq8V4PUy-r71VP2BKYE85ptsQhsmrscvd7XDqFIufxKU9HeA6aDINNoqioUG0pjy01INAn6RjjQqffMVbQUwSXY0nr3i5zLeyiovF-bjpaYF7G2kWdLSsk1EGevR1SYEoZzLWbF107SuKmO9P8XmSp_kQ9WXEKCNyUzRQIUZv8UercGjx9VyQr2cWPI0ZvP1VKnZtU50A081_Eam37636v0lUM6pcBskF5Hdho2ahjTtz7dTmq5mG888EIRA3gGg9H02ubeuJgp1z-p81453WIBPnP52FNWooQPZqwVm45ZFiy1hFplzO-H8y4fvY6_6utkFWHdzV1y0QlAeiadF2HnO9X7-l10V8-x6Q5pCr3xL7zE7TzPiA5f644cGdicTviq89Svtb2Bj8mZTkpTLocCYrprycB7rBrLM2hEO7VxN-X3ojDeSnKy7QB0_UbkEzOrdWiiYj7U_10yCKgD2oxhHkUeqJIEvNwXEX6gEQgY17fHpstBG_tGPHoJGyV3rEw-Rty14SSRkOrZkgOWClWnZRLCbzTzVwS7X9cGGBwBVGqcn0lfTswqs44K5_Nuwk3OQDFgO_TPo7uAsOwQux1z_9zAmMuyQeV7RzQRw0_KF9VpCdLvbqFuYEJVD5rLYfd4CmuXq4UH4ITHAWYMKCRZG0WAHLXnw6yOANH_U31pCcH63ybDaYqQ5JvKVKm43OTYhdwi1rzMRMARtuIz_pbT-d-zdbnEg2qqPSVSsa1pF4pLpXyzyPKbIx9Yi-rVlC0HO-C7PKtAeR7APShVrJ7W1fxPPyC5Xex1d7voKPJtGmltzCSVGlHN49ESdlwFZiu4iMlhTCrZkuQNKuFzUe0nxA3b_VhbHouqUaNU68A9WDYT4REcId32k6X1ptTafjuW-V-WMcW87w1K6uMbf1r8Y20=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0406551bbaa670a7016a78de926a108196a49967308dd9420b",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6XBcYyhHZBl7EdeezHiNFz1vfTzf280q2bBvQZtoJATwcRKvjMBZkrNNbFrWt39nvzXJK_wHyA3k-O8hfxfEh-m5PD7ZIH8foIa_FN5ebqGGiNEZvDBcAhSAF39Nxh4Z4bckN4-MOdgDEhwCfCx44pk1D61-LQnZpIdUxQGvsd06kCLKwDyKsja9Rf6Cj2WFiTibxo9fSi8I4c3PVDMR8Vqb7DcP4ErHM6b8t7BD9Tr5FMk7EyyVH3Wyk51-pDXwCiEVEB9a9Qq5-cRatq6pIrRMcVeQIAynMpsRRfwcumXICmusktGID6eAT31n4nCWyxdgBOPBUfLqtB9oCI2jVaNEmcSK3xu44ClCWKGoNagIUs4Y3929u4DYFiP00CZGPSKN2xUEoO3Us_GD2MZdW5Hp3j1EsF0UT0D_4UJr80LmY7j2dESx_dPmvxGsJmXfVtVgQaytbs36sh3JfwF6fW6YgTVkXQS-RuzCXVgOseHQGDUJRZIkZL6eheZw4yy8mXmnsug6eC8lc6LcrQ71Cj-5uxoAXicThLHj7qfWVctfz2PoGC0G6LfRNyS4Zg7iLiFph4M6d4haGRTKQFVX7Rkyq_G3nL7Mk4ScGcc5GD6cdQRtmvE2N8DW5eDVy9xliS5LnikzC9E5KioZ34fV9CC5Xak97H-3xA6QpOKwavB6by7xwaquJyAYxCq3-OwD3fZxvga2c286qXA-5yCdOrjnDVRBtkPE-yODKBrb8s5H0gIzr9rIAkwyBStI2bFDC0qq0wUTCs_MwM6gexx2VzavaY0isaLAs83KXirFEOLxrrKTtU67PdFx49i666Ma0u-p2nYR00LUOChgWV8ZIS19UhCac6SayMOGfvwAbGUAOjMz0TZy8XzvgQXqP6i9Y_jpkTzxk5bupUGZlov9bYLzOFEiKennGWXJe-R0Fc-_PLcqZ2__UbHoQueLfBLNN9FmEbmT4TtJGGWZPzmq8AVz-BKSUcV244dgnNCYEmtewRaYtE9SLo0xdrrXDuqH2JXtNXVqdxrFlciH376uW1_ttmMBQwdzFxOJu_V_QTrmndzwLtj8dNRtjAwOx-NjOvbMcVNRtIequE3F4-JFe2A9y7KrTVM8MKhRsZzreqg91CqsGb08VnNR_mqgs9qcPR0cPPn0luJBfnSj61uOb16i636ANqNW9mgl-EwkB7lUVlM8rr2sqxHYpYyKSO7hVXiIa9umamS88ubVTjkOfHQiGyG2fBr3Hg7W4XtJ3Zmrc0S_yuUHs6CLzvp_1exIgNTKGor1xs21ujoIfpPJPzX8q0DcfMmAJ1PFLS5P7ONCujItsoOPHG8eXEe0vtVpLPjZ4iMI4niOulXOiUZdy5q1pJiuJ0lSvmmmlrq31GFhueGBIaIqcqZxILKEKJurMn_VsURwoe_wLlRQseOgN5zWjhjem5mCkeDm1DWYyqMwcTRxw6kerZLS_lyyrDxKTFN4Mjl-mTBkxnFl4QT32iK5JzQq4sNc2xm39H4gJHE5riR6pmmU7xyZlmTnQeafTEbhjWwARr4SorVVui71GwH36sd9SDBhscoK7lzAG7QlxbHSxQIaVLcLBa2_Gqe0G1mbZv5VQK0UFOSbGn8mXA3mGoCr0Jxy240MLBCfkBCURBNh7ayMi3QkbEVWlv5soP.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0406551bbaa670a7016a78de96515c8196a8879e80a1f23d71",
+              "index": 1
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 1154,
+      "total_tokens": 5284,
+      "cost": 0.001208575,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4127,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.001208575,
+        "upstream_inference_prompt_cost": 0.000516175,
+        "upstream_inference_completions_cost": 0.0006924
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 660,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 8504.04233300002,
+  "actualCostUsd": 0.001208575,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

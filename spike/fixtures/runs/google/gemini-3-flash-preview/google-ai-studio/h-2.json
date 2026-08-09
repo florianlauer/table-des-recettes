@@ -1,0 +1,143 @@
+{
+  "model": "google/gemini-3-flash-preview",
+  "requestedProvider": "google-ai-studio",
+  "page": "h",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Thon rôti méditerranéen",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 tranche de thon de 1 kg",
+            "quantity": 1,
+            "unit": "tranche",
+            "label": "de thon de 1 kg"
+          },
+          {
+            "raw": "4 oignons",
+            "quantity": 4,
+            "unit": null,
+            "label": "oignons"
+          },
+          {
+            "raw": "3 cuillères à soupe d'huile d'olive",
+            "quantity": 3,
+            "unit": "cuillères à soupe",
+            "label": "d'huile d'olive"
+          },
+          {
+            "raw": "3 gousses d'ail",
+            "quantity": 3,
+            "unit": "gousses",
+            "label": "d'ail"
+          },
+          {
+            "raw": "1 bouquet garni",
+            "quantity": 1,
+            "unit": "bouquet",
+            "label": "garni"
+          },
+          {
+            "raw": "100 g d'olives noires dénoyautées",
+            "quantity": 100,
+            "unit": "g",
+            "label": "d'olives noires dénoyautées"
+          },
+          {
+            "raw": "3 citrons confits",
+            "quantity": 3,
+            "unit": null,
+            "label": "citrons confits"
+          },
+          {
+            "raw": "Le jus de 2 citrons",
+            "quantity": 2,
+            "unit": "jus de",
+            "label": "citrons"
+          },
+          {
+            "raw": "Sel et poivre",
+            "quantity": null,
+            "unit": null,
+            "label": "Sel et poivre"
+          }
+        ],
+        "steps": [
+          "Saler et poivrer le poisson.",
+          "Le piquer de gousses d'ail et de la moitié des olives.",
+          "Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l'huile d'olive pendant 5 min.",
+          "Les retirer de la poêle et les réserver.",
+          "Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.",
+          "Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.",
+          "Laisser cuire 20 min."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786305156-IY1XLyDzAs1DozsXUiZj",
+    "object": "chat.completion",
+    "created": 1786305156,
+    "model": "google/gemini-3-flash-preview",
+    "provider": "Google AI Studio",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "STOP",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Thon rôti méditerranéen\",\n      \"type\": \"plat\",\n      \"servings\": 6,\n      \"ingredients\": [\n        {\n          \"raw\": \"1 tranche de thon de 1 kg\",\n          \"quantity\": 1,\n          \"unit\": \"tranche\",\n          \"label\": \"de thon de 1 kg\"\n        },\n        {\n          \"raw\": \"4 oignons\",\n          \"quantity\": 4,\n          \"unit\": null,\n          \"label\": \"oignons\"\n        },\n        {\n          \"raw\": \"3 cuillères à soupe d'huile d'olive\",\n          \"quantity\": 3,\n          \"unit\": \"cuillères à soupe\",\n          \"label\": \"d'huile d'olive\"\n        },\n        {\n          \"raw\": \"3 gousses d'ail\",\n          \"quantity\": 3,\n          \"unit\": \"gousses\",\n          \"label\": \"d'ail\"\n        },\n        {\n          \"raw\": \"1 bouquet garni\",\n          \"quantity\": 1,\n          \"unit\": \"bouquet\",\n          \"label\": \"garni\"\n        },\n        {\n          \"raw\": \"100 g d'olives noires dénoyautées\",\n          \"quantity\": 100,\n          \"unit\": \"g\",\n          \"label\": \"d'olives noires dénoyautées\"\n        },\n        {\n          \"raw\": \"3 citrons confits\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": \"citrons confits\"\n        },\n        {\n          \"raw\": \"Le jus de 2 citrons\",\n          \"quantity\": 2,\n          \"unit\": \"jus de\",\n          \"label\": \"citrons\"\n        },\n        {\n          \"raw\": \"Sel et poivre\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"Sel et poivre\"\n        }\n      ],\n      \"steps\": [\n        \"Saler et poivrer le poisson.\",\n        \"Le piquer de gousses d'ail et de la moitié des olives.\",\n        \"Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l'huile d'olive pendant 5 min.\",\n        \"Les retirer de la poêle et les réserver.\",\n        \"Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.\",\n        \"Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.\",\n        \"Laisser cuire 20 min.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null,
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "signature": "EjQKMgERTTIPWulbfFGtJsfe9S/kmznO5veOM0yvKTjGrir04PLsxs8sPgSUwpWETi11Qq1B",
+              "format": "google-gemini-v1",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1479,
+      "completion_tokens": 646,
+      "total_tokens": 2125,
+      "cost": 0.0026775,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0026775,
+        "upstream_inference_prompt_cost": 0.0007395,
+        "upstream_inference_completions_cost": 0.001938
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 3230.256916999999,
+  "actualCostUsd": 0.0026775,
+  "servedProvider": "Google AI Studio",
+  "repairs": []
+}

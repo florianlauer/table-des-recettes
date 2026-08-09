@@ -1,0 +1,150 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "h",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Thon rôti méditerranéen",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 tranche de thon de 1 kg",
+            "quantity": 1,
+            "unit": "tranche",
+            "label": "thon de 1 kg"
+          },
+          {
+            "raw": "4 oignons",
+            "quantity": 4,
+            "unit": "oignons",
+            "label": null
+          },
+          {
+            "raw": "3 cuillères à soupe d’huile d’olive",
+            "quantity": 3,
+            "unit": "cuillères à soupe",
+            "label": "huile d’olive"
+          },
+          {
+            "raw": "3 gousses d’ail",
+            "quantity": 3,
+            "unit": "gousses",
+            "label": "ail"
+          },
+          {
+            "raw": "1 bouquet garni",
+            "quantity": 1,
+            "unit": "bouquet",
+            "label": "garni"
+          },
+          {
+            "raw": "100 g d’olives noires dénoyautées",
+            "quantity": 100,
+            "unit": "g",
+            "label": "olives noires dénoyautées"
+          },
+          {
+            "raw": "3 citrons confits",
+            "quantity": 3,
+            "unit": "citrons",
+            "label": "confits"
+          },
+          {
+            "raw": "Le jus de 2 citrons",
+            "quantity": 2,
+            "unit": "citrons",
+            "label": "Le jus de"
+          },
+          {
+            "raw": "Sel et poivre",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Saler et poivrer le poisson.",
+          "Le piquer de gousses d’ail et de la moitié des olives.",
+          "Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l’huile d’olive pendant 5 min.",
+          "Les retirer de la poêle et les réserver.",
+          "Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.",
+          "Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.",
+          "Laisser cuire 20 min."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306298-F7lq56oXkNDciUOsM158",
+    "object": "chat.completion",
+    "created": 1786306298,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Thon rôti méditerranéen\",\"type\":\"plat\",\"servings\":6,\"ingredients\":[{\"raw\":\"1 tranche de thon de 1 kg\",\"quantity\":1,\"unit\":\"tranche\",\"label\":\"thon de 1 kg\"},{\"raw\":\"4 oignons\",\"quantity\":4,\"unit\":\"oignons\",\"label\":null},{\"raw\":\"3 cuillères à soupe d’huile d’olive\",\"quantity\":3,\"unit\":\"cuillères à soupe\",\"label\":\"huile d’olive\"},{\"raw\":\"3 gousses d’ail\",\"quantity\":3,\"unit\":\"gousses\",\"label\":\"ail\"},{\"raw\":\"1 bouquet garni\",\"quantity\":1,\"unit\":\"bouquet\",\"label\":\"garni\"},{\"raw\":\"100 g d’olives noires dénoyautées\",\"quantity\":100,\"unit\":\"g\",\"label\":\"olives noires dénoyautées\"},{\"raw\":\"3 citrons confits\",\"quantity\":3,\"unit\":\"citrons\",\"label\":\"confits\"},{\"raw\":\"Le jus de 2 citrons\",\"quantity\":2,\"unit\":\"citrons\",\"label\":\"Le jus de\"},{\"raw\":\"Sel et poivre\",\"quantity\":null,\"unit\":null,\"label\":null}],\"steps\":[\"Saler et poivrer le poisson.\",\"Le piquer de gousses d’ail et de la moitié des olives.\",\"Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l’huile d’olive pendant 5 min.\",\"Les retirer de la poêle et les réserver.\",\"Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.\",\"Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.\",\"Laisser cuire 20 min.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Clarifying recipe details**\n\nI’m figuring out how to handle the recipe. For the ingredient list, I have 3 units of candied citrons but need to decide how to label \"le jus de 2 citrons.\" Is it just \"jus\"? That feels literal. \n\nShould I include all preparation instructions while ignoring cooking times? It seems I should retain important steps with their timing but keep the overall instruction clear. The title should reflect the type of dish and the servings, which is 6. I must ensure that the final step, like \"Laisser cuire 20 min,\" is visible.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Clarifying recipe details**\n\nI’m figuring out how to handle the recipe. For the ingredient list, I have 3 units of candied citrons but need to decide how to label \"le jus de 2 citrons.\" Is it just \"jus\"? That feels literal. \n\nShould I include all preparation instructions while ignoring cooking times? It seems I should retain important steps with their timing but keep the overall instruction clear. The title should reflect the type of dish and the servings, which is 6. I must ensure that the final step, like \"Laisser cuire 20 min,\" is visible.",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN8CoYw9KT7ecdcvSt6_GS92rqvpf8G2yWNtZSjpvDvGoE5NhLNgZelUa1YgbZXKAehUwRtKj6OElU_1SWisGYqvIsnAqVjjXiYNGk4v9jHwdHdz61hftyp97ljzu1JTO73x7aFy8RluShJeOj8fC7NuF3TYB6ASsBj-7IcwZbVwzFFGJZBIdrh531xuaJxthUYDGl5x_2kpibNqg6LM-4hicLDMlokWxibTaqFGBTRKDuD92eN8Eqq9XRp-DhKDHQGAVepojVz0xyjsZZsv400Gvfoes9xdUAPGIFJ-Y89yE5G7qhtXZ6Qq-42f_GGWbyzA64FIkhXvKg1Ya6QbRYO_vhXtRkdoBgg7KFnk3WNUfXsXCiWwbKOKKpR91O5Ok3HnGmYU8403feO-JqvLLe_SrS1FCuSc8WEzZ0_NktO6leqbORWWZkCM-S_-xxQaoIty9sirNJyfFE6_8MGN4ndAPUYsYKFq9zxLU00-VICf3w0tVAy7bSYP5uKTPsbp4r7rub8FE54JYIOoZN_-g5PG-0SNjSpVm3lo0TS4TISnSenCyW-35kHfDGwIojACL7ib0oJSdEwLs3rQWG-G4aPkBJ-DW4eIpOGzFi-Et1l600deP4tEZG2554ARbfYPh-6a_t83dU4_USUCEnosJO_H-lhOflodYlQ1xC4nyw2YPC-P_EWoq8zRlGsfLhM707hWvJdYu56pUA6qG0WS9GII-Wijk0WZL5aU4j26B6zdouzedfJR1jJO-zAWCvF_C3oZZsPdnlajJCCCuudMXgelrQf6DsKkTsJ4_IltV926vQv07DVLTJui5OPEX_8cIzoAqlySx9fwE772WZhibmXo8qXiqcj79d8h1fA8ZTykQbuxsruzcHwqW3HVY4jmlnWr8xy6U_gFIXEF2lNiTaU48AAKLGUYVYV95zqdT6jKVa-aHDH0cmu_N0n4KuDsgQGdWcGGjytkTvYBg6o0YvMw-o0y6aikPGQkz5eIq5S93jWCzBYUJ4XMyqcUF57C99hPY3hN15DualfT6Ee4zPPwBiwe5PKTe33CZ1GOE02bDdayvV_jINvCTbqDf22yV8HyJtjVA0q7eQql1aNq4yHMH-fqwIEyTbTJUh_t9emWYd4G0d1uwZb8gySf6_XM5WkpmIzLFL2pIuX19_oQQWbemVJAyBkphKuxG3ojW5I6RmiAYEro8aSbWWhWvXnbalymRqsDx13qqu1wlWUng7uXHAtmmAAlDX00cwwcswdCxcfjpXrsUnXFxFDjcGynggM5PX7yhzZP4zT3mtlA9QUsXsvfyMk76TEAzPGd_Hnw35lMv3Y_Ulq0EQ5mF7jNFGN3wQS_5C2Axk2FpMO_WYeSBHnxQ1yA9crPQHo6USI8TAcmemQGwnSKTBpm2TUHGfS_2rgZ2fyKq7S7dNc9RGCwjt1IUmIOgFSsKI-zC8-2RYHfx94ajBRw3Uo9JW9EEuUoeuX1S2sDJkgn7JwH5pyfENO1Fg042IPGH0UDFxLgN1XCYol8sUTK2x6MKOpwfvzwk3tQEnOp3_iDXgMUtRvVBPJwiOaG3hx_raEtjzK29Nbig1PsI70YzvOdDpRZ-Vsm2XtX7eqHoTp1nRSxxM7tn1c1af6nhsBUtJgIpsxxLqPf10Gp_vVxaJxbhuKEhFFzx_YDh2mnzR1KRhSJFd17D8ZzIAuwBCDSqayqqrVEyATkGrev4Zu2WRarY6frTHl30gugEFwoF5CU77Wb8H3LwtqHneRwcE4eMcx9LwLpVT2KjQo_N37R02Nmh-0H3yfzFbkpHaLxR8YZnqKWN3t8onTCxtEyexNvZlRsPMqHMYy2PZkBK-4CrpHLkVqGseVabYTSzTkubScjT7ie0yFa6ngNJTO_ypcVK_F4XBRH-m3mbKG-w7E8FOK3_OTfurM_Zd70bLXnsPJDqiegOkpN-dDDkbfWPB3E30kcMeBuZ9cCmj1YHZICPMgwaCo0PUTaHDmRs7YwV0WdI3eFtoFo_18g3l27MUe5IUeWXYjlb88bqy0h6MdbW0lTppgWuFeoFG2jO6z2gX9Ynaua6oQXcoOX3thvwKLrkbL-AJjt90NV9PQtPJ-k4oD8tS3HJrDAarwATUP0yZFWBDs9GeherEGxn2j5OSICRnJFgqTHxYdcL2z5sZATiBT46BdHXFQDPub9WoUaXtIhl7P_RrlEcWK7Q4yNUdPTqJTbWPzEUXH_sh2VQstFQ9rrfhqfyeaAgzW04mYsj4PjurcM9Q5V4H4UXn5mB1zXP3itU1UxQ8yKK2wz12Jtc9bTo8oGyOs4v5I_K6oMfUQ0KrORUGebgnAubFx_W1I6VG8PuiLGF90rd0n60FafYkRPoRaaVLtfev6C0lpI_-ISm4gXHdT1ecXLEJRw1A91p59c6ZYq3p0uYOjIHQbVL8pwNonJy3YQfDNf_XE6JWtG0SVTlMyS63xlnCT3SXOnFyeInQGoWyAF91sWK8r-eDxijfKGGf-dfKoWsiXIgwicIG3RuuyTG-kla6hJFzU42N8CDBwL8Xd48_u0tACr61hH-Yz_v2e4p7ErhZxzptmDcH7wWrChBTZ0D67c2doLHT5ctmYWOXvcEORFUN2as6efasFpMiwFvMyV2kXBvggPEIXtAVYnpYZw6g-vE8MXsnAAFZWWWxw6icgVcQnYNzu_pqMqcYFewGg6YyXkqKa9axo6E2cbCwKlsg_Wewq9eaM5Mdro75M=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_053ca17a0e27a358016a78defe8eb8819792302661b355fb7f",
+              "index": 1
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 743,
+      "total_tokens": 4873,
+      "cost": 0.00048737,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00048737,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.0004458
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 348,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 11067.441707999998,
+  "actualCostUsd": 0.00048737,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

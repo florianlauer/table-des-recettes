@@ -28,9 +28,20 @@ l'œil et **confirmées** par l'auteur le 2026-08-09.
 - **Les ingrédients sont un flux inline** (`Marché. 2 filets de dinde de 500 g • 20 g de cacao
   brut • …`) et non une liste verticale : c'est le test du découpage ligne à ligne de `raw`, avec un
   vrai risque de fusion.
-- **« Pour 6 à 8 personnes »** alors que `servings` est un `number | null`. Choisis ta règle une fois
-  pour toutes au moment de transcrire — borne basse, borne haute ou `null` — et applique-la partout ;
-  la question se reposera en T6 sur le recalcul de portions.
+- **« Pour 6 à 8 personnes »** alors que `servings` est un `number | null`. Tranché depuis : le prompt
+  v2 impose la **borne basse**, donc `6`. Transcris la vérité terrain avec cette même règle ; la
+  question se reposera en T6 sur le recalcul de portions.
+
+## Prompt v2 — la page D n'est pas périmée
+
+Le prompt est passé en `v2` le 2026-08-09 : v1 ne disait rien des fourchettes de portions, et
+`gemini-2.5-flash-lite` a rendu `"6 à 8 personnes"` — une chaîne — dans un champ déclaré `number`,
+chez `google-ai-studio` comme chez `google-vertex`. v2 impose la borne basse et interdit l'unité.
+
+La règle de péremption du plan brûle la page d'acceptation quand le prompt change, parce qu'une
+vérité terrain transcrite sous une convention ne peut pas juger une sortie produite sous une autre.
+**Elle ne s'applique pas ici : D n'avait été ni ingérée ni transcrite.** `duo2` reste scellée et
+valable. La réécriture unique autorisée est en revanche consommée.
 
 ## Réserve
 

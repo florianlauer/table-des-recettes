@@ -1,0 +1,109 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "g",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Poulet farci aux agrumes",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [],
+        "steps": [
+          "Préparez le barbecue pour une cuisson à feu moyen (210 °C).",
+          "Coupez 4 blancs de poulet (avec la peau) de manière à créer une espèce de poche sur la face interne. Disposez dans chacun 60 g de tranches d’agrumes confits (citrons, kumquats).",
+          "Assaisonnez avec un mélange d’épices (piment, ail, paprika, céleri, cumin, sel, poivre). Arrosez d’un filet d’huile d’olive et refermez les suprêmes à l’aide de petites piques en bois.",
+          "Retournez-les et disposez quelques feuilles de coriandre sous la peau. Assaisonnez l’extérieur en sel, poivre et d’un filet d’huile d’olive.",
+          "Saisissez les suprêmes sur la grille, côté peau sur le dessous en premier.",
+          "Faites cuire à feu moyen directement, couvercle du BBQ fermé.",
+          "Retournez-les au bout de 6 min et faites cuire encore 6 min.",
+          "Servez avec une sauce aux agrumes : échalotes revenues dans de l’huile d’olive + jus de 1 orange, de 1 citron vert et de 1 citron jaune + 20 cl de fond de volaille + 30 cl de lait de coco + 20 g de beurre à la fin pour faire briller la sauce."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306280-wybAbZgwm0NTnOvAFkOh",
+    "object": "chat.completion",
+    "created": 1786306280,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Poulet farci aux agrumes\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[],\"steps\":[\"Préparez le barbecue pour une cuisson à feu moyen (210 °C).\",\"Coupez 4 blancs de poulet (avec la peau) de manière à créer une espèce de poche sur la face interne. Disposez dans chacun 60 g de tranches d’agrumes confits (citrons, kumquats).\",\"Assaisonnez avec un mélange d’épices (piment, ail, paprika, céleri, cumin, sel, poivre). Arrosez d’un filet d’huile d’olive et refermez les suprêmes à l’aide de petites piques en bois.\",\"Retournez-les et disposez quelques feuilles de coriandre sous la peau. Assaisonnez l’extérieur en sel, poivre et d’un filet d’huile d’olive.\",\"Saisissez les suprêmes sur la grille, côté peau sur le dessous en premier.\",\"Faites cuire à feu moyen directement, couvercle du BBQ fermé.\",\"Retournez-les au bout de 6 min et faites cuire encore 6 min.\",\"Servez avec une sauce aux agrumes : échalotes revenues dans de l’huile d’olive + jus de 1 orange, de 1 citron vert et de 1 citron jaune + 20 cl de fond de volaille + 30 cl de lait de coco + 20 g de beurre à la fin pour faire briller la sauce.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting recipe details**\n\nI need to extract the recipe titled \"Poulet farci aux agrumes.\" The ingredients are mixed within the steps rather than listed out, so I'll need to carefully identify each ingredient mentioned in the procedural bullet points. It looks like the instructions might not have a clear ingredients heading, so I may need to create an ingredients array based on these visible lines. I’ll make sure not to add or repeat anything unnecessarily, capturing everything accurately while noting that there are 4 servings.**Transcribing cooking steps**\n\nI'm going to transcribe the cooking instructions. First, it says to prepare the barbecue for medium heat at 210 °C. Then, I'll cut four chicken breasts creating pockets and stuff them with 60 grams of candied citrus slices, like lemons and kumquats. After that, I need to season with a spice mix—chili, garlic, paprika, celery, cumin, salt, and pepper—drizzle with olive oil, and secure the pockets with wooden skewers. Finally, I’ll turn them over and place some cilantro leaves under the skin.**Continuing cooking instructions**\n\nNext, I’m supposed to season the outside of the chicken with salt, pepper, and a drizzle of olive oil. Then, the recipe says to grill the chicken skin-side down first, cooking on medium heat with the BBQ lid closed. After six minutes, I’ll need to flip them and cook for another six minutes. For serving, there's a citrus sauce made from sautéed shallots in olive oil, juice from one orange, a lime, and a lemon, along with chicken broth, coconut milk, and a bit of butter for shine.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting recipe details**\n\nI need to extract the recipe titled \"Poulet farci aux agrumes.\" The ingredients are mixed within the steps rather than listed out, so I'll need to carefully identify each ingredient mentioned in the procedural bullet points. It looks like the instructions might not have a clear ingredients heading, so I may need to create an ingredients array based on these visible lines. I’ll make sure not to add or repeat anything unnecessarily, capturing everything accurately while noting that there are 4 servings.**Transcribing cooking steps**\n\nI'm going to transcribe the cooking instructions. First, it says to prepare the barbecue for medium heat at 210 °C. Then, I'll cut four chicken breasts creating pockets and stuff them with 60 grams of candied citrus slices, like lemons and kumquats. After that, I need to season with a spice mix—chili, garlic, paprika, celery, cumin, salt, and pepper—drizzle with olive oil, and secure the pockets with wooden skewers. Finally, I’ll turn them over and place some cilantro leaves under the skin.**Continuing cooking instructions**\n\nNext, I’m supposed to season the outside of the chicken with salt, pepper, and a drizzle of olive oil. Then, the recipe says to grill the chicken skin-side down first, cooking on medium heat with the BBQ lid closed. After six minutes, I’ll need to flip them and cook for another six minutes. For serving, there's a citrus sauce made from sautéed shallots in olive oil, juice from one orange, a lime, and a lemon, along with chicken broth, coconut milk, and a bit of butter for shine.",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN7uY52tnp1zXckcgvcLPExm_MkSt_meyAWb58UvBxJmbe_Dbu5Dsq-m4MlKIYahIPiH_rKLKGJL7oVW5Z0Hp92f0EXT0oD4ACbWxnFcj4WEvGiINHktSSjr-ci5UERr4_EpXqGj0wZWcVVTrJXJ9GASZcgModgf_b_GDW1SI1WXifVkk1xp8nwfW_w6oaqj_XN7anW4qrY_DKMUqGBSWNKg4QmqBC14WlONIUXdVZkPGPl6IYSMwn7HoMbYZQ6JE5U_9_YQI3iuNCCKgpEVbOCyORmUI_bxmyfRIs3KZKHpZ3jVowbRHPIq_XccjVNrHB7VjiUaKqGuYDrqLdxfK7lbww8UHl4F1oZMhmsZleFaT0mziEfti4S6FO3c0bCsirsTbwR5_HmnRrsThoAftTraBXlZGfRoyyBNOqhcGFFuwZl4AYnT55dqD8TeovNZtpyIZnYeMa4vJcgGf2ltzOe7Uyg9oTrmZZm0Rm8KG6aOOAHYUFu832Y7wlZ6nCK133Upd3tz8hgF6zyjJOJT7sGF-XOm_T9pHK3lbLJA0zDJ9t2xglUkKI9ip0kUbRJt6qO5OWHh7qRqCFC3FAn-S-vMnZQWc2Td9VpPZBOcRY7XPo4vJ8baOYbfWpCUzO0IvmJYBu-hzxBba30cKBpkxAl_vFY4EWvDYwR81PssffV2uM0opmqjnxuAYEd036f78GC5sWNaYHwMYX-gJH71VUzGjYLneaYINi19vs2ErqmSSGhJlm55lFvMCKpjdYVC7h0NwfO5tNOhzDnrkJUvGDGDV74GVWImRYC2BnghuY7_V1poa9evDoxYqTg-aBkRTPbmFZiYYeyw1poBOJY5SXDxWYAbdHiJEt0mgsLnw6uWDsFrbiJf6xLJAbBDHEbwY5CGcruOnBW1lMwYF7aYjFyRPNDjGVP5YscVm4qf31riHdIKYeBxTUbTP1tsbULWyyeDyR8gsKg3ZOUjnSqPMCzyFe6wWVolyy48YJG1IdZ1m_lGAf_QKgwEBA53QOnT8rVREK4GRcWfLV-Mk9wQWJIK0xkI4M5u44cVLBOOrhcskSlli9hwVjy1DQg3OLgzihY1VkZJsW7yojE79hkk-JuevQ37fo73Vmiw8jyiHxCWqGsoyQwHO3pDlYxc4Us9U084Y9egoMDQYG9TcXP-wvShAd9zayvAvRLDb9eNzwf27f9-f3Bh2aMe2KUC7t4GI3_YXLCZeh6tdcDYmNH-S4J6KEVjwyyPlqJ3UAvCYo3E4oMCQ_F3OpZRSmfqsE4QXSlTLxonOFWRMl5k-OKZDfEvsgQ92vQ3LfACMcM0y3MU-8I8GacDjOn2ovnle8udxhnq5q_UK0wD1k-7gClpHau19j5P3gJ_ydDsMAus8zamGCTPQZOrIaXeyx7-lGRQ04z3ExBSnPU2sJ23obd5yd5jrQkFWag-UqW8F4PXPJXVoAdxehpYfILfT0GUmLFqDpS2c7u5Pk8ypTGpj7iWM2JUbfLUEPocTsrLB8dGHWphFsjWFvCs25jsXHrjwjhzkU2Cwve3x6ok3VGn7r_uTcXFjpBGkRCeVXpF5o5LUvtyLn_F-tWdxU3QWnb8gXcOzhmFdccd73TAcgpN6TxnczZPhJhALk67D08fGYF0HI32w_uV5QTr54T7ILxQZz4DdfBUXSjiD0clNQeuG6ET5glm9Rux_5rqdKOLXHU6NoqkISISgT9-HY1ZpPegiQAY-72Hs3jRQTiQte_7Sqq4lKHz4uCyi3eTaBlag6Kw9CjdqwKcB0hl4LiKP3YbYAiKy70exxkdAJwJLdjuB1AnE2aegdqYCgh5T9vCPeV3DeLc9g9eE1EZT1OXaitOewzBZI-okifY-G9L2Io9NsZtl6HsOusYfPHHknG8b-QKI8pdgcPTgYHmhEihjLqcrzGLYJaVLeEBjohgHlles5DhwpbWBz9HApVz5uQsZQj1jBsNgnyTHQI5SvK1h5XWN1fYYjce5vVgBruy9u9R5APsLE-mVovfGK7VXNdaXjfPHxJozZ60oQkR3jE7EmFFIuVs5SMr9CTWnS9K3eIhjoGxGJhAkpfqBB_O5BPYM-N6V774NvLGLF0dB6P6EzW_ka3xRTc30ZL9-WCKSthxEcVZbwsasqdmRrF4p7aRVZjuPIpC4XIN3KkdofqxqyNoEI9FVfbiHtDBlCGIUvXoBROVZAe73GLDsadkL9HcBDn1tZgvFyzrwEGL3d688-Ly_1uGZkbVaCV4ytxSFm9hNbw0DBMWyLrYmapfSOqlGeL2zIrgXvRvMiedXkLvIO28_TlQsHNCeP2oWPA2XWSBjNnGMg29AKnIaiLRO3ISLccQ5rxSjqY1Rw2UxRUHvxzOOuqqp-Qh0aRY_6NUD1kyPzVjUqob8wMgFhP_vIACAwfjB3gi6xnkfMRD3j2gXpiANnwQN89KmlQqwoRuN9A62Uqtldamww7usQwfkWUxB4a0Nz9q3TZIAuYyP5Yfz7nXzvbbA-F2Vi3ziREfh-mU4cwFN4rblGuqaN9ukidPsWsRlZ1aE34sZTlVhPVE_eRLA8qNFubDXBhjKKGFaAC2ZO_TAW-cFy-FOs3jpJE95stNViYpSOH1Lfi0aGIYAmSYwlAvdrwBgI4pvgakaI_nKQvQan_DLntbXElJonBqXw-9Ra6tteiDN57i7RHPqDvqQCzRI6sbqLQtzH-BqVUdPU2pST9nbwtnlzq8w8PzcIeLXt3V7beBgRxlUoZ-MofQWbLvxf2asIUkszqe44NYgryUnfVqu5JQC5ISHuTvx-9z1ZBwfbITPjd0p8vIdBL2koBMTGtE4XN2n-hfQTKMlv2vLhmCIQ7xdw615njcnd5EyOWEmEl8ZXtlQvuHdPQJ4DnIQmoKsGbZxnpuGQPExxNRM3hQmHt7a71Q79v3TCKb7ybO1-YSZ601moin_OCeTnNpBAVVND63LxJEB9WEGaJSMDgrECEnBgIFwWlKowHI4bWnnQOBB5Yzi3ELXV629xgt2BoyZJwA4cqHqlT6JAXLwQRNXTfnPyo_3PF7uKHDJDYCcjbw-an2amm9tPTeM2K6wFRR_ASidQ8fA9BXHZ2fpgEDZoXpgFiuPfkk4YGxdEAmkhKMVQtoQcVtBBYlzUF_EQ1aD1BdyPNhZO0IxSQil_zIsYgzaGgBGu_tbCcJ8OSckHBV8kuEjopFX8yVXTUt6s4We0DqpYw2quetFpZQbwn3XDq97MB37MsjNMzeROpB3Qi8MwoJLy8LoNYWHb7cGKirAIN4vSVhrvQFI9NtmISyK7b7WEa75MySRiolh2qDCQ9MQ2r-a3ocuwUT_Nbk1Nd6LX0NDZFCQdubQO2S76eFnsDjvU6QmT4LVKkmqEhuKuUUGdkBm6o2Ax2gtdjJMPcbsc8s334GN4WlbtlOXZzGH8Pf1pqrcq-qW9DpmxZkH9uJtthYxy7OjIe8RSLFNiGeBwa2AU9G_tDLie3SuP57muKNwWjnn8-76b4TkSTM0c8EJ89r0wq1Shq37VfCvv6Ls1oMs2t4WwFGQtUKPfOR5KIOOC_8vv9K0KKKrLL8S0-q1s23afaT16NPb4qyWyVXs7ml-aFSveq2ffd9bGfyKqSv7rxMnD1Fb_p302HYcg89NrnjB8NUDZN11yYDSVd-VyBoxj8SgrhIp0D7Hcqx1HAv1w9oweNuVw109Cv1G8AfU8EHjFKIp0lvdNg0siJtITF0j1ZeSWJnM5-T9-BNddQazf7HTabnoejVDItMTp2Svi1n783qTg-BhDaKtOzE-E8OElExKR7wnlisFkkRP_0Sx1dRohmQCyq2-G0RlnBtkW6uPoSUBqX4h8oRsJ7U965NWFGBT9wadcY59-2B76iYp2NwM0gjdRGiD-GnBx2mqC0q9vmOUV06dmV8wnoi8U39JOBV3pDhTM4CAQ3zDVOXv7aEVkZmwhgqkU6F5apxY0PwOWTHM5b9Ml-yo-KdR1d_XExzAKidosyQGZri_A==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0583d8aee23638c9016a78dee8d6148196aa6a9377b8bf112c",
+              "index": 1
+            },
+            {
+              "type": "reasoning.summary",
+              "summary": "**Clarifying ingredient entries**\n\nI'm considering how to make ingredient entries corresponding to ingredient expressions. It seems there's a challenge because it violates the rule of having a complete line. I could format something like \"4 blancs de poulet (avec la peau),\" but those aren't actual lines. The requirement specifies exactly one ingredient entry per visible ingredient line. If there's no list, it looks like I'll need to handle it by likely using an empty array. I'll also need to include the dish type and use JSON format exclusively.",
+              "format": "openai-responses-v1",
+              "index": 2
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN7xDlVe72U_Opi4jah_nt1XNetqI8JxadzsaR_LdrzfyfbVsPjgwITlk7ObvnD7zTLRgHirYyAymeOQhIanpKODx7devUzaVgDCCkthz_mGKANUrB4pwldQv8ANT1wKNgvoc9X4ZIj-OvqrWCUL86cCTAcxZV48Lqf-HEqWx7JNXxQZRE3Hb00OInDNX4YkZnHaVCSKkkF1eIujQQvsXNbeFKkJx9mRVEHFUBkxGECF_wyFLU3tVoxa6ZBkKVwnQSPhgrcU4xfzg3eRiSQmp2PZp_W6_DLBfPdvGzw_Sn5lt4QSLrF-Q72Sqp1wQhJJJaei8_XqvqGbGfCttcs0g5yklshML8cY8wJGxjdFTZOfkx2-IADyP-6wgw4NY9C7hcn38rSs-kkcdGRGKKCri9pn810Maw3xJwFUB8VfDqXn53hPYE-znIbUiKiT3nq5TS7HnrC7XSBPAVylzl0mHzTQh0SURmBxbINjRXVbDsgMSUSj4AFqTT8BikJn5x0DBil5-26SvQ31dHzVXBdqtszxruaiMfHrKzksBaydYHWJW-Het4KHjNqel9v4mPq6OrfQcrKDhoSurY3XN2_W36rxo0QW2t_rmRZBnX5-1H3gY__F956WtmMpHFNXvD815QNHp86N1S8Go9AYDaURpSy5W89s8rakoMCLGS4ua5vN8OmvBcIMSEibe70dS3erVdXLLEiCx97uNrIOuhWrDhW2H4VrG-v2BiKJYOsS6haCSF98E9-3_wq0dNVNQJ1dKTvZSpKfUO2MsT21U4SnDOUhIaAmQJe0NnUgxzjAOshpt0Ea4ygtW347awehrxg5HJSEqvIMQjQUlVhF9Mb8GN0Paexrm4G2N5uSHOAKTtjS_yj8EiiuD0zwWAypnszQonYUn-onMOrWRqbEfzobiyGhrd1n-uTJFU6qml5_qC5mSY15Wtm82di-XjK1mSO6YowFTOhYGiWMxool8Ha5oNjqG3bIGE3xKAs3PHQOEDhcf6NhZHvz4i5EVY7FHU1wgWW4KaZyaJ8I9dYUxsgA-pSKizWZyU0BJCpQ-Wr-PuC45xwxT56001y1NzVsfkGRJ4x5GLmG1th4XWKxTx7-gChw9xz5LFDs58fBj38E2wtE3_hdvkRWIr7cgXBMyOrwImJbbOMtl3c72kUR6U8nFB8VxrF0U_5FxkLhW2kUwE2DVKn7ViigFZN3QKdhdZQ7DsNfMU45DXLyv9_59deKa0gQPo1WY5T0Mjp-lSuqheDMKkgEsDq0n35SWT6rgw92ha_08IbkZkGoyaPvLF4FxKIFWpJt92X1AydzxFyUTF8jxG7zT4sL4JSMusaKHE5Eb0Kc_qYHm8KM6B5Ssv5Y-Ge1_-6aRU3HN1qIVJR0t4Ts3DE=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0583d8aee23638c9016a78deeef6d88196a2b8367464c19306",
+              "index": 3
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 920,
+      "total_tokens": 5050,
+      "cost": 0.00059357,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00059357,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.000552
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 594,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 11066.769624999986,
+  "actualCostUsd": 0.00059357,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

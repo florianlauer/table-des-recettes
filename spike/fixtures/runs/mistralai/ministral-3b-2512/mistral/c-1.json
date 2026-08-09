@@ -1,0 +1,145 @@
+{
+  "model": "mistralai/ministral-3b-2512",
+  "requestedProvider": "mistral",
+  "page": "c",
+  "pass": 1,
+  "promptVersion": "v1",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Canette de Challans",
+        "type": "entree",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Challans",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "une dizaine d'oignons grelots",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 vingtaine de pommes de terre grenaille",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "200 g de marrons",
+            "quantity": 200,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "1 tranche épaisse de lard (250 g env.)",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "2 gousses d'ail",
+            "quantity": 2,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 potimarron",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "½ verre de bouillon de légumes",
+            "quantity": 0.5,
+            "unit": "verre",
+            "label": null
+          },
+          {
+            "raw": "huile d'olive",
+            "quantity": null,
+            "unit": null,
+            "label": "1 filet"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d'huile d'olive.",
+          "Préchauffez le four à 180 °C (th. 6).",
+          "Dans un plat en fonte, disposez les oignons grelots, les grenaille, les marrons, le lard coupé en lamelles épaisses, les gousses d'ail et des lamelles épaisses de potimarron.",
+          "Arrosez d'un généreux filet d'huile d'olive, salez et poivrez.",
+          "Posez la canette bien dorée au milieu de tous les légumes.",
+          "Enfournez et montez la température à 220 °C (th. 7-8). Laissez cuire 35 min puis dégagez avec le bouillon de légumes."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786302423-ANalICSpzloHQ8kkVu3P",
+    "object": "chat.completion",
+    "created": 1786302423,
+    "model": "mistralai/ministral-3b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Canette de Challans\",\n      \"type\": \"entree\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\"raw\": \"1 canette de Challans\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"une dizaine d'oignons grelots\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"1 vingtaine de pommes de terre grenaille\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"200 g de marrons\", \"quantity\": 200, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"1 tranche épaisse de lard (250 g env.)\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"2 gousses d'ail\", \"quantity\": 2, \"unit\": null, \"label\": null},\n        {\"raw\": \"1 potimarron\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"½ verre de bouillon de légumes\", \"quantity\": 0.5, \"unit\": \"verre\", \"label\": null},\n        {\"raw\": \"huile d'olive\", \"quantity\": null, \"unit\": null, \"label\": \"1 filet\"},\n        {\"raw\": \"sel\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"poivre du moulin\", \"quantity\": null, \"unit\": null, \"label\": null}\n      ],\n      \"steps\": [\n        \"Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d'huile d'olive.\",\n        \"Préchauffez le four à 180 °C (th. 6).\",\n        \"Dans un plat en fonte, disposez les oignons grelots, les grenaille, les marrons, le lard coupé en lamelles épaisses, les gousses d'ail et des lamelles épaisses de potimarron.\",\n        \"Arrosez d'un généreux filet d'huile d'olive, salez et poivrez.\",\n        \"Posez la canette bien dorée au milieu de tous les légumes.\",\n        \"Enfournez et montez la température à 220 °C (th. 7-8). Laissez cuire 35 min puis dégagez avec le bouillon de légumes.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2736,
+      "completion_tokens": 570,
+      "total_tokens": 3306,
+      "cost": 0.0003306,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0003306,
+        "upstream_inference_prompt_cost": 0.0002736,
+        "upstream_inference_completions_cost": 0.000057
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 4066.5485840000038,
+  "actualCostUsd": 0.0003306,
+  "servedProvider": "Mistral"
+}

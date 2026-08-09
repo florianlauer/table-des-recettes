@@ -1,0 +1,83 @@
+{
+  "correctionPromptVersion": "c1",
+  "model": "google/gemini-2.5-flash-lite",
+  "provider": "google-ai-studio",
+  "costUsd": 0.0003753,
+  "corrections": [],
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Canette de Challans",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Challans",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Challans"
+          },
+          {
+            "raw": "1 vinaigre de pommes de terre grenailles",
+            "quantity": 1,
+            "unit": null,
+            "label": "vinaigre de pommes de terre grenailles"
+          },
+          {
+            "raw": "200 g de marrons",
+            "quantity": 200,
+            "unit": "g",
+            "label": "marrons"
+          },
+          {
+            "raw": "1 tranche épaisse de lard (250 g env.)",
+            "quantity": 1,
+            "unit": "tranche épaisse",
+            "label": "lard (250 g env.)"
+          },
+          {
+            "raw": "2 gousses d'ail",
+            "quantity": 2,
+            "unit": "gousses",
+            "label": "ail"
+          },
+          {
+            "raw": "1 potimarron",
+            "quantity": 1,
+            "unit": null,
+            "label": "potimarron"
+          },
+          {
+            "raw": "1/4 verre de bouillon de légumes",
+            "quantity": 0.25,
+            "unit": "verre",
+            "label": "bouillon de légumes"
+          },
+          {
+            "raw": "huile d'olive",
+            "quantity": null,
+            "unit": null,
+            "label": "huile d'olive"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d'huile d'olive.",
+          "Préchauffez le four à 180 °C (th. 6).",
+          "Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d'ail et des lamelles épaisses de potimarron.",
+          "Arrosez d'un généreux filet d'huile d'olive, salez et poivrez.",
+          "Posez la canette bien dorée au milieu de tous les légumes.",
+          "Enfournez et montez la température à 220 °C (th. 7-8).",
+          "Laissez cuire 35 min puis déglacez avec le bouillon de légumes.",
+          "Présentez dans un plat et servez.",
+          "Et avec ça, on boit : un côtes-du-rhône Mon Cœur, Jean-Louis Chave, 2014."
+        ]
+      }
+    ]
+  }
+}

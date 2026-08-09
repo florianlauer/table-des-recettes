@@ -1,0 +1,201 @@
+{
+  "model": "google/gemini-3-flash-preview",
+  "requestedProvider": "google-ai-studio",
+  "page": "f",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Petits soufflés à l'orange",
+        "type": "dessert",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "8 Pim's® Orange",
+            "quantity": 8,
+            "unit": null,
+            "label": "Pim's® Orange"
+          },
+          {
+            "raw": "500 ml de lait",
+            "quantity": 500,
+            "unit": "ml",
+            "label": "lait"
+          },
+          {
+            "raw": "3 œufs",
+            "quantity": 3,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "1 gousse de vanille",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "vanille"
+          },
+          {
+            "raw": "Le zeste râpé d'une orange",
+            "quantity": 1,
+            "unit": null,
+            "label": "zeste râpé d'une orange"
+          },
+          {
+            "raw": "100 g de sucre",
+            "quantity": 100,
+            "unit": "g",
+            "label": "sucre"
+          },
+          {
+            "raw": "30 g de farine",
+            "quantity": 30,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "30 g de fécule de pomme de terre",
+            "quantity": 30,
+            "unit": "g",
+            "label": "fécule de pomme de terre"
+          },
+          {
+            "raw": "1 pincée de sel",
+            "quantity": 1,
+            "unit": "pincée",
+            "label": "sel"
+          }
+        ],
+        "steps": [
+          "Mélanger dans un saladier 3 jaunes d'œufs et réserver les blancs. Y incorporer le sucre, la farine et la fécule de pomme de terre. Porter à ébullition le lait avec la gousse de vanille.",
+          "Ajouter le lait au mélange dans le saladier. Mélanger jusqu'à obtenir une pâte homogène. Cuire ce mélange dans une casserole jusqu'à obtenir une pâte très épaisse.",
+          "Remettre le mélange dans le saladier et ajouter le zeste. Prendre les 3 blancs d'œufs et les battre, puis les ajouter dans la pâte quand elle est tiède.",
+          "Beurrer et sucrer 4 petits ramequins en porcelaine, poser un Pim's® au fond avec une couche d'appareil à soufflé. Cuire 7-10 min à 180°C. Déguster !"
+        ]
+      },
+      {
+        "title": "Millefeuille croustillant",
+        "type": "dessert",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "1 tablette de Poulain® Dessert Pralinoise",
+            "quantity": 1,
+            "unit": "tablette",
+            "label": "Poulain® Dessert Pralinoise"
+          },
+          {
+            "raw": "400 ml de lait demi-écrémé",
+            "quantity": 400,
+            "unit": "ml",
+            "label": "lait demi-écrémé"
+          },
+          {
+            "raw": "2 œufs",
+            "quantity": 2,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "6 feuilles de brick",
+            "quantity": 6,
+            "unit": "feuilles",
+            "label": "brick"
+          },
+          {
+            "raw": "20 g de sucre",
+            "quantity": 20,
+            "unit": "g",
+            "label": "sucre"
+          },
+          {
+            "raw": "1 c. à soupe de farine",
+            "quantity": 1,
+            "unit": "c. à soupe",
+            "label": "farine"
+          },
+          {
+            "raw": "1 noix de beurre",
+            "quantity": 1,
+            "unit": "noix",
+            "label": "beurre"
+          },
+          {
+            "raw": "20 g de noisettes concassées",
+            "quantity": 20,
+            "unit": "g",
+            "label": "noisettes concassées"
+          }
+        ],
+        "steps": [
+          "Préchauffer le four à 220°C. Faire fondre dans une casserole la tablette de chocolat et le lait sur feu doux. Dans un saladier, mélanger les œufs et la farine. Verser le lait chocolaté dessus et reverser dans la casserole. Laisser épaissir. Laisser refroidir la crème 1h au réfrigérateur.",
+          "Verser le sucre dans une casserole et ajouter 1 c. à soupe d'eau. Laisser chauffer jusqu'à caramélisation. Ajouter les noisettes concassées. Mélanger et verser sur une feuille d'aluminium.",
+          "Couper 4 rectangles dans chaque feuille de brick. Les badigeonner de beurre puis ajouter des petits morceaux de noisette caramélisée sur 8 d'entre elles. Faire cuire sur une plaque du four 5 min.",
+          "Réaliser les millefeuilles en commençant par une feuille de brick puis de la crème pralinée à l'aide d'une poche à douille. Renouveler l'opération et terminer par une feuille de brick aux noisettes caramélisées."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786305134-FRAqA4ymDbP7kdwUMwN4",
+    "object": "chat.completion",
+    "created": 1786305134,
+    "model": "google/gemini-3-flash-preview",
+    "provider": "Google AI Studio",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "STOP",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Petits soufflés à l'orange\",\n      \"type\": \"dessert\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\n          \"raw\": \"8 Pim's® Orange\",\n          \"quantity\": 8,\n          \"unit\": null,\n          \"label\": \"Pim's® Orange\"\n        },\n        {\n          \"raw\": \"500 ml de lait\",\n          \"quantity\": 500,\n          \"unit\": \"ml\",\n          \"label\": \"lait\"\n        },\n        {\n          \"raw\": \"3 œufs\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": \"œufs\"\n        },\n        {\n          \"raw\": \"1 gousse de vanille\",\n          \"quantity\": 1,\n          \"unit\": \"gousse\",\n          \"label\": \"vanille\"\n        },\n        {\n          \"raw\": \"Le zeste râpé d'une orange\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"zeste râpé d'une orange\"\n        },\n        {\n          \"raw\": \"100 g de sucre\",\n          \"quantity\": 100,\n          \"unit\": \"g\",\n          \"label\": \"sucre\"\n        },\n        {\n          \"raw\": \"30 g de farine\",\n          \"quantity\": 30,\n          \"unit\": \"g\",\n          \"label\": \"farine\"\n        },\n        {\n          \"raw\": \"30 g de fécule de pomme de terre\",\n          \"quantity\": 30,\n          \"unit\": \"g\",\n          \"label\": \"fécule de pomme de terre\"\n        },\n        {\n          \"raw\": \"1 pincée de sel\",\n          \"quantity\": 1,\n          \"unit\": \"pincée\",\n          \"label\": \"sel\"\n        }\n      ],\n      \"steps\": [\n        \"Mélanger dans un saladier 3 jaunes d'œufs et réserver les blancs. Y incorporer le sucre, la farine et la fécule de pomme de terre. Porter à ébullition le lait avec la gousse de vanille.\",\n        \"Ajouter le lait au mélange dans le saladier. Mélanger jusqu'à obtenir une pâte homogène. Cuire ce mélange dans une casserole jusqu'à obtenir une pâte très épaisse.\",\n        \"Remettre le mélange dans le saladier et ajouter le zeste. Prendre les 3 blancs d'œufs et les battre, puis les ajouter dans la pâte quand elle est tiède.\",\n        \"Beurrer et sucrer 4 petits ramequins en porcelaine, poser un Pim's® au fond avec une couche d'appareil à soufflé. Cuire 7-10 min à 180°C. Déguster !\"\n      ]\n    },\n    {\n      \"title\": \"Millefeuille croustillant\",\n      \"type\": \"dessert\",\n      \"servings\": 8,\n      \"ingredients\": [\n        {\n          \"raw\": \"1 tablette de Poulain® Dessert Pralinoise\",\n          \"quantity\": 1,\n          \"unit\": \"tablette\",\n          \"label\": \"Poulain® Dessert Pralinoise\"\n        },\n        {\n          \"raw\": \"400 ml de lait demi-écrémé\",\n          \"quantity\": 400,\n          \"unit\": \"ml\",\n          \"label\": \"lait demi-écrémé\"\n        },\n        {\n          \"raw\": \"2 œufs\",\n          \"quantity\": 2,\n          \"unit\": null,\n          \"label\": \"œufs\"\n        },\n        {\n          \"raw\": \"6 feuilles de brick\",\n          \"quantity\": 6,\n          \"unit\": \"feuilles\",\n          \"label\": \"brick\"\n        },\n        {\n          \"raw\": \"20 g de sucre\",\n          \"quantity\": 20,\n          \"unit\": \"g\",\n          \"label\": \"sucre\"\n        },\n        {\n          \"raw\": \"1 c. à soupe de farine\",\n          \"quantity\": 1,\n          \"unit\": \"c. à soupe\",\n          \"label\": \"farine\"\n        },\n        {\n          \"raw\": \"1 noix de beurre\",\n          \"quantity\": 1,\n          \"unit\": \"noix\",\n          \"label\": \"beurre\"\n        },\n        {\n          \"raw\": \"20 g de noisettes concassées\",\n          \"quantity\": 20,\n          \"unit\": \"g\",\n          \"label\": \"noisettes concassées\"\n        }\n      ],\n      \"steps\": [\n        \"Préchauffer le four à 220°C. Faire fondre dans une casserole la tablette de chocolat et le lait sur feu doux. Dans un saladier, mélanger les œufs et la farine. Verser le lait chocolaté dessus et reverser dans la casserole. Laisser épaissir. Laisser refroidir la crème 1h au réfrigérateur.\",\n        \"Verser le sucre dans une casserole et ajouter 1 c. à soupe d'eau. Laisser chauffer jusqu'à caramélisation. Ajouter les noisettes concassées. Mélanger et verser sur une feuille d'aluminium.\",\n        \"Couper 4 rectangles dans chaque feuille de brick. Les badigeonner de beurre puis ajouter des petits morceaux de noisette caramélisée sur 8 d'entre elles. Faire cuire sur une plaque du four 5 min.\",\n        \"Réaliser les millefeuilles en commençant par une feuille de brick puis de la crème pralinée à l'aide d'une poche à douille. Renouveler l'opération et terminer par une feuille de brick aux noisettes caramélisées.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null,
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "signature": "EjQKMgERTTIPOS42ACIGeNHMX4tbFlGWNte8aO9NVpTnSXbq6YKUVeCfWvmmQNOLMjCYrUuF",
+              "format": "google-gemini-v1",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1479,
+      "completion_tokens": 1361,
+      "total_tokens": 2840,
+      "cost": 0.0048225,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0048225,
+        "upstream_inference_prompt_cost": 0.0007395,
+        "upstream_inference_completions_cost": 0.004083
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 11270.040541999999,
+  "actualCostUsd": 0.0048225,
+  "servedProvider": "Google AI Studio",
+  "repairs": []
+}
