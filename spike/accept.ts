@@ -7,11 +7,13 @@ import { fileURLToPath } from "node:url";
 
 import { z } from "zod";
 
-import { extractionSchema, type Extraction } from "../src/lib/recipe-schema.js";
+import { extractionSchema, repairExtraction, type Extraction } from "../src/lib/recipe-schema.js";
 import { BudgetCounter } from "./budget.js";
+import { CORRECTION_COST_CEILING_USD, runCorrectionPass, type Correction } from "./correct.js";
 import { requireOpenRouterApiKey, runVisionPass, serializeRun } from "./openrouter.js";
 import { type LadderEntry, type LadderFile } from "./rank-endpoints.js";
 import { parseNamedArguments } from "./run.js";
+import { normalizedText, textSimilarity } from "./text.js";
 
 export const acceptanceTruthSchema = z.strictObject({
   recipes: z.array(
@@ -42,42 +44,48 @@ export type AcceptanceClassification = {
 
 export type AcceptancePassReport = {
   pass: number;
-  classification: AcceptanceClassification | null;
   status: string;
+  // `classification` porte la lecture qui fait foi : celle de l'extraction corrigée, c'est-à-dire ce
+  // que l'utilisateur obtiendra réellement. `rawClassification` garde la lecture brute pour que le
+  // mérite du modèle d'extraction reste attribuable séparément de celui du correcteur.
+  classification: AcceptanceClassification | null;
+  rawClassification: AcceptanceClassification | null;
+  corrections: Correction[];
 };
+
+export type ReadingDelta = { resorbed: number; created: number; hardGatesDiverge: boolean };
+
+function issueKeys(issues: AcceptanceIssue[]): Set<string> {
+  return new Set(issues.map(({ category, recipeIndex, detail }) => `${category}|${recipeIndex}|${detail}`));
+}
+
+// Le seul garde-fou contre une repasse qui dégrade : comparer les deux lectures. Une correction qui
+// éloigne le texte de la vérité terrain apparaît ici en `created`, et un hard gate qui n'existe que
+// d'un côté signale que la repasse a franchi une frontière qu'elle ne devrait jamais franchir.
+export function compareReadings({
+  raw,
+  corrected,
+}: {
+  raw: AcceptanceClassification;
+  corrected: AcceptanceClassification;
+}): ReadingDelta {
+  const before = issueKeys(raw.editableGaps);
+  const after = issueKeys(corrected.editableGaps);
+  return {
+    resorbed: [...before].filter((key) => !after.has(key)).length,
+    created: [...after].filter((key) => !before.has(key) && !key.startsWith("schema_repair|")).length,
+    hardGatesDiverge: raw.hardGates.length !== corrected.hardGates.length,
+  };
+}
 
 export type AcceptanceVerdict = { accepted: boolean; exitCode: 0 | 1; line: string };
 
-// La zone intermédiaire reste bloquante tant qu'un humain ne l'a pas explicitement arbitrée.
+// The middle band stays blocking until a human has explicitly arbitrated it.
 export const LOWER_SIMILARITY_BOUND = 0.6;
 export const UPPER_SIMILARITY_BOUND = 0.85;
 
-function normalizedText(value: string): string {
-  return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
-}
-
 function sameMultiset(left: string[], right: string[]): boolean {
   return [...left].sort().every((value, index) => value === [...right].sort()[index]);
-}
-
-function textSimilarity(left: string, right: string): number {
-  const normalizedLeft = normalizedText(left);
-  const normalizedRight = normalizedText(right);
-  const distances = Array.from({ length: normalizedRight.length + 1 }, (_, index) => index);
-  for (let leftIndex = 1; leftIndex <= normalizedLeft.length; leftIndex += 1) {
-    let diagonal = distances[0] ?? 0;
-    distances[0] = leftIndex;
-    for (let rightIndex = 1; rightIndex <= normalizedRight.length; rightIndex += 1) {
-      const above = distances[rightIndex] ?? 0;
-      const insertion = (distances[rightIndex - 1] ?? 0) + 1;
-      const deletion = above + 1;
-      const substitution = diagonal + (normalizedLeft[leftIndex - 1] === normalizedRight[rightIndex - 1] ? 0 : 1);
-      distances[rightIndex] = Math.min(insertion, deletion, substitution);
-      diagonal = above;
-    }
-  }
-  const longest = Math.max(normalizedLeft.length, normalizedRight.length, 1);
-  return 1 - (distances[normalizedRight.length] ?? longest) / longest;
 }
 
 export function classifyTextDifference(left: string, right: string): "hard_gate" | "a_trancher_humain" | "editable" {
@@ -91,7 +99,13 @@ export function classifyAcceptance({ actual, truth }: { actual: unknown; truth: 
   const hardGates: AcceptanceIssue[] = [];
   const editableGaps: AcceptanceIssue[] = [];
   const humanReview: AcceptanceIssue[] = [];
-  const validated = extractionSchema.safeParse(actual);
+  // La réparation est une décision assumée, pas un blanc-seing : chaque champ réparé reste visible
+  // au verdict comme écart éditable, sinon un modèle qui déroge au schéma passerait pour conforme.
+  const { value: repaired, repairs } = repairExtraction(actual);
+  repairs.forEach(({ path, from, to }) => {
+    editableGaps.push({ category: "schema_repair", detail: `${path} : « ${from} » réparé en ${String(to)}.` });
+  });
+  const validated = extractionSchema.safeParse(repaired);
   if (!validated.success) {
     hardGates.push({ category: "invalid_schema", detail: validated.error.message });
     return { hardGates, editableGaps, humanReview, passesHardGates: false };
@@ -173,7 +187,10 @@ export function classifyAcceptance({ actual, truth }: { actual: unknown; truth: 
       recipe.steps.forEach((step, stepIndex) => {
         const expectedStep = expected.steps[stepIndex];
         if (expectedStep !== undefined && step !== expectedStep) {
-          const issue = { recipeIndex, detail: `Étape ${stepIndex + 1} : texte à corriger.` };
+          // Le texte produit fait partie de l'identité de l'écart : sans lui, deux étapes fautives
+          // de façons différentes portent la même clé, et `compareReadings` ne peut plus voir qu'une
+          // repasse a dégradé une étape déjà imparfaite.
+          const issue = { recipeIndex, detail: `Étape ${stepIndex + 1} : « ${step} » au lieu de « ${expectedStep} ».` };
           const difference = classifyTextDifference(step, expectedStep);
           if (difference === "hard_gate") {
             hardGates.push({ category: "missing_step", ...issue });
@@ -256,12 +273,49 @@ async function main(): Promise<void> {
       resolve(outputDirectory, `${page}-${pass}.json`),
       `${JSON.stringify(serializeRun({ result, model, providerSlug: provider, page, pass, dataCollection: endpoint.dataCollection }), null, 2)}\n`,
     );
-    const classification = result.status === "success" ? classifyAcceptance({ actual: result.parsed, truth: acceptedTruth }) : null;
-    report.push({ pass, classification, status: result.status });
+    if (result.status !== "success") {
+      report.push({ pass, status: result.status, classification: null, rawClassification: null, corrections: [] });
+      continue;
+    }
+
+    const rawClassification = classifyAcceptance({ actual: result.parsed, truth: acceptedTruth });
+    const { value, corrections } = await runCorrectionPass({
+      extraction: result.parsed,
+      model: endpoint.model,
+      providerSlug: endpoint.providerSlug,
+      apiKey,
+      budget,
+      maximumEstimatedCostUsd: CORRECTION_COST_CEILING_USD,
+    });
+    await budget.save(budgetPath);
+    await writeFile(
+      resolve(outputDirectory, `${page}-${pass}-corrige.json`),
+      `${JSON.stringify({ corrections, parsed: value }, null, 2)}\n`,
+    );
+
+    report.push({
+      pass,
+      status: result.status,
+      classification: classifyAcceptance({ actual: value, truth: acceptedTruth }),
+      rawClassification,
+      corrections,
+    });
   }
 
   console.log(JSON.stringify({ model, provider, page, passes: report }, null, 2));
-  console.log("Chronométrez maintenant les écarts éditables de la première passe et reportez T_saisie/T_correction dans RESULTS.md.");
+  report.forEach(({ pass, classification, rawClassification, corrections }) => {
+    if (!classification || !rawClassification) return;
+    const delta = compareReadings({ raw: rawClassification, corrected: classification });
+    console.log(
+      `Passe ${pass} — écarts éditables : ${rawClassification.editableGaps.length} avant repasse, ` +
+        `${classification.editableGaps.length} après (${delta.resorbed} résorbé(s), ${delta.created} créé(s), ` +
+        `${corrections.length} correction(s) retenue(s)).`,
+    );
+    if (delta.created > 0 || delta.hardGatesDiverge) {
+      console.log(`Passe ${pass} — ATTENTION : la repasse a dégradé la lecture, comparez les deux classifications.`);
+    }
+  });
+  console.log("Chronométrez maintenant les écarts éditables restants de la première passe et reportez T_saisie/T_correction dans RESULTS.md.");
   const verdict = acceptanceVerdict(report);
   console.log(verdict.line);
   process.exitCode = verdict.exitCode;

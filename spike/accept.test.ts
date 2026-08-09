@@ -5,6 +5,7 @@ import {
   acceptanceTruthSchema,
   classifyAcceptance,
   classifyTextDifference,
+  compareReadings,
   LOWER_SIMILARITY_BOUND,
   type AcceptanceTruth,
   UPPER_SIMILARITY_BOUND,
@@ -43,8 +44,8 @@ function expectHard(candidate: unknown, category: string): void {
   expect(result.hardGates.map((issue) => issue.category)).toContain(category);
 }
 
-describe("classification d'acceptation", () => {
-  it("classe les défauts structurels comme hard gates", () => {
+describe("acceptance classification", () => {
+  it("classifies structural defects as hard gates", () => {
     expectHard({ recipes: [] }, "wrong_recipe_count");
     expectHard(actual({ ingredients: [{ raw: "50 cl de crème", quantity: null, unit: null, label: null }] }), "missing_or_merged_ingredient");
     expectHard(
@@ -75,7 +76,7 @@ describe("classification d'acceptation", () => {
     expectHard({ recipes: [{ title: 42 }] }, "invalid_schema");
   });
 
-  it("refuse un servings textuel dans la vérité terrain", () => {
+  it("rejects a textual servings in the ground truth", () => {
     expect(
       acceptanceTruthSchema.safeParse({
         recipes: [{ ...truth.recipes[0]!, servings: "4" }],
@@ -83,7 +84,7 @@ describe("classification d'acceptation", () => {
     ).toBe(false);
   });
 
-  it("classe les corrections locales comme écarts éditables", () => {
+  it("classifies local corrections as editable gaps", () => {
     const result = classifyAcceptance({
       actual: actual({
         title: "Une creme BRULEE maison",
@@ -103,7 +104,7 @@ describe("classification d'acceptation", () => {
     );
   });
 
-  it("applique les trois branches de similarité et bloque la zone d'incertitude", () => {
+  it("applies the three similarity branches and blocks the uncertainty band", () => {
     expect(LOWER_SIMILARITY_BOUND).toBe(0.6);
     expect(UPPER_SIMILARITY_BOUND).toBe(0.85);
     expect(classifyTextDifference("abcdefghij", "zzzzzzzzzz")).toBe("hard_gate");
@@ -122,18 +123,35 @@ describe("classification d'acceptation", () => {
     expect(result.humanReview).toEqual([expect.objectContaining({ category: "a_trancher_humain" })]);
   });
 
-  it("accepte uniquement deux passes sans hard gate et fournit un code de sortie", () => {
+  // The whole point of keeping both readings: a correction pass that drifts away from the truth has
+  // to be visible, otherwise the verdict silently credits the corrector for degrading the text.
+  it("counts what the correction pass resorbed and what it created", () => {
+    const raw = classifyAcceptance({
+      actual: actual({ steps: ["Chaufez la crème.", "Melangez les jaunes."] }),
+      truth,
+    });
+    const corrected = classifyAcceptance({
+      actual: actual({ steps: [truth.recipes[0]!.steps[0], "Mélangeons les jaunes."] }),
+      truth,
+    });
+
+    expect(raw.editableGaps).toHaveLength(2);
+    expect(compareReadings({ raw, corrected })).toMatchObject({ resorbed: 2, created: 1, hardGatesDiverge: false });
+  });
+
+  it("accepts only two passes clear of hard gates and yields an exit code", () => {
     const clear = classifyAcceptance({ actual: actual(), truth });
+    const reading = { rawClassification: clear, corrections: [] };
     expect(
       acceptanceVerdict([
-        { pass: 1, status: "success", classification: clear },
-        { pass: 2, status: "success", classification: clear },
+        { pass: 1, status: "success", classification: clear, ...reading },
+        { pass: 2, status: "success", classification: clear, ...reading },
       ]),
     ).toEqual({ accepted: true, exitCode: 0, line: "ACCEPTÉ — les deux passes franchissent tous les hard gates." });
 
     const rejected = acceptanceVerdict([
-      { pass: 1, status: "success", classification: clear },
-      { pass: 2, status: "failure", classification: null },
+      { pass: 1, status: "success", classification: clear, ...reading },
+      { pass: 2, status: "failure", classification: null, rawClassification: null, corrections: [] },
     ]);
     expect(rejected).toMatchObject({ accepted: false, exitCode: 1 });
     expect(rejected.line).toContain("REJETÉ — passe 2: failure");
