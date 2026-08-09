@@ -40,3 +40,7 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+
+# impeccable : état de cache régénérable
+.impeccable/hook.cache.json
+.impeccable/config.local.json
