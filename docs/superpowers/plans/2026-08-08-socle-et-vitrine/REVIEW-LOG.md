@@ -312,3 +312,30 @@ round 5 : le domaine est plus profond que le besoin.
 mais c'est une décision de design et non de qualité de code : `DESIGN.md` dit « afficher **la**
 ligne d'ingrédient qui a produit la correspondance ». Passer à N lignes change la densité de
 l'index. Renvoyé à l'arbitrage produit.
+
+### Round 6 bis — les deux différés, tranchés
+
+**B1 appliqué (défaut de correction, pas de design).** La sonde sur « Tian de courgettes » a
+montré que `findMatchingIngredient` rendait `4 courgettes` pour la recherche `courgette ail` :
+la ligne du seul terme que le titre expliquait déjà, l'ail masqué. Cause : le garde-fou testait
+`terms.every(titre contient)`, donc dès qu'un terme manquait au titre il repartait de la liste
+**complète**. Corrigé en ne cherchant une raison que parmi les termes absents du titre. Le
+contrat reste `string | null` et `DESIGN.md` est intact. Vérifié sur le déploiement :
+`courgette ail` → `2 gousses d'ail`, `tomate courgette` → `3 tomates`.
+
+**B2 laissé ouvert.** Deux termes vivant dans deux lignes distinctes ne peuvent toujours pas
+être expliqués tous les deux. Cela demanderait `matchedIngredients: string[]` et changerait la
+densité de l'index — arbitrage produit, pas qualité de code.
+
+**Accord automatique supprimé.** Décision de Florian, cohérente avec la résolution du round 5.
+`singularize`, `singularizeHead`, `INVARIABLE_PLURALS`, `IRREGULAR_SINGULARS`,
+`PRENOMINAL_ADJECTIVES`, `ELIDED_PRENOMINAL` et `STARTS_WITH_VOWEL` n'existent plus :
+−184 lignes, `scale.ts` passe de 173 à 78 lignes. Le recalcul ne porte que sur le nombre.
+
+Conséquence visible et assumée : ramener une recette à une personne affiche `1 œufs`. C'est
+faux grammaticalement, mais stable et prévisible, là où une règle à demi juste produisait
+`1 gro œufs`. `CONTEXT.md` le consigne dans la définition du recalcul de portions.
+
+Le finding A de Codex — le double modèle `raw` / annotation — reste ouvert : `scaleIngredient`
+re-parse toujours `raw` à la regex et ignore `label`. C'est le contrat d'ingestion du spike T1
+qui doit le trancher.

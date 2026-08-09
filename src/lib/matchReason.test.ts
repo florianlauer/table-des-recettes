@@ -24,4 +24,20 @@ describe("findMatchingIngredient", () => {
   test("requête vide", () => {
     expect(findMatchingIngredient("Gratin", ingredients, "")).toBeNull();
   });
+
+  test("sur plusieurs termes, explique celui que le titre n'explique pas", () => {
+    expect(
+      findMatchingIngredient(
+        "Gratin de courgettes",
+        ingredients,
+        toSearchTokens("courgette chorizo"),
+      ),
+    ).toBe("200 g de chorizo");
+  });
+
+  test("le premier terme inexpliqué gagne, dans l'ordre des ingrédients", () => {
+    expect(
+      findMatchingIngredient("Gratin du jardin", ingredients, toSearchTokens("chorizo courgette")),
+    ).toBe("3 courgettes");
+  });
 });

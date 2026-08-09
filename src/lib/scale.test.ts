@@ -1,11 +1,5 @@
 import { describe, expect, test } from "vitest";
-import {
-  formatQuantity,
-  scaleIngredient,
-  scaleQuantity,
-  servingsFactor,
-  singularize,
-} from "./scale";
+import { formatQuantity, scaleIngredient, scaleQuantity, servingsFactor } from "./scale";
 
 describe("servingsFactor", () => {
   test("rapport cible sur origine", () => {
@@ -61,39 +55,6 @@ describe("formatQuantity", () => {
 
   test("un demi ne traîne pas de zéro", () => {
     expect(formatQuantity(0.5)).toBe("0,5");
-  });
-});
-
-describe("singularize", () => {
-  test("retire le pluriel régulier", () => {
-    expect(singularize("œufs")).toBe("œuf");
-    expect(singularize("gousses")).toBe("gousse");
-    expect(singularize("choux")).toBe("chou");
-  });
-
-  test("les pluriels en -aux réguliers gardent leur radical", () => {
-    expect(singularize("poireaux")).toBe("poireau");
-    expect(singularize("noyaux")).toBe("noyau");
-    expect(singularize("pruneaux")).toBe("pruneau");
-  });
-
-  test("protège les invariables français", () => {
-    expect(singularize("noix")).toBe("noix");
-    expect(singularize("pois")).toBe("pois");
-    expect(singularize("ananas")).toBe("ananas");
-    expect(singularize("maïs")).toBe("maïs");
-    expect(singularize("couscous")).toBe("couscous");
-    expect(singularize("houmous")).toBe("houmous");
-  });
-
-  test("les mots de trois lettres ou moins sont déjà protégés", () => {
-    expect(singularize("os")).toBe("os");
-    expect(singularize("riz")).toBe("riz");
-    expect(singularize("jus")).toBe("jus");
-  });
-
-  test("le seul irrégulier déclaré", () => {
-    expect(singularize("bocaux")).toBe("bocal");
   });
 });
 
@@ -155,10 +116,18 @@ describe("scaleIngredient", () => {
     expect(result).toEqual({ text: "6 œufs", scaled: true });
   });
 
-  test("sous deux, le mot qui suit passe au singulier", () => {
-    expect(scaleIngredient({ raw: "3 œufs", quantity: 3 }, 1 / 3).text).toBe("1 œuf");
+  test("aucun accord : sous deux, le texte qui suit est reproduit tel quel", () => {
+    // Décision assumée. L'accord automatique a été retiré : il demandait un lexique
+    // d'invariables, d'irréguliers, d'adjectifs antéposés et de formes élidées, et il a
+    // produit un défaut neuf à chacune des cinq relectures du plan. « 1 gousses » est
+    // lisible ; « 1 gro œufs » ne l'était pas. Ce test verrouille l'absence de règle.
+    expect(scaleIngredient({ raw: "3 œufs", quantity: 3 }, 1 / 3).text).toBe("1 œufs");
     expect(scaleIngredient({ raw: "2 gousses d'ail", quantity: 2 }, 0.5).text).toBe(
-      "1 gousse d'ail",
+      "1 gousses d'ail",
+    );
+    expect(scaleIngredient({ raw: "3 gros œufs", quantity: 3 }, 1 / 3).text).toBe("1 gros œufs");
+    expect(scaleIngredient({ raw: "3 beaux œufs", quantity: 3 }, 1 / 3).text).toBe(
+      "1 beaux œufs",
     );
   });
 
@@ -206,45 +175,19 @@ describe("scaleIngredient", () => {
     ).toBe(false);
   });
 
-  test("le pluriel en -aux du jeu de seed survit au recalcul", () => {
-    expect(scaleIngredient({ raw: "6 poireaux", quantity: 6 }, 1 / 6).text).toBe("1 poireau");
+  test("le pluriel en -aux du jeu de seed n'est pas mutilé", () => {
+    // Le risque historique était « poireaux » → « poireal ». Sans accord, la question
+    // ne se pose plus : le mot n'est jamais touché.
+    expect(scaleIngredient({ raw: "6 poireaux", quantity: 6 }, 1 / 6).text).toBe("1 poireaux");
   });
 
   test("facteur 1 rend la ligne brute au caractère près", () => {
     expect(scaleIngredient({ raw: "200 g de farine", quantity: 200, unit: "g" }, 1).text).toBe(
       "200 g de farine",
     );
-    // Deux pièges que seul le court-circuit `factor === 1` évite : le reformatage du
-    // nombre, et l'accord d'une ligne déjà sous deux alors que rien n'a bougé.
+    // Le piège que seul le court-circuit `factor === 1` évite : le reformatage du nombre.
     expect(scaleIngredient({ raw: "1,50 L d'eau", quantity: 1.5, unit: "L" }, 1).text).toBe(
       "1,50 L d'eau",
-    );
-    expect(scaleIngredient({ raw: "1 gousses d'ail", quantity: 1 }, 1).text).toBe(
-      "1 gousses d'ail",
-    );
-  });
-
-  test("l'adjectif antéposé s'accorde avec le nom, et rien au-delà", () => {
-    expect(scaleIngredient({ raw: "3 gros œufs", quantity: 3 }, 1 / 3).text).toBe("1 gros œuf");
-    expect(scaleIngredient({ raw: "4 petits oignons", quantity: 4 }, 0.25).text).toBe(
-      "1 petit oignon",
-    );
-    // Le mot suivant le nom n'est jamais touché : « poireaux » reste au pluriel.
-    expect(scaleIngredient({ raw: "2 tartes aux poireaux", quantity: 2 }, 0.5).text).toBe(
-      "1 tarte aux poireaux",
-    );
-  });
-
-  test("beau, nouveau et vieux prennent leur forme devant voyelle", () => {
-    expect(scaleIngredient({ raw: "3 beaux œufs", quantity: 3 }, 1 / 3).text).toBe("1 bel œuf");
-    expect(scaleIngredient({ raw: "2 vieux oignons", quantity: 2 }, 0.5).text).toBe(
-      "1 vieil oignon",
-    );
-    // Devant consonne, la forme de base : « un beau chou », pas « un bel chou ».
-    expect(scaleIngredient({ raw: "2 beaux choux", quantity: 2 }, 0.5).text).toBe("1 beau chou");
-    // `h` aspiré : « haricot » se comporte comme une consonne.
-    expect(scaleIngredient({ raw: "4 beaux haricots", quantity: 4 }, 0.25).text).toBe(
-      "1 beau haricot",
     );
   });
 });

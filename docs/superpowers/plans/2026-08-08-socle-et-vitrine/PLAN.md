@@ -527,6 +527,12 @@ feat(lib): add slug generation and collision resolution
 
 ### Task 5 : Recalcul des portions
 
+> **Amendé après livraison.** L'accord automatique en nombre a été **retiré** (voir
+> `REVIEW-LOG.md`, round 6) : `singularize`, `singularizeHead` et les quatre lexiques qui les
+> nourrissaient n'existent plus. Le recalcul ne porte que sur le nombre, le texte qui suit est
+> reproduit tel quel. Les blocs de code ci-dessous décrivent l'état intermédiaire — lire
+> `src/lib/scale.ts` pour la forme retenue.
+
 **Files:**
 - Create: `src/lib/scale.ts`
 - Test: `src/lib/scale.test.ts`

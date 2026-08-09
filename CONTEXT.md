@@ -46,7 +46,8 @@ _Avoid_: structure, parsing
 **Recalcul de portions** :
 L'ajustement des quantités affichées pour un nombre de personnes différent de celui de la
 coupure. Il est *best-effort* : il ne s'applique qu'aux lignes brutes portant une annotation de
-quantité, et il ne modifie jamais les données stockées.
+quantité, et il ne modifie jamais les données stockées. Il ne porte que sur **le nombre** : le
+texte qui suit est reproduit tel quel, sans accord en nombre.
 _Avoid_: conversion, mise à l'échelle
 
 **Vitrine** :
