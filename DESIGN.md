@@ -230,6 +230,22 @@ qu'après avoir vu une vingtaine de photos restaurées, pas avant.
 
 ---
 
+## Recalcul de portions — signaler les échecs
+
+Le recalcul est *best-effort* : certaines lignes ne portent aucune annotation de quantité et
+restent affichées telles quelles. **Ces lignes doivent le dire.** Une quantité qui n'a pas bougé
+alors que tout le reste a changé passerait autrement pour une erreur.
+
+Le marqueur est une **dague `†`** placée en fin de ligne, en `--ochre`, avec une note unique sous
+la liste d'ingrédients. Elle n'apparaît que lorsque le facteur diffère de 1.
+
+Le choix de la dague plutôt qu'un simple grisé n'est pas décoratif : `PRODUCT.md` pose la
+lisibilité en conditions dégradées comme contrainte contraignante, et un signal porté par la
+seule couleur échoue précisément là — mauvaise lumière, écran taché, distance variable. La dague
+est une marque typographique de note, pas un pictogramme : elle ne heurte aucune règle anti-slop.
+
+---
+
 ## Recherche
 
 La recherche est **tolérante** : insensible aux accents et aux pluriels, et elle porte aussi sur
