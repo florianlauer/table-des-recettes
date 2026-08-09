@@ -9,9 +9,11 @@
   "scripts": {
     "ingest": "tsx spike/ingest.ts",
     "rank": "tsx spike/rank-endpoints.ts",
+    "walk": "tsx spike/walk.ts",
     "run:spike": "tsx spike/run.ts",
+    "correct": "tsx spike/correct.ts",
     "accept": "tsx spike/accept.ts",
-    "verify": "tsc --noEmit && vitest run"
+    "verify": "tsc --noEmit && vitest run --config spike/vitest.config.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
