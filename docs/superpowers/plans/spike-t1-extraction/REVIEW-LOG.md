@@ -327,3 +327,72 @@ VERDICT: APPROVED
 du grill — « notation à l'œil » et « arbitrage sans chronomètre ». Le plan retenu garde le jugement
 à l'œil sur A/B/C mais introduit une page d'acceptation transcrite et chronométrée. Coût : ~20 min
 de travail humain par candidat. C'est le seul écart assumé entre le plan et les décisions du grill.
+
+---
+
+## Act 3 — Build
+
+Builder : Codex `gpt-5.6-sol` (effort medium), thread `019fe5e3-067c-7393-9a41-5cbab759af47`.
+Worktree `worktree-spike-t1-extraction`. Spec gelée par le commit `f459f46`.
+Preuve : `npm run verify` (`tsc --noEmit` + vitest, réseau mocké). `MAX_FIX_ROUNDS=2`.
+
+### Round 0 — build initial
+
+Codex a produit le harnais complet : 18 fichiers, ~1 700 lignes de TypeScript, 18 tests verts.
+Schéma Zod canonique, dérivation JSON Schema stricte, prompt v1 français, `ingest.ts` (rotation
+EXIF + suppression des métadonnées + vérification par relecture), `budget.ts` (compteur persistant
+et pré-vérification), `rank-endpoints.ts` (échelle par endpoint, résorption de la file « prix
+incertain » par sondes bornées), `run.ts` (escalade A/B/C), `accept.ts` (barrières / éditables),
+templates humains. Aucune photo ni vérité terrain fabriquée, aucun appel réseau réel.
+
+### Claude's verdict — round 0
+
+Diff lu intégralement, `npm run verify` rejoué moi-même. Cinq problèmes.
+
+**Deux à conséquence de verdict** — les plus graves, parce qu'ils fabriquent un faux négatif :
+1. Un provider servi différent du provider demandé, et un `usage.cost` absent, étaient classés
+   `failure`, donc **imputés au modèle**. Le plan est explicite : seuls refus, troncature et
+   réponse invalide comptent contre l'échelon. Un caprice de routage aurait recalé un modèle qui
+   lit parfaitement la page.
+2. La comparaison de provider était une égalité de chaînes brutes : `provider.only` prend un slug
+   (`"deepinfra"`) quand la réponse renvoie un nom d'affichage (`"DeepInfra"`). En l'état,
+   potentiellement **tous** les appels réels tombaient en `provider_mismatch`.
+
+**Une infidélité au modèle de données** :
+3. `servings` et `quantity` typés `string`, alors que la spec design impose `number?` pour les
+   deux. Ce fichier est celui dont T2 hérite et sur lequel T6 fait de l'arithmétique de portions.
+
+**Deux points de rigueur** :
+4. `accept.ts` n'émettait aucun verdict, alors que la spec exige que **les deux** passes franchissent
+   toutes les barrières.
+5. Un seuil de similarité unique (0,6) tranchait en silence la frontière barrière / éditable que le
+   plan désigne comme un jugement humain, avec la règle « dans le doute, c'est une barrière ».
+
+### Round 1 — Codex fix
+
+Les cinq corrections appliquées et vérifiées ligne à ligne. 24 tests verts. `HarnessError` ajoutée
+pour les conditions de harnais, providers normalisés avant comparaison, types numériques propagés
+jusqu'à l'oracle, verdict `ACCEPTÉ`/`REJETÉ` avec code de sortie, bande d'incertitude 0,60–0,85
+comptée comme barrière et remontée séparément pour arbitrage humain.
+
+### Claude's verdict — round 1
+
+Corrections bonnes. Mais une **décision supplémentaire prise seul par Codex** — « les erreurs HTTP
+non transitoires lèvent également `HarnessError` » — sur-appliquait la consigne et retournait la
+règle du plan : *« un provider peut annoncer `structured_outputs` et échouer en pratique. Un tel
+échec est un vrai échec d'échelon. »* Comme l'échelle est triée par prix, le premier endpoint bon
+marché refusant le mode strict aurait avorté le spike au lieu de le faire monter d'un cran — soit
+exactement le résultat que tout le protocole existe pour éviter.
+
+### Round 2 — Codex fix
+
+Erreurs non transitoires scindées en deux : `unsupported_request` (400/404/422 dont le message
+nomme une capacité **et** la refuse → échec d'échelon, jamais rejoué, l'escalade continue) contre
+`HarnessError` (401/403/402 et tout cas non attribuable avec certitude → arrêt). Le classifieur
+exige les deux signaux à la fois, donc l'inclassable avorte par défaut — le bon défaut : une
+mauvaise attribution corromprait le verdict. 28 tests verts.
+
+### Claude's verdict — round 2
+
+Vérifié : classifieur conservateur conforme, `npm run verify` rejoué par moi, 28 tests, 6 fichiers.
+Aucun problème matériel restant. Build accepté, en attente du gate humain sur le diff.
