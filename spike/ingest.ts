@@ -40,13 +40,13 @@ export async function normalizeImage({ inputPath, outputPath }: { inputPath: str
 // Hors dépôt et hors iCloud : les originaux portent le GPS du domicile.
 export const INBOX_DIRECTORY = resolve(homedir(), "Downloads", "table-des-recettes-inbox");
 
-async function findInboxImage(page: string): Promise<string> {
+async function findInboxImage(stem: string): Promise<string> {
   const inbox = INBOX_DIRECTORY;
-  const stems = [page, page.toLowerCase(), page.toUpperCase()];
+  const stems = [stem, stem.toLowerCase(), stem.toUpperCase()];
   const extensions = ["jpg", "jpeg", "JPG", "JPEG"];
-  for (const stem of stems) {
+  for (const candidateStem of stems) {
     for (const extension of extensions) {
-      const candidate = resolve(inbox, `${stem}.${extension}`);
+      const candidate = resolve(inbox, `${candidateStem}.${extension}`);
       try {
         await access(candidate);
         return candidate;
@@ -55,20 +55,23 @@ async function findInboxImage(page: string): Promise<string> {
       }
     }
   }
-  throw new Error(`Image ${page} introuvable dans ${inbox} (JPEG attendu).`);
+  throw new Error(`Image ${stem} introuvable dans ${inbox} (JPEG attendu).`);
 }
 
 async function main(): Promise<void> {
+  // Le second argument découple le rôle dans le protocole (A..D) du nom que tu as donné à la
+  // photo : « mono1 » ou « complexe » dit quel cas la page couvre, « A » ne le dirait plus.
   const page = process.argv[2];
-  if (!page || !/^[a-z][a-z0-9-prime']*$/i.test(page)) {
-    throw new Error("Usage : npm run ingest -- <page> (ex. A). ");
+  if (!page || !/^[a-z][a-z0-9-]*$/i.test(page)) {
+    throw new Error("Usage : npm run ingest -- <role> [source] (ex. « B duo1 », ou « A » si le fichier s'appelle déjà A).");
   }
-  const inputPath = await findInboxImage(page);
+  const inputPath = await findInboxImage(process.argv[3] ?? page);
   const outputPath = resolve("spike/fixtures/pages", `${page.toLowerCase()}.jpg`);
   const metadata = await normalizeImage({ inputPath, outputPath });
   console.log(
     `${basename(inputPath)} → ${outputPath} (${metadata.width}×${metadata.height}, ${metadata.space}, métadonnées absentes)`,
   );
+  console.log("Reporte la correspondance rôle/source et le nombre réel de recettes dans spike/fixtures/pages/README.md.");
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
