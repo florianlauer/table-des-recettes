@@ -78,6 +78,8 @@ export async function runEscalationEndpoint({
         budget,
         maximumEstimatedCostUsd: endpoint.maximumCallCostUsd,
         dataCollection: endpoint.dataCollection,
+        supportsTemperature: endpoint.supportsTemperature,
+        disableReasoning: endpoint.supportsReasoning,
         onCostRecorded: () => budget.save(budgetPath),
       });
       await budget.save(budgetPath);
@@ -99,17 +101,20 @@ export async function runEscalationEndpoint({
 }
 
 async function main(): Promise<void> {
-  const { model, provider } = parseNamedArguments(process.argv.slice(2));
+  const { model, provider, pages: requestedPages } = parseNamedArguments(process.argv.slice(2));
   if (!model || !provider) {
-    throw new Error("Usage : npm run run:spike -- --model <id> --provider <slug>.");
+    throw new Error("Usage : npm run run:spike -- --model <id> --provider <slug> [--pages a,b,c].");
   }
+  // Les trois pages du protocole restent le défaut ; `--pages` sert à passer la réserve, qui mesure
+  // le taux de défaut sur des pages que le modèle n'a jamais vues.
+  const pages = requestedPages?.split(",").map((page) => safePathPart(page.trim())).filter(Boolean);
   const apiKey = requireOpenRouterApiKey();
   const ladder = await latestLadder();
   const endpoint = endpointFromLadder({ ladder, model, providerSlug: provider });
   const budgetPath = resolve("spike/fixtures/runs/budget.json");
   const budget = await BudgetCounter.load({ path: budgetPath });
   await mkdir(resolve(budgetPath, ".."), { recursive: true });
-  await runEscalationEndpoint({ endpoint, apiKey, budget, budgetPath });
+  await runEscalationEndpoint({ endpoint, apiKey, budget, budgetPath, ...(pages?.length ? { pages } : {}) });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
