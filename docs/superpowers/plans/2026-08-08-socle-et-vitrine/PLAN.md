@@ -630,9 +630,12 @@ describe("singularize", () => {
 });
 
 describe("scaleQuantity — frontières", () => {
-  test("exactement 10 reste au demi, 10,5 passe à l'entier", () => {
+  test("exactement 10 reste au demi, au-dessus de 10 on passe à l'entier", () => {
     expect(scaleQuantity(10, 1, true)).toBe(10);
-    expect(scaleQuantity(10.4, 1, true)).toBe(10.5);
+    // Le palier est « au-dessus de 10 », pas « au-dessus de 10,5 » : dès 10,4 on arrondit
+    // à l'entier. C'est la contrainte globale du plan, et le seul palier sans demi.
+    expect(scaleQuantity(10.4, 1, true)).toBe(10);
+    expect(scaleQuantity(10.5, 1, true)).toBe(11);
     expect(scaleQuantity(10.6, 1, true)).toBe(11);
   });
 
@@ -801,7 +804,10 @@ export type Ingredient = {
 
 const NUMBER_IN_RAW = /\d+(?:[.,]\d+)?/;
 // « 2 à 3 gousses », « 2-3 gousses », « 1 1/2 tasse » : le nombre trouvé n'est pas seul.
-const RANGE_OR_FRACTION = /^\s*(?:à|a|-|–|\/)\s*\d/i;
+// Deux formes distinctes : le séparateur suit immédiatement le nombre (`à 3`, `-3`), ou bien
+// c'est un nombre mixte et le séparateur n'arrive qu'après le nombre SUIVANT (`1 1/2`).
+// Ne garder que la première laissait « 1 1/2 tasse » doubler en « 2 1/2 tasse ».
+const RANGE_OR_FRACTION = /^\s*(?:(?:à|a|-|–|\/)\s*\d|\d+\s*\/\s*\d)/i;
 
 // Mots français déjà singuliers qui se terminent par s ou x : les dépluraliser
 // donnerait « noi », « poi », « couscou ». La garde de longueur couvre déjà os, riz, jus.
