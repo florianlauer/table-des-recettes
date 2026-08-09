@@ -31,3 +31,7 @@ dist-ssr
 .direnv
 !.envrc
 .gstack/
+
+# Page de revue du spike : 5,6 Mo, régénérable par `node spike/build-review.mjs`. Elle réencode en
+# base64 les photos déjà versionnées dans spike/fixtures/pages.
+spike/review-barreau-6.html

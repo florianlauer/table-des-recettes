@@ -427,3 +427,123 @@ Décision produit prise au passage : **pas de traduction dans le prompt d'extrac
 une reformulation, ce que les critères de succès interdisent ; la vérité terrain de la page
 d'acceptation étant transcrite depuis la page, une sortie traduite échouerait l'identité sur tous
 les champs et rendrait l'arbitrage temps immesurable. Le prompt v1 reste gelé.
+
+---
+
+## Act 4 — Amendements au plan, constatés à l'exécution
+
+Cinq écarts entre le plan et ce que le spike a réellement fait. Aucun n'est une entorse silencieuse :
+chacun est ici parce qu'il change une conclusion.
+
+### 1. Le protocole d'acceptation n'a pas été exécuté
+
+Le plan mesurait `T_correction / T_saisie` contre une vérité terrain transcrite à la main depuis une
+page fraîche D. La transcription manuelle a été refusée en cours de route ; le jugement s'est fait à
+l'œil, photo et extraction côte à côte, sur sept pages.
+
+`spike/accept.ts` reste en place mais dormant — rien ne l'alimente. Le ratio n'existe pas et ne
+peut pas être reconstitué a posteriori. La page D n'ayant jamais été ingérée ni transcrite, elle
+reste fraîche : la mesure est encore possible si on la veut.
+
+Ce qui a remplacé la mesure : **deux passes par page, et l'égalité stricte de leurs textes**. Critère
+objectif, calculable, et c'est lui qui a séparé les huit modèles — pas le prix.
+
+### 2. Trier l'échelle par le prix a mené au mauvais barreau
+
+Six barreaux écartés un par un, un septième retenu qui produisait des quantités silencieusement
+fausses, et la bonne réponse se trouvait trois centimes plus haut. Numériser cinq cents pages coûte
+2,26 USD avec le modèle retenu contre 0,21 USD avec le moins cher du comparatif : **deux dollars,
+une fois**. Le prix devait être un garde-fou, pas un ordre de marche.
+
+Le critère qui décide vraiment est la **stabilité entre deux appels identiques**, et aucune fiche
+produit ne la publie. Quatre modèles sur sept rendent une extraction différente à chaque appel sans
+rien casser de visible.
+
+Corollaire mesuré : le **débit** décide de l'utilisabilité avant le prix. `qwen3.5-9b` était le moins
+cher de sa famille et tournait à 17 t/s — jusqu'à 934 s pour un appel. Les deux grandeurs ne sont
+pas corrélées.
+
+### 3. `strict: true` n'est pas contraignant sur OpenRouter
+
+Vérifié sur deux providers du même modèle : `"6 à 8 personnes"` rendu dans un champ déclaré
+`number`, chez `google-ai-studio` comme chez `google-vertex`. Le plan traitait le schéma strict comme
+une garantie de forme ; il n'en est pas une.
+
+Deux réponses, les deux retenues : le prompt v2 (la seule réécriture autorisée) exige un entier nu
+et la borne basse d'une fourchette ; `repairExtraction()` dans `src/lib/recipe-schema.ts` répare une
+chaîne dans un champ numérique sans jamais deviner — sans nombre en tête, la valeur devient `null`.
+T2 hérite de la réparation et doit valider défensivement à la réception.
+
+### 4. Le filtre de l'échelle écartait tous les modèles à raisonnement
+
+`temperature` était exigé au même titre que `structured_outputs` et `response_format`. Les modèles à
+raisonnement d'OpenAI le **refusent en 400**, ce qui ne les rend pas incapables : ils déclarent
+l'entrée image et les sorties structurées. La famille `gpt-5.6` entière était absente du catalogue,
+jamais évaluée, invisible dans la marche par barreaux.
+
+Corrigé : `temperature` devient facultatif, l'endpoint porte `supportsTemperature`, et l'appel omet le
+paramètre quand il vaut `false`. **316 → 412 barreaux**, 96 récupérés. L'ancienne échelle est
+archivée sous un nom hors du sélecteur de `latestLadder()` pour que les numéros de barreaux cités
+plus haut restent résolvables.
+
+### 5. La marche par barreaux et le HarnessError non bloquant
+
+Ajout non prévu : `spike/walk.ts` sonde chaque endpoint sur la page B — A ne discrimine pas — et
+écarte celui qui dépasse un plafond de latence. Pendant cette **phase de tri**, une `HarnessError`
+disqualifie l'endpoint au lieu d'arrêter la marche : l'imputation au pire cas a déjà eu lieu avant
+que le harnais ne jette, et la marche ne juge aucun modèle. `run:spike` et `accept` gardent l'arrêt
+strict prévu au plan.
+
+### Réserve non tranchée
+
+Sur la page E, qui n'imprime **aucune** liste d'ingrédients, le modèle en reconstitue une — correcte,
+complète, dans l'ordre de la prose. Le prompt v2 le lui interdit explicitement. Le comportement est
+utile mais **non déclaré**, donc imprévisible : rien ne garantit qu'une autre page sans liste ne
+produira pas un tableau vide. À déclarer dans le prompt avant T2.
+
+### 6. `npm run verify` ne lançait aucun test
+
+Découvert en clôturant le spike. Le worktree n'a pas de config vitest et son `node_modules` est un
+symlink vers le dépôt principal : vitest résout l'espace de travail par le chemin réel du symlink et
+charge **la config du dépôt principal**, dont l'`include` ne couvre que `src/**` et `convex/**`. Les
+tests du spike vivent dans `spike/**`.
+
+Résultat : `vitest run` collectait zéro fichier. Les 48 tests existaient, passaient quand on les
+lançait à la main, et la porte du projet sortait sur `No test files found` — une CI aurait été verte
+sans rien exécuter.
+
+Corrigé par `spike/vitest.config.ts`, qui fixe la racine et l'`include`, et par `verify` qui pointe
+explicitement dessus. La config est rangée dans `spike/` et non à la racine pour ne pas entrer en
+conflit avec celle que `main` porte déjà. Vérifié : 8 fichiers, 48 tests.
+
+### 7. Le budget de raisonnement, découvert trop tard
+
+Le harnais n'envoyait aucun contrôle de raisonnement. Deux modèles ont été jugés en échec pour une
+cause qui m'était imputable : `qwen3.6-flash` rendait une réponse vide (827 des 828 tokens de
+complétion partis en réflexion) et `qwen3.5-35b-a3b` tronquait trois pages sur sept (~6900 tokens de
+réflexion sur un plafond de 8000).
+
+Le plafond de 8000 tokens était par ailleurs un garde-fou budgétaire que je m'étais donné, pas une
+limite des endpoints : ils annoncent de 32768 à 262144 tokens de sortie.
+
+Ce qui a été mesuré ensuite, endpoint par endpoint :
+
+| Endpoint | `effort: low` | `enabled: false` |
+|---|---|---|
+| `qwen3-vl-8b-thinking` @alibaba | inopérant — 615 tokens avec, 518 sans | refusé, 400 |
+| `qwen3-vl-30b-a3b-thinking` @siliconflow | 743 → 729 | refusé, 400 |
+| `qwen3.5-35b-a3b` @deepinfra | 408 → 377 | fonctionne, raisonnement 0 |
+| `qwen3.6-flash` @alibaba | 566 → 600 | fonctionne, raisonnement 0 |
+
+`effort` est donc un leurre : sur alibaba il augmente le raisonnement. Le seul levier est
+`reasoning: { enabled: false }`, et les endpoints qui l'imposent répondent `400 — Reasoning is
+mandatory for this endpoint and cannot be disabled`. Le harnais rejoue alors sans le champ, **sans
+consommer une des trois tentatives** réservées aux erreurs transitoires : un refus de couper le
+raisonnement ne dit rien de la capacité du modèle à lire une page.
+
+Les deux verdicts fautifs sont retirés du comparatif dans `spike/RESULTS.md` et dans la page de
+revue, marqués « mesure invalide, non rejugé ». Ils n'ont pas été rejoués : `gemini-3-flash-preview`
+était déjà retenu et aucun de ces deux modèles n'aurait pu le déloger sur la latence ni sur le prix.
+
+Le modèle retenu n'est pas concerné : il ne raisonne pas, et ses 6,1 s comme ses 0 réparation sont
+mesurés sans ce paramètre.
