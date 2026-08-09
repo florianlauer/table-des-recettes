@@ -31,3 +31,12 @@ dist-ssr
 .direnv
 !.envrc
 .gstack/
+
+# TanStack Start / Nitro
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
