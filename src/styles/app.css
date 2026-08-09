@@ -14,7 +14,15 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
-a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Sans cette règle, le champ et les filtres héritent de l'anneau de focus par défaut du
+   navigateur : un cadre bleu plein, qui contredit `--focus` et le refus des cartes. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
 
 img { max-width: 100%; display: block; }
 
@@ -22,4 +30,174 @@ img { max-width: 100%; display: block; }
   max-width: var(--page-max);
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
+}
+
+/* --- index --- */
+
+.masthead { padding: 3rem 0 0; }
+.masthead__title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-masthead);
+  line-height: 1;
+  margin: 0;
+  border-bottom: 1px solid var(--ochre);
+  padding-bottom: 0.5rem;
+}
+.masthead__count {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  margin: 0.5rem 0 0;
+}
+
+.search {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: var(--type-body);
+  color: var(--ink);
+  padding: 1.5rem 0 0.5rem;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+.search::-webkit-search-cancel-button { display: none; }
+.search::placeholder { color: var(--ink-muted); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 1rem 0; }
+.filters__item {
+  border: 0; background: none; padding: 0; cursor: pointer;
+  font: inherit; font-size: var(--type-meta); color: var(--ink);
+}
+.filters__item[aria-current="true"] { color: var(--ochre); }
+.filters__count { color: var(--ink-muted); }
+
+.group { border-top: 1px solid var(--rule-strong); }
+.index { list-style: none; margin: 0; padding: 0; }
+
+.row { display: flex; border-bottom: 1px solid var(--rule); }
+.row__letter {
+  flex: 0 0 var(--margin-w);
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-letter);
+  line-height: 1;
+  color: var(--ochre);
+  padding-top: 0.6rem;
+  border-right: 1px solid var(--rule);
+}
+.index--flat .row__letter { border-right: 0; flex-basis: 0; }
+.row__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 1rem;
+  padding: 0.75rem 0 0.75rem 1.5rem;
+}
+.row__title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--type-lead);
+  line-height: 1.15;
+}
+.row__type {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  text-align: right;
+}
+.row__reason { grid-column: 1 / -1; font-size: var(--type-meta); color: var(--ink-muted); margin: 0.25rem 0 0; }
+.row__photo {
+  grid-column: 1 / -1;
+  height: 200px;
+  width: auto;
+  max-width: 100%;
+  margin-top: 0.75rem;
+  border: 1px solid var(--rule-strong);
+}
+@media (max-width: 640px) {
+  .row__photo { height: 160px; }
+  .row__body { padding-left: 1rem; }
+}
+
+.empty { font-size: var(--type-meta); color: var(--ink-muted); padding: 2rem 0; }
+
+/* --- fiche recette --- */
+
+.back { font-size: var(--type-meta); color: var(--ink-muted); display: inline-block; padding: 2rem 0 0; }
+
+.recipe__title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-title);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 1rem 0 0;
+}
+.recipe__type { font-size: var(--type-meta); color: var(--ink-muted); margin: 0.5rem 0 0; }
+
+.recipe__section {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-section);
+  line-height: 1.1;
+  margin: 2.5rem 0 1rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.5rem;
+}
+
+.servings { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+.servings__btn {
+  width: 48px; height: 48px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit; font-size: var(--type-control);
+  cursor: pointer;
+}
+.servings__value { font-size: var(--type-control); font-weight: 600; }
+
+.ingredients { list-style: none; margin: 0; padding: 0; }
+.ingredients__item {
+  font-size: var(--type-body);
+  line-height: 1.5;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.ingredients__fixed { color: var(--ochre); }
+.ingredients__note { font-size: var(--type-meta); color: var(--ink-muted); margin-top: 1rem; }
+
+.recipe__photo {
+  height: 200px; width: auto; max-width: 100%;
+  margin-top: 2rem;
+  border: 1px solid var(--rule-strong);
+}
+
+.steps { margin: 0; padding: 0 0 0 2.5rem; max-width: 68ch; }
+.steps__item { font-size: var(--type-lead); line-height: 1.6; margin-bottom: 1.25rem; }
+
+/*
+ * Double page, exigée par DESIGN.md : à gauche le retour, le titre et le type ;
+ * à droite les portions puis les ingrédients ; « Préparation » reprend sur toute
+ * la largeur, de sorte que son début apparaisse en bas du premier écran.
+ * Sous 900 px les wrappers redeviennent de simples blocs et la fiche retombe en
+ * flux linéaire, dans l'ordre du DOM, sans réordonnancement.
+ */
+@media (min-width: 900px) {
+  .recipe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    align-items: start;
+  }
+  .recipe > .recipe__left { grid-column: 1; grid-row: 1; }
+  .recipe > .recipe__right { grid-column: 2; grid-row: 1; }
+  .recipe > .recipe__photo,
+  .recipe > .recipe__section--steps,
+  .recipe > .steps { grid-column: 1 / -1; }
+
+  /* Le premier titre de la colonne de droite s'aligne sur le haut du titre de gauche. */
+  .recipe__right > .recipe__section:first-child,
+  .recipe__right > .servings { margin-top: 0; }
 }

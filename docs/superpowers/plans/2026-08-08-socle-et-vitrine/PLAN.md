@@ -233,7 +233,15 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
-a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Sans cette règle, le champ de recherche et les filtres héritent de l'anneau de focus par
+   défaut du navigateur : un cadre bleu plein, qui contredit `--focus` et le refus des cartes. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
 
 img { max-width: 100%; display: block; }
 
@@ -2035,11 +2043,17 @@ export const Route = createFileRoute("/")({
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
     await context.queryClient.ensureQueryData(convexQuery(api.recipes.countsByType, {}));
-    await context.queryClient.ensureQueryData(
-      deps.q?.trim()
-        ? convexQuery(api.recipes.search, { query: deps.q, type: deps.type })
-        : convexQuery(api.recipes.listPublished, { type: deps.type }),
-    );
+    // Deux appels distincts plutôt qu'un ternaire en argument : `search` et `listPublished`
+    // ne rendent pas la même forme, et TypeScript refuse d'unifier leurs options.
+    if (deps.q?.trim()) {
+      await context.queryClient.ensureQueryData(
+        convexQuery(api.recipes.search, { query: deps.q, type: deps.type }),
+      );
+    } else {
+      await context.queryClient.ensureQueryData(
+        convexQuery(api.recipes.listPublished, { type: deps.type }),
+      );
+    }
   },
   component: IndexPage,
 });
@@ -2069,10 +2083,14 @@ function IndexPage() {
   }, [draft, q, navigate]);
 
   const counts = useSuspenseQuery(convexQuery(api.recipes.countsByType, {})).data;
+
+  // Un seul hook, deux queries : l'appel conditionnel est interdit. Les deux options ne
+  // diffèrent que par `matchedIngredient`, absent hors recherche — d'où l'élargissement
+  // vers la forme la plus large, que `RecipeRow` traite déjà comme facultative.
+  const searchOptions = convexQuery(api.recipes.search, { query: q ?? "", type });
+  const listOptions = convexQuery(api.recipes.listPublished, { type });
   const listed = useSuspenseQuery(
-    searching
-      ? convexQuery(api.recipes.search, { query: q!, type })
-      : convexQuery(api.recipes.listPublished, { type }),
+    searching ? searchOptions : (listOptions as unknown as typeof searchOptions),
   ).data;
 
   return (
@@ -2182,6 +2200,15 @@ function RecipeRow({
   );
 }
 ```
+
+> **Ordre des tâches.** `Link to="/recette/$slug"` ne type-check qu'une fois le fichier de
+> route de la tâche 10 créé : `routeTree.gen.ts` est généré à partir des fichiers présents.
+> Ces deux tâches se vérifient donc ensemble — livrer la tâche 10 avant de lancer
+> `npx tsc --noEmit`, et régénérer l'arbre après toute création de route :
+>
+> ```bash
+> npm run generate-routes
+> ```
 
 - [ ] **Step 4 : Écrire les styles de l'index**
 
