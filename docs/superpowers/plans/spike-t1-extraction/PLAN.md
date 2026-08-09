@@ -28,7 +28,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
    - **C** — difficile : colonnes, texte incrusté sur photo, reflets ou pliure ;
    - **D** — **page d'acceptation**, multi-recettes également.
    JPEG, grand côté ≥ 2000 px.
-2. Les originaux restent **hors du dépôt**, dans `~/table-des-recettes-inbox/`. Ils ne sont jamais
+2. Les originaux restent **hors du dépôt**, dans `~/Downloads/table-des-recettes-inbox/`. Ils ne sont jamais
    commités : une photo de téléphone porte les coordonnées GPS du domicile, et le dépôt est public.
 3. `spike/ingest.ts <page>` — normalise via `sharp` et écrit dans `spike/fixtures/pages/` :
    `.rotate()` (applique l'orientation EXIF, sans quoi une page shootée en paysage arriverait

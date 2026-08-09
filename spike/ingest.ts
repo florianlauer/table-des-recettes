@@ -37,8 +37,11 @@ export async function normalizeImage({ inputPath, outputPath }: { inputPath: str
   return metadata;
 }
 
+// Hors dépôt et hors iCloud : les originaux portent le GPS du domicile.
+export const INBOX_DIRECTORY = resolve(homedir(), "Downloads", "table-des-recettes-inbox");
+
 async function findInboxImage(page: string): Promise<string> {
-  const inbox = resolve(homedir(), "table-des-recettes-inbox");
+  const inbox = INBOX_DIRECTORY;
   const stems = [page, page.toLowerCase(), page.toUpperCase()];
   const extensions = ["jpg", "jpeg", "JPG", "JPEG"];
   for (const stem of stems) {

@@ -1,7 +1,7 @@
 # Pages du Spike T1
 
 Ne placez ici que les JPEG produits par `npm run ingest -- <page>`. Les originaux restent dans
-`~/table-des-recettes-inbox/`.
+`~/Downloads/table-des-recettes-inbox/`.
 
 | Page | Cas | Nombre réel de recettes | Ingestion |
 |---|---|---:|---|
