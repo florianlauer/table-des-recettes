@@ -15,6 +15,8 @@ export default [
     },
   },
   {
-    ignores: ['eslint.config.js', 'prettier.config.js'],
+    // `convex/_generated` est régénéré par la CLI et n'est pas dans le projet TypeScript
+    // du linter : le parser typé échoue sur ses `.js`.
+    ignores: ['eslint.config.js', 'prettier.config.js', 'convex/_generated/'],
   },
 ]

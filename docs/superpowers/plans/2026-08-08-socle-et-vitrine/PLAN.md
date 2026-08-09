@@ -1777,7 +1777,9 @@ Les queries n'appliquent aucune règle métier : elles lisent, résolvent les UR
 ```ts
 // convex/recipes.ts
 import { v } from "convex/values";
-import { query, type QueryCtx } from "./_generated/server";
+import { query } from "./_generated/server";
+// `import/consistent-type-specifier-style` de la config TanStack refuse le `type` inline.
+import type { QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import { recipeType } from "./schema";
 import { toSearchQuery } from "../src/lib/normalize";
@@ -1896,12 +1898,30 @@ export const search = query({
 Run: `npx vitest run convex/recipes.test.ts`
 Expected: PASS, suite verte, aucun test ignoré.
 
-- [ ] **Step 5 : Exécuter toute la suite**
+- [ ] **Step 5 : Régénérer l'API et sortir le généré du linter**
 
-Run: `npm test`
-Expected: PASS, aucune régression sur les tâches 3 à 6.
+`convex/_generated/api.d.ts` type `api` comme `{}` tant que la CLI n'a pas revu le nouveau
+fichier : sans ce passage, `npx tsc --noEmit` échoue sur `Property 'recipes' does not exist`.
 
-- [ ] **Step 6 : Point d'arrêt — relecture puis commit manuel**
+Run: `npx convex dev --once`
+
+Puis ajouter `convex/_generated/` aux `ignores` d'`eslint.config.js` — la CLI y dépose des `.js`
+absents du projet TypeScript du linter, que le parser typé refuse de lire :
+
+```js
+  {
+    // `convex/_generated` est régénéré par la CLI et n'est pas dans le projet TypeScript
+    // du linter : le parser typé échoue sur ses `.js`.
+    ignores: ['eslint.config.js', 'prettier.config.js', 'convex/_generated/'],
+  },
+```
+
+- [ ] **Step 6 : Exécuter toute la suite**
+
+Run: `npm test && npx tsc --noEmit && npm run lint`
+Expected: PASS, aucune régression sur les tâches 3 à 6, typecheck et lint propres.
+
+- [ ] **Step 7 : Point d'arrêt — relecture puis commit manuel**
 
 Relire le diff (`git diff convex/recipes.ts convex/recipes.test.ts`), puis committer **à la main**. Suggestion de message :
 

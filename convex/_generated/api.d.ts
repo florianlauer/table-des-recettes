@@ -9,6 +9,7 @@
  */
 
 import type * as lib_recipeWrites from "../lib/recipeWrites.js";
+import type * as recipes from "../recipes.js";
 import type * as seed from "../seed.js";
 
 import type {
@@ -19,6 +20,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "lib/recipeWrites": typeof lib_recipeWrites;
+  recipes: typeof recipes;
   seed: typeof seed;
 }>;
 
