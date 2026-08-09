@@ -11,6 +11,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       // Scoping decision from the spec: the storefront is not indexed.
       { name: 'robots', content: 'noindex, nofollow' },
+      // Without it the mobile browser bar stays white against the warm paper and the object
+      // stops dead at the edge of the screen.
+      { name: 'theme-color', content: '#F7F3EA' },
       { title: 'La table des recettes' },
     ],
     links: [

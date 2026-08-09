@@ -11,9 +11,48 @@ body {
   font-family: var(--sans);
   font-size: var(--type-body);
   line-height: 1.5;
+  /* Only bites when a word genuinely cannot fit its column — never at the default text size.
+     Without it, "sarrasin" set at 120px by a 200% text zoom scrolls the whole page sideways. */
+  overflow-wrap: break-word;
 }
 
+/* The bound edge: a cloth head band across the top of the object, fixed so it frames the page
+   at any scroll depth. It is the only ochre flat in the system. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--band);
+  background: var(--ochre);
+  z-index: 10;
+}
+
+/* The surfaces we did not draw still belong to the design. */
+::selection { background: var(--ochre); color: var(--on-ochre); }
+:root { accent-color: var(--ochre); caret-color: var(--ochre); scrollbar-color: var(--rule-strong) var(--paper); }
+
 a { color: inherit; text-decoration: none; }
+
+/* Hover and active feedback, typographic only — no fill, no shadow, no lift. The resting state
+   carries no underline by design, so bringing it back on hover is the complement, not a
+   contradiction. Gated on a real pointer: on touch, `:hover` sticks after a tap. */
+@media (hover: hover) {
+  .row:hover .row__title,
+  .filters__item:hover,
+  .back:hover,
+  .failure__retry:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+}
+
+/* Touch has no hover: this is the only confirmation a greasy finger registered. */
+.row__title:active,
+.filters__item:active,
+.back:active,
+.failure__retry:active,
+.servings__btn:not(:disabled):active { color: var(--ochre-hover); }
 
 /* Without this rule the search field and the filters inherit the browser's default focus
    ring: a solid blue box, which contradicts `--focus` and the ban on cards. */
@@ -65,35 +104,57 @@ img { max-width: 100%; display: block; }
 .search::-webkit-search-cancel-button { display: none; }
 .search::placeholder { color: var(--ink-muted); }
 
-.filters { display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 1rem 0; }
+/* The vertical padding lives on the items, not on the row: it is what carries the 48px touch
+   target DESIGN.md requires. Nothing shows — no fill, no border, no pill — the block keeps the
+   height it had, the padding merely replaces the row's own. */
+.filters { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: 0.25rem 0; }
 .filters__item {
-  border: 0; background: none; padding: 0; cursor: pointer;
+  border: 0; background: none; padding: 0.8rem 0; cursor: pointer;
   font: inherit; font-size: var(--type-meta); color: var(--ink);
 }
-.filters__item[aria-current="true"] { color: var(--ochre); }
-.filters__count { color: var(--ink-muted); }
+.filters__item[aria-current="true"] { color: var(--type-ink, var(--ochre)); font-weight: 600; }
+.filters__count { color: var(--ink-muted); font-weight: 400; }
 
-.group { border-top: 1px solid var(--rule-strong); }
-.index { list-style: none; margin: 0; padding: 0; }
+.group { border-top: 1px solid var(--rule-strong); position: relative; }
 
-.row { display: flex; border-bottom: 1px solid var(--rule); }
-.row__letter {
-  flex: 0 0 var(--margin-w);
+/* The letter is lifted out of the rows and set in the margin. It used to live inside the first
+   row, which forced every other row to carry an empty 88px span purely to draw the vertical
+   rule — and left the group with no heading at all, so the alphabetical order, the only order
+   this index has, did not exist for a screen reader. One heading per group now names it. */
+.group__letter {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--margin-w);
+  margin: 0;
+  padding-top: 0.6rem;
   font-family: var(--serif);
   font-weight: 600;
   font-size: var(--type-letter);
   line-height: 1;
   color: var(--ochre);
-  padding-top: 0.6rem;
-  border-right: 1px solid var(--rule);
 }
-.index--flat .row__letter { border-right: 0; flex-basis: 0; }
+
+.index {
+  list-style: none;
+  margin: 0 0 0 var(--margin-w);
+  padding: 0;
+  border-left: 1px solid var(--rule);
+}
+/* Searching dissolves the groups: no margin, no letter, no rule. */
+.index--flat { margin-left: 0; border-left: 0; }
+
+.row { display: flex; border-bottom: 1px solid var(--rule); position: relative; }
 .row__body {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
+  /* minmax(0, …) rather than 1fr: a bare `1fr` keeps a min-content floor, so at 200% text the
+     title refused to shrink and pushed the type label off the right edge of the screen. */
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0 1rem;
   padding: 0.75rem 0 0.75rem 1.5rem;
+  min-height: 48px;
+  align-content: center;
 }
 .row__title {
   font-family: var(--serif);
@@ -101,9 +162,20 @@ img { max-width: 100%; display: block; }
   font-size: var(--type-lead);
   line-height: 1.15;
 }
+
+/* The whole line is the target, as in a printed repertory where one points at the entry and
+   not at the words. The link keeps its accessible name — only the title text — instead of
+   swallowing the photo and the ingredient line. Cost, accepted: the row's text is no longer
+   selectable; on an index whose only job is to open a recipe, the target wins. */
+.row__title::after { content: ""; position: absolute; inset: 0; }
+.row__title:focus-visible { outline: none; }
+.row:has(.row__title:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
 .row__type {
   font-size: var(--type-meta);
-  color: var(--ink-muted);
+  color: var(--type-ink, var(--ink-muted));
   text-align: right;
 }
 .row__reason { grid-column: 1 / -1; font-size: var(--type-meta); color: var(--ink-muted); margin: 0.25rem 0 0; }
@@ -118,9 +190,42 @@ img { max-width: 100%; display: block; }
 @media (max-width: 640px) {
   .row__photo { height: 160px; }
   .row__body { padding-left: 1rem; }
+  /* At a 44px margin the vertical rule crowds the title instead of structuring it. */
+  .index { border-left: 0; }
 }
 
 .empty { font-size: var(--type-meta); color: var(--ink-muted); padding: 2rem 0; }
+
+/* Read by assistive technology, never drawn. Carries the explanations the page conveys by
+   position or by a mark a screen reader cannot interpret. */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- failure --- */
+
+.failure { padding: 4rem 0; max-width: 52ch; }
+.failure__site {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-section);
+  line-height: 1;
+  margin: 0 0 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ochre);
+}
+.failure__line { font-size: var(--type-lead); margin: 0 0 1.5rem; }
+.failure__retry {
+  border: 0; background: none; cursor: pointer; padding: 0.8rem 0;
+  font: inherit; font-size: var(--type-control); font-weight: 600;
+  color: var(--ochre);
+  border-bottom: 1px solid var(--ochre);
+}
 
 /* --- recipe page --- */
 
@@ -134,7 +239,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: -0.02em;
   margin: 1rem 0 0;
 }
-.recipe__type { font-size: var(--type-meta); color: var(--ink-muted); margin: 0.5rem 0 0; }
+.recipe__type { font-size: var(--type-meta); color: var(--type-ink, var(--ink-muted)); margin: 0.5rem 0 0; }
 
 .recipe__section {
   font-family: var(--serif);
@@ -146,7 +251,9 @@ img { max-width: 100%; display: block; }
   padding-bottom: 0.5rem;
 }
 
-.servings { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+/* Wraps rather than overflows: the two 48px buttons plus the value cannot hold on one line of
+   a 320px screen once the text is scaled to 200%. */
+.servings { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
 .servings__btn {
   width: 48px; height: 48px;
   border: 1px solid var(--rule-strong);
@@ -155,6 +262,12 @@ img { max-width: 100%; display: block; }
   color: var(--ink);
   font: inherit; font-size: var(--type-control);
   cursor: pointer;
+}
+/* At one person, `−` did nothing while still looking live. Saying so is the fix. */
+.servings__btn:disabled {
+  color: var(--rule-strong);
+  border-color: var(--rule);
+  cursor: default;
 }
 .servings__value { font-size: var(--type-control); font-weight: 600; }
 
@@ -178,26 +291,49 @@ img { max-width: 100%; display: block; }
 .steps__item { font-size: var(--type-lead); line-height: 1.6; margin-bottom: 1.25rem; }
 
 /*
- * The spread required by DESIGN.md: on the left the back link, the title and the type;
- * on the right the servings then the ingredients; "Préparation" resumes across the full
- * width so its beginning shows at the bottom of the first screen. Below 900 px the wrappers
- * become plain blocks again and the page falls back to linear flow, in DOM order, with no
- * reordering.
+ * Below the spread the photo closes the recipe instead of splitting the ingredients from the
+ * steps — an illustration has no business interrupting the two blocks one reads in sequence,
+ * pan in hand. `display: contents` lifts the aside's children into the same flex flow so
+ * `order` can carry the image past "Préparation"; it is decorative and not focusable, so the
+ * gap this opens between DOM order and visual order costs a screen reader and the keyboard
+ * nothing. `align-self` is what keeps the back link and the image at their own width: a column
+ * flex container stretches its items across, which would blow the photo up to the full page.
+ */
+@media (max-width: 899.98px) {
+  .recipe { display: flex; flex-direction: column; }
+  .recipe__aside { display: contents; }
+  .recipe__photo { order: 1; }
+  .back, .recipe__photo { align-self: flex-start; }
+}
+
+/*
+ * The spread: left the title, the type and the whole of "Préparation"; right the servings,
+ * the ingredients and the photo. The back link spans both columns on its own row — inside the
+ * left column its 2rem of padding pushed that column down while the right one still started
+ * at the top of the grid, which is what left the servings control stranded above the title.
+ *
+ * DOM order is the mobile order (title, servings, ingredients, photo, steps) and the grid
+ * reorders nothing: it only assigns the blocks to cells. Below 900 px the wrappers become
+ * plain blocks and the page falls back to that same linear flow.
  */
 @media (min-width: 900px) {
   .recipe {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    /* Explicit rows, and the surplus goes to the last one. The right column spans rows 2 and 3;
+       with implicit rows its extra height was shared between them, so the gap between the type
+       and "Préparation" grew with the ingredient list — 70px on a short recipe, 126px on one
+       with a photo. `1fr` on the last row sends that slack below the steps, where it belongs. */
+    grid-template-rows: auto auto 1fr;
     column-gap: 4rem;
     align-items: start;
   }
-  .recipe > .recipe__left { grid-column: 1; grid-row: 1; }
-  .recipe > .recipe__right { grid-column: 2; grid-row: 1; }
-  .recipe > .recipe__photo,
-  .recipe > .recipe__section--steps,
-  .recipe > .steps { grid-column: 1 / -1; }
+  .recipe > .back           { grid-column: 1 / -1; grid-row: 1; }
+  .recipe > .recipe__head   { grid-column: 1; grid-row: 2; }
+  .recipe > .recipe__method { grid-column: 1; grid-row: 3; }
+  .recipe > .recipe__aside  { grid-column: 2; grid-row: 2 / span 2; }
 
-  /* The right column's first heading aligns with the top of the left column's title. */
-  .recipe__right > .recipe__section:first-child,
-  .recipe__right > .servings { margin-top: 0; }
+  /* Both columns start on the same line, level with the top of the title. */
+  .recipe__head > .recipe__title  { margin-top: 0; }
+  .recipe__aside > *:first-child  { margin-top: 0; }
 }

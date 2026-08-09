@@ -15,10 +15,16 @@ Documents de référence :
 `DESIGN.md` fait foi. Avant d'écrire du CSS ou un composant d'interface, le lire. Résumé
 opérationnel :
 
-**Couleur** — `--paper: #F8F8F8`, `--surface: #FFFFFF`, `--ink: #2E2723`,
-`--ink-muted: #6E645C`, accent unique `--ochre: #9A5B2B`, filets `--rule: #C6BDB4` /
-`--rule-strong: #8A7F74`. L'ocre ne sert qu'au filet du masthead, aux lettres de groupe de
-l'index et à l'état actif d'un filtre. Pas de mode sombre.
+**Couleur** — papier chaud `--paper: #F7F3EA`, `--surface: #FFFDF8`, `--ink: #2E2723`,
+`--ink-muted: #6E645C`, `--ochre: #9A5B2B`, filets `--rule: #C6BDB4` / `--rule-strong: #8A7F74`.
+L'ocre sert au filet du masthead, aux lettres de groupe de l'index, à la reliure en tête de page
+et au type « plat ». Pas de mode sombre.
+
+**Encres de type** — une couleur par type de plat (`--ink-entree` … `--ink-autre`), résolue en
+CSS via `data-type="…"` → `--type-ink`, **jamais** par une correspondance en JavaScript. Elle
+n'est portée que par le mot qui nomme le type : colonne droite d'une ligne d'index, ligne de
+type d'une fiche, filtre actif. Jamais un aplat, une pastille, une bordure ou un fond de ligne.
+Le type reste écrit en toutes lettres — la couleur double l'information, ne la remplace pas.
 
 **Typographie** — Fraunces (display, 500–600) pour titres et noms de recettes ; Atkinson
 Hyperlegible Next (400–600) pour tout le reste. Aucun texte fonctionnel sous 15 px. Interdites :

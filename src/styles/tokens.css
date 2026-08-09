@@ -1,6 +1,8 @@
 :root {
-  --paper:        #F8F8F8;
-  --surface:      #FFFFFF;
+  /* Warm off-white, not parchment: the ink and the rules are warm browns, so a neutral grey
+     ground read clinical. The paper now shares their hue at very low chroma. */
+  --paper:        #F7F3EA;
+  --surface:      #FFFDF8;
 
   --ink:          #2E2723;
   --ink-muted:    #6E645C;
@@ -12,6 +14,16 @@
   --rule:         #C6BDB4;
   --rule-strong:  #8A7F74;
   --focus:        #9A5B2B;
+
+  /* One ink per dish type. Colour here is scanning information, not decoration: it is only
+     ever carried by the word naming the type. All six sit between 4.86:1 and 5.72:1 on
+     --paper, so none of them outweighs the others in a column of labels. */
+  --ink-entree:   #57683F;  /* vert laurier    85° */
+  --ink-plat:     #9A5B2B;  /* ocre, la marque 26° */
+  --ink-dessert:  #96455F;  /* prune          341° */
+  --ink-apero:    #3D6B78;  /* bleu ardoise   193° */
+  --ink-petitDej: #82631A;  /* miel brûlé      42° */
+  --ink-autre:    #6E645C;  /* gris chaud — le fourre-tout reste neutre */
 
   --type-meta:     clamp(0.9375rem, 0.869rem + 0.282vw, 1.0625rem);  /* 15 → 17 px */
   --type-control:  clamp(1.0625rem, 0.994rem + 0.282vw, 1.1875rem);  /* 17 → 19 px */
@@ -27,8 +39,19 @@
 
   --margin-w: 88px;
   --page-max: 1100px;
+  --band:     10px;
 }
 
 @media (max-width: 640px) {
-  :root { --margin-w: 44px; }
+  :root { --margin-w: 44px; --band: 7px; }
 }
+
+/* `--type-ink` is deliberately absent from `:root`: it has no default. It only exists on an
+   element that declares its type, and every consumer names its own fallback. Resolving it here
+   is what keeps any component from mapping a type to a colour in JavaScript. */
+[data-type="entree"]   { --type-ink: var(--ink-entree); }
+[data-type="plat"]     { --type-ink: var(--ink-plat); }
+[data-type="dessert"]  { --type-ink: var(--ink-dessert); }
+[data-type="apero"]    { --type-ink: var(--ink-apero); }
+[data-type="petitDej"] { --type-ink: var(--ink-petitDej); }
+[data-type="autre"]    { --type-ink: var(--ink-autre); }

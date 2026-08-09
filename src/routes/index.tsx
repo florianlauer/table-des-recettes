@@ -87,6 +87,7 @@ function IndexPage() {
           <button
             key={t}
             className="filters__item"
+            data-type={t}
             aria-current={type === t}
             onClick={() => navigate({ search: (prev) => ({ ...prev, type: t }) })}
           >
@@ -94,6 +95,14 @@ function IndexPage() {
           </button>
         ))}
       </nav>
+
+      {/*
+        The list is rebuilt 250 ms after a keystroke, silently. Without this the only feedback
+        for the search is visual — a screen reader announces nothing at all while typing.
+      */}
+      <p className="visually-hidden" role="status">
+        {searching ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}` : ''}
+      </p>
 
       {listed.length === 0 ? (
         <p className="empty">
@@ -107,15 +116,17 @@ function IndexPage() {
         </ol>
       ) : (
         groupByLetter(listed).map((group) => (
-          <section className="group" key={group.letter}>
+          <section
+            className="group"
+            key={group.letter}
+            aria-labelledby={`groupe-${group.letter}`}
+          >
+            <h2 className="group__letter" id={`groupe-${group.letter}`}>
+              {group.letter}
+            </h2>
             <ol className="index">
-              {group.items.map((recipe, i) => (
-                <RecipeRow
-                  key={recipe.id}
-                  recipe={recipe}
-                  letter={i === 0 ? group.letter : undefined}
-                  showImage
-                />
+              {group.items.map((recipe) => (
+                <RecipeRow key={recipe.id} recipe={recipe} showImage />
               ))}
             </ol>
           </section>
@@ -127,23 +138,20 @@ function IndexPage() {
 
 function RecipeRow({
   recipe,
-  letter,
   showImage,
 }: {
   recipe: PublishedRecipeRow
-  letter?: string
   showImage: boolean
 }) {
   return (
     <li className="row">
-      <span className="row__letter" aria-hidden={!letter}>
-        {letter ?? ''}
-      </span>
       <div className="row__body">
         <Link to="/recette/$slug" params={{ slug: recipe.slug }} className="row__title">
           {recipe.title}
         </Link>
-        <span className="row__type">{TYPE_LABELS[recipe.type]}</span>
+        <span className="row__type" data-type={recipe.type}>
+          {TYPE_LABELS[recipe.type]}
+        </span>
         {recipe.matchedIngredient ? (
           <p className="row__reason">{recipe.matchedIngredient}</p>
         ) : null}

@@ -45,35 +45,46 @@ function RecipePage() {
   return (
     <main className="page recipe">
       {/*
-        The two columns of the spread are real containers, not direct children placed with
-        `grid-column`: without a wrapper, grid auto-placement gives each one its own row and
-        the right column drops down instead of starting at the top, facing the title.
+        The blocks of the spread are real containers, not direct children placed with
+        `grid-column`: without a wrapper, grid auto-placement gives each one its own row.
+        The back link stays outside them so both columns start on the same line.
       */}
-      <div className="recipe__left">
-        <Link to="/" className="back">
-          Retour à l'index
-        </Link>
+      <Link to="/" className="back">
+        Retour à l'index
+      </Link>
+
+      <div className="recipe__head">
         <h1 className="recipe__title">{recipe.title}</h1>
-        <p className="recipe__type">{TYPE_LABELS[recipe.type]}</p>
+        <p className="recipe__type" data-type={recipe.type}>
+          {TYPE_LABELS[recipe.type]}
+        </p>
       </div>
 
-      <div className="recipe__right">
+      <div className="recipe__aside">
         {servings ? (
           <div className="servings">
             <button
               className="servings__btn"
               aria-label="Une personne de moins"
-              onClick={() => setTarget(Math.max(1, current - 1))}
+              disabled={current <= 1}
+              // Functional form, not `current - 1`: several taps inside one batch all read the
+              // same rendered `current` and collapse into a single step. Greasy fingers tap
+              // twice.
+              onClick={() => setTarget((t) => Math.max(1, (t ?? servings) - 1))}
             >
               −
             </button>
-            <span className="servings__value">
+            {/*
+              −/+ rewrites every quantity in the list. Without a live region the change is
+              silent, and `aria-atomic` is what makes it read "6 personnes" and not just "6".
+            */}
+            <span className="servings__value" aria-live="polite" aria-atomic="true">
               {current} {current > 1 ? 'personnes' : 'personne'}
             </span>
             <button
               className="servings__btn"
               aria-label="Une personne de plus"
-              onClick={() => setTarget(current + 1)}
+              onClick={() => setTarget((t) => (t ?? servings) + 1)}
             >
               +
             </button>
@@ -86,33 +97,45 @@ function RecipePage() {
             <li key={i} className="ingredients__item">
               {text}
               {factor !== 1 && !scaled ? (
-                <span className="ingredients__fixed" title="Quantité non recalculée">
-                  {' '}
-                  †
-                </span>
+                <>
+                  {/*
+                    The dagger carried its meaning in a `title`, which is unreliable on a screen
+                    reader and never reachable on touch — the main surface. The explanation is
+                    now read in place, at the end of its own line.
+                  */}
+                  <span className="ingredients__fixed" aria-hidden="true">
+                    {' '}
+                    †
+                  </span>
+                  <span className="visually-hidden"> — quantité non recalculée</span>
+                </>
               ) : null}
             </li>
           ))}
         </ul>
 
+        {/* Hidden from assistive tech: its only job is to decode a glyph that, for a screen
+            reader, no longer exists — each concerned line now carries its own explanation. */}
         {showNote ? (
-          <p className="ingredients__note">
+          <p className="ingredients__note" aria-hidden="true">
             † Cette quantité n'a pas pu être recalculée : la ligne est reproduite telle
             quelle.
           </p>
         ) : null}
+
+        {recipe.imageUrl ? <img className="recipe__photo" src={recipe.imageUrl} alt="" /> : null}
       </div>
 
-      {recipe.imageUrl ? <img className="recipe__photo" src={recipe.imageUrl} alt="" /> : null}
-
-      <h2 className="recipe__section recipe__section--steps">Préparation</h2>
-      <ol className="steps">
-        {recipe.steps.map((step, i) => (
-          <li key={i} className="steps__item">
-            {step}
-          </li>
-        ))}
-      </ol>
+      <div className="recipe__method">
+        <h2 className="recipe__section">Préparation</h2>
+        <ol className="steps">
+          {recipe.steps.map((step, i) => (
+            <li key={i} className="steps__item">
+              {step}
+            </li>
+          ))}
+        </ol>
+      </div>
     </main>
   )
 }
