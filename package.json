@@ -1,0 +1,27 @@
+{
+  "name": "table-des-recettes-spike-t1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "ingest": "tsx spike/ingest.ts",
+    "rank": "tsx spike/rank-endpoints.ts",
+    "run:spike": "tsx spike/run.ts",
+    "accept": "tsx spike/accept.ts",
+    "verify": "tsc --noEmit && vitest run"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "sharp": "^0.35.3",
+    "tsx": "^4.20.5",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.10"
+  }
+}
