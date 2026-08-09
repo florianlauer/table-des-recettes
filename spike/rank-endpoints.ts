@@ -9,13 +9,28 @@ import { BudgetCounter, PROBE_RESERVE_USD } from "./budget.js";
 import { OPENROUTER_API_URL, requireOpenRouterApiKey, runVisionPass } from "./openrouter.js";
 import { EXTRACTION_PROMPT } from "./prompt.js";
 
-const REQUIRED_PARAMETERS = ["structured_outputs", "response_format", "temperature", "max_tokens"] as const;
+const REQUIRED_PARAMETERS = ["structured_outputs", "response_format", "max_tokens"] as const;
+
+// OpenAI's reasoning models reject `temperature` outright, and the whole gpt-5.6 family was excluded
+// on that single ground while declaring both image input and structured outputs. Determinism is what
+// we actually need; on those endpoints it comes from the model, not from a parameter we may send.
+const OPTIONAL_PARAMETER = "temperature";
+
+// A reasoning endpoint spends its output budget thinking before it writes: qwen3-vl-8b-thinking burnt
+// 7201 of 7992 tokens on page A, the simplest of the set, and qwen3.5-35b-a3b truncated three pages
+// outright. `reasoning` lets us cap that share instead of raising the ceiling and paying for it.
+const REASONING_PARAMETER = "reasoning";
 const REPRESENTATIVE_COMPLETION_TOKENS = 2500;
 const MAX_COMPLETION_TOKENS = 8000;
 const MAX_UNCERTAIN_PROBES = 3;
 
-// Une page de 2000 px consomme ~1100 tokens de prompt chez les modèles qui ne facturent pas
-// l'image à part. Approximation assumée : seul le coût relevé par tentative fait foi.
+// A `:batch` variant routes to the provider's batch API: the answer does not arrive within the
+// window of a synchronous call. Left in the ladder, it would cost three timeouts per rung only to
+// end up INCONCLUSIVE — 22 rungs of the catalogue, three of them within the first twenty.
+const ASYNCHRONOUS_VARIANT = /:batch$/;
+
+// A 2000 px page consumes ~1100 prompt tokens on models that do not bill the image separately.
+// Deliberate approximation: only the cost reported per attempt is authoritative.
 const IMAGE_TOKENS_ESTIMATE = 1100;
 
 type Pricing = { prompt: number; completion: number; imagePerImage: number | null; request: number };
@@ -47,6 +62,8 @@ export type LadderEntry = {
   rankingCostUsd: number;
   maximumCallCostUsd: number;
   priceSource: "published" | "probe";
+  supportsTemperature: boolean;
+  supportsReasoning: boolean;
 };
 
 type UncertainEndpoint = {
@@ -55,6 +72,8 @@ type UncertainEndpoint = {
   providerName: string;
   dataCollection: string | null;
   capacity: number;
+  supportsTemperature: boolean;
+  supportsReasoning: boolean;
 };
 
 export type LadderFile = {
@@ -69,8 +88,8 @@ function modalities(value: ApiModel | ApiEndpoint): string[] {
   return value.input_modalities ?? value.architecture?.input_modalities ?? [];
 }
 
-// `provider.only` route sur le slug porté par `tag` ("google-vertex/global" → "google-vertex").
-// `provider_name` est un nom d'affichage ("Google") qu'OpenRouter ne sait pas router.
+// `provider.only` routes on the slug carried by `tag` ("google-vertex/global" gives "google-vertex").
+// `provider_name` is a display name ("Google") that OpenRouter cannot route on.
 function providerSlug(endpoint: ApiEndpoint): string | null {
   const tag = endpoint.tag?.split("/")[0];
   return tag ?? endpoint.provider ?? endpoint.name ?? null;
@@ -88,10 +107,10 @@ function parsePrice(value: string | number | null | undefined): number | null {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
-// OpenRouter omet une clé de tarif au lieu d'écrire "0" : `request` absent signifie « aucun frais
-// par requête », `image` absent signifie « image facturée comme des tokens de prompt ». Les traiter
-// comme inconnus enverrait 100 % du catalogue dans la file des sondes, qui n'a que trois places.
-// Le garde-fou « un poste absent n'est pas zéro » ne garde donc que les deux tarifs de fond.
+// OpenRouter omits a price key instead of writing "0": a missing `request` means "no per-request
+// fee", a missing `image` means "image billed as prompt tokens". Treating them as unknown would send
+// 100% of the catalogue into the probe queue, which only has three slots. The "a missing line item
+// is not zero" guard therefore only covers the two baseline rates.
 function parsePricing(pricing: ApiEndpoint["pricing"]): Pricing | null {
   const prompt = parsePrice(pricing?.prompt);
   const completion = parsePrice(pricing?.completion);
@@ -140,6 +159,10 @@ export async function discoverEndpoints({
   const excluded: LadderFile["excluded"] = [];
 
   for (const model of models) {
+    if (ASYNCHRONOUS_VARIANT.test(model.id)) {
+      excluded.push({ model: model.id, providerSlug: "tous", reason: "variante batch asynchrone" });
+      continue;
+    }
     const endpointPath = model.id.split("/").map(encodeURIComponent).join("/");
     const endpointsResponse = await getJson<{ data?: { endpoints?: ApiEndpoint[] } | ApiEndpoint[] }>({
       url: `${OPENROUTER_API_URL}/models/${endpointPath}/endpoints`,
@@ -162,6 +185,8 @@ export async function discoverEndpoints({
         excluded.push({ model: model.id, providerSlug: slug, reason: "modalité image ou paramètres stricts absents" });
         continue;
       }
+      const supportsTemperature = parameters.has(OPTIONAL_PARAMETER);
+      const supportsReasoning = parameters.has(REASONING_PARAMETER);
       const dataCollection = endpoint.data_collection ?? null;
       const pricing = parsePricing(endpoint.pricing);
       if (!pricing) {
@@ -171,6 +196,8 @@ export async function discoverEndpoints({
           providerName: displayName,
           dataCollection,
           capacity: endpoint.context_length ?? 0,
+          supportsTemperature,
+          supportsReasoning,
         });
         continue;
       }
@@ -182,6 +209,8 @@ export async function discoverEndpoints({
         rankingCostUsd: cost({ pricing, completionTokens: REPRESENTATIVE_COMPLETION_TOKENS }),
         maximumCallCostUsd: cost({ pricing, completionTokens: MAX_COMPLETION_TOKENS }),
         priceSource: "published",
+        supportsTemperature,
+        supportsReasoning,
       });
     }
   }
@@ -230,6 +259,8 @@ export async function buildLadder({
       budget,
       maximumEstimatedCostUsd: PROBE_RESERVE_USD,
       dataCollection: endpoint.dataCollection,
+      supportsTemperature: endpoint.supportsTemperature,
+      disableReasoning: endpoint.supportsReasoning,
       maxTokens: 512,
       fetchImpl,
       onCostRecorded,
@@ -242,7 +273,7 @@ export async function buildLadder({
       excluded.push({ ...endpoint, reason: `sonde ${result.actualCostUsd} USD > réserve ${PROBE_RESERVE_USD} USD` });
       continue;
     }
-    // Le total observé borne le poste illisible sans le convertir artificiellement en zéro.
+    // The observed total bounds the unreadable line item without artificially turning it into zero.
     known.push({
       model: endpoint.model,
       providerSlug: endpoint.providerSlug,
@@ -251,6 +282,8 @@ export async function buildLadder({
       rankingCostUsd: result.actualCostUsd,
       maximumCallCostUsd: result.actualCostUsd * (MAX_COMPLETION_TOKENS / 512),
       priceSource: "probe",
+      supportsTemperature: endpoint.supportsTemperature,
+      supportsReasoning: endpoint.supportsReasoning,
     });
   }
 

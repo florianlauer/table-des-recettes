@@ -9,8 +9,8 @@ import { buildLadder } from "./rank-endpoints.js";
 
 const supportedParameters = ["structured_outputs", "response_format", "temperature", "max_tokens"];
 
-// Formes relevées sur le catalogue réel le 2026-08-09 : `tag` porte le slug de routage, jamais
-// `provider_name` ; `request` est absent des 125 modèles vision+strict et `image` de 100 d'entre eux.
+// Shapes observed on the real catalogue on 2026-08-09: `tag` carries the routing slug, never
+// `provider_name`; `request` is absent from all 125 vision+strict models and `image` from 100 of them.
 const googleEndpoint = {
   provider_name: "Google",
   tag: "google-vertex/global",
@@ -36,7 +36,7 @@ const uncertainEndpoint = {
   data_collection: "allow",
 };
 
-describe("classement des endpoints", () => {
+describe("endpoint ranking", () => {
   let directory: string;
   let imagePath: string;
 
@@ -50,15 +50,17 @@ describe("classement des endpoints", () => {
     await rm(directory, { recursive: true, force: true });
   });
 
-  function mockCatalogue(endpoints: unknown[]) {
+  function mockCatalogue(endpoints: unknown[], modelIds: string[] = ["author/model"]) {
     const calls: string[] = [];
     const fetchImpl = vi.fn(async (input: string | URL | Request) => {
       const url = String(input);
       calls.push(url);
       if (url.endsWith("/models")) {
-        return Response.json({ data: [{ id: "author/model", architecture: { input_modalities: ["image"] } }] });
+        return Response.json({
+          data: modelIds.map((id) => ({ id, architecture: { input_modalities: ["image"] } })),
+        });
       }
-      if (url.endsWith("/models/author/model/endpoints")) {
+      if (url.endsWith("/endpoints")) {
         return Response.json({ data: { endpoints } });
       }
       return Response.json({
@@ -70,7 +72,7 @@ describe("classement des endpoints", () => {
     return { calls, fetchImpl };
   }
 
-  it("route sur le slug de `tag` et retient le nom d'affichage pour la vérification", async () => {
+  it("routes on the slug from `tag` and keeps the display name for verification", async () => {
     const { fetchImpl } = mockCatalogue([googleEndpoint]);
     const ladder = await buildLadder({
       apiKey: "test-key",
@@ -83,9 +85,9 @@ describe("classement des endpoints", () => {
     ]);
   });
 
-  // Sans cette règle, `request` et `image` absents envoyaient 100 % du catalogue dans la file des
-  // sondes, plafonnée à trois : l'échelle naissait avec 3 barreaux au lieu de 123.
-  it("classe un endpoint dont `request` et `image` sont absents plutôt que de le juger incertain", async () => {
+  // Without this rule, a missing `request` and `image` sent 100% of the catalogue into the probe
+  // queue, capped at three: the ladder was born with 3 rungs instead of 123.
+  it("ranks an endpoint whose `request` and `image` are absent instead of judging it uncertain", async () => {
     const { fetchImpl } = mockCatalogue([noImageRateEndpoint]);
     const ladder = await buildLadder({
       apiKey: "test-key",
@@ -98,7 +100,74 @@ describe("classement des endpoints", () => {
     expect(ladder.ladder[0]?.rankingCostUsd).toBeGreaterThan(0);
   });
 
-  it("résorbe la file de prix incertain avant de figer l'échelle", async () => {
+  // Requiring `temperature` silently excluded every reasoning model — the whole gpt-5.6 family, 96
+  // rungs — although they declare image input and structured outputs. The flag travels to the caller
+  // instead, because sending the parameter to those endpoints is a 400, not a no-op.
+  it("keeps an endpoint that rejects temperature and flags it", async () => {
+    const { fetchImpl } = mockCatalogue([
+      { ...googleEndpoint, supported_parameters: ["structured_outputs", "response_format", "max_tokens"] },
+    ]);
+    const ladder = await buildLadder({
+      apiKey: "test-key",
+      probeImagePath: imagePath,
+      budget: new BudgetCounter(),
+      fetchImpl,
+    });
+    expect(ladder.excluded).toEqual([]);
+    expect(ladder.ladder).toEqual([expect.objectContaining({ supportsTemperature: false })]);
+  });
+
+  // A reasoning endpoint spends `max_tokens` thinking before it answers — 7201 of 7992 on the
+  // simplest page. The flag lets the caller cap that share instead of paying for a higher ceiling.
+  it("flags an endpoint that accepts a reasoning budget", async () => {
+    const { fetchImpl } = mockCatalogue([
+      { ...googleEndpoint, supported_parameters: [...supportedParameters, "reasoning"] },
+    ]);
+    const ladder = await buildLadder({
+      apiKey: "test-key",
+      probeImagePath: imagePath,
+      budget: new BudgetCounter(),
+      fetchImpl,
+    });
+    expect(ladder.ladder).toEqual([expect.objectContaining({ supportsReasoning: true })]);
+  });
+
+  it("excludes an endpoint missing a parameter the request cannot do without", async () => {
+    const { fetchImpl } = mockCatalogue([
+      { ...googleEndpoint, supported_parameters: ["temperature", "max_tokens"] },
+    ]);
+    const ladder = await buildLadder({
+      apiKey: "test-key",
+      probeImagePath: imagePath,
+      budget: new BudgetCounter(),
+      fetchImpl,
+    });
+    expect(ladder.ladder).toEqual([]);
+    expect(ladder.excluded).toHaveLength(1);
+  });
+
+  // A batch variant answers outside the synchronous window: left in the ladder it would only produce
+  // timeouts. The real catalogue carried 22 of them, three within the first twenty rungs.
+  it("discards batch variants without querying their endpoints", async () => {
+    const { calls, fetchImpl } = mockCatalogue([googleEndpoint], ["author/model", "author/model:batch"]);
+    const ladder = await buildLadder({
+      apiKey: "test-key",
+      probeImagePath: imagePath,
+      budget: new BudgetCounter(),
+      fetchImpl,
+    });
+
+    expect(ladder.ladder).toHaveLength(1);
+    expect(ladder.ladder[0]?.model).toBe("author/model");
+    expect(ladder.excluded).toContainEqual({
+      model: "author/model:batch",
+      providerSlug: "tous",
+      reason: "variante batch asynchrone",
+    });
+    expect(calls.some((url) => url.includes("model:batch"))).toBe(false);
+  });
+
+  it("drains the uncertain-price queue before freezing the ladder", async () => {
     const { calls, fetchImpl } = mockCatalogue([googleEndpoint, uncertainEndpoint]);
     const ladder = await buildLadder({
       apiKey: "test-key",
