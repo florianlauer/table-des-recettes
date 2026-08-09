@@ -2,7 +2,7 @@ const LIGATURES: Record<string, string> = { œ: "oe", æ: "ae", Œ: "oe", Æ: "a
 
 export function normalizeText(input: string): string {
   return input
-    .replace(/[œæŒÆ]/g, (c) => LIGATURES[c])
+    .replace(/[œæŒÆ]/g, (c) => LIGATURES[c] ?? c)
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()

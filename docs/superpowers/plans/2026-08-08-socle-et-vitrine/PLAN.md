@@ -28,6 +28,7 @@
 - **Recherche** : `.take(1024)`, le plafond dur d'un index de recherche Convex. Le corpus envisagé (~400) reste très en dessous, donc aucun résultat n'est caché en pratique — mais la limite existe, ce n'est pas « aucune troncature possible ». La requête est par ailleurs bornée à 16 termes de 32 caractères, limite imposée par Convex.
 - **`searchText` est un champ dérivé** : aucune écriture de recette ne contourne `withSearchText()` de `convex/lib/recipeWrites.ts`. Un titre ou des ingrédients modifiés sans recalcul rendraient des résultats périmés sans le signaler.
 - **Le schéma Zod canonique est délibérément reporté.** La spec impose une description Zod unique de la recette (tâche T2) avec un pont explicite vers les validateurs Convex. Son objet est de valider la **sortie du modèle** — il n'y a aucune sortie de modèle dans ce plan. L'écrire ici reviendrait à figer une forme avant d'avoir vu ce que le spike T1 produit réellement. Il appartient au plan d'ingestion, et c'est lui qui devra prouver l'équivalence avec `convex/schema.ts`. La spec a été amendée en conséquence — voir l'« Arbitrage du 2026-08-09 » et le rattachement de T2 dans [`2026-08-08-table-des-recettes-tasks.md`](../../specs/2026-08-08-table-des-recettes-tasks.md).
+- **`noUncheckedIndexedAccess` est activé** dans `tsconfig.json` (ajouté à l'exécution de la tâche 6). Indexer un tableau ou un `Record` hors borne rend `undefined` à l'exécution ; sans ce drapeau, le type prétend le contraire et `@typescript-eslint/no-unnecessary-condition` déclare « toujours vrai » des gardes qui sont nécessaires. Toute indexation doit donc être gardée, ou passer par un prédicat de type.
 - **Aucun commit automatique.** Les étapes « point d'arrêt » sont des relectures humaines ; le commit reste à la main de l'utilisateur, y compris son message.
 
 ## File Structure
@@ -369,7 +370,7 @@ const LIGATURES: Record<string, string> = { œ: "oe", æ: "ae", Œ: "oe", Æ: "a
 
 export function normalizeText(input: string): string {
   return input
-    .replace(/[œæŒÆ]/g, (c) => LIGATURES[c])
+    .replace(/[œæŒÆ]/g, (c) => LIGATURES[c] ?? c)
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
@@ -900,7 +901,10 @@ export function singularize(word: string): string {
 function singularizeHead(tail: string): string {
   // Le split capturant préserve les espaces d'origine.
   const parts = tail.split(/(\s+)/);
-  const isWord = (part: string) => part !== "" && !/^\s+$/.test(part);
+  // Prédicat de type : il sert aussi bien à sauter les séparateurs qu'à écarter le
+  // `undefined` d'une indexation hors borne, sans quoi chaque usage devrait le refaire.
+  const isWord = (part: string | undefined): part is string =>
+    part !== undefined && part !== "" && !/^\s+$/.test(part);
 
   for (let i = 0; i < parts.length; i += 1) {
     const word = parts[i];
@@ -1039,7 +1043,7 @@ describe("groupByLetter", () => {
   test("un groupe d'un seul élément est un groupe valide", () => {
     const result = groupByLetter([{ title: "Tartiflette" }]);
     expect(result).toHaveLength(1);
-    expect(result[0].letter).toBe("T");
+    expect(result[0]?.letter).toBe("T");
   });
 });
 ```

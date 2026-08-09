@@ -105,7 +105,10 @@ export function singularize(word: string): string {
 function singularizeHead(tail: string): string {
   // Le split capturant préserve les espaces d'origine.
   const parts = tail.split(/(\s+)/);
-  const isWord = (part: string) => part !== "" && !/^\s+$/.test(part);
+  // Prédicat de type : il sert aussi bien à sauter les séparateurs qu'à écarter le
+  // `undefined` d'une indexation hors borne, sans quoi chaque usage devrait le refaire.
+  const isWord = (part: string | undefined): part is string =>
+    part !== undefined && part !== "" && !/^\s+$/.test(part);
 
   for (let i = 0; i < parts.length; i += 1) {
     const word = parts[i];

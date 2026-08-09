@@ -24,6 +24,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    /* Indexer un tableau ou un Record hors borne rend `undefined` à l'exécution. Sans ce
+       drapeau, le type prétend le contraire et le lint déclare « toujours vrai » des gardes
+       qui, elles, sont nécessaires. */
+    "noUncheckedIndexedAccess": true
   }
 }
