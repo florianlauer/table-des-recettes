@@ -1,12 +1,18 @@
 import { IMAGE_HEADER_BYTES, sniffImageHeader } from './imageHeader'
+import type { ImageRefusalKind } from './imageHeader'
 
 export const MAX_LONG_EDGE = 2000
 export const JPEG_QUALITY = 0.8
 export const MAX_OUTPUT_BYTES = 4 * 1024 * 1024
 
+// The header refusals travel through unchanged, so they stay part of the union rather than being
+// widened into a bare string the caller can no longer discriminate.
+export type CompressionRefusalKind =
+  ImageRefusalKind | 'encode_failed' | 'output_too_large'
+
 export type CompressionResult =
   | { ok: true; blob: Blob; width: number; height: number }
-  | { ok: false; kind: string; message: string }
+  | { ok: false; kind: CompressionRefusalKind; message: string }
 
 function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
   return new Promise((resolve) =>
