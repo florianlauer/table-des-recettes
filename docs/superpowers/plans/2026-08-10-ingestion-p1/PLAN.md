@@ -189,7 +189,7 @@ déraisonnable.
 
 ### 7. T5 — `src/lib/compress.ts`, en deux étages
 
-La version précédente de ce plan affirmait que « le décodage *est* le garde-fou ». Ce n'était vrai
+La version précédente de ce plan affirmait que « le décodage _est_ le garde-fou ». Ce n'était vrai
 qu'à moitié : `createImageBitmap()` peut allouer l'image en pleine résolution avant tout
 redimensionnement, donc un fichier compact mais gigantesque en pixels tue l'onglet avant qu'un refus
 puisse s'afficher. Le garde-fou précède donc le décodage.
@@ -343,8 +343,8 @@ en offre mille.
 `convex/convex.config.ts` (fichier nouveau), avec deux limites nommées, sans clé — un seul
 administrateur :
 
-| Limite         | Type         | Quota | Période | Burst | Consommée dans                          |
-| -------------- | ------------ | ----- | ------- | ----- | --------------------------------------- |
+| Limite         | Type         | Quota | Période | Burst | Consommée dans                           |
+| -------------- | ------------ | ----- | ------- | ----- | ---------------------------------------- |
 | `scanCreation` | token bucket | 30    | 1 h     | 10    | `generateUploadUrl` **uniquement**       |
 | `extraction`   | fixed window | 60    | 1 h     | —     | `reserve`, **en dernier** (voir étape 9) |
 
@@ -404,7 +404,7 @@ LEASE_MS > REQUEST_TIMEOUT_MS × MAX_ATTEMPTS + marge
 L'idempotence protège les **écritures**, pas la **dépense** : si le lease expire pendant qu'un appel
 OpenRouter est encore en vol, un second worker part sur le même scan et la page est facturée deux
 fois. Le premier verra sa finalisation rejetée — les données restent justes, l'argent est parti.
-`LEASE_MS` doit donc majorer la durée maximale d'un appel *avec* ses retries, pas sa latence moyenne
+`LEASE_MS` doit donc majorer la durée maximale d'un appel _avec_ ses retries, pas sa latence moyenne
 de 6,1 s. `REQUEST_TIMEOUT_MS` est fixé explicitement et les deux sont des constantes nommées dans le
 même fichier, avec le calcul en commentaire.
 
@@ -412,10 +412,10 @@ même fichier, avec le calcul en commentaire.
 
 | Issue                                        | Mutation                         | Effet                                                          |
 | -------------------------------------------- | -------------------------------- | -------------------------------------------------------------- |
-| Extraction valide, au moins une recette      | `internal.extract.finalize`      | écrit les brouillons + `status: 'done'`                         |
-| Échec **terminal**, quel que soit `attempts`  | `internal.extract.recordFailure` | `status: 'failed'`, `error` — sort de la file immédiatement     |
-| Échec retryable, `attempts` sous le plafond  | `internal.extract.recordFailure` | `status: 'pending'`, `error`, lease libéré — le scan repassera  |
-| Échec retryable, `attempts` au plafond       | `internal.extract.recordFailure` | `status: 'failed'`, `error` — sort de la file                   |
+| Extraction valide, au moins une recette      | `internal.extract.finalize`      | écrit les brouillons + `status: 'done'`                        |
+| Échec **terminal**, quel que soit `attempts` | `internal.extract.recordFailure` | `status: 'failed'`, `error` — sort de la file immédiatement    |
+| Échec retryable, `attempts` sous le plafond  | `internal.extract.recordFailure` | `status: 'pending'`, `error`, lease libéré — le scan repassera |
+| Échec retryable, `attempts` au plafond       | `internal.extract.recordFailure` | `status: 'failed'`, `error` — sort de la file                  |
 
 Les deux mutations sont **clôturées par `attemptId`** : elles ne font rien si l'`attemptId` du
 document ne correspond plus à celui qu'on leur passe (`tasks.md:90`). Une relance après échec partiel
@@ -567,7 +567,7 @@ fiches et le code.
 12. **Exactement un `storageId` par scan en P1.** `imageStorageIds` reste un tableau parce que c'est le
     contrat de T8, mais toute autre cardinalité est refusée à l'entrée.
 13. **L'observabilité entre en P1.** Un pipeline dont la première exécution réelle ne dit pas ce qui
-   s'est passé n'est pas livrable, même si tous ses tests unitaires passent.
+    s'est passé n'est pas livrable, même si tous ses tests unitaires passent.
 14. **La surface d'administration minimale entre dans le périmètre.** Sans elle, ce plan livrerait une
     action que rien ne déclenche, une compression que rien n'appelle et une garde qui vérifie un jeton
     que rien ne fournit — et n'aurait aucun critère d'acceptation qui ne soit pas un test unitaire. Le

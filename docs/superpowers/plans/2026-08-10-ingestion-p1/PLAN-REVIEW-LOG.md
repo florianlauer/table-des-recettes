@@ -118,7 +118,7 @@ authentifié, puis `internalAction`, et plus aucun jeton au-delà de la frontiè
 
 Le **10** est strictement meilleur que mon invariant : `formatQuantity(scaleQuantity(...))` est une
 assertion exacte qui n'est pas un instantané. Le **6** transforme mon « délai de grâce arbitraire »
-en contrainte calculable. Le **9** m'oblige à admettre que « le décodage *est* le garde-fou » n'était
+en contrainte calculable. Le **9** m'oblige à admettre que « le décodage _est_ le garde-fou » n'était
 vrai qu'à moitié : le sniff d'en-tête donne le format, les dimensions et le plafond de pixels avant
 tout décodage, et c'est le même code qui produit le refus HEIC nommé. Les **2**, **5**, **8**, **11**
 et **13** sont des trous de conception que je remplis sans réserve.
@@ -176,7 +176,7 @@ VERDICT: REVISE
 **Les 8 constats sont acceptés, sans divergence de remède cette fois.**
 
 Le **4** est une erreur que j'avais écrite noir sur blanc dans l'ordre des opérations : consommer le
-quota *avant* de vérifier qu'il existe du travail transforme un double-clic en gaspillage de 60 unités
+quota _avant_ de vérifier qu'il existe du travail transforme un double-clic en gaspillage de 60 unités
 pour zéro appel utile. L'ordre correct est lease, puis travail disponible, puis quota, puis bascule —
 tout dans la même transaction.
 
@@ -393,3 +393,60 @@ issue, et sans elle la table croît indéfiniment.
 **APPROVED au round 5 sur 5.** 31 objections au total : 13, 8, 6, 4, puis 3 non bloquantes. Un seul
 désaccord de remède, au round 3 — diagnostic accepté, table `uploadedAssets` refusée, sweep retiré
 plutôt qu'agrandi.
+
+## Act 3 — Build
+
+Rôles inversés : Codex écrit avec accès complet, Claude relit le diff et fait tourner la preuve.
+`MAX_FIX_ROUNDS=2`. Périmètre confié : étapes 1-5, 7-10 et 12. Les étapes 6 (rejeu payant des 7
+pages) et 11 (preuve de bout en bout dans un navigateur) restent humaines.
+
+Baseline avant build : `tsc` propre, 8 fichiers / 74 tests, ESLint et Prettier propres.
+
+### Round 0 — build initial
+
+Codex livre 44 fichiers touchés. Preuve re-exécutée par Claude : `tsc` propre, 21 fichiers / **103
+tests**, ESLint et Prettier propres.
+
+Invariants de la spec vérifiés un par un, tous tenus : ordre de `reserve` (lease → travail → quota →
+bascule), `terminal = invalid_image || attempts >= MAX`, clôture par `attemptId` sur `finalize` et
+`recordFailure`, `runAfter(retryAfter)` sur rate-limit, sniff d'en-tête avant l'appel payé, aucun
+`storage.delete` dans `admin.ts` ni `extract.ts`, aucun `adminToken` au-delà de la frontière interne,
+aucun `"use node"`, base64 par tranches. Rejeu des fixtures : 1484/1588 = 93,45 %, plancher à 93 %.
+
+### Verdict de Claude — round 0 : cinq défauts
+
+1. **`compress.ts` déforme toute photo pivotée par EXIF.** Le canvas est dimensionné depuis l'en-tête
+   intrinsèque alors que `createImageBitmap` a déjà appliqué l'orientation. Une page en portrait
+   (4032×3024 + orientation 6) produit un bitmap 3024×4032 écrasé dans un canvas 2000×1500 — rapport
+   d'aspect détruit, sur le cas d'usage principal. **Trou de la spec, pas désobéissance** : Codex
+   l'avait signalé comme discutable dans son rapport avant de l'implémenter tel quel, ce que le
+   contrat lui demandait.
+2. **`sweepTickets` réintroduit la famine de préfixe** que Codex avait lui-même trouvée au round 3 de
+   l'acte 2. Dès que 100 tickets consommés de moins de 7 jours occupent la tête de la plage, la purge
+   ne supprime plus rien.
+3. **`reserve` fait deux `.collect()` non bornés** à chaque itération de vidage (`guidelines.md:331`).
+4. **Un scan malformé agit en barrière** : marqué `failed` puis `no_work` rendu, ce qui arrête la file
+   au lieu d'enjamber le scan.
+5. **Le quota borne les réservations, pas les appels HTTP** — une unité pouvait en acheter trois.
+
+### Round 1 — corrections Codex
+
+Les cinq corrigées, chacune avec son test de régression échouant avant et passant après. Canvas
+dimensionné depuis le bitmap orienté avec recalcul d'échelle ; deux plages indexées disjointes pour
+la purge des tickets ; index `by_status_started_at` avec `.take(1)` pour le lease et deux batches
+bornés ; scans malformés enjambés via un nouveau statut `continue` ; `MAX_TRANSPORT_ATTEMPTS = 1`,
+donc une unité de quota vaut au plus un appel facturable. `LEASE_MS` a suivi le changement (150 s)
+au lieu de rester périmé.
+
+### Verdict de Claude — round 1 : un test rejeté
+
+`convex/extract-source.test.ts` lisait `convex/extract.ts` comme du texte pour y vérifier l'absence
+de la sous-chaîne `.collect()` dans une tranche délimitée par `indexOf('const observationArgs')`.
+C'est une règle de lint déguisée en test : elle passerait si `.take(RESERVE_SCAN_BATCH)` était dans
+un commentaire, et un `.collect()` déplacé sous `observationArgs` lui échapperait. Elle teste la
+syntaxe, pas le comportement. Retiré par Claude — le contrat exigeait « un test par défaut », ce qui
+était le mauvais cadrage pour celui-là.
+
+**État final : `tsc` propre, 21 fichiers / 108 tests, ESLint et Prettier propres, harnais spike
+10 fichiers / 58 tests.** Un round de correction sur deux consommé. Aucun commit — le diff attend la
+relecture humaine.

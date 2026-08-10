@@ -1,14 +1,17 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
+import { RECIPE_TYPES } from '../src/lib/recipeTypes'
 
-export const recipeType = v.union(
-  v.literal('entree'),
-  v.literal('plat'),
-  v.literal('dessert'),
-  v.literal('apero'),
-  v.literal('petitDej'),
-  v.literal('autre'),
-)
+const recipeTypeLiterals = RECIPE_TYPES.map((type) => v.literal(type)) as [
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[0]>>,
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[1]>>,
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[2]>>,
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[3]>>,
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[4]>>,
+  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[5]>>,
+]
+
+export const recipeType = v.union(...recipeTypeLiterals)
 
 export const ingredient = v.object({
   raw: v.string(),
@@ -30,10 +33,33 @@ export default defineSchema({
     startedAt: v.optional(v.number()),
     attempts: v.number(),
     error: v.optional(v.string()),
+    lastAttempt: v.optional(
+      v.object({
+        attemptId: v.string(),
+        model: v.string(),
+        servedProvider: v.optional(v.string()),
+        latencyMs: v.number(),
+        costUsd: v.number(),
+        failureKind: v.optional(
+          v.union(
+            v.literal('refusal'),
+            v.literal('truncated'),
+            v.literal('invalid_json'),
+            v.literal('invalid_schema'),
+            v.literal('timeout'),
+            v.literal('transport'),
+            v.literal('no_recipes'),
+            v.literal('invalid_image'),
+          ),
+        ),
+        repairCount: v.number(),
+      }),
+    ),
     purgeAfter: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index('by_status', ['status'])
+    .index('by_status_started_at', ['status', 'startedAt'])
     .index('by_purge_after', ['purgeAfter']),
 
   recipes: defineTable({
@@ -43,6 +69,7 @@ export default defineSchema({
     type: recipeType,
     servings: v.optional(v.number()),
     ingredients: v.array(ingredient),
+    ingredientsInferred: v.boolean(),
     steps: v.array(v.string()),
     searchText: v.string(),
     status: v.union(v.literal('review'), v.literal('published')),
@@ -66,4 +93,21 @@ export default defineSchema({
       searchField: 'searchText',
       filterFields: ['status', 'type'],
     }),
+
+  uploadTickets: defineTable({
+    createdAt: v.number(),
+    consumedAt: v.optional(v.number()),
+    storageId: v.optional(v.id('_storage')),
+    scanId: v.optional(v.id('scans')),
+    outcome: v.optional(
+      v.union(
+        v.literal('ok'),
+        v.literal('missing_storage'),
+        v.literal('too_large'),
+      ),
+    ),
+    error: v.optional(v.string()),
+  })
+    .index('by_created_at', ['createdAt'])
+    .index('by_consumed_at_created_at', ['consumedAt', 'createdAt']),
 })

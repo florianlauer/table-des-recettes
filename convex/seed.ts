@@ -279,6 +279,7 @@ export const run = internalMutation({
       slugs.push(slug)
       await ctx.db.insert('recipes', {
         ...withSearchText(recipe),
+        ingredientsInferred: false,
         slug,
         status: 'published',
         publishedAt: Date.now(),

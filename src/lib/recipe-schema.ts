@@ -1,15 +1,9 @@
 import { z } from 'zod'
+import { RECIPE_TYPES } from './recipeTypes.js'
 
-export const RECIPE_SCHEMA_VERSION = '1'
+export const RECIPE_SCHEMA_VERSION = '2'
 
-export const recipeTypeSchema = z.enum([
-  'entree',
-  'plat',
-  'dessert',
-  'apero',
-  'petitDej',
-  'autre',
-])
+export const recipeTypeSchema = z.enum(RECIPE_TYPES)
 
 export const ingredientSchema = z.strictObject({
   raw: z.string(),
@@ -18,7 +12,7 @@ export const ingredientSchema = z.strictObject({
   label: z.string().nullable(),
 })
 
-export const recipeSchema = z.strictObject({
+export const recipeSchemaV1 = z.strictObject({
   title: z.string(),
   type: recipeTypeSchema,
   servings: z.number().nullable(),
@@ -26,9 +20,19 @@ export const recipeSchema = z.strictObject({
   steps: z.array(z.string()),
 })
 
-export const extractionSchema = z.strictObject({
+export const extractionSchemaV1 = z.strictObject({
+  recipes: z.array(recipeSchemaV1),
+})
+
+export const recipeSchema = recipeSchemaV1.extend({
+  ingredientsInferred: z.boolean(),
+})
+
+export const extractionSchemaV2 = z.strictObject({
   recipes: z.array(recipeSchema),
 })
+
+export const extractionSchema = extractionSchemaV2
 
 export type Extraction = z.infer<typeof extractionSchema>
 
@@ -114,6 +118,7 @@ export type DomainExtraction = {
       unit: string | undefined
       label: string | undefined
     }>
+    ingredientsInferred: boolean
     steps: string[]
   }>
 }
@@ -121,7 +126,7 @@ export type DomainExtraction = {
 export function normalizeExtraction(extraction: Extraction): DomainExtraction {
   return {
     recipes: extraction.recipes.map(
-      ({ title, type, servings, ingredients, steps }) => ({
+      ({ title, type, servings, ingredients, ingredientsInferred, steps }) => ({
         title,
         type,
         servings: servings ?? undefined,
@@ -131,6 +136,7 @@ export function normalizeExtraction(extraction: Extraction): DomainExtraction {
           unit: unit ?? undefined,
           label: label ?? undefined,
         })),
+        ingredientsInferred,
         steps,
       }),
     ),

@@ -36,6 +36,7 @@ function actual(overrides: Record<string, unknown> = {}): unknown {
           unit: null,
           label: null,
         })),
+        ingredientsInferred: false,
         steps: [...truth.recipes[0]!.steps],
         ...overrides,
       },

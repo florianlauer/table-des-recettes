@@ -67,7 +67,7 @@ livrable de T2, hors du socle.
 > portions, moitié de T6) est livré par le **plan socle et vitrine**, qui en a besoin pour la
 > fiche recette ; T6 ne fait alors que le rejouer contre les fixtures du spike.
 
-- [ ] **T2 · P1 · schéma · plan d'ingestion** (human ~2h / CC ~20min) — Schéma Zod source unique + pont vers les validateurs Convex
+- [x] **T2 · P1 · schéma · plan d'ingestion** (human ~2h / CC ~20min) — Schéma Zod source unique + pont vers les validateurs Convex
   - **Origine** : Qualité de code, issue 4 + Codex #14 — structure dupliquée à trois endroits,
     et le pont Zod↔Convex n'est pas gratuit
   - **Ordre** : s'exécute **après** T1 et **après** le plan socle. `convex/schema.ts` existe déjà
@@ -81,7 +81,7 @@ livrable de T2, hors du socle.
     `raw` des ingrédients, normalisé sans accents, recalculé à chaque écriture. Il ne fait pas
     partie du schéma d'extraction Zod et ne doit jamais être demandé au modèle
 
-- [ ] **T3 · P1 · convex** (human ~3h / CC ~30min) — Finalisation atomique avec `attemptId`
+- [x] **T3 · P1 · convex** (human ~3h / CC ~30min) — Finalisation atomique avec `attemptId`
   - **Origine** : Codex #9, #10, #11 — la sérialisation décrite ne sérialisait rien, les retries
     n'étaient pas idempotents, et le bouton de relance pouvait faire tourner deux workers
   - **Fichiers** : `convex/extract.ts`, `convex/schema.ts`
@@ -90,7 +90,7 @@ livrable de T2, hors du socle.
     à `done` tiennent dans une seule mutation, rejetée si l'`attemptId` ne correspond plus
   - **Test** : une relance après échec partiel ne crée aucun doublon
 
-- [ ] **T4 · P1 · auth** (human ~1h / CC ~10min) — `requireAdmin` sur mutations, actions **et** queries
+- [x] **T4 · P1 · auth** (human ~1h / CC ~10min) — `requireAdmin` sur mutations, actions **et** queries
   - **Origine** : Codex #12 — les queries Convex sont publiques par défaut ; la garde initiale
     laissait brouillons, compteurs et URLs d'images lisibles par n'importe qui
   - **Fichiers** : `convex/auth.ts`
@@ -98,7 +98,7 @@ livrable de T2, hors du socle.
     mutation ; secret aléatoire fort en variable d'environnement ; rate limit sur extraction et
     relance
 
-- [ ] **T5 · P1 · upload** (human ~1h / CC ~10min) — Garde-fou format image + plafond en octets
+- [x] **T5 · P1 · upload** (human ~1h / CC ~10min) — Garde-fou format image + plafond en octets
   - **Origine** : Modes de panne (HEIC) + Codex #4 — échec silencieux **et facturé** : un HEIC
     ne se décode pas hors Safari, une image vide part au modèle, la réponse est « aucune recette
     détectée » sans indice sur la cause
@@ -107,13 +107,19 @@ livrable de T2, hors du socle.
     scan et tout appel facturé ; plafond en octets en plus du plafond en pixels
   - **Indépendant du spike** — peut démarrer immédiatement
 
-- [ ] **T6 · P1 · ingrédients** (human ~1h / CC ~10min) — `raw` canonique + structure optionnelle
+- [x] **T6 · P1 · ingrédients** (human ~1h / CC ~10min) — `raw` canonique + structure optionnelle
   - **Origine** : Codex #8 — `{quantity, unit, label}` ne sait pas représenter « 2 à 3 gousses »,
     « une boîte de 400 g », « beurre ou margarine », les sous-sections
   - **Fichiers** : `src/lib/recipe-schema.ts`, `src/lib/scale.ts`
   - **Vérifier** : `raw` toujours présent et faisant foi ; le recalcul de portions est
     best-effort et laisse inchangées les lignes sans `quantity` ; arrondis testés avec et sans
     unité
+
+> **État réellement provisionné avant T2–T6.** PR #2 avait déjà créé les tables `scans` et
+> `recipes`, les champs de lease et de rétention, le tableau `imageStorageIds`, les champs
+> d'embellissement et la frontière d'écriture `withSearchText()`. Le spike avait déjà livré le Zod,
+> le JSON Schema dérivé et 101 fixtures en succès ; le socle avait déjà livré `scale.ts` et ses
+> tests. Cette passe a verrouillé et relié ces éléments au lieu de les recréer.
 
 ---
 

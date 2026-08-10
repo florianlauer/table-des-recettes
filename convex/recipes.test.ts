@@ -9,6 +9,7 @@ const base = {
   publishedAt: 1,
   beautifiedAccepted: false,
   beautifyStatus: 'idle' as const,
+  ingredientsInferred: false,
   steps: ['Étape unique.'],
 }
 

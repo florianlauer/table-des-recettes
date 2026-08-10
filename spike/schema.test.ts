@@ -40,6 +40,7 @@ describe('extraction schema', () => {
             { raw: '2 filets', quantity: '2 filets', unit: null, label: null },
             { raw: 'sel', quantity: 'une pincée', unit: null, label: null },
           ],
+          ingredientsInferred: false,
           steps: ['Cuire.'],
         },
       ],
@@ -70,6 +71,7 @@ describe('extraction schema', () => {
           ingredients: [
             { raw: '1 carotte', quantity: 1, unit: null, label: null },
           ],
+          ingredientsInferred: false,
           steps: ['Cuire.'],
         },
       ],
@@ -89,6 +91,7 @@ describe('extraction schema', () => {
           ingredients: [
             { raw: '1 carotte', quantity: 1, unit: null, label: null },
           ],
+          ingredientsInferred: false,
           steps: ['Cuire.'],
         },
       ],
@@ -113,6 +116,7 @@ describe('extraction schema', () => {
               label: undefined,
             },
           ],
+          ingredientsInferred: false,
           steps: ['Cuire.'],
         },
       ],

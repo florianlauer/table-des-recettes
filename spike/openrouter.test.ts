@@ -16,6 +16,7 @@ const validExtraction = {
       ingredients: [
         { raw: 'Une carotte', quantity: null, unit: null, label: null },
       ],
+      ingredientsInferred: false,
       steps: ['Cuire.'],
     },
   ],
