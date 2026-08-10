@@ -25,18 +25,30 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
   - **Livrables** : modèle et provider retenus (figés en variable d'environnement), schéma JSON
     réel, prompt, réponses brutes conservées comme fixtures de test
 
-- [ ] **T13 · P1 · spike** (human ~1h / CC ~20min) — Valider l'embellissement d'image
-  - **Origine** : ajout de périmètre post-review — même raisonnement que T1, hypothèse non
-    vérifiée avant construction d'interface
-  - **Méthode** : même échelle que T1 — le modèle d'édition le moins cher d'abord, on monte
-    seulement s'il échoue
-  - **Critère de succès, binaire** : sur 2-3 photos de plats prises depuis une page de magazine,
-    le plat est-il reconnaissable comme **le même** ? Dressage, vaisselle et ingrédients visibles
-    préservés. Un rendu plus beau montrant un autre plat est un échec, pas un compromis
-  - **Livrables** : modèle d'édition retenu (figé en variable d'environnement), prompt de
-    restauration, verdict sur la routabilité via OpenRouter (sa couverture en modèles à sortie
-    image est plus étroite qu'en texte — si le modèle n'y est pas, il faut une clé Google
-    directe, donc un second fournisseur)
+- [x] **T13 · P1 · spike** — Valider l'embellissement d'image — **positif, sous condition d'entrée**
+  - **Résultats** : `spike13/RESULTS.md`. Banc et rendus sur la branche du spike
+  - **Retenu** : `google/gemini-2.5-flash-image`, prompt `v2`, **0,03944 USD** et **9,1 s** par
+    image. Dépense totale du spike : 2,29 USD sur un plafond de 10
+  - **Repli disponible et chiffré** : `PROMPT_V3` (`spike13/prompt.ts`) sort l'exigence d'aplomb de
+    la liste et la détaille. Mesuré à **7 franchissements sur 8 contre 5**, inclinaison supprimée
+    partout — mais écart plus fort au plat d'origine et **+23 % de latence** (11,2 s), ce qui lui a
+    coûté le choix. À activer si des cadres inclinés apparaissent en usage réel : aucune mesure à
+    refaire
+  - **Critère révisé en cours de spike** : l'ordre des barrières a été inversé après examen des
+    premiers rendus. C'est la **crédibilité photographique** qui décide (« est-ce autre chose
+    qu'une photo de photo ? ») ; la fidélité au plat n'est plus qu'un **plancher de
+    reconnaissabilité**. Écarts acceptés et consignés : décor de fond re-rendu, texture de
+    l'aliment re-rendue. Aucun plat n'est devenu un autre plat
+  - **Condition d'entrée, contre-intuitive** : le modèle restaure quand il doit **détourer** le
+    texte de la page. Sur un gros plan déjà recadré, il renvoie l'entrée à peine affûtée, trame
+    d'impression comprise — **plan large 4 sur 4, gros plan 1 sur 4** avec le prompt retenu. Ne pas
+    recadrer avant l'appel
+  - **Routabilité OpenRouter** : réglée, **aucun second fournisseur**. Pas de clé Google directe,
+    pas de secret supplémentaire — la clé OpenRouter de l'extraction suffit
+  - **Mode d'échec à connaître** : les modèles d'image à tarif forfaitaire vivent sur une seconde
+    surface (`/api/v1/images/models`, `POST /api/v1/images/generations`). Le moins cher testé ne
+    retire pas le texte imprimé, il le **réécrit en charabia lisible**. Branche abandonnée par
+    décision, le second chemin d'appel n'est pas implémenté
 
 > Rien de ce qui **dépend du résultat de l'extraction** ne démarre avant T1 : le formulaire de
 > correction, la file de traitement des scans, le schéma d'extraction lui-même. T13 est
@@ -105,6 +117,15 @@ livrable de T2, hors du socle.
   - **Fichiers** : `src/lib/compress.ts`
   - **Vérifier** : image valide acceptée ; image non décodable refusée **avant** création du
     scan et tout appel facturé ; plafond en octets en plus du plafond en pixels
+  - **Contrainte issue de T13** : normaliser à **2000 px sur le grand côté, sRGB, JPEG q80**,
+    exactement comme le banc. Une réduction plus agressive supprimerait d'elle-même la trame
+    d'impression et le moiré — les défauts que l'embellissement est censé corriger — et
+    invaliderait le verdict de T13
+  - **HEIC : refuser, pas seulement avertir.** T13 a rencontré le cas côté serveur : `sharp`
+    (libvips 8.18.3 / libheif) échoue sur un HEIC d'iPhone avec « Security limit exceeded:
+    Number of references in iref box (48) exceeds the security limits of 16 ». Le mode de panne
+    n'est donc pas seulement « les navigateurs ne décodent pas », c'est aussi « le serveur ne
+    décode pas »
   - **Indépendant du spike** — peut démarrer immédiatement
 
 - [ ] **T6 · P1 · ingrédients** (human ~1h / CC ~10min) — `raw` canonique + structure optionnelle
@@ -173,6 +194,21 @@ livrable de T2, hors du socle.
     - la vitrine gère les trois cas : version acceptée, originale seule, aucune image
   - **Attention coût** : une génération d'image coûte nettement plus qu'une extraction de texte.
     Aucune reprise automatique, régénération toujours déclenchée à la main.
+  - **Acquis de T13 — T14 est confirmée telle que spécifiée** :
+    - `BEAUTIFY_MODEL = google/gemini-2.5-flash-image`, prompt `v2`, **0,03944 USD** et **9,1 s**
+      par image mesurés. Le prompt et le modèle sont repris tels quels de `spike13/`
+    - **Ne pas recadrer avant l'appel.** T13 a montré l'inverse de l'intuition : le modèle restaure
+      quand il doit détourer le texte de la page, et ne fait rien d'un gros plan déjà détouré.
+      Envoyer la photo telle qu'elle est prise, colonne de texte comprise
+    - **Le bouton « régénérer » est justifié par la mesure**, pas par confort : une photo sur quatre
+      rend un verdict différent selon la passe, à modèle, prompt et entrée identiques — et le plat
+      qui diverge change d'une version de prompt à l'autre, donc la divergence est du bruit de
+      modèle. Sans le bouton, cette photo serait publiée en l'état ou abandonnée
+    - **9,1 s interdit l'appel synchrone** dans le formulaire de scan, mais reste assez court pour
+      une attente explicite à l'écran
+    - **Pas d'agrandissement en vitrine à prévoir** : le gain se voit massivement à 200 px, et les
+      écarts tolérés (décor de fond et texture re-rendus) restent invisibles aux deux échelles.
+      La photo reste l'illustration de 200 px prévue par le design
 
 ---
 
@@ -181,6 +217,8 @@ livrable de T2, hors du socle.
 - [ ] **T12 · P3 · déploiement** (human ~2h / CC ~20min) — Câbler Convex ↔ Vercel, previews comprises
   - **Origine** : Codex #3 — absent de la spec initiale
   - **Fichiers** : `package.json`, config Vercel
+  - **Acquis de T13** : **aucun second fournisseur à câbler.** L'embellissement passe par la même
+    clé OpenRouter que l'extraction — pas de clé Google directe, pas de secret supplémentaire
   - **Vérifier** : `npx convex deploy --cmd 'npm run build'` ; clés de déploiement production et
     preview distinctes ; variables d'environnement configurées sur les backends de preview, qui
     sont **vides et séparés**

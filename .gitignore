@@ -50,3 +50,7 @@ todos.json
 .claude/skills/
 .agents/
 skills-lock.json
+
+# Spike T13 — 32 rendus pèsent des dizaines de Mo ; seuls ceux du modèle retenu seront commités à la main.
+spike13/fixtures/renders/
+spike13/review.html
