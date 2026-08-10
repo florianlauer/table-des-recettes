@@ -92,6 +92,52 @@ img {
   padding: 0 1.5rem 4rem;
 }
 
+/* --- admin --- */
+
+.admin-page {
+  padding-top: 3rem;
+  font-size: var(--type-control);
+}
+.admin-page__header {
+  border-bottom: 1px solid var(--ochre);
+  margin-bottom: 2rem;
+}
+.admin-page__header h1,
+.admin-page__scans h2 {
+  font-family: var(--serif);
+}
+.admin-page__field {
+  display: grid;
+  gap: 0.4rem;
+  margin: 1rem 0;
+  max-width: 42rem;
+}
+.admin-page__field input {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.6rem;
+}
+.admin-page button {
+  border: 1px solid var(--ochre);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  padding: 0.5rem 0.8rem;
+}
+.admin-page__scans {
+  margin-top: 2.5rem;
+}
+.admin-page__scan {
+  border-top: 1px solid var(--rule);
+  padding: 1rem 0;
+}
+.admin-page__scan h3,
+.admin-page__scan p {
+  margin: 0.3rem 0;
+}
+
 /* --- index --- */
 
 .masthead {

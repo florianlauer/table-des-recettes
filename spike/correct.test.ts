@@ -24,6 +24,7 @@ const original: Extraction = {
           label: 'cacao brut',
         },
       ],
+      ingredientsInferred: false,
       steps: [
         'Pivrez, salez et laissez mijoter 20 min.',
         'Par-semez le plat de sésame.',

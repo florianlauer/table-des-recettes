@@ -29,6 +29,7 @@
     "verify13": "tsc -p spike13/tsconfig.json --noEmit && vitest run --config spike13/vitest.config.ts"
   },
   "dependencies": {
+    "@convex-dev/rate-limiter": "^0.3.2",
     "@convex-dev/react-query": "^0.1.0",
     "@tanstack/react-query": "^5.101.4",
     "@tanstack/react-router": "latest",
