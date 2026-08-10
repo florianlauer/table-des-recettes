@@ -1,0 +1,204 @@
+name: Preview
+
+# `pull_request_target` and not `pull_request`. On `pull_request`, GitHub runs the workflow file as
+# the pull request writes it, so a pull request could rewrite this very file and move the secrets
+# into a job it controls — the split below would be decoration. `pull_request_target` runs the
+# definition from the default branch. The price is that the pull request's code is never checked
+# out unless a job asks for it explicitly, and exactly one job does.
+#
+# `labeled` only, without `synchronize`: the label is the approval, and it approves one SHA. With
+# `synchronize`, a commit pushed after the label would redeploy on its own and reuse an approval it
+# never received. Relaunching after a new commit means removing and re-adding the label.
+on:
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+# Serialised, not cancelled: `--preview-create` deletes and recreates the backend, so two
+# overlapping runs on the same pull request could destroy one while the other imports into it.
+concurrency:
+  group: preview-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  # Named after the pull request, never after the branch: two branches can share a name, and a `/`
+  # in a branch name is not a valid deployment reference.
+  PREVIEW_NAME: pr-${{ github.event.pull_request.number }}
+
+jobs:
+  # The only job that runs the pull request's code. It holds the preview deploy key and nothing
+  # else — no Vercel token, no production credential.
+  build:
+    if: >-
+      github.event.label.name == 'preview' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Third-party actions are pinned by commit here, unlike ci.yml: this workflow handles secrets
+      # and a copy of the production database, so a moved tag must not be able to change what runs.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `pull_request_target` checks out the base by default. This is the one line where
+          # unreviewed code enters the chain, and `persist-credentials: false` keeps the runner's
+          # token out of its `.git`.
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # One command creates the preview backend, pushes the functions to it, and builds the
+      # frontend against that backend's URL. `NITRO_PRESET` is an environment variable rather than
+      # a pin in vite.config.ts, so the local build stays host-agnostic.
+      - name: Create the preview backend and build the frontend
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
+          NITRO_PRESET: vercel
+        run: >-
+          npx convex deploy --preview-create "$PREVIEW_NAME"
+          --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: vercel-output
+          path: .vercel/output
+          # The build output lives under a dotted directory, which the action skips by default.
+          include-hidden-files: true
+          # It only has to survive until the publish job of this same run.
+          retention-days: 1
+
+  # Trusted: checks out already-merged code, never the branch. Holds the production backup key, so
+  # it is deliberately the job that does not run anything the pull request wrote.
+  data:
+    needs: build
+    if: >-
+      github.event.label.name == 'preview' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      # `--ignore-scripts`: this job holds the production backup key, and it needs the Convex CLI,
+      # not any package's install hook. Installing from the lockfile rather than calling a bare
+      # `npx convex` also pins the CLI to the version the repository was verified against.
+      - name: Install (no install scripts)
+        run: npm ci --ignore-scripts
+
+      # Two steps, one secret each, both mapped onto CONVEX_DEPLOY_KEY — the only name the CLI
+      # reads. The backup key can create and download a backup and nothing else; it must never be
+      # the key that writes.
+      - name: Export production
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_BACKUP_KEY_PROD }}
+        # `--include-file-storage` is required: the export leaves stored files out by default, and
+        # without them every `_storage` reference would land dangling in the preview.
+        run: npx convex export --prod --include-file-storage --path snapshot.zip
+
+      - name: Import into the preview backend
+        shell: bash
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
+        run: |
+          if unzip -Z1 snapshot.zip | grep -q 'documents\.jsonl$'; then
+            npx convex import --deployment "preview/$PREVIEW_NAME" --replace-all --yes snapshot.zip
+          else
+            # Production has no table yet — the case until a draft can be published. Skipping is
+            # only safe because the build job just recreated the backend: it is already empty, so
+            # there is nothing stale left behind.
+            echo "Snapshot carries no table: production is still empty, import skipped."
+          fi
+
+      # Separates an import that technically succeeded from a backend that is actually usable.
+      # `countsByType` is a public query of the storefront, so it needs no admin token.
+      - name: Smoke check
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
+        run: npx convex run --deployment "preview/$PREVIEW_NAME" recipes:countsByType
+
+  # Trusted: no checkout at all, and the sole holder of the Vercel token — `VERCEL_PROJECT_ID` does
+  # not restrict what that token can do, it is valid for the whole team. Waiting on `data` as well
+  # as `build` keeps a failed import from leaving a public preview online over an unknown state.
+  publish:
+    needs: [build, data]
+    if: >-
+      github.event.label.name == 'preview' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: vercel-output
+          path: .vercel/output
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+
+      # Exact version, not a range: `npx vercel` resolves whatever is current, which is not what
+      # was verified. Uploading a prebuilt output means no remote build, so the `ignoreCommand` in
+      # vercel.json — which cancels every non-production git build — never comes into play here.
+      - name: Deploy the prebuilt output
+        id: deploy
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          url=$(npx --yes vercel@54.14.0 deploy --prebuilt --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+  # Trusted: no checkout, and the only job allowed to write to the pull request. That permission
+  # therefore never passes through the job running unreviewed code.
+  comment:
+    needs: publish
+    if: >-
+      github.event.label.name == 'preview' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PREVIEW_URL: ${{ needs.publish.outputs.url }}
+          DEPLOYED_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          script: |
+            // The SHA is part of the message on purpose: runs are queued rather than cancelled, so
+            // a preview can briefly correspond to an earlier commit, and only the SHA shows it.
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                `Preview déployée pour \`${process.env.DEPLOYED_SHA}\` :`,
+                ``,
+                process.env.PREVIEW_URL,
+                ``,
+                `L'URL demande une session Vercel — c'est la protection de déploiement, pas une panne.`,
+                `Le backend porte une copie de la base de production et expire au bout de 5 jours.`,
+              ].join('\n'),
+            })

@@ -16,15 +16,29 @@ Build the production app with:
 npm run build
 ```
 
-## Deploy with Nitro
+## Déploiement
 
-This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
+La production vit sur Vercel, le backend sur Convex, et les deux sont poussés par la même
+commande. C'est `vercel.json` qui la porte :
 
-```bash
-npm run build
-node dist/server/index.mjs
+```
+npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
 ```
 
-The build output is a self-contained Node server. To deploy, push the `dist/` directory to your host (Render, Fly.io, your own VPS, etc.) and run the server command above.
+`convex deploy` pousse les fonctions sur le déploiement Convex désigné par `CONVEX_DEPLOY_KEY`,
+injecte son URL dans `VITE_CONVEX_URL`, puis lance le build du frontend. Un push sur `main`
+déclenche la production.
 
-For host-specific presets (Vercel, Netlify, Cloudflare, AWS Lambda, etc.) and tuning, see https://v3.nitro.build/deploy.
+Nitro n'a **pas** de preset épinglé : il reconnaît Vercel tout seul. Hors Vercel, le même
+`npm run build` produit donc un serveur Node autonome, lançable par `node dist/server/index.mjs`
+sur n'importe quel hébergeur compatible. Voir https://v3.nitro.build/deploy pour les autres
+presets.
+
+Les previews ne se déclenchent pas toutes seules : `vercel.json` annule tout build git qui n'est
+pas la production, et poser le label `preview` sur une pull request lance
+`.github/workflows/preview.yml`, qui crée un backend Convex jetable, y copie la base de production
+et publie un frontend. Le tout expire au bout de 5 jours.
+
+La procédure d'installation initiale — création du déploiement Convex de production, variables
+d'environnement, secrets GitHub, protection de déploiement Vercel — est décrite dans
+[`docs/superpowers/plans/2026-08-10-t12-deploiement/PLAN.md`](./docs/superpowers/plans/2026-08-10-t12-deploiement/PLAN.md).
