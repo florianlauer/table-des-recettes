@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Least privilege: the checks only read the tree. Nothing here comments, labels or publishes.
+permissions:
+  contents: read
+
+# A new push to the same branch makes the previous run's answer worthless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Node 22 to match devenv.nix (`nodejs_22`), which is the project's source of truth for the
+      # local toolchain. Bumping one without the other is how CI stops reproducing local results.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      # `npm ci` and not `npm install`: the lockfile is committed, and a CI that resolves fresh
+      # versions is not testing the tree under review.
+      - name: Install
+        id: install
+        run: npm ci
+
+      # Every check below runs even when an earlier one fails, so one run reports all six results
+      # instead of stopping at the first. They are skipped only when the install itself failed —
+      # their output would be noise about missing modules, not about the code.
+      - name: Format (prettier)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run check
+
+      - name: Lint (eslint)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run lint
+
+      - name: Typecheck (application)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run typecheck
+
+      - name: Tests (application)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm test
+
+      # The two spike benches keep their own tsconfig and vitest config, so they need their own
+      # commands. `verify*` are the only bench scripts that touch no network: the `ingest*`, `rank`,
+      # `walk`, `run*`, `correct` and `accept` scripts call OpenRouter and are billed. None of them
+      # belongs in CI, and consequently no API key has to exist as a repository secret.
+      - name: Tests (bench T1 — extraction)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run verify
+
+      - name: Tests (bench T13 — beautification)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run verify13

@@ -214,6 +214,51 @@ livrable de T2, hors du socle.
 
 ## Intendance — P3
 
+- [x] **T15 · P3 · CI** — Contrôles GitHub Actions sur les PR — **fait**
+  - **Origine** : constat sur la PR #3 (spike T13). Elle a été mergée avec **zéro check**. Le dépôt
+    n'a aucun `.github/workflows`. Les 18 fichiers du banc violaient le format prettier et 3 fichiers
+    violaient eslint (`import/consistent-type-specifier-style`) : rien ne l'a signalé, l'écart n'a été
+    trouvé qu'en lançant les commandes à la main pendant la synchronisation avec `main`. Le prochain
+    écart passera si personne n'y pense
+  - **Pourquoi en premier** : les trois tâches d'intendance restantes touchent la configuration du
+    dépôt. Sans contrôle automatique, chacune peut casser les deux autres sans que ça se voie avant
+    le merge. C'est aussi la tâche qui protège tout le reste du plan
+  - **Fichiers** : `.github/workflows/ci.yml` (à créer), `package.json` (ajouter un script
+    `typecheck`, absent aujourd'hui — l'application n'a que `tsc --noEmit` implicite, alors que les
+    deux bancs ont leur propre `verify`)
+  - **Vérifier** :
+    - déclenché sur les PR vers `main` et sur les push de `main`
+    - `npm ci` (le lockfile est versionné), pas `npm install`
+    - version de Node figée, alignée sur celle utilisée en local
+    - les six contrôles passent, chacun visible séparément dans l'interface : `npm run check`
+      (prettier), `npm run lint` (eslint), le typecheck de l'application, `npm test` (74 tests),
+      `npm run verify` (banc T1, 56 tests), `npm run verify13` (banc T13, 68 tests)
+    - une PR volontairement mal formatée est **bloquée**, pas seulement annotée
+  - **Contrainte à ne pas rater — la CI ne doit jamais dépenser d'argent.** Les deux bancs
+    contiennent des scripts qui appellent OpenRouter et sont facturés : `ingest`, `rank`, `walk`,
+    `run:spike`, `correct`, `accept`, `ingest13`, `run13`. Seuls les `verify*` sont hors réseau. La
+    CI ne lance que `check`, `lint`, `typecheck`, `test`, `verify`, `verify13` — jamais un `run*`.
+    Corollaire : **aucune clé API n'a à être exposée en secret de dépôt** pour cette tâche
+  - **Hors périmètre** : pas de déploiement, pas de preview, pas de publication — c'est T12
+  - **Livré** : `.github/workflows/ci.yml`, plus le script `typecheck` qui manquait
+    - **Un seul job, six étapes nommées.** Chaque étape porte
+      `if: !cancelled() && steps.install.outcome == 'success'`, donc un run rapporte **les six
+      résultats** au lieu de s'arrêter au premier échec — et les étapes sont sautées si
+      l'installation elle-même a échoué, leur sortie ne parlerait que de modules manquants. Six jobs
+      séparés auraient donné le même détail au prix de six `npm ci`
+    - **Node 22**, aligné sur `devenv.nix` (`nodejs_22`), pas sur un `.nvmrc` ajouté pour l'occasion :
+      une seule source de vérité, sinon les deux dérivent
+    - `actions/checkout@v7` et `actions/setup-node@v7`, majeurs courants au 2026-08-10, avec cache npm
+    - `permissions: contents: read` et `concurrency` avec `cancel-in-progress` : un nouveau push rend
+      la réponse du run précédent sans valeur
+    - **Aucun secret de dépôt**, conformément à la contrainte ci-dessus
+  - **Vérifié avant de pousser** : `node_modules` supprimé, `npm ci` rejoué, les six contrôles
+    relancés — tous verts. C'est la seule façon de savoir si la CI sera verte sans l'apprendre sur la
+    PR
+  - **Reste à faire, hors fichier** : la **protection de branche** sur `main`, qui seule rend le
+    contrôle bloquant. Un workflow sans elle annote sans empêcher de merger. À régler dans les
+    réglages du dépôt en exigeant le job `checks`
+
 - [ ] **T12 · P3 · déploiement** (human ~2h / CC ~20min) — Câbler Convex ↔ Vercel, previews comprises
   - **Origine** : Codex #3 — absent de la spec initiale
   - **Fichiers** : `package.json`, config Vercel
@@ -228,6 +273,8 @@ livrable de T2, hors du socle.
 ## Ordre d'exécution
 
 ```
+T15 CI (hors chaîne, faite — protège tout ce qui suit)
+
 T1 spike extraction ──┐          T13 spike embellissement (parallèle, indépendant)
    │                  │                        │
    ├──► T5, T6  ──────┤   (fonctions pures, démarrables tout de suite)
@@ -246,6 +293,11 @@ Lanes parallélisables : `src/lib/` (T5, T6) est indépendant de `convex/`. Les 
 T13) portent sur des hypothèses distinctes et tournent en parallèle. Une fois T2–T4 posés, T7,
 T8 et T9 touchent des zones disjointes et peuvent avancer en parallèle. T8, T10 et T14 partagent
 `src/routes/admin/` — à séquencer ou à coordonner.
+
+T15 ne dépendait de rien et ne bloquait rien formellement, mais elle était **hors chaîne et
+prioritaire** : elle ne touche que `.github/` et `package.json`, et tant qu'elle manquait, chaque
+tâche du plan pouvait casser les autres sans que rien ne le signale avant le merge — c'est ce qui est
+arrivé sur la PR #3. Faite le 2026-08-10.
 
 ## Non retenu
 
