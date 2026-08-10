@@ -1,0 +1,14 @@
+[
+  {
+    "model": "meta-llama/llama-4-scout",
+    "reason": "Fusionne toutes les étapes en un bloc unique (steps=1 sur A, B et C ; 2 blocs sur A alors que la page en imprime 8). Échec imputable au modèle : tous ses endpoints tombent."
+  },
+  {
+    "model": "mistralai/ministral-3b-2512",
+    "reason": "Tronque la ligne d'ingrédient à l'abréviation : « 1 cuill. » pour « 1 cuil. à soupe de piment d'Espelette », six fois sur la page B, et omet « 1 gousse d'ail ». Perte de données que le seul comptage ne voit pas (17 extraits pour 17 puces)."
+  },
+  {
+    "model": "google/gemma-3-4b-it",
+    "reason": "Ne s'arrête jamais en mode strict : finish_reason=length à 8000/8000 tokens sur la page A, là où gemma-4-26b en produit 843. Troncature systématique, ~5 min par appel."
+  }
+]

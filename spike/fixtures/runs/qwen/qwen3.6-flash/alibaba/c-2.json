@@ -1,0 +1,69 @@
+{
+  "model": "qwen/qwen3.6-flash",
+  "requestedProvider": "alibaba",
+  "page": "c",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "failure",
+  "reason": "invalid_schema",
+  "detail": "JSON invalide : SyntaxError: Unexpected end of JSON input",
+  "raw": {
+    "id": "gen-1786309269-TKaZXMEXnJcd2fLN9n1y",
+    "object": "chat.completion",
+    "created": 1786309269,
+    "model": "qwen/qwen3.6-flash",
+    "provider": "Alibaba",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": "{\n  \"recipes\": [\n    {\n      \"title\": \"Canette de Challans\",\n      \"type\": \"plat\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\n          \"raw\": \"1 canette de Challans\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"canette\"\n        },\n        {\n          \"raw\": \"1 dizaine d'oignons grelots\",\n          \"quantity\": 10,\n          \"unit\": null,\n          \"label\": \"dizaine\"\n        },\n        {\n          \"raw\": \"1 vingtaine de pommes de terre grenailles\",\n          \"quantity\": 20,\n          \"unit\": null,\n          \"label\": \"vingtaine\"\n        },\n        {\n          \"raw\": \"200 g de marrons\",\n          \"quantity\": 200,\n          \"unit\": \"g\",\n          \"label\": \"marrons\"\n        },\n        {\n          \"raw\": \"1 tranche épaisse de lard (250 g env.)\",\n          \"quantity\": 250,\n          \"unit\": \"g\",\n          \"label\": \"lard\"\n        },\n        {\n          \"raw\": \"2 gousses d'ail\",\n          \"quantity\": 2,\n          \"unit\": null,\n          \"label\": \"gousses\"\n        },\n        {\n          \"raw\": \"1 potimarron\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"potimarron\"\n        },\n        {\n          \"raw\": \"½ verre de bouillon de légumes\",\n          \"quantity\": 0.5,\n          \"unit\": \"verre\",\n          \"label\": \"bouillon de légumes\"\n        },\n        {\n          \"raw\": \"huile d'olive\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"huile d'olive\"\n        },\n        {\n          \"raw\": \"sel, poivre du moulin\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"sel, poivre du moulin\"\n        }\n      ],\n      \"steps\": [\n        \"Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d'huile d'olive.\",\n        \"Préchauffez le four à 180 °C (th. 6).\",\n        \"Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d'ail et des lamelles épaisses de potimarron.\",\n        \"Arrosez d'un généreux filet d'huile d'olive, salez et poivrez.\",\n        \"Posez la canette bien dorée au milieu de tous les légumes.\",\n        \"Enfournez et montez la température à 220 °C (th. 7-8).\",\n        \"Laissez cuire 35 min puis déglacez avec le bouillon de légumes.\",\n        \"Présentez dans un plat et servez.\"\n      ]\n    }\n  ]\n}",
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "{\n  \"recipes\": [\n    {\n      \"title\": \"Canette de Challans\",\n      \"type\": \"plat\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\n          \"raw\": \"1 canette de Challans\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"canette\"\n        },\n        {\n          \"raw\": \"1 dizaine d'oignons grelots\",\n          \"quantity\": 10,\n          \"unit\": null,\n          \"label\": \"dizaine\"\n        },\n        {\n          \"raw\": \"1 vingtaine de pommes de terre grenailles\",\n          \"quantity\": 20,\n          \"unit\": null,\n          \"label\": \"vingtaine\"\n        },\n        {\n          \"raw\": \"200 g de marrons\",\n          \"quantity\": 200,\n          \"unit\": \"g\",\n          \"label\": \"marrons\"\n        },\n        {\n          \"raw\": \"1 tranche épaisse de lard (250 g env.)\",\n          \"quantity\": 250,\n          \"unit\": \"g\",\n          \"label\": \"lard\"\n        },\n        {\n          \"raw\": \"2 gousses d'ail\",\n          \"quantity\": 2,\n          \"unit\": null,\n          \"label\": \"gousses\"\n        },\n        {\n          \"raw\": \"1 potimarron\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"potimarron\"\n        },\n        {\n          \"raw\": \"½ verre de bouillon de légumes\",\n          \"quantity\": 0.5,\n          \"unit\": \"verre\",\n          \"label\": \"bouillon de légumes\"\n        },\n        {\n          \"raw\": \"huile d'olive\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"huile d'olive\"\n        },\n        {\n          \"raw\": \"sel, poivre du moulin\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"sel, poivre du moulin\"\n        }\n      ],\n      \"steps\": [\n        \"Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d'huile d'olive.\",\n        \"Préchauffez le four à 180 °C (th. 6).\",\n        \"Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d'ail et des lamelles épaisses de potimarron.\",\n        \"Arrosez d'un généreux filet d'huile d'olive, salez et poivrez.\",\n        \"Posez la canette bien dorée au milieu de tous les légumes.\",\n        \"Enfournez et montez la température à 220 °C (th. 7-8).\",\n        \"Laissez cuire 35 min puis déglacez avec le bouillon de légumes.\",\n        \"Présentez dans un plat et servez.\"\n      ]\n    }\n  ]\n}",
+              "format": "unknown",
+              "index": 0
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 3236,
+      "completion_tokens": 752,
+      "total_tokens": 3988,
+      "cost": 0.00145275,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00145275,
+        "upstream_inference_prompt_cost": 0.00060675,
+        "upstream_inference_completions_cost": 0.000846
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 751,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 14009.32362499999,
+  "actualCostUsd": 0.00145275
+}

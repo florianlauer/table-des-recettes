@@ -1,57 +1,76 @@
 :root {
   /* Warm off-white, not parchment: the ink and the rules are warm browns, so a neutral grey
      ground read clinical. The paper now shares their hue at very low chroma. */
-  --paper:        #F7F3EA;
-  --surface:      #FFFDF8;
+  --paper: #f7f3ea;
+  --surface: #fffdf8;
 
-  --ink:          #2E2723;
-  --ink-muted:    #6E645C;
+  --ink: #2e2723;
+  --ink-muted: #6e645c;
 
-  --ochre:        #9A5B2B;
-  --ochre-hover:  #7C4720;
-  --on-ochre:     #FFFFFF;
+  --ochre: #9a5b2b;
+  --ochre-hover: #7c4720;
+  --on-ochre: #ffffff;
 
-  --rule:         #C6BDB4;
-  --rule-strong:  #8A7F74;
-  --focus:        #9A5B2B;
+  --rule: #c6bdb4;
+  --rule-strong: #8a7f74;
+  --focus: #9a5b2b;
 
   /* One ink per dish type. Colour here is scanning information, not decoration: it is only
      ever carried by the word naming the type. All six sit between 4.86:1 and 5.72:1 on
      --paper, so none of them outweighs the others in a column of labels. */
-  --ink-entree:   #57683F;  /* vert laurier    85° */
-  --ink-plat:     #9A5B2B;  /* ocre, la marque 26° */
-  --ink-dessert:  #96455F;  /* prune          341° */
-  --ink-apero:    #3D6B78;  /* bleu ardoise   193° */
-  --ink-petitDej: #82631A;  /* miel brûlé      42° */
-  --ink-autre:    #6E645C;  /* gris chaud — le fourre-tout reste neutre */
+  --ink-entree: #57683f; /* vert laurier    85° */
+  --ink-plat: #9a5b2b; /* ocre, la marque 26° */
+  --ink-dessert: #96455f; /* prune          341° */
+  --ink-apero: #3d6b78; /* bleu ardoise   193° */
+  --ink-petitDej: #82631a; /* miel brûlé      42° */
+  --ink-autre: #6e645c; /* gris chaud — le fourre-tout reste neutre */
 
-  --type-meta:     clamp(0.9375rem, 0.869rem + 0.282vw, 1.0625rem);  /* 15 → 17 px */
-  --type-control:  clamp(1.0625rem, 0.994rem + 0.282vw, 1.1875rem);  /* 17 → 19 px */
-  --type-body:     clamp(1.125rem,  0.988rem + 0.563vw, 1.375rem);   /* 18 → 22 px */
-  --type-lead:     clamp(1.1875rem, 1.016rem + 0.704vw, 1.5rem);     /* 19 → 24 px */
-  --type-letter:   clamp(1.75rem,   1.338rem + 1.69vw,  2.5rem);     /* 28 → 40 px */
-  --type-section:  clamp(1.5rem,    1.294rem + 0.845vw, 1.875rem);   /* 24 → 30 px */
-  --type-title:    clamp(2.25rem,   1.426rem + 3.38vw,  3.75rem);    /* 36 → 60 px */
-  --type-masthead: clamp(2.5rem,    1.401rem + 4.51vw,  4.5rem);     /* 40 → 72 px */
+  --type-meta: clamp(0.9375rem, 0.869rem + 0.282vw, 1.0625rem); /* 15 → 17 px */
+  --type-control: clamp(
+    1.0625rem,
+    0.994rem + 0.282vw,
+    1.1875rem
+  ); /* 17 → 19 px */
+  --type-body: clamp(1.125rem, 0.988rem + 0.563vw, 1.375rem); /* 18 → 22 px */
+  --type-lead: clamp(1.1875rem, 1.016rem + 0.704vw, 1.5rem); /* 19 → 24 px */
+  --type-letter: clamp(1.75rem, 1.338rem + 1.69vw, 2.5rem); /* 28 → 40 px */
+  --type-section: clamp(1.5rem, 1.294rem + 0.845vw, 1.875rem); /* 24 → 30 px */
+  --type-title: clamp(2.25rem, 1.426rem + 3.38vw, 3.75rem); /* 36 → 60 px */
+  --type-masthead: clamp(2.5rem, 1.401rem + 4.51vw, 4.5rem); /* 40 → 72 px */
 
   --serif: Fraunces, Georgia, serif;
-  --sans:  "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", sans-serif;
+  --sans: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', sans-serif;
 
   --margin-w: 88px;
   --page-max: 1100px;
-  --band:     10px;
+  --band: 10px;
 }
 
 @media (max-width: 640px) {
-  :root { --margin-w: 44px; --band: 7px; }
+  :root {
+    --margin-w: 44px;
+    --band: 7px;
+  }
 }
 
 /* `--type-ink` is deliberately absent from `:root`: it has no default. It only exists on an
    element that declares its type, and every consumer names its own fallback. Resolving it here
    is what keeps any component from mapping a type to a colour in JavaScript. */
-[data-type="entree"]   { --type-ink: var(--ink-entree); }
-[data-type="plat"]     { --type-ink: var(--ink-plat); }
-[data-type="dessert"]  { --type-ink: var(--ink-dessert); }
-[data-type="apero"]    { --type-ink: var(--ink-apero); }
-[data-type="petitDej"] { --type-ink: var(--ink-petitDej); }
-[data-type="autre"]    { --type-ink: var(--ink-autre); }
+[data-type='entree'] {
+  --type-ink: var(--ink-entree);
+}
+[data-type='plat'] {
+  --type-ink: var(--ink-plat);
+}
+[data-type='dessert'] {
+  --type-ink: var(--ink-dessert);
+}
+[data-type='apero'] {
+  --type-ink: var(--ink-apero);
+}
+[data-type='petitDej'] {
+  --type-ink: var(--ink-petitDej);
+}
+[data-type='autre'] {
+  --type-ink: var(--ink-autre);
+}

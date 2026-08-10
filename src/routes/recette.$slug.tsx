@@ -27,7 +27,9 @@ export const Route = createFileRoute('/recette/$slug')({
 
 function RecipePage() {
   const { slug } = Route.useParams()
-  const recipe = useSuspenseQuery(convexQuery(api.recipes.getBySlug, { slug })).data
+  const recipe = useSuspenseQuery(
+    convexQuery(api.recipes.getBySlug, { slug }),
+  ).data
   const [target, setTarget] = useState<number | null>(null)
 
   // The loader already threw `notFound()` if the recipe does not exist.
@@ -39,7 +41,9 @@ function RecipePage() {
 
   // Computed once: the line marker and the footnote must depend on exactly the same
   // predicate, otherwise a dagger can appear with nothing explaining it.
-  const lines = recipe.ingredients.map((ingredient) => scaleIngredient(ingredient, factor))
+  const lines = recipe.ingredients.map((ingredient) =>
+    scaleIngredient(ingredient, factor),
+  )
   const showNote = factor !== 1 && lines.some((line) => !line.scaled)
 
   return (
@@ -78,7 +82,11 @@ function RecipePage() {
               −/+ rewrites every quantity in the list. Without a live region the change is
               silent, and `aria-atomic` is what makes it read "6 personnes" and not just "6".
             */}
-            <span className="servings__value" aria-live="polite" aria-atomic="true">
+            <span
+              className="servings__value"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {current} {current > 1 ? 'personnes' : 'personne'}
             </span>
             <button
@@ -107,7 +115,10 @@ function RecipePage() {
                     {' '}
                     †
                   </span>
-                  <span className="visually-hidden"> — quantité non recalculée</span>
+                  <span className="visually-hidden">
+                    {' '}
+                    — quantité non recalculée
+                  </span>
                 </>
               ) : null}
             </li>
@@ -118,12 +129,14 @@ function RecipePage() {
             reader, no longer exists — each concerned line now carries its own explanation. */}
         {showNote ? (
           <p className="ingredients__note" aria-hidden="true">
-            † Cette quantité n'a pas pu être recalculée : la ligne est reproduite telle
-            quelle.
+            † Cette quantité n'a pas pu être recalculée : la ligne est
+            reproduite telle quelle.
           </p>
         ) : null}
 
-        {recipe.imageUrl ? <img className="recipe__photo" src={recipe.imageUrl} alt="" /> : null}
+        {recipe.imageUrl ? (
+          <img className="recipe__photo" src={recipe.imageUrl} alt="" />
+        ) : null}
       </div>
 
       <div className="recipe__method">

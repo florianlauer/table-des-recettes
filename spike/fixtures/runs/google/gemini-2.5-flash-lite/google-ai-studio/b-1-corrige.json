@@ -1,0 +1,412 @@
+{
+  "correctionPromptVersion": "c1",
+  "model": "google/gemini-2.5-flash-lite",
+  "provider": "google-ai-studio",
+  "costUsd": 0.0013099,
+  "corrections": [
+    {
+      "path": "recipes.0.steps.2",
+      "from": "Pivrez, salez et laissez mijoter 20 min.",
+      "to": "Poivrez, salez et laissez mijoter 20 min."
+    },
+    {
+      "path": "recipes.0.steps.7",
+      "from": "Par-semez le plat de sésame et accompagnez ce plat de riz.",
+      "to": "Parsemez le plat de sésame et accompagnez ce plat de riz."
+    },
+    {
+      "path": "recipes.1.steps.7",
+      "from": "Roulez la pâte, sou-dez les bords et recourbez les croissants.",
+      "to": "Roulez la pâte, soudez les bords et recourbez les croissants."
+    },
+    {
+      "path": "recipes.2.steps.3",
+      "from": "Tapotez-les pour ôter le sur-plus et mettez-les sur une planche 15 min au congélateur.",
+      "to": "Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur."
+    }
+  ],
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Dinde aux piments et au cacao",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "2 filets de dinde de 500 g",
+            "quantity": 500,
+            "unit": "g",
+            "label": "filets de dinde"
+          },
+          {
+            "raw": "20 g de cacao brut",
+            "quantity": 20,
+            "unit": "g",
+            "label": "cacao brut"
+          },
+          {
+            "raw": "2 poivrons rouges et 2 verts",
+            "quantity": 2,
+            "unit": null,
+            "label": "poivrons rouges et verts"
+          },
+          {
+            "raw": "2 petits piments verts doux d'Espagne",
+            "quantity": 2,
+            "unit": null,
+            "label": "petits piments verts doux d'Espagne"
+          },
+          {
+            "raw": "1 cuil. à soupe de piment d'Espelette",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "piment d'Espelette"
+          },
+          {
+            "raw": "2 oignons",
+            "quantity": 2,
+            "unit": null,
+            "label": "oignons"
+          },
+          {
+            "raw": "1 gousse d'ail",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "ail"
+          },
+          {
+            "raw": "1 petite boîte de pulpe de tomate",
+            "quantity": 1,
+            "unit": "petite boîte",
+            "label": "pulpe de tomate"
+          },
+          {
+            "raw": "50 g de cacahuètes",
+            "quantity": 50,
+            "unit": "g",
+            "label": "cacahuètes"
+          },
+          {
+            "raw": "1/2 cuil. à café de cannelle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "cannelle"
+          },
+          {
+            "raw": "1/2 cuil. à café de clous de girofle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "clous de girofle"
+          },
+          {
+            "raw": "1/2 cuil. à café de grains de coriandre",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "grains de coriandre"
+          },
+          {
+            "raw": "1 cuil. à café de graines d'anis",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "graines d'anis"
+          },
+          {
+            "raw": "3 cuil. à soupe de graines de sésame",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "graines de sésame"
+          },
+          {
+            "raw": "1/2 l de bouillon de volaille",
+            "quantity": 0.5,
+            "unit": "l",
+            "label": "bouillon de volaille"
+          },
+          {
+            "raw": "4 cuil. à soupe d'huile",
+            "quantity": 4,
+            "unit": "cuil. à soupe",
+            "label": "huile"
+          },
+          {
+            "raw": "sel, poivre",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre"
+          }
+        ],
+        "steps": [
+          "Faites revenir dans une cocotte les oignons et l'ail émincés avec 2 cuillerées d'huile, la cannelle, le girofle, la coriandre et l'anis.",
+          "Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.",
+          "Poivrez, salez et laissez mijoter 20 min.",
+          "Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes.",
+          "Essuyez la cocotte et faites dorer les filets avec l'huile restante.",
+          "Salez, poivrez, couvrez et laissez cuire à petit feu 20 min.",
+          "Versez la sauce, couvrez et poursuivez encore la cuisson 10 min.",
+          "Parsemez le plat de sésame et accompagnez ce plat de riz."
+        ]
+      },
+      {
+        "title": "Cornes de gazelle et salade d'oranges",
+        "type": "dessert",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "250 g d'amandes",
+            "quantity": 250,
+            "unit": "g",
+            "label": "amandes"
+          },
+          {
+            "raw": "125 g de sucre glace",
+            "quantity": 125,
+            "unit": "g",
+            "label": "sucre glace"
+          },
+          {
+            "raw": "75 g de beurre",
+            "quantity": 75,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "1 jaune d'oeuf",
+            "quantity": 1,
+            "unit": "jaune d'oeuf",
+            "label": "oeuf"
+          },
+          {
+            "raw": "3 cuil. à soupe d'eau de fleur d'oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "eau de fleur d'oranger"
+          },
+          {
+            "raw": "250 g de farine",
+            "quantity": 250,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "1 jaune d'oeuf",
+            "quantity": 1,
+            "unit": "jaune d'oeuf",
+            "label": "oeuf"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": "sel"
+          },
+          {
+            "raw": "Pour la salade : 10 oranges",
+            "quantity": 10,
+            "unit": null,
+            "label": "oranges"
+          },
+          {
+            "raw": "30 g d'amandes émincées",
+            "quantity": 30,
+            "unit": "g",
+            "label": "amandes émincées"
+          },
+          {
+            "raw": "3 cuil. à soupe d'eau de fleur d'oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "eau de fleur d'oranger"
+          },
+          {
+            "raw": "5 cuil. à soupe de sucre glace",
+            "quantity": 5,
+            "unit": "cuil. à soupe",
+            "label": "sucre glace"
+          },
+          {
+            "raw": "10 feuilles de menthe",
+            "quantity": 10,
+            "unit": null,
+            "label": "feuilles de menthe"
+          }
+        ],
+        "steps": [
+          "Formez une boule de pâte en mélangeant ses ingrédients.",
+          "Laissez reposer 30 min.",
+          "Mixez les amandes mondées avec le sucre glace.",
+          "Ajoutez l'oeuf, le beurre, la fleur d'oranger.",
+          "Mélangez et mettez au frais 15 min.",
+          "Étalez la pâte finement.",
+          "Découpez des cercles et, au centre de chacun, posez 1 cuillerée de farce aux amandes.",
+          "Roulez la pâte, soudez les bords et recourbez les croissants.",
+          "Laissez reposer 24 h au sec et au frais.",
+          "Le lendemain, préchauffez le four à th. 5/6 (160 °C).",
+          "Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.",
+          "Tranchez les oranges pelées à vif et arrosez-les de fleur d'oranger.",
+          "Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe."
+        ]
+      },
+      {
+        "title": "Escalopes de foie gras au pain d'épice",
+        "type": "entree",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 foie gras de canard entier frais (600 g)",
+            "quantity": 600,
+            "unit": "g",
+            "label": "foie gras de canard entier frais"
+          },
+          {
+            "raw": "6 tranches de pain d'épice",
+            "quantity": 6,
+            "unit": "tranches",
+            "label": "pain d'épice"
+          },
+          {
+            "raw": "200 g de salades mélangées",
+            "quantity": 200,
+            "unit": "g",
+            "label": "salades mélangées"
+          },
+          {
+            "raw": "1 cuil. à soupe de quatre-épices",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "quatre-épices"
+          },
+          {
+            "raw": "2 cuil. à soupe de farine",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "farine"
+          },
+          {
+            "raw": "1 verre de porto",
+            "quantity": 1,
+            "unit": "verre",
+            "label": "porto"
+          },
+          {
+            "raw": "1,5 cuil. à soupe de vinaigre balsamique",
+            "quantity": 1.5,
+            "unit": "cuil. à soupe",
+            "label": "vinaigre balsamique"
+          },
+          {
+            "raw": "1 cuil. à soupe de vinaigre de vin",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "vinaigre de vin"
+          },
+          {
+            "raw": "3 cuil. à soupe d'huile d'olive",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "huile d'olive"
+          },
+          {
+            "raw": "sel, fleur de sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, fleur de sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l'huile d'olive.",
+          "Détaillez le foie gras en 6 tranches.",
+          "Mélangez la farine et le quatre-épices et roulez-y les tranches.",
+          "Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.",
+          "Grillez légèrement le pain d'épice au grill-pain et gardez-le au chaud sur le plat de service dans le four très doux.",
+          "Dans une poêle antiadhésive bien chaude, faites revenir le foie gras 1 min sur chaque face.",
+          "Disposez les escalopes sur les tranches de pain d'épice, saupoudrez de fleur de sel et poivrez.",
+          "Remettez en attente à four doux.",
+          "Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras.",
+          "Servez aussitôt avec la salade."
+        ]
+      },
+      {
+        "title": "Canard laqué au curry rouge",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Barbarie",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Barbarie"
+          },
+          {
+            "raw": "1 ananas moyen",
+            "quantity": 1,
+            "unit": null,
+            "label": "ananas moyen"
+          },
+          {
+            "raw": "2 belles tomates fermes",
+            "quantity": 2,
+            "unit": null,
+            "label": "belles tomates fermes"
+          },
+          {
+            "raw": "1 cuil. à soupe rase de pâte de curry rouge",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "pâte de curry rouge"
+          },
+          {
+            "raw": "1 boîte de 50 cl de lait de coco",
+            "quantity": 50,
+            "unit": "cl",
+            "label": "lait de coco"
+          },
+          {
+            "raw": "10 cl de sauce soja",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "sauce soja"
+          },
+          {
+            "raw": "1 cuil. à soupe d'huile d'arachide",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "huile d'arachide"
+          },
+          {
+            "raw": "1 cuil. à soupe de nuoc-mâm",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "nuoc-mâm"
+          },
+          {
+            "raw": "2 cuil. à soupe de miel toute fleur",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "miel toute fleur"
+          },
+          {
+            "raw": "1 bouquet de basilic thaï",
+            "quantity": 1,
+            "unit": "bouquet",
+            "label": "basilic thaï"
+          }
+        ],
+        "steps": [
+          "Préchauffez le four à th. 7 (210 °C).",
+          "Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson.",
+          "Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min.",
+          "Laissez la refroidir avant de l'entreposer dans le réfrigérateur.",
+          "Le lendemain, tranchez la canette en 8 morceaux.",
+          "Détaillez la chair de l'ananas en gros dés.",
+          "Coupez les tomates en morceaux.",
+          "Versez dans une cocotte un tiers du lait de coco, 1 cuillerée d'huile et la pâte de curry rouge.",
+          "Mélangez et faites cuire 5 min en remuant.",
+          "Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition.",
+          "Ajoutez les morceaux de volaille, l'ananas et les tomates, couvrez et laissez mijoter 20 min.",
+          "Otez du feu et laissez reposer 5 min avec le basilic.",
+          "Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l'eau."
+        ]
+      }
+    ]
+  }
+}

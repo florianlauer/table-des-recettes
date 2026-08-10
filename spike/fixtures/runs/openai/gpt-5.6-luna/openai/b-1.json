@@ -1,0 +1,493 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "b",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Dinde aux piments et au cacao",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "2 filets de dinde de 500 g",
+            "quantity": 2,
+            "unit": null,
+            "label": "filets de dinde de 500 g"
+          },
+          {
+            "raw": "20 g de cacao brut",
+            "quantity": 20,
+            "unit": "g",
+            "label": "de cacao brut"
+          },
+          {
+            "raw": "2 poivrons rouges et 2 verts",
+            "quantity": 2,
+            "unit": null,
+            "label": "poivrons rouges et 2 verts"
+          },
+          {
+            "raw": "2 petits piments verts doux d’Espagne",
+            "quantity": 2,
+            "unit": null,
+            "label": "petits piments verts doux d’Espagne"
+          },
+          {
+            "raw": "1 cuil. à soupe de piment d’Espelette",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "de piment d’Espelette"
+          },
+          {
+            "raw": "2 oignons",
+            "quantity": 2,
+            "unit": null,
+            "label": "oignons"
+          },
+          {
+            "raw": "1 gousse d’ail",
+            "quantity": 1,
+            "unit": null,
+            "label": "gousse d’ail"
+          },
+          {
+            "raw": "1 petite boîte de pulpe de tomate",
+            "quantity": 1,
+            "unit": "petite boîte",
+            "label": "de pulpe de tomate"
+          },
+          {
+            "raw": "50 g de cacahuètes",
+            "quantity": 50,
+            "unit": "g",
+            "label": "de cacahuètes"
+          },
+          {
+            "raw": "1/2 cuil. à café de cannelle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "de cannelle"
+          },
+          {
+            "raw": "1/2 cuil. à café de clous de girofle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "de clous de girofle"
+          },
+          {
+            "raw": "1/2 cuil. à café de grains de coriandre",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "de grains de coriandre"
+          },
+          {
+            "raw": "1 cuil. à café de graines d’anis",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "de graines d’anis"
+          },
+          {
+            "raw": "3 cuil. à soupe de graines de sésame",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "de graines de sésame"
+          },
+          {
+            "raw": "1/2 l de bouillon de volaille",
+            "quantity": 0.5,
+            "unit": "l",
+            "label": "de bouillon de volaille"
+          },
+          {
+            "raw": "4 cuil. à soupe d’huile",
+            "quantity": 4,
+            "unit": "cuil. à soupe",
+            "label": "d’huile"
+          },
+          {
+            "raw": "sel, poivre",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre"
+          }
+        ],
+        "steps": [
+          "Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis.",
+          "Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.",
+          "Poivrez, salez et laissez mijoter 20 min.",
+          "Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes.",
+          "Essuyez la cocotte et faites dorer les filets avec l’huile restante.",
+          "Salez, poivrez, couvrez et laissez cuire à petit feu 20 min.",
+          "Versez la sauce, couvrez et poursuivez encore la cuisson 10 min.",
+          "Parsemez le plat de sésame et accompagnez ce plat de riz."
+        ]
+      },
+      {
+        "title": "Cornes de gazelle et salade d’oranges",
+        "type": "dessert",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "250 g d’amandes",
+            "quantity": 250,
+            "unit": "g",
+            "label": "d’amandes"
+          },
+          {
+            "raw": "125 g de sucre glace",
+            "quantity": 125,
+            "unit": "g",
+            "label": "de sucre glace"
+          },
+          {
+            "raw": "75 g de beurre",
+            "quantity": 75,
+            "unit": "g",
+            "label": "de beurre"
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": "jaune d’œuf"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "d’eau de fleur d’oranger"
+          },
+          {
+            "raw": "250 g de farine",
+            "quantity": 250,
+            "unit": "g",
+            "label": "Pour la pâte : de farine"
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": "Pour la pâte : jaune d’œuf"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "Pour la pâte : d’eau de fleur d’oranger"
+          },
+          {
+            "raw": "75 g de beurre mou",
+            "quantity": 75,
+            "unit": "g",
+            "label": "Pour la pâte : de beurre mou"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": "Pour la pâte : sel"
+          },
+          {
+            "raw": "10 oranges émincées",
+            "quantity": 10,
+            "unit": null,
+            "label": "Pour la salade : oranges émincées"
+          },
+          {
+            "raw": "30 g d’amandes",
+            "quantity": 30,
+            "unit": "g",
+            "label": "Pour la salade : d’amandes"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "Pour la salade : d’eau de fleur d’oranger"
+          },
+          {
+            "raw": "5 cuil. à soupe de sucre glace",
+            "quantity": 5,
+            "unit": "cuil. à soupe",
+            "label": "Pour la salade : de sucre glace"
+          },
+          {
+            "raw": "10 feuilles de menthe",
+            "quantity": 10,
+            "unit": null,
+            "label": "Pour la salade : feuilles de menthe"
+          }
+        ],
+        "steps": [
+          "Formez une boule de pâte en mélangeant ses ingrédients.",
+          "Laissez reposer 30 min.",
+          "Mixez les amandes mondées avec le sucre glace.",
+          "Ajoutez l’œuf, le beurre, la fleur d’oranger.",
+          "Mélangez et mettez au frais 15 min.",
+          "Étalez la pâte finement.",
+          "Découpez des cercles et, au centre de chacun, posez 1 cuillerée de farce aux amandes.",
+          "Roulez la pâte, soudez les bords et recouvrez les croissants.",
+          "Laissez reposer 24 h au sec et au frais.",
+          "Le lendemain, préchauffez le four à th. 5/6 (160 °C).",
+          "Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.",
+          "Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger.",
+          "Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe."
+        ]
+      },
+      {
+        "title": "Escalopes de foie gras au pain d’épice",
+        "type": "entree",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 foie gras de canard entier frais (600 g)",
+            "quantity": 1,
+            "unit": null,
+            "label": "foie gras de canard entier frais (600 g)"
+          },
+          {
+            "raw": "6 tranches de pain d’épice",
+            "quantity": 6,
+            "unit": null,
+            "label": "tranches de pain d’épice"
+          },
+          {
+            "raw": "200 g de salades mélangées",
+            "quantity": 200,
+            "unit": "g",
+            "label": "de salades mélangées"
+          },
+          {
+            "raw": "1 cuil. à soupe de quatre-épices",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "de quatre-épices"
+          },
+          {
+            "raw": "2 cuil. à soupe de farine",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "de farine"
+          },
+          {
+            "raw": "1 verre de porto",
+            "quantity": 1,
+            "unit": "verre",
+            "label": "de porto"
+          },
+          {
+            "raw": "1,5 cuil. à soupe de vinaigre balsamique",
+            "quantity": 1.5,
+            "unit": "cuil. à soupe",
+            "label": "de vinaigre balsamique"
+          },
+          {
+            "raw": "1 cuil. à soupe de vinaigre de vin",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "de vinaigre de vin"
+          },
+          {
+            "raw": "3 cuil. à soupe d’huile d’olive",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "d’huile d’olive"
+          },
+          {
+            "raw": "sel, fleur de sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, fleur de sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive.",
+          "Détaillez le foie gras en 6 tranches.",
+          "Mélangez la farine et le quatre-épices et roulez-y les tranches.",
+          "Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.",
+          "Grillez légèrement le pain d’épice au grille-pain et gardez-le au chaud sur le plat de service dans le four très doux.",
+          "Dans une poêle antiadhésive bien chaude, faites revenir le foie gras 1 min sur chaque face.",
+          "Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.",
+          "Remettez en attente à four doux.",
+          "Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras.",
+          "Servez aussitôt avec la salade."
+        ]
+      },
+      {
+        "title": "Canard laqué au curry rouge",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Barbarie",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Barbarie"
+          },
+          {
+            "raw": "1 ananas moyen",
+            "quantity": 1,
+            "unit": null,
+            "label": "ananas moyen"
+          },
+          {
+            "raw": "2 belles tomates fermes",
+            "quantity": 2,
+            "unit": null,
+            "label": "belles tomates fermes"
+          },
+          {
+            "raw": "1 cuil. à soupe rase de pâte de curry rouge",
+            "quantity": 1,
+            "unit": "cuil. à soupe rase",
+            "label": "de pâte de curry rouge"
+          },
+          {
+            "raw": "1 boîte de 50 cl de lait de coco",
+            "quantity": 1,
+            "unit": "boîte",
+            "label": "de 50 cl de lait de coco"
+          },
+          {
+            "raw": "10 cl de sauce soja",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "de sauce soja"
+          },
+          {
+            "raw": "1 cuil. à soupe d’huile d’arachide",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "d’huile d’arachide"
+          },
+          {
+            "raw": "1 cuil. à soupe de nuoc-mâm",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "de nuoc-mâm"
+          },
+          {
+            "raw": "2 cuil. à soupe de miel toute fleur",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "de miel toute fleur"
+          },
+          {
+            "raw": "1 bouquet de basilic thaï",
+            "quantity": 1,
+            "unit": "bouquet",
+            "label": "de basilic thaï"
+          }
+        ],
+        "steps": [
+          "Préchauffez le four à th. 7 (210 °C).",
+          "Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson.",
+          "Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min.",
+          "Laissez-la refroidir avant de l’entreposer dans le réfrigérateur.",
+          "Le lendemain, tranchez la canette en 8 morceaux.",
+          "Détaillez la chair de l’ananas en gros dés.",
+          "Coupez les tomates en morceaux.",
+          "Versez dans une cocotte un tiers du lait de coco, 1 cuillerée d’huile et la pâte de curry rouge.",
+          "Mélangez et faites cuire 5 min en remuant.",
+          "Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition.",
+          "Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min.",
+          "Otez du feu et laissez reposer 5 min avec le basilic.",
+          "Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306081-GeQT9HI23JklB2L3exBc",
+    "object": "chat.completion",
+    "created": 1786306082,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Dinde aux piments et au cacao\",\"type\":\"plat\",\"servings\":6,\"ingredients\":[{\"raw\":\"2 filets de dinde de 500 g\",\"quantity\":2,\"unit\":null,\"label\":\"filets de dinde de 500 g\"},{\"raw\":\"20 g de cacao brut\",\"quantity\":20,\"unit\":\"g\",\"label\":\"de cacao brut\"},{\"raw\":\"2 poivrons rouges et 2 verts\",\"quantity\":2,\"unit\":null,\"label\":\"poivrons rouges et 2 verts\"},{\"raw\":\"2 petits piments verts doux d’Espagne\",\"quantity\":2,\"unit\":null,\"label\":\"petits piments verts doux d’Espagne\"},{\"raw\":\"1 cuil. à soupe de piment d’Espelette\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"de piment d’Espelette\"},{\"raw\":\"2 oignons\",\"quantity\":2,\"unit\":null,\"label\":\"oignons\"},{\"raw\":\"1 gousse d’ail\",\"quantity\":1,\"unit\":null,\"label\":\"gousse d’ail\"},{\"raw\":\"1 petite boîte de pulpe de tomate\",\"quantity\":1,\"unit\":\"petite boîte\",\"label\":\"de pulpe de tomate\"},{\"raw\":\"50 g de cacahuètes\",\"quantity\":50,\"unit\":\"g\",\"label\":\"de cacahuètes\"},{\"raw\":\"1/2 cuil. à café de cannelle\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"de cannelle\"},{\"raw\":\"1/2 cuil. à café de clous de girofle\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"de clous de girofle\"},{\"raw\":\"1/2 cuil. à café de grains de coriandre\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"de grains de coriandre\"},{\"raw\":\"1 cuil. à café de graines d’anis\",\"quantity\":1,\"unit\":\"cuil. à café\",\"label\":\"de graines d’anis\"},{\"raw\":\"3 cuil. à soupe de graines de sésame\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"de graines de sésame\"},{\"raw\":\"1/2 l de bouillon de volaille\",\"quantity\":0.5,\"unit\":\"l\",\"label\":\"de bouillon de volaille\"},{\"raw\":\"4 cuil. à soupe d’huile\",\"quantity\":4,\"unit\":\"cuil. à soupe\",\"label\":\"d’huile\"},{\"raw\":\"sel, poivre\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre\"}],\"steps\":[\"Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis.\",\"Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.\",\"Poivrez, salez et laissez mijoter 20 min.\",\"Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes.\",\"Essuyez la cocotte et faites dorer les filets avec l’huile restante.\",\"Salez, poivrez, couvrez et laissez cuire à petit feu 20 min.\",\"Versez la sauce, couvrez et poursuivez encore la cuisson 10 min.\",\"Parsemez le plat de sésame et accompagnez ce plat de riz.\"]},{\"title\":\"Cornes de gazelle et salade d’oranges\",\"type\":\"dessert\",\"servings\":6,\"ingredients\":[{\"raw\":\"250 g d’amandes\",\"quantity\":250,\"unit\":\"g\",\"label\":\"d’amandes\"},{\"raw\":\"125 g de sucre glace\",\"quantity\":125,\"unit\":\"g\",\"label\":\"de sucre glace\"},{\"raw\":\"75 g de beurre\",\"quantity\":75,\"unit\":\"g\",\"label\":\"de beurre\"},{\"raw\":\"1 jaune d’œuf\",\"quantity\":1,\"unit\":null,\"label\":\"jaune d’œuf\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"d’eau de fleur d’oranger\"},{\"raw\":\"250 g de farine\",\"quantity\":250,\"unit\":\"g\",\"label\":\"Pour la pâte : de farine\"},{\"raw\":\"1 jaune d’œuf\",\"quantity\":1,\"unit\":null,\"label\":\"Pour la pâte : jaune d’œuf\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"Pour la pâte : d’eau de fleur d’oranger\"},{\"raw\":\"75 g de beurre mou\",\"quantity\":75,\"unit\":\"g\",\"label\":\"Pour la pâte : de beurre mou\"},{\"raw\":\"sel\",\"quantity\":null,\"unit\":null,\"label\":\"Pour la pâte : sel\"},{\"raw\":\"10 oranges émincées\",\"quantity\":10,\"unit\":null,\"label\":\"Pour la salade : oranges émincées\"},{\"raw\":\"30 g d’amandes\",\"quantity\":30,\"unit\":\"g\",\"label\":\"Pour la salade : d’amandes\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"Pour la salade : d’eau de fleur d’oranger\"},{\"raw\":\"5 cuil. à soupe de sucre glace\",\"quantity\":5,\"unit\":\"cuil. à soupe\",\"label\":\"Pour la salade : de sucre glace\"},{\"raw\":\"10 feuilles de menthe\",\"quantity\":10,\"unit\":null,\"label\":\"Pour la salade : feuilles de menthe\"}],\"steps\":[\"Formez une boule de pâte en mélangeant ses ingrédients.\",\"Laissez reposer 30 min.\",\"Mixez les amandes mondées avec le sucre glace.\",\"Ajoutez l’œuf, le beurre, la fleur d’oranger.\",\"Mélangez et mettez au frais 15 min.\",\"Étalez la pâte finement.\",\"Découpez des cercles et, au centre de chacun, posez 1 cuillerée de farce aux amandes.\",\"Roulez la pâte, soudez les bords et recouvrez les croissants.\",\"Laissez reposer 24 h au sec et au frais.\",\"Le lendemain, préchauffez le four à th. 5/6 (160 °C).\",\"Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.\",\"Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger.\",\"Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe.\"]},{\"title\":\"Escalopes de foie gras au pain d’épice\",\"type\":\"entree\",\"servings\":6,\"ingredients\":[{\"raw\":\"1 foie gras de canard entier frais (600 g)\",\"quantity\":1,\"unit\":null,\"label\":\"foie gras de canard entier frais (600 g)\"},{\"raw\":\"6 tranches de pain d’épice\",\"quantity\":6,\"unit\":null,\"label\":\"tranches de pain d’épice\"},{\"raw\":\"200 g de salades mélangées\",\"quantity\":200,\"unit\":\"g\",\"label\":\"de salades mélangées\"},{\"raw\":\"1 cuil. à soupe de quatre-épices\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"de quatre-épices\"},{\"raw\":\"2 cuil. à soupe de farine\",\"quantity\":2,\"unit\":\"cuil. à soupe\",\"label\":\"de farine\"},{\"raw\":\"1 verre de porto\",\"quantity\":1,\"unit\":\"verre\",\"label\":\"de porto\"},{\"raw\":\"1,5 cuil. à soupe de vinaigre balsamique\",\"quantity\":1.5,\"unit\":\"cuil. à soupe\",\"label\":\"de vinaigre balsamique\"},{\"raw\":\"1 cuil. à soupe de vinaigre de vin\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"de vinaigre de vin\"},{\"raw\":\"3 cuil. à soupe d’huile d’olive\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"d’huile d’olive\"},{\"raw\":\"sel, fleur de sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, fleur de sel, poivre du moulin\"}],\"steps\":[\"Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive.\",\"Détaillez le foie gras en 6 tranches.\",\"Mélangez la farine et le quatre-épices et roulez-y les tranches.\",\"Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.\",\"Grillez légèrement le pain d’épice au grille-pain et gardez-le au chaud sur le plat de service dans le four très doux.\",\"Dans une poêle antiadhésive bien chaude, faites revenir le foie gras 1 min sur chaque face.\",\"Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.\",\"Remettez en attente à four doux.\",\"Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras.\",\"Servez aussitôt avec la salade.\"]},{\"title\":\"Canard laqué au curry rouge\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"1 canette de Barbarie\",\"quantity\":1,\"unit\":null,\"label\":\"canette de Barbarie\"},{\"raw\":\"1 ananas moyen\",\"quantity\":1,\"unit\":null,\"label\":\"ananas moyen\"},{\"raw\":\"2 belles tomates fermes\",\"quantity\":2,\"unit\":null,\"label\":\"belles tomates fermes\"},{\"raw\":\"1 cuil. à soupe rase de pâte de curry rouge\",\"quantity\":1,\"unit\":\"cuil. à soupe rase\",\"label\":\"de pâte de curry rouge\"},{\"raw\":\"1 boîte de 50 cl de lait de coco\",\"quantity\":1,\"unit\":\"boîte\",\"label\":\"de 50 cl de lait de coco\"},{\"raw\":\"10 cl de sauce soja\",\"quantity\":10,\"unit\":\"cl\",\"label\":\"de sauce soja\"},{\"raw\":\"1 cuil. à soupe d’huile d’arachide\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"d’huile d’arachide\"},{\"raw\":\"1 cuil. à soupe de nuoc-mâm\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"de nuoc-mâm\"},{\"raw\":\"2 cuil. à soupe de miel toute fleur\",\"quantity\":2,\"unit\":\"cuil. à soupe\",\"label\":\"de miel toute fleur\"},{\"raw\":\"1 bouquet de basilic thaï\",\"quantity\":1,\"unit\":\"bouquet\",\"label\":\"de basilic thaï\"}],\"steps\":[\"Préchauffez le four à th. 7 (210 °C).\",\"Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson.\",\"Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min.\",\"Laissez-la refroidir avant de l’entreposer dans le réfrigérateur.\",\"Le lendemain, tranchez la canette en 8 morceaux.\",\"Détaillez la chair de l’ananas en gros dés.\",\"Coupez les tomates en morceaux.\",\"Versez dans une cocotte un tiers du lait de coco, 1 cuillerée d’huile et la pâte de curry rouge.\",\"Mélangez et faites cuire 5 min en remuant.\",\"Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition.\",\"Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min.\",\"Otez du feu et laissez reposer 5 min avec le basilic.\",\"Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting recipes**\n\nI need to extract four recipes and gather the exact lines for the ingredients. It's crucial to ensure that the steps are clearly laid out, perhaps as individual sentences for each step to create an organized structure. I’ll format this in an array of strings, maintaining fidelity to the original instructions. I can start by transcribing the first recipe’s ingredients, like “Marché.” Keeping everything clear will help in making the recipes easier to follow!**Organizing ingredient list**\n\nI’ve got the ingredient list here, which includes items like 500g turkey filets, 20g roasted cocoa, red and green bell peppers, and various spices. I need to make sure that each ingredient is clearly listed, ideally as individual bullet points for easy reading. Instead of the label \"Marché,\" I should focus on raw ingredients with quantities included. This way, it ensures clarity and that users know exactly what they need for each step!**Structuring recipes in JSON**\n\nI need to combine the ingredient entries, like \"2 red and 2 green peppers,\" into one line with proper quantities. For items like \"salt\" and \"pepper,\" I'll set quantities to null. It’s important to ensure that everything is in valid JSON format, without markdown. I’ll carefully structure the recipes, keeping the title and accents exact, while using sentence-level instructions. Each step can also be broken down into individual sentences or clauses. Recipe 2 includes almonds, powdered sugar, butter, and more!",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting recipes**\n\nI need to extract four recipes and gather the exact lines for the ingredients. It's crucial to ensure that the steps are clearly laid out, perhaps as individual sentences for each step to create an organized structure. I’ll format this in an array of strings, maintaining fidelity to the original instructions. I can start by transcribing the first recipe’s ingredients, like “Marché.” Keeping everything clear will help in making the recipes easier to follow!**Organizing ingredient list**\n\nI’ve got the ingredient list here, which includes items like 500g turkey filets, 20g roasted cocoa, red and green bell peppers, and various spices. I need to make sure that each ingredient is clearly listed, ideally as individual bullet points for easy reading. Instead of the label \"Marché,\" I should focus on raw ingredients with quantities included. This way, it ensures clarity and that users know exactly what they need for each step!**Structuring recipes in JSON**\n\nI need to combine the ingredient entries, like \"2 red and 2 green peppers,\" into one line with proper quantities. For items like \"salt\" and \"pepper,\" I'll set quantities to null. It’s important to ensure that everything is in valid JSON format, without markdown. I’ll carefully structure the recipes, keeping the title and accents exact, while using sentence-level instructions. Each step can also be broken down into individual sentences or clauses. Recipe 2 includes almonds, powdered sugar, butter, and more!",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4pD6ZIw2tY1yF1P7B6iHNxnMCzP_1vwbfe1s6LDLfctla-1eBaS9PcJeS5AY4ph0XSevKIQGWPhjpFr9nBLoGP7DFzUdSMQr1t2Wt4Z1ZZqOw6qisaHbMNhYMFnkJTg0HEeISQBYZCOcaIGsExLggzEcXUF4jbb9IPUMP5IAOubjaCc1-rcp7K48DGxLnG3UnMQll1q7D-NbbtNGEqbOSNnT-ql-st7UprXPBDNNzIv923oE5C-kAG8mX0Klc8DXrW4aMi0x9tPziw0qEN_v1zRb_ZK2hRhCefOoJV5u2-EMjv3NG6zLdYc3fqPeETNBMGI23EhyoBePJzD8KYVCBhBsT5JCXiSsJdOmuHJ7CtPgL-9Xn-59c-0vJCPqZ8xXZeUjz0XT3D5-QCk6sJtJPJRElf0Sbya7ZeXUGcBdnZiK-KXz92sZPhMHVnD_w1ASkGcG0uvIgiLCW6w01WMAOK4u013LvSI8dnc4qud0qnqW4es1-oiRmhuQWHKdXfq6Txd5OMC_8vxbBbymTd8DeWR4znyqQvga5re9c92Im1FZidXFjxbS3r-tzmGY6HKowZLW6m6rlIdYGBTCcM-bdntCCYZDVi7sj91vglzpDh9S7I3uSPjbmMiO8u5MAB4oZvJagDHEApJH9lrNzuuwT73dXq9O3M3RNBvmHmMcQzG1YoIigFVXBTX_ZiTb3mnDehZ5T_Q2M1HxDtRrHTot7jhsNnOK70-VfSj35xyhzPLYA1dzMUhv0fbdlTZ-Gs8qDRF4PJFQVd7_Jp8SCQj80lbh4biNvfn5J2vFMyzmvwFaxF7EzMelB38cE4mq64vjXGyLELnr14-UxCOxMYVOpnfhUQYKfSzYeANnimTC7pCY9nnq-7dutXYeuQGkrdYtNP8yB3EJQoMyWXYH3eTPGZ3ttYUTWts-kLpDkfrwNuhsyg-YhC-ZRIeXIgQP7seoy0Y0OSyPxKL4mFJkqB-UpmkOJcPORY73XdXmN5fpebWSw57Fq_b6cU9BRQzynHfob-BbF7qlWbxausO75LiIsp0vDQMSh4EqQQvII_fytI4LhJrb4TrcHuMNPuqgs3AS294iDx80Cu_WAM4PMmXJKoG9IofvKyhanphbdnyfZKGv9fS084BJiCbGqUh49pgyUXfDqGvBNjtz6ArDj_z23MUsEZ6txhGt7J4nVfv7q7Xf8xh-JLBEt2z__Xv_9U2ptVh4dex_Ey1UVH3z8j3Aj7eWC-swIX7gk_fJYlnWWIH9jd10y4u50zDIdAwmuLsD2Ow2ToZlWzl_NhwqMUgsk5xudnyMpWbrerFB0iYz2N1OFFk-fev-5VzmHCG2sGII519QplHwrrf_zIqET84i7VdYN37MZyn5GIKh3N8BMW3_2WQNAN_GFmVqpOnFEjZgVsPyn3bWyWtfKZRaykrncfQCZHoqZAx75aZKSZS1W0YD-DJZmhHMByRDiLzIIJaE1MuStg83AksBeuxBwSrxqiHGTgOUmJQhQXt83Y84mdjkMOxxarKY3iZ-qD5ICTxJZ4iltpenQftxt-14AIs-tUysbLk21abt_BeAdoGvcGkrfimCUny46xj0bjPwHHb3siXjmLNkmZw8XybUBwj-YFhjOt3dnUwbJyKXOfcBCbZjPltWX0A5n69Me_w0OWdmXRu7YzXhh0a8SvM-xsj2IKLI9uQahKVu3aGYGsLMnyli82QeRTOvYpnFs27zjcmSqPCbJsK9ll-iRrZGbyYd-RhN29fteKj39501Z39rfYBe1cQv5EbLlfYXcSm-mvlQg-qaLf1zfeTCoSB87PzjAgECnGjA-NsP5qEclpNE4pBcFoxO8go9_Ge3u6cRCq7PWOHTo6CSlRE9Z68mDjQVa6VH3RQ45T1JVB1dX8nLiZMWW7Brg82i1cShfsLDwfGQWpRLfEFWGITD6z6fKqTSJO-FHWlO-0R-XzJAsaPRfkupfGIYun1DzU_IkaMOaLNUdsV0cLE4Rdb_asNXqBliDdnZH0xo0Ll3GzwUQy_kBRKYp1Ro7uRvw2qQgmwh8VRW7e3giQ8DAkprq4KhrB6AH1sIWW6ppCDpUxc-yjQTRXCUrEwMabVsN12QSTum8m7O-NtWPWmvSSx1ygIv7rtR5tOAwfhk3frjTq54tk3uOIg74qlFBXRWvrUHagJGCroravLYkasy0yTLGPyOlimctjjOWW9fBWCnahj5tonAxIARtkmqqEn9nfvU7P-1alUnHyx2c3TrJ05oaX0oOdaZBKBFKZCdwXbAiS0bShBz_hhEX95QybVAtc7pTNKjXEXmPYx9jspOkuxEXIH8bTEuK7SCByQC-QHU7ZZCyeEk7fuohtHiImApA5BYdWYdpK69-U6-1DR5gUOnA5X6Sn6vgkfisjeLEw5ayFc8uezEEblFLcBZe3MP7FIQYNnrWTX1rbs5cL-jL3d_pIBodNSUWNgkThsG-c_TwGFJ0w7zBOLjP-3cKgGovep7qdIWO92jb_wJAE6wfWaIpv9ge4zF7jy_chGToNvoH-1-sFXpmoHxZOdE5TT5_x2NAV8cCyVJb7j85-BS4T1FEd1DQP88lW_cRWVXWijDkWh7gr2suQJn8HMKto2eNZZKMalIbsIjwGKGVVrtW5Xn6SE5cVDbhBw31BCue6j2NInfYAQ5RQeu66zxCW-d7svTXa1rrdJnsDI6FPgMxL85Sjup-4NczKnN05A284Hys7X9XbRjBYJQRseegwxspPlpmbkyECk31nowYFzjwk7f1xDMWHZ3fOOwP2lPr7RZHjpPsLcFUckGLdAiU4IuPQ2BKGYTfb6V2XyznZndKe2GkjIX9tqNUEqrzrj1Tvy_u-fHO3CypXM3JOrXaoT9yPzcUKR-Iap-xa-CE1GJe_T4UFyHad6Yy5W5SfpCn-qhsr8B6SNz6EKMOLHokdWVAaUC7PUsq_JtFHqpsINe-xbylEfiEfGvbUIA7d0V-Sn43J6daklV3jj11RBkEeujyps0wTQPKffulre6eZ6nba-WxPdCFyu6rUU29PWtqQkkO11gqSobcTip8bUXzN5KsPe45NSiNJ-rhWjNK1R7GOQahpdZaT6iBLnwfvhOHOx9RPG8nq8Fi94eKXwEhHtjmvx2485rLeamOc6fEnVz69NyH0lelFrowGqjCTlOmD2cUMNiHol_y739LE5s942gyZLai0rvAZnhMUs2APFnUN_uAx557jAHuxOegc_tabmE7cxPGZ_FgEBBEeeyYS8k3q-kUCUiDnTdR-qS-lfpbY3e_Bl4ypFNiBytw6mBsadHgzLm1_QsF2D7lZXN0T9GbRIXjuUSZA966OKsT7vrCBRoFHsx4NGGh70MOcBA7bFSfKYOhgQNmUJ-K66G90b1LrvqvXbwni3RpgIKQs8hmcgiuw1YzNCR8Fuoy6HnAIYu4ucnRzeFDupU4gFnEGqzG8bnPAzVoAvBqRqCfXXwQ3a2uXUutdCfk-D07vBS1eIIyexj72CgeHxui6mxxC9r1rOmMd_7nzk_Iu3I6weiZJ9dbo7JHu7b7_bg==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_00db5d54e5db4cba016a78de2400e481979bee4c4e870eabc1",
+              "index": 1
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4rTfbaFq7Inzd9-YxYsVa6uVhL4xby8TmwjkLAG3qAlAQd7v6U67mBS0iSCodYphDcNEEL3iHZWla5WfSLfu1koCU-aYpfuMGNusD-tvZe2ACBFaDfYoMC5FOErPdwRQmivFTwo9wJmVUszHaL421d7v7LcHdSLXOrwG0I8pRUAe5NNzjyTDNeDFsFpFEgde5rNUP9Ih-evhVfaIrXllqjX713bycS9HiB6gObc2JNtPYOUTs8c58kSdCphbhWp61tNpRhLU6Q6AR4_cD_IZ-Gaxy2HFzGX1p9FuaA_XxJVfukC-wGVd5GsoJR-KnZT8XJ14mjFpgfMjupmxBLuQUsIG8Kj45khe8TMIeAv2u4PB0YNaeD6ETHZKMpvfzQNPpTgpkPZ4HQOGnSA1QXqI13GePghoAr1MRiKdj5V9pPeUNy_D2owB7OYurrOk42XS4c_djpKvuPnrjZQopzakaVDcl2U7AOUTG7MrvMqMjCqVF5CHXhL3hBi3gXHq_8Wvwk7E01fD0JoHEzKt-gnvE0eT-JqSMSIRKgEfVqsNzhMbLZEt8HW8e10QhuUsTS0fET5Mipabw8rntxbpFjS_qPJgVkrhtnW2yalR5sSzp8_cIufjrb1h7hG3PrmAxm7mpJQWw04STluZHWAy8SNJUQcUnfI2h0mBdg0Cq5-GJOekBJZkGikzRhue4zHupN3rqjxl60u8Iaewk2XvKoD0ZA0dsoss-zI20usZjDFF3AJ1ymtqidAQetJm_OyLx8CTCX5krbco3KDkQBVHDv3I_rtEbFUEckdjWX34DvCY1eOq06lvKN0DCll7Ng06c-hWfhi1GBUD2YOpj9Gu7KQY0cHiTctxdcIoz5WpTFHWBvYbF_EI2ZiAL9HZg5tFHqlYWkHeqch9Ra73_Ot_-AXQvAyANw0kbP-h6ORHKfwqFwLMML3N_SfxsdohH3q4sPHO2eLmf99kqOZDzVZg7W_ByTYHltSKS9UkA4CJvG7lAntJgsJfUc2VboOOxj0BHvWCqnD77CNR0M7-bDerOUjlfY85ZbPRPGT8ND0SmCfcWxO61zjsthhCbiIu0HoRBsSRYPn0VFzd6Ig_kJm1pHQcIkNNGpFrQWNR1vYJxAlX4ZN4Azyykd3uVsyV7NfvICwjVRSd5fKsQtbsh9pi0eZ90W-xLiFuxBIm3wMDLrl8dkDkfOsJ74GL5mbahVgjnCaaeMJoZrJRecufsULlaanTqWms2XMz9gRxVzrE5mx1noMg0bxIMGdfejNnGZpeNXETo-j-dEdPxuRD2epSMc1EfU5CubFcVShxIukepK0kfwtwstkuxeN-14fCrl_QuAdJ3zGhANAagGcngMeD5uQtjEW5JqBV_QJCrpLa2WInkWjRTDW5irrfuPcq3cxU9daH-OT9cNk7g7wBNC9vne4OYCxwYMa0dPsst19j4F1Pmg_SYGo9_YInk7KrHaOQtXtY0rzk1Db8BON4Qfgajfu7s-7b083nOOGxM6wchqgqbs-zZwN5ZyfBcfkUExOa134dB0negauEuxNObu4gsWmuDJOYW-E7a-N17MpFyMUVQreAF8tSazNmBgJd0J4YCo9meL0z_TRftmzDOCHG8pDoGrHX6OBFL2JgEqxe42wRcQ5z82NyE4SGe3pMj05mRiTd_cSTzfhMPgtB--SyrLDrO1_2To1TNHWFweN5azfv4kz5iq7_pDl-kswJ3g_Uts1xFmXZd0cJA83Dv-HHumz-VcJTh4Bdf-kLdplpEKKw6vpDHXmfUiOAJr47WlR3iId3qi8ehBIotNBnHYEmLYFJPdbhoMvbmM0snA06e7kRxZYIIR-9tyqgzu56iVMkmS2gLiwb4fQG3xJ6vttU4FfPcAHHbH4B0zA-GXyh0m3lCcFigYzf3_Pm7c-_XqPjZaH5qMUoUHglAHkoO58wwc6g8ubclhwevzG5KuD_7t3pIBJSWFk07D6nJ64H8mSMxG56L7a24v_VBSwNFAMyPTcLsbJ0gT6F62krlmOFKLo3flXlzSjvrF0LURQilf3rm8rAVNiFvNHICXgVRSndl1i6UcTsMBFO9Kuzeh5Nv5bEELvfO5vtHdOSIFssvb1o4aK3lZ9qvlhZfSTP8UT5XO-uEDDhA_MDyZ_UdrQIBD79Q3JHv2J1Z5tEAlUnyb2CkHUwQHWk6gjonBkf9uM6zqMnf-prjPJhda937iU5XVLgM5T-g1kEnzDBK4kOsC0Lgg7wnuNosIAEjerVP1OYh3OAEhfiYIn8_yXMkAH_3sFTv-nEyZhAwut9uFo8Qi5bRrntgEUibFwm6-VIldRXCO-T5r_nWZ9JNv8B6Cjsj16GDaSH09BeojJ9KgFlmJznIZpdsKq0ddTvP_OgpQqp1QBcg5CKg_fXZDWocmRm-PRNY4ELs994VR6npqfB5R681ewbzg1LxKleqvW5vZ9y9ACsggvOs3Ede8uIFF7HBRS7NG45iHj9n-rXTPGJOWQ8iyEaIiNrgSJAsrQlaNi4dpDKX9ZnEeNGk-FYjLluAytIX0NQ2teBW50MnXxSipIOJqn4AEusQWTK-N83_2TXB1poJd7ONOnGfYJJfXjP5ZSPupGNymJD5TIBc1trwFChEjSrfneXjgJOoS4Dia9lphMuIpjAV68vZlJJC6DZhXV9BcS9sAqcfABWuWXfNsc0baZA_xUyuW-pYEHdLRZ1wJSfpUX6kwORqNykkl85ubtWRtt0tG0Rs29cTWkMzsnFKU5vOqYvLCOM-JTGGVN8rqnqBhVD6UzSrxdH7N4Z5I4M5c0EQGkbStRxo0x_68m9Fq6KFGe1tpLplqK0Gn1955ZBGZ28uf4tZg1zKuD91pAq5T4O0VB5EdRhP-gNWqL_595AT7l0wvmHkDiwyB91_dEyzof3_9jSgWCB8Hq1n5xFWWdyk_cRvvlRPFzzRUhcooGlqIlS4YOf2DtoZeVDXpydC14mtyb41L5O-ULay8PKYQelX-Qr4OP2vqnPhyisqVaTIRQZAHQb0toYEzTDlJ6c9N5eNqD2wdqZWPxHydC4DzqicrBrFy2o-th-PmYCWK6C8q8czOQjdP9TXXWuBGEEXkbLFrcrr74JG4EpFRXgiRVlxOyRGP3nnfbDK9cBka_7rOlnObRbKBRRkmWjdoF2sjE0gcxSuq_haL5mLQR7VYbqLxLvd0UVmGsBf97ic2IN-unbM4XpAnXSipwPh-riXC6-IV4H9byCD6nHuT_rQJNDpLMtGHUO965mvSNxbliJOqjUkBsWID4EUyh6xhIDYMx_UQD-l61EWPY-IL5mqOfXvzky71G49u0Ylfjvan4NzMRWm5PUBf2NNxG-bFwij1GaY_-qiU7m_TfCG2UwgwZcTwY5lWWw8R07c1HQTAGGGnBqnPd6Idon-XhKN3aUV8bfU5-4RkSJrjIJhs4yhj2_0euBUeaPfd9koBlzAf9PJ_7ljOxWGH4FqrMEpcU3L3ZvVtFG2iH_iuCb9Jqk6DBXzBxO9BSd7fMvzkWTVvlLmr.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_00db5d54e5db4cba016a78de294e448197a2cbaacd7da0d33e",
+              "index": 2
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4t4eRF0FOqfAvm3bOJko1_llSuRi78o5vNTk_pBv4F3ZJwn6neEAUGUh4MrjF49xhlN3kX2115T_cQViVpkaIpY9IKUGK6KBXJ4wdO3_Us9SS_ch07tChkuzT7mOrgPB4id_XR55Z_8sMiTAzCIC7syYRpVjKNZJTlP6Tp80qbdDieFhUMNijYpwoKvBfwvg9_ejbKCKPl73SnMrDnXdIYydRbH7lq4OvGyRRL0jOlWpOdPs1QWhufkAYkJ078iTkT7iGilaOmN1k2kqqkPEyZKcbrMVUE4ei-NWdx3RToTtdn5JQpu_xyrYrq4Qd9XwZEFFBIZlEerMfoWr0JckY5sYNyeU0HWWBwGQjZNWBlHKVUK0T3m47Q1rXDQ8u4nYpRoOrKb1xbL0vveIk4WjQkWL8KCh9W-hD6rIDIh6OvZ18fDdJnBqCn_M6lLd2a609ZZ5VCExlWtD6lwCqk8TnwWVfEn4ncjUoVKkpPmkE7vdCygOLg71oexQIQwZFYrRIKSGFipyEMN52-apv75TxMzCRIOvsQPZBdz6JfciqWdZx0hKpslCCZAXTzRLdbWkDekqOFX9vB50w4WO0VT1iwHU5xYjPbRZML7GDnQyw4x-6Yeg75Mt4N4OJY_JBcIMIMGJ3CoLidX6Ekr_xV21HbRSbxD8liuA21ePrhfDIeA8EdhyFmu2IJpnQgx0ZJ3ngeyV-Yx4VWq3it0Fsm9ginUnNCCaI_AqHHFMSjUZPYh8AtJHunPNT-FLa2oxA55mpbo2WeSoHJdYTXwUTdTRqd6DHEQwv_ui5zwh8_smy685MUETmIgSQjcG35Y0nkyqq3VWDzckn3G7UiSZ10DC6m_cekLLjgDei-i3vHBAXIjZZSf9_ov_MGYD-8NUH0E9rRhPZRWuPgq_HG1AFPFrPacwEdMX6oxKhLgsxATa4f-qs9EBPrO1dVcIoWRspdSdiFNkyK4tveArXYobsfB0n1hLAPD-loyLMp2hI7gGdOWDWgbfOM8Fc57KXRSUbqF3ViOb9gtAujI3uugx6-maNqIY2rCRBlgCc1_gtrex1zJCmjj0WobSWmTC0bv7iLY2wBXOjsPQWj2l4ZioK59P1HA0vRDqmGV9wIRiLwnrOuQcQFJ2hWCu0Px7m3nQ2ZOZ5R4l0B3XK2WfJrNWh5ZGooXm6gLof6HzLQEiKTu4icqcD1FD_bOgM_-vAOLi7wP_DjL5R5aQKq9V8B3x38qAdn2QNUUjvkrnKVQdPrEzaMf7ozVTFs71fRq5T-yGfFgMXlfFUc5Z9b5bf-V7v61jZVTVsxigx4kYYwKrouOC0ExQWSo62HGupojdUcuc2phiy-3nEmle-V3Vt1QRwxaOD-uHCt2491E2sarWrisOhDPbTt9SfW-qlM-zsVtjebXnS5EF0TD2meyZgCbCqyqGdl9uCaVrTnr3Ow0wun8hT8abRxQvUA6_a9GTNJe2Abr74X0VFX12CEPSXv3U43esgtDb5EOuOK9zQv_nR5jnQqIYcBj3A4c6wmScJFIf0f9yQuTp0iM71Y2MGgyBm8v2S7_Ao-ZqiHt0jORxsgizraLSRBhuK7lS8prHxGn6K0cTAn4eg6NsrzshlWmzAd5Nv5GxshzXU_qqEpCBm1o3kyc3GIa0A-mpPTg6F9mOLEM_9kQ9r9DAkuDUe257P7w109398HjvVARM9svsJV2CPURl75NwX_og1WKIUd_QoqS2yR0Gg9xqXJVAuv1JMAw_K2XAAUWoLzFMcBJlfX1WwqONP2lXP8fn6z_g9SdVusrsIUElwsMqdJZ3wSu81jO6C3yeKPLD8TYKljOAmAEFUkTYr0MWIBxusi3OfpVxx3SnSZ_2MwNC5GllQsdGa0ttMhBj-3l9hxsV7Ht8WPQYR5Qln4UhroYWpv_YphqdxbmvE5C2gqZun-VA5u1WI5ohYlY6-lmEyHlNtxWMt-lM6vL4OD9VcOfJGkRZuunQQXmTaQUBVM7F1ft8rL9_h6wCftN1vuUhpflPu8Lx8kdnaJyhZRu0BFCf7f22J7d2HMaZFc_8m7sztDJTuyfUSMTlEHGLAzfVOht_PXi9kaxfTnKVA2M3rVA9qGwuWVXxMKg2VcicrellBZYMK3EVkGWD_aBqEusUgcFhh7Z56Y4jaDKF-b4vNHUI6QkndoYlNYv6hwOaov6KmmkkLAE_WfDhzUsrputTrM1T4ytfkeRj0sC8QT-j8a_drxzFt4cUFHUkTu3smuGiviSKuL7dY4JPJNUu2zoMotB70TB-Z2frk0s8WaVh7fs-jtUJ4VAwDy0-bRn6mjmgRHCA3m2-ymfNF0nlN9SIrwqKaM7HSz-CJeqEHqUnFZvhLP-IyjC_vIX5TrVwDp9Ek21iA-nVUVfdC4yyoQSLx-TMWiFg3vn_SASQn8k-jmE9L3h1IhDhTKizeQWN6z_IAlLvFuOjhnRUjhxAtl03z7e3qR9iBwEoRrh9kLs3nyHV4nDXkEux9QRAcckbR2S_WPxRTcaIPKZlcuq8CKBqs1Wlntyz-HAzNVpaJswHUEN8KkgU_GN4ga-Y_FQihC1VlOKyO4Uy44NDyd7J60Ka5uCDHifae89YUBBJvSBzPKGwVumt2s6jcGX65-KvPNxsx-jeeXsICqj6jrYmUcnXYsa0aB6aar_Hv7B-AEw92jPMp27o9m_TSk-3oUADZYOKTz6gbD99pksJHbheQW2_a1i0nhSPiu-UvENoLZ18CMHnKT4h5zdfAVt-s_tZhsFwcaOwCGDugtFUka_o9krFf24wBJURlM3muEqM-DSx2JbCXW9H5GnCDJiTmpECSsDt8yefDEXfhpgkRMTAkwRoZndSlkjeZhXqQjVstY6m_VlAR_guIqQK-zPai2HcT0eDs8_NcRHPWdNnfpiUoZM5ZnLN_D8u5wcxg0liZIuO1jZXMUvU27qpnGEXUo21cNSA9BCFTWG2RDo70WDoeV4D9I9vflaeJjK6wwyOjxEbNStqqDd71ViwnfYlB11mgYfEBgkbwKAaRt_vX73sS6fil7HQOEEIMm5L4MhN-JwMkqFqrvUzk1vWWxfGT8PrndCYXTdo_cKorvp4OQH2xKlAGgJFkK8J0L5M_R_B45DFPSl8qyHXc3Ay8rb2Dn5WwXBxLc0Tl_BvFrjGAikB9YQgnRwCX2r3R3guZRsvdQN4rofWtkgWfks-6JkoM5g86t61xBkrVbYbW_IJiT02Qm-B5PFopyRWpE0J93DAKIqYPOw8_zT3sf5ozFGSNkTxq6dmkKAzSC_UM98MnuUXYF5iasvzy0DfREwkR_B3ODwJnfeXO0NM2LLYEdMvQlwp0S8ll-sjUZX16qpWl2JpvjEe6wiosqdwy2tCD36sTvbq8W4-vUdhETGvHIJNdhNOCu0UIP4UxfoLyKvOJDdYgoymP__uVTqWiLA80F5NT0QQx2_1XbB4QOXhY_bEWsOe79-8wtKM1X8bCECe4BB0YieWi6ykZXmEC80r4bVDg=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_00db5d54e5db4cba016a78de2b5a9c8197bab054e9c560f398",
+              "index": 3
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4w3PjFRRodhmqL1YpfTn97FR1frvRG6Phi99WZ1XN79rkfmVmAtlSpH-R7EnH1GTHCnWzvA_ILrUSb9fDX4YOFUWSwjAa3ECi7KG4jUFa2sSrcUd7JI_Eti9LwWWai92ptA5zCeR62qoiuyXcIMDe6jQmaDHJHhgkbiATjwGmgnRQzsBUfW6hAuB9hj47PO-TjD7h1KayLRwAv9ufA-T1Z4rntj2T8ps5HYX-3TqYH8HnEz4i4GqgvSWhB42ID1ECZN1JuSfFd8Yqehki8o-ed53pM7t5rmV5CMLE6ZsiT7rkrvDa0iF7oehBRACLETbRcPpzVWf0slmIB8AYnWRf_r6nmFwdbTKmrOzNvXhAmL4qHAvIFJdakxVWeMQXqxFRH9N0TSypnLVykRQEHKVw2w7N8b0u2Jca5rYfcGpKRIkQrqQ_zVxSXsakFq9mR8NVQsGnrUYJv8sWGgsi3DVSguUVoPlfqE793dmXrsKmnd-4XqMpE58SgxV1kCqKPVGyjRcNtSoLfeQcrgO6P142ldO23Wfs5TWPtQ5cgDAqT6YPRYGwIYiql9hginCkY3CVfCAevoQVUDusoP3GDa-DQGd4kBAdwsscIQ72BoBW0b9SI6G0AjkdVgvlBWWs3UnngTnBjtyVnsGad_WED3TUJP6ikFIurLL58VedmygxwkFwHHdl72yqP3jOzNTVLzv3K_hUt8A1ybr7dkana5tNrh5XLT6ooLQLBuoTEoxNq41sJVhwAXoCyunGBlvOzDS1USBntnXR_Tg5tZ4GVE6x3a0kiluyoeuCNcmmnxPhHZZ69mbMQSv-7jBqvaxEGoRGavHy4kJdaSQCzJwcq9U0XVMQMMkmITPayfQch5ME2cbliPZzY_F9xMcJzn-m51DJTEg1D_tYjA1-ZPDJ5ddLjMowJ2FA4uhzspgIWX8oYJV8GmLgeaenBt3I7raiHh6l4JB9rKK5Wrjwj8mZwzFqLsFlhVYVXXJGg7yfioCSr1fzDbPpDeZMb2qbUW-bcVtgvkKv8Gc3rI5q_PcWAxmpZ4bB__OAMMTczL_JYT2IxwYJYhB98TOn-ZVMSo8kdnRY_rHAPBm9Gf0XanXERCKeSKbd3ASr6WQXe71rFVkgrRO-JWQY6m37yVzXh6K3BzuzLmLzOTSn27p0jqaXlcGB5gxY-SCZgnKqbc4wO98AmsrY2acvjcGVnpI5WVWzzhC4sdEPYlsw7AJ1Rogo2AcESTJjATVxPb7Sn8GqI4U9AQry7fL_tBKVaj0UU6yas907Mecmp7opuFnwzZjz5jb7rk4Fuk9Zmg6e3V8ld6J_h7Y_eSaXVRGnZnxoPpALWeUrE3xMEnGMFJjuz4UjD_OMGbfkIBAbD7yml4WItnGuTJKchxyl0Qm92Ux7mplps8s-BG5zZdzqKvgUEFzFbcTEUAyH4ZXjQDeV37_cAaBMap08blvLe-3Xy0M_0jf1ndc4sZp3g6VEC6ILZgTAV-PSQ_rJ2RGkUup2XDE4VlAzcP7sJLyzWC6yGxcK_S4q3GfusDSe6I2HGBBnJut-A3w1FT2WTpIKc5PkcFn2ymiZALdwa5vDwoxmPdPkNF0XxjYOqnCTn5e04AlBAh_th7GOzVgqA7fFtrwjOc9BUCKelVr2MPRv5QNSBUdSn7sI3rQTRv5xRnZb2MKt1au88N79a2sCqHQd0LeVxTHWg1k0cyP0g5mLR2COVhusszdCr41BxdJpqF6FQFAdME9H8Dbe_0QqGnS5VWYiNgvFojBiLGx_uHB6FDi2n8ElwfXDDifk4S0rNot5EQkqmxcnjVy2JjphDCFUgcg9c4foZUe9yRUfEKv6YQuDSqBE7L08NPnlnCdJBQLYHeEcl84KU8WrqymtoMQbI6wzwKVITTYbcgPlx_XediaDrsPT9ANXQ9cB-KPZi12whgpZirvAygwLVm8m26ExEgv0JoqhyQj6-dHKiyhn2WWQw7kDZdVn-_aEDVspY_zFsjmidLep52j_aPMpDxj4kFqJ80BpZeEZyzbP-uBKUIGZKsZOakpMihjziRuGAtzJJJn8BYthdxfjVwnSDTQNx6zQkw2fQdmvacx5eI-JeYW9Kle_Nyfgr-JFZ0ef4W4hvz03PArazdZXgHGQhxkZg12RcAY2Ve7pfKkigujI49XnCxrlKIm9RrVZu6MAN49tSzkb2HnFDkkU87op35NW4fH0T2VrDx0My0fo4UQPmS7w_qzmaLmyb6-TFGR8QUR7ippoUoTh55zwFABS-xh3lshb3Bix5cLL0IhzHHDKYZpqPzEfaiHF_chAvtWBxpXqNwQ55yzUG7wLWkQNvswgIZtsTZAdvS_YBujZOTa63YHx0unUIYxWqKFGcTxmvFPl1Anlxcc8_dNVtjZWXMP38tmtm1-0XVaT06j1dTAc1oLjEVZDElZ3X7qD0azVJurFT9i8ZPtbp8quXqspMErAztnFt4zF8qwB5x7PLUfjBLI6_mtlSFjazOYTBd4e7ZERXA2O95EvXYCxzSZRCk1AikjaT4bJFG6t8DHdHU8TNXKsU8doplBSzjDVp7qkqWv_Hi0pWdpp2QGNuFLe-YOAlAYtm8PDHELv4Gc0BJnUhuupEWsSCTOqXjjX-23U9yId8U1q5pE1nxqvpT86DGVaQqoGo0fmtTwqzksgz9-tCF4gP_HhCIyp4CDRovACItlyakNbiLyQIceCPN4UgI4SuEDJqAu4IDFi_w8sxmbACkTqA08eslCTbcZOT7LXQVfJ247XSp3Xgda1vpQ9KONCdUbETNMN4Un79bRmf5TQf0tlCSlGseqg04k79gQHFXKezEagx85CNy9w-wm75hfWZXRCPfahsivjM7m1FvwIordks15_rKg2RRyw3nqTfSI3y-ixYCBO-NSc534D5NuN0mBDYrIq0Mi31LY3TcsVY3D2OY4PQk06a5I2w0wVTZ33IltfuYaVAhgLYV5Vkkkw8-OkGV_XTOZtovd8=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_00db5d54e5db4cba016a78de2d39048197a46683e05fe82dd3",
+              "index": 4
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 4529,
+      "total_tokens": 8659,
+      "cost": 0.003233575,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4127,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.003233575,
+        "upstream_inference_prompt_cost": 0.000516175,
+        "upstream_inference_completions_cost": 0.0027174
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1952,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 66939.884083,
+  "actualCostUsd": 0.003233575,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}
