@@ -75,7 +75,7 @@ export function requireOpenRouterApiKey(
   const key = env.OPENROUTER_API_KEY
   if (!key) {
     throw new Error(
-      'OPENROUTER_API_KEY manque. Créez .env avec une clé OpenRouter valide avant tout appel payant.',
+      'OPENROUTER_API_KEY manque. Renseignez .env.local avec une clé OpenRouter valide avant tout appel payant.',
     )
   }
   return key
