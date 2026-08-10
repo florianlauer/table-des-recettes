@@ -45,6 +45,10 @@ spike/review-barreau-6.html
 __unconfig*
 todos.json
 
+# Vercel : `vercel link` écrit les identifiants d'organisation et de projet ici, et le preset
+# Vercel de Nitro y écrit la sortie de build.
+.vercel
+
 # impeccable : état de cache régénérable
 .impeccable/hook.cache.json
 .impeccable/config.local.json
