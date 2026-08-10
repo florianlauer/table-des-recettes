@@ -27,7 +27,7 @@ d'interface ne soit écrite.
 ## Livrable déjà acquis — routabilité OpenRouter
 
 La spec initiale posait ce point comme conditionnant l'architecture de la fonctionnalité :
-« la couverture d'OpenRouter en modèles à *sortie image* est plus étroite que sa couverture en
+« la couverture d'OpenRouter en modèles à _sortie image_ est plus étroite que sa couverture en
 texte et en vision. Si le modèle retenu n'y est pas routable, il faut une clé API Google directe
 — donc un second secret et un second fournisseur dans la section déploiement. »
 
@@ -52,15 +52,15 @@ Le prix affiché au catalogue pour la sortie image est `image_output`, exprimé 
 token de sortie**. Le nombre de tokens qu'un modèle émet pour une image varie de l'un à l'autre :
 ce tarif donne un ordre de grandeur, **pas** un classement fiable en dollars par image.
 
-| # | Modèle | `image_output` ($/token) |
-|---:|---|---:|
-| 1 | `openai/gpt-5-image-mini` | 0,000008 |
-| 2 | `google/gemini-2.5-flash-image` | 0,00003 |
-| 3 | `google/gemini-3.1-flash-lite-image` | 0,00003 |
-| 4 | `openai/gpt-5.4-image-2` | 0,00003 |
-| 5 | `openai/gpt-5-image` | 0,00004 |
-| 6 | `google/gemini-3.1-flash-image` | 0,00006 |
-| 7 | `google/gemini-3-pro-image` | 0,00012 |
+|   # | Modèle                               | `image_output` ($/token) |
+| --: | ------------------------------------ | -----------------------: |
+|   1 | `openai/gpt-5-image-mini`            |                 0,000008 |
+|   2 | `google/gemini-2.5-flash-image`      |                  0,00003 |
+|   3 | `google/gemini-3.1-flash-lite-image` |                  0,00003 |
+|   4 | `openai/gpt-5.4-image-2`             |                  0,00003 |
+|   5 | `openai/gpt-5-image`                 |                  0,00004 |
+|   6 | `google/gemini-3.1-flash-image`      |                  0,00006 |
+|   7 | `google/gemini-3-pro-image`          |                  0,00012 |
 
 Le classement définitif se fait sur le **coût réel relevé dans `usage`** à chaque appel, pas sur
 cette estimation. Le tableau ci-dessus ne sert qu'à donner l'ordre de départ et à dimensionner le
@@ -133,11 +133,11 @@ en tenir compte dans son écran de comparaison.
 Jugé à **200 px de haut** (taille d'affichage actuelle en vitrine, cf. `DESIGN.md`) **et en
 grand**, un agrandissement restant une possibilité qu'on se réserve. Trois issues distinctes :
 
-| Constat | Conséquence sur T14 |
-|---|---|
-| Visible aux deux tailles | T14 tel que spécifié |
+| Constat                    | Conséquence sur T14                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| Visible aux deux tailles   | T14 tel que spécifié                                                                              |
 | Visible seulement en grand | T14, **plus** un agrandissement en vitrine — qui devient une contrainte de conception à instruire |
-| Invisible aux deux tailles | T14 tombe, quels que soient les résultats des barrières 1 et 2 |
+| Invisible aux deux tailles | T14 tombe, quels que soient les résultats des barrières 1 et 2                                    |
 
 Les trois barrières se jugent sur les mêmes images. Aucune ne coûte d'appel supplémentaire.
 
@@ -352,7 +352,7 @@ l'upload.
 **sharp ne sait pas les décoder** : libvips 8.18.3 échoue avec « Security limit exceeded: Number of
 references in iref box (48) exceeds the security limits of 16 references », sans contournement côté
 sharp. Ils sont convertis en JPEG par `sips` avant ingestion. **Constat à répercuter sur T5** : le
-garde-fou de format doit *refuser* le HEIC. Le mode de panne n'est pas seulement « le navigateur ne
+garde-fou de format doit _refuser_ le HEIC. Le mode de panne n'est pas seulement « le navigateur ne
 décode pas hors Safari », c'est aussi « le serveur ne décode pas ».
 
 **Étape 1 — socle, parallélisable.** `models.ts`, `prompt.ts`, `ingest.ts`, `budget.ts` et leurs

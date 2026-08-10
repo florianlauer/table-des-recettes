@@ -14,7 +14,7 @@ nappe, ni aucun ingrédient visible. N'ajoute aucun élément qui n'est pas déj
 N'invente pas de hors-champ. Le résultat doit montrer exactement le même plat, photographié dans
 de meilleures conditions.
 
-Réponds uniquement par l'image restaurée.`;
+Réponds uniquement par l'image restaurée.`
 
 // v2 changes two things, both learned from the v1 renders. It says out loud that the source is a
 // magazine page and that only the dish photograph must survive — v1 never asked for the text to go,
@@ -39,7 +39,7 @@ Le résultat doit se lire comme une vraie photographie, pas comme le scan d'une 
 À préserver : le même plat, resté reconnaissable — mêmes aliments, même dressage, même vaisselle. Ne
 le remplace pas par un autre plat qui porterait le même nom.
 
-Réponds uniquement par l'image.`;
+Réponds uniquement par l'image.`
 
 // v3 went past the spec's single-rewrite quota, overridden by florianlauer on 2026-08-10, then was
 // MEASURED AND NOT RETAINED: it clears barrier 1 on 7 of 8 cells against v2's 5, but it drifts further
@@ -68,8 +68,8 @@ Le résultat doit se lire comme une vraie photographie, pas comme le scan d'une 
 À préserver : le même plat, resté reconnaissable — mêmes aliments, même dressage, même vaisselle. Ne
 le remplace pas par un autre plat qui porterait le même nom.
 
-Réponds uniquement par l'image.`;
+Réponds uniquement par l'image.`
 
 // Retained on 2026-08-10 by florianlauer, after seeing both v2 and v3 renders side by side.
-export const PROMPT_VERSION = "v2";
-export const RESTORATION_PROMPT = PROMPT_V2;
+export const PROMPT_VERSION = 'v2'
+export const RESTORATION_PROMPT = PROMPT_V2

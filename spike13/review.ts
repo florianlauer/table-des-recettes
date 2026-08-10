@@ -1,33 +1,36 @@
 #!/usr/bin/env node
-import { readFile, readdir, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import { LADDER, modelSlug } from "./models.js";
-import { DISHES, RENDERS_DIRECTORY } from "./run.js";
+import { LADDER, modelSlug } from './models.js'
+import { DISHES, RENDERS_DIRECTORY } from './run.js'
 
 export type ReviewCell = {
-  model: string;
-  dish: string;
-  pass: number;
-  promptVersion: string;
-  imageSrc: string | null;
-  status: string;
-  detail: string | null;
-  costUsd: number;
-  latencyMs: number;
-};
+  model: string
+  dish: string
+  pass: number
+  promptVersion: string
+  imageSrc: string | null
+  status: string
+  detail: string | null
+  costUsd: number
+  latencyMs: number
+}
 
 function escapeHtml(value: string): string {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
 }
 
 export function renderReviewHtml(cells: ReviewCell[]): string {
-  const byDish = DISHES.map((dish) => ({ dish, cells: cells.filter((cell) => cell.dish === dish) }));
+  const byDish = DISHES.map((dish) => ({
+    dish,
+    cells: cells.filter((cell) => cell.dish === dish),
+  }))
 
   const sections = byDish
     .map(
@@ -46,7 +49,7 @@ export function renderReviewHtml(cells: ReviewCell[]): string {
           ${
             cell.imageSrc
               ? `<img src="${escapeHtml(cell.imageSrc)}" alt="${escapeHtml(cell.model)} passe ${cell.pass}">`
-              : `<div class="failed">${escapeHtml(cell.status)}${cell.detail ? ` — ${escapeHtml(cell.detail)}` : ""}</div>`
+              : `<div class="failed">${escapeHtml(cell.status)}${cell.detail ? ` — ${escapeHtml(cell.detail)}` : ''}</div>`
           }
           <figcaption>
             ${escapeHtml(cell.model)} · passe ${cell.pass} ·
@@ -55,11 +58,11 @@ export function renderReviewHtml(cells: ReviewCell[]): string {
           </figcaption>
         </figure>`,
           )
-          .join("")}
+          .join('')}
       </div>
     </section>`,
     )
-    .join("");
+    .join('')
 
   return `<!doctype html>
 <html lang="fr">
@@ -106,61 +109,74 @@ export function renderReviewHtml(cells: ReviewCell[]): string {
 ${sections}
 </body>
 </html>
-`;
+`
 }
 
 async function collectCells(): Promise<ReviewCell[]> {
-  const cells: ReviewCell[] = [];
+  const cells: ReviewCell[] = []
   for (const rung of LADDER) {
-    const directory = `${RENDERS_DIRECTORY}/${modelSlug(rung.model)}`;
-    let entries: string[];
+    const directory = `${RENDERS_DIRECTORY}/${modelSlug(rung.model)}`
+    let entries: string[]
     try {
-      entries = await readdir(directory);
+      entries = await readdir(directory)
     } catch {
-      continue;
+      continue
     }
-    for (const entry of entries.filter((name) => name.endsWith(".json")).sort()) {
-      const sidecar = JSON.parse(await readFile(resolve(directory, entry), "utf8")) as {
-        dish: string;
-        pass: number;
-        promptVersion: string;
-        status: string;
-        reason: string | null;
-        detail: string | null;
-        mediaType: string | null;
-        latencyMs: number;
-        actualCostUsd: number;
-      };
+    for (const entry of entries
+      .filter((name) => name.endsWith('.json'))
+      .sort()) {
+      const sidecar = JSON.parse(
+        await readFile(resolve(directory, entry), 'utf8'),
+      ) as {
+        dish: string
+        pass: number
+        promptVersion: string
+        status: string
+        reason: string | null
+        detail: string | null
+        mediaType: string | null
+        latencyMs: number
+        actualCostUsd: number
+      }
       const extension =
-        sidecar.mediaType === "image/jpeg" ? "jpg" : sidecar.mediaType === "image/webp" ? "webp" : "png";
+        sidecar.mediaType === 'image/jpeg'
+          ? 'jpg'
+          : sidecar.mediaType === 'image/webp'
+            ? 'webp'
+            : 'png'
       cells.push({
         model: rung.model,
         dish: sidecar.dish,
         pass: sidecar.pass,
         promptVersion: sidecar.promptVersion,
         imageSrc:
-          sidecar.status === "image"
+          sidecar.status === 'image'
             ? `fixtures/renders/${modelSlug(rung.model)}/${sidecar.dish}-${sidecar.pass}-${sidecar.promptVersion}.${extension}`
             : null,
         status: sidecar.reason ?? sidecar.status,
         detail: sidecar.detail,
         costUsd: sidecar.actualCostUsd,
         latencyMs: sidecar.latencyMs,
-      });
+      })
     }
   }
-  return cells;
+  return cells
 }
 
 async function main(): Promise<void> {
-  const cells = await collectCells();
-  await writeFile("spike13/review.html", renderReviewHtml(cells));
-  console.log(`spike13/review.html écrit (${cells.length} cellules). Ouvre-le et juge les trois barrières.`);
+  const cells = await collectCells()
+  await writeFile('spike13/review.html', renderReviewHtml(cells))
+  console.log(
+    `spike13/review.html écrit (${cells.length} cellules). Ouvre-le et juge les trois barrières.`,
+  )
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+if (
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === resolve(process.argv[1])
+) {
   main().catch((error: unknown) => {
-    console.error(error instanceof Error ? error.message : error);
-    process.exitCode = 1;
-  });
+    console.error(error instanceof Error ? error.message : error)
+    process.exitCode = 1
+  })
 }

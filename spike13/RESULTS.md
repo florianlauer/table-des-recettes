@@ -20,16 +20,16 @@ la fidélité au plat n'est plus qu'un plancher de reconnaissabilité.
 Jamais le tarif catalogue : la famille OpenAI facture des tokens de raisonnement en plus de l'image,
 ce qui multiplie son coût réel par 3 à 7.
 
-| Modèle · prompt | cellules | $/image | latence |
-|---|---:|---:|---:|
-| `google/gemini-2.5-flash-image` · `v2` **← retenu** | 8 | **0.03944** | **9,1 s** |
-| `google/gemini-2.5-flash-image` · `v3` (réserve) | 8 | 0.03947 | 11,2 s |
-| `google/gemini-2.5-flash-image` · `v1` | 8 | 0.03942 | 8,8 s |
-| `google/gemini-3.1-flash-lite-image` · `v1` | 8 | 0.03423 | 5,1 s |
-| `google/gemini-3.1-flash-lite-image` · `v2` | 4 | 0.03395 | 5,9 s |
-| `openai/gpt-5-image-mini` · `v1` | 8 | 0.05130 | 63,4 s |
-| `openai/gpt-5-image-mini` · `v2` | 4 | 0.05010 | 59,0 s |
-| `openai/gpt-5.4-image-2` · `v1` | 1 | 0.23531 | 180,7 s |
+| Modèle · prompt                                     | cellules |     $/image |   latence |
+| --------------------------------------------------- | -------: | ----------: | --------: |
+| `google/gemini-2.5-flash-image` · `v2` **← retenu** |        8 | **0.03944** | **9,1 s** |
+| `google/gemini-2.5-flash-image` · `v3` (réserve)    |        8 |     0.03947 |    11,2 s |
+| `google/gemini-2.5-flash-image` · `v1`              |        8 |     0.03942 |     8,8 s |
+| `google/gemini-3.1-flash-lite-image` · `v1`         |        8 |     0.03423 |     5,1 s |
+| `google/gemini-3.1-flash-lite-image` · `v2`         |        4 |     0.03395 |     5,9 s |
+| `openai/gpt-5-image-mini` · `v1`                    |        8 |     0.05130 |    63,4 s |
+| `openai/gpt-5-image-mini` · `v2`                    |        4 |     0.05010 |    59,0 s |
+| `openai/gpt-5.4-image-2` · `v1`                     |        1 |     0.23531 |   180,7 s |
 
 `gpt-5.4-image-2` est **dominé** et sa grille est restée ouverte à 1 cellule sur 8 : 6× le prix et
 20× la latence d'un modèle qui franchit les mêmes barrières. Le constat tient sur cette seule
@@ -39,12 +39,12 @@ observation, il est écrit ici plutôt que payé sept fois.
 
 Modèle retenu, croix = ne se lit plus comme une photo de photo.
 
-| Plat | `v2` p1 | `v2` p2 | `v3` p1 | `v3` p2 | Observation |
-|---|:--:|:--:|:--:|:--:|---|
-| `brut2` (plan large) | ✅ | ✅ | ✅ | ✅ | page et texte supprimés, photographie franche |
-| `brut1` (plan large) | ✅ | ✅ | ✅ | ✅ | idem ; le liseré résiduel de `v2` disparaît en `v3` |
-| `recadre1` (gros plan) | ✅ | ❌ | ✅ | ✅ | `v3` rattrape la passe 2 que `v2` ratait |
-| `recadre2` (gros plan) | ❌ | ❌ | ✅ | ❌ | `v3` rattrape la passe 1 ; la passe 2 reste un quasi-scan |
+| Plat                   | `v2` p1 | `v2` p2 | `v3` p1 | `v3` p2 | Observation                                               |
+| ---------------------- | :-----: | :-----: | :-----: | :-----: | --------------------------------------------------------- |
+| `brut2` (plan large)   |   ✅    |   ✅    |   ✅    |   ✅    | page et texte supprimés, photographie franche             |
+| `brut1` (plan large)   |   ✅    |   ✅    |   ✅    |   ✅    | idem ; le liseré résiduel de `v2` disparaît en `v3`       |
+| `recadre1` (gros plan) |   ✅    |   ❌    |   ✅    |   ✅    | `v3` rattrape la passe 2 que `v2` ratait                  |
+| `recadre2` (gros plan) |   ❌    |   ❌    |   ✅    |   ❌    | `v3` rattrape la passe 1 ; la passe 2 reste un quasi-scan |
 
 **Prompt retenu `v2` : 5 sur 8** — 4 sur 4 en plan large, 1 sur 4 en gros plan. `v3` monte à 7 sur 8
 et supprime l'inclinaison partout, mais n'est pas retenu.
@@ -76,13 +76,13 @@ autre plat.
 
 Écarts observés, non éliminatoires — le prix accepté de la barrière 1 :
 
-| Écart | Où |
-|---|---|
-| Décor de fond re-rendu (nappe devenue vert olive, marbre ou bois inventé sous l'assiette) | tous les plans larges |
-| Texture de l'aliment re-rendue — la sauce de `brut1` ressort plus croustillante que fondante | `brut1` |
-| Accessoires d'arrière-plan conservés mais redessinés (verre, bols, couteau) | `brut1`, `brut2` |
-| Motif floral de l'assiette et feuille de laurier **conservés** | `brut1` |
-| `v3` s'écarte plus que `v2` : `recadre2` devient un cake dans un plat à four là où l'original montre des tranches, le ragoût de `brut1` ressort en viande tranchée — **c'est la raison du non-choix de `v3`** | gros plans, `v3` |
+| Écart                                                                                                                                                                                                         | Où                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| Décor de fond re-rendu (nappe devenue vert olive, marbre ou bois inventé sous l'assiette)                                                                                                                     | tous les plans larges |
+| Texture de l'aliment re-rendue — la sauce de `brut1` ressort plus croustillante que fondante                                                                                                                  | `brut1`               |
+| Accessoires d'arrière-plan conservés mais redessinés (verre, bols, couteau)                                                                                                                                   | `brut1`, `brut2`      |
+| Motif floral de l'assiette et feuille de laurier **conservés**                                                                                                                                                | `brut1`               |
+| `v3` s'écarte plus que `v2` : `recadre2` devient un cake dans un plat à four là où l'original montre des tranches, le ragoût de `brut1` ressort en viande tranchée — **c'est la raison du non-choix de `v3`** | gros plans, `v3`      |
 
 ## Barrière 3 — le gain se voit-il ?
 
@@ -124,11 +124,11 @@ Krea, Recraft, Qwen Image, Seedream, Riverflow) vivent sur une **seconde surface
 
 Trois sondes, 0,09 USD, sur `brut1` avec `v2` :
 
-| Modèle | $ réel | latence | barrière 1 |
-|---|---:|---:|---|
-| `black-forest-labs/flux.2-klein-4b` | 0.017 | 7,9 s | **échec — régénère le texte en charabia lisible** |
-| `qwen/qwen-image-3` | 0.033 | 109,5 s | **échec — page, texte et trame intacts** |
-| `bytedance-seed/seedream-4.5` | 0.040 | 24,6 s | franchie |
+| Modèle                              | $ réel | latence | barrière 1                                        |
+| ----------------------------------- | -----: | ------: | ------------------------------------------------- |
+| `black-forest-labs/flux.2-klein-4b` |  0.017 |   7,9 s | **échec — régénère le texte en charabia lisible** |
+| `qwen/qwen-image-3`                 |  0.033 | 109,5 s | **échec — page, texte et trame intacts**          |
+| `bytedance-seed/seedream-4.5`       |  0.040 |  24,6 s | franchie                                          |
 
 Deux enseignements. D'abord un **mode d'échec que la spec n'avait pas nommé** : le faux texte. Le
 modèle le moins cher ne retire pas le texte imprimé, il le réécrit en charabia — « Fonds

@@ -26,9 +26,9 @@ savoir en plus recadrer sans inventer.
 La photo la plus facile et la plus difficile sont toutes deux **recadrées** : sans ça, « recadré
 passe / brut échoue » aurait pu n'être qu'un artefact de difficulté plutôt qu'un effet du cadrage.
 
-| Rôle | Source | Sujet | Difficulté | Défauts à corriger |
-|---|---|---|---|---|
-| `recadre1` | `IMG_1640` recadrée | Galette feuilletée, pomme et pomme de terre | Facile — bien éclairée, sujet net | Trame d'impression, grain du papier, léger reflet |
-| `recadre2` | `IMG_1638` recadrée | Cake aux fruits confits, deux bols d'ingrédients | **Dure** — délavée, grain lourd, faible contraste | Grain marqué, couleurs ternes, scène encombrée |
-| `brut1` | `IMG_1637` | Fonds d'artichauts au thon, plat ovale à décor floral | Moyenne | Titre de rubrique et légende à écarter, colonne voisine, courbure de page, trame |
-| `brut2` | `IMG_1639` | Terrine rustique de poulet, bardée, entamée | Moyenne | Reflets marqués en haut à gauche, page de travers, colonne de texte à droite, grain |
+| Rôle       | Source              | Sujet                                                 | Difficulté                                        | Défauts à corriger                                                                  |
+| ---------- | ------------------- | ----------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `recadre1` | `IMG_1640` recadrée | Galette feuilletée, pomme et pomme de terre           | Facile — bien éclairée, sujet net                 | Trame d'impression, grain du papier, léger reflet                                   |
+| `recadre2` | `IMG_1638` recadrée | Cake aux fruits confits, deux bols d'ingrédients      | **Dure** — délavée, grain lourd, faible contraste | Grain marqué, couleurs ternes, scène encombrée                                      |
+| `brut1`    | `IMG_1637`          | Fonds d'artichauts au thon, plat ovale à décor floral | Moyenne                                           | Titre de rubrique et légende à écarter, colonne voisine, courbure de page, trame    |
+| `brut2`    | `IMG_1639`          | Terrine rustique de poulet, bardée, entamée           | Moyenne                                           | Reflets marqués en haut à gauche, page de travers, colonne de texte à droite, grain |
