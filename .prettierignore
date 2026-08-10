@@ -8,3 +8,6 @@ convex/_generated
 # Artefacts du spike T1 : sortie brute du harnais, à comparer octet pour octet.
 spike/fixtures/runs
 spike/ladder.*.json
+
+# Rejeu du prompt v3 (étape 6) : sortie brute, comparée octet pour octet à l'archive v2.
+spike/runs-v3

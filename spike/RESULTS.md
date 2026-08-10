@@ -109,3 +109,54 @@ visible, et le seul parfaitement stable corrompt en silence (`1 vingtaine` lu `1
    réception.
 4. **`max_tokens` borne raisonnement + réponse** chez les modèles à raisonnement. Un budget de sortie
    calculé sur la seule taille de la réponse produit une troncature systématique.
+
+## Rejeu sous prompt v3 / schéma 2 — 2026-08-10
+
+Le verdict ci-dessus a été mesuré sous prompt v2. Le prompt v3 y ajoute la règle de déduction
+d'ingrédients et le champ `ingredientsInferred`. Les sept pages ont donc été rejouées, deux passes
+chacune : 14 appels, 0,0713 USD (0,0051 par appel, contre 0,0045 sous v2 — le prompt est plus long),
+7,5 s en moyenne, **14 succès, zéro réparation de schéma, zéro nouvelle tentative**. Sortie brute dans
+`spike/runs-v3/`, hors de l'archive v2 qu'elle sert à comparer.
+
+`npx tsx spike/compare-v3.ts <archive v2> <sortie v3>` rend :
+
+| Page | Deux passes  | Contre l'archive v2 |
+| ---- | ------------ | ------------------- |
+| A    | stable       | identique           |
+| B    | stable       | prose identique     |
+| C    | stable       | identique           |
+| E    | stable       | déduction attendue  |
+| F    | **instable** | prose identique     |
+| G    | **instable** | déduction attendue  |
+| H    | stable       | identique           |
+
+**Aucune régression de contenu sur les sept pages.** Rien n'est perdu, rien n'est inventé, aucun
+titre ne bouge, aucun compte de recettes ne change. Trois constats en revanche :
+
+1. **La page G n'imprime aucune liste d'ingrédients non plus.** Le plan supposait E seule dans ce
+   cas ; la vérification à l'œil de `g.jpg` le démentit — sa recette entière est un bloc de prose à
+   puces sous « LA RECETTE ». `ingredientsInferred: true` y est donc **correct**, et l'archive v2
+   n'est pas davantage une référence sur G que sur E. Le comparateur porte les deux pages.
+2. **La liste déduite est instable là où la liste imprimée ne l'est pas.** G rend 16 lignes en passe 1
+   et 13 en passe 2, avec « un filet d'huile d'olive » compté deux fois. C'est la limite mesurée de
+   la fonctionnalité : sans lignes imprimées, il n'y a pas de frontière à recopier. Les cinq pages à
+   liste imprimée restent, elles, parfaitement stables.
+3. **La liste déduite de E contient une ligne qui n'est pas un ingrédient** — `1 mn sur feu doux`,
+   une durée — et compte les œufs trois fois : `4 œufs`, puis `3 jaunes d'œufs`, puis
+   `blancs d'œufs`. Le prompt v3 dit d'où reconstituer la liste, pas ce qui n'en fait pas partie.
+   **Une révision v4 devrait interdire les durées, les températures et les fractions d'un ingrédient
+   déjà listé.** Coût d'un nouveau rejeu de contrôle : 0,071 USD.
+
+Deux divergences volontairement classées « à l'œil » plutôt qu'en échec, parce qu'aucune lecture de
+la page ne les tranche :
+
+- **Le redécoupage des étapes de la page B.** v2 coupait la prose phrase par phrase (13, 10 et 13
+  étapes) ; v3 la groupe (6, 6 et 6). Le texte concaténé est **identique au caractère près**, et la
+  page n'imprime qu'un seul bloc de prose sous « Préparation. » — sans marqueur d'étape éditorial,
+  les deux découpages se valent. Le comparateur échoue donc sur la prose, pas sur les frontières.
+- **L'espace français devant `!`.** L'unique divergence de la page F entre ses deux passes est
+  `Déguster!` contre `Déguster !`. Elle suffit à faire tomber l'égalité stricte des deux passes, qui
+  est le discriminant du spike, donc elle est signalée — mais elle ne change aucune donnée.
+
+L'instabilité de la page B relevée en réserve 1 ci-dessus **ne s'est pas reproduite** : `Pour la
+pâte :` est écarté dans les quatre passes archivées comme dans les deux passes v3.

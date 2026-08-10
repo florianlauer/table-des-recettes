@@ -79,20 +79,18 @@ export async function runEscalationEndpoint({
   budget,
   budgetPath,
   pages = ['a', 'b', 'c'],
+  outputRoot = 'spike/fixtures/runs',
 }: {
   endpoint: LadderEntry
   apiKey: string
   budget: BudgetCounter
   budgetPath: string
   pages?: string[]
+  outputRoot?: string
 }): Promise<void> {
   const modelPath = safePathPart(endpoint.model)
   const providerPath = safePathPart(endpoint.providerSlug)
-  const outputDirectory = resolve(
-    'spike/fixtures/runs',
-    modelPath,
-    providerPath,
-  )
+  const outputDirectory = resolve(outputRoot, modelPath, providerPath)
   await mkdir(outputDirectory, { recursive: true })
   console.log(
     `Budget pire cas de l'échelon : ${(endpoint.maximumCallCostUsd * 18).toFixed(6)} USD.`,
@@ -142,10 +140,11 @@ async function main(): Promise<void> {
     model,
     provider,
     pages: requestedPages,
+    out,
   } = parseNamedArguments(process.argv.slice(2))
   if (!model || !provider) {
     throw new Error(
-      'Usage : npm run run:spike -- --model <id> --provider <slug> [--pages a,b,c].',
+      'Usage : npm run run:spike -- --model <id> --provider <slug> [--pages a,b,c] [--out <dir>].',
     )
   }
   // Les trois pages du protocole restent le défaut ; `--pages` sert à passer la réserve, qui mesure
@@ -166,6 +165,9 @@ async function main(): Promise<void> {
     budget,
     budgetPath,
     ...(pages?.length ? { pages } : {}),
+    // `--out` keeps a new prompt version out of the v2 archive, which is the baseline it gets
+    // compared against — and whose fixture counts are pinned by replay-fixtures.test.ts.
+    ...(out ? { outputRoot: safePathPart(out) } : {}),
   })
 }
 
