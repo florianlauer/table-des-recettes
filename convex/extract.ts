@@ -1,9 +1,13 @@
 import { v } from 'convex/values'
 import { internal } from './_generated/api'
+import type { Doc, Id } from './_generated/dataModel'
 import { internalAction, internalMutation } from './_generated/server'
 import { ingredient, recipeType } from './schema'
+import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { withSearchText } from './lib/recipeWrites'
+import { FAILURE_KINDS, isTerminalFailure } from '../src/lib/failureKinds'
+import type { FailureKind } from '../src/lib/failureKinds'
 import {
   extractionJsonSchema,
   JSON_SCHEMA_NAME,
@@ -19,25 +23,17 @@ import { sniffImageHeader } from '../src/lib/imageHeader'
 export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1'
 export const REQUEST_TIMEOUT_MS = 120_000
 export const MAX_ATTEMPTS = 3
-// One transport attempt keeps one quota unit equal to at most one potentially billed HTTP request.
-export const MAX_TRANSPORT_ATTEMPTS = 1
-// The margin keeps a replacement worker behind the request deadline and action overhead.
-export const LEASE_MS = REQUEST_TIMEOUT_MS * MAX_TRANSPORT_ATTEMPTS + 30_000
+// One reservation bills at most one HTTP request, so retries live at the queue level where
+// MAX_ATTEMPTS and the rate limiter already account for them. The margin keeps a replacement
+// worker behind the request deadline and the action overhead.
+export const LEASE_MS = REQUEST_TIMEOUT_MS + 30_000
 export const MAX_OUTPUT_TOKENS = 8000
 export const UNCONSUMED_TICKET_GRACE_MS = 60 * 60 * 1000
 export const CONSUMED_TICKET_RETENTION_MS = 7 * 24 * 60 * 60 * 1000
 export const TICKET_SWEEP_BATCH = 100
 export const RESERVE_SCAN_BATCH = 100
 
-export type FailureKind =
-  | 'refusal'
-  | 'truncated'
-  | 'invalid_json'
-  | 'invalid_schema'
-  | 'timeout'
-  | 'transport'
-  | 'no_recipes'
-  | 'invalid_image'
+export type { FailureKind }
 
 type ExtractionEnvironment = {
   OPENROUTER_API_KEY?: string
@@ -47,17 +43,16 @@ type ExtractionEnvironment = {
 
 type AttemptObservation = {
   model: string
-  servedProvider?: string
+  servedProvider: string | null
   latencyMs: number
   costUsd: number
   repairCount: number
 }
 
+type Extraction = ReturnType<typeof normalizeExtraction>
+
 export type ExtractionResult =
-  | ({
-      ok: true
-      extraction: ReturnType<typeof normalizeExtraction>
-    } & AttemptObservation)
+  | ({ ok: true; extraction: Extraction } & AttemptObservation)
   | ({ ok: false; kind: FailureKind; error: string } & AttemptObservation)
 
 type OpenRouterResponse = {
@@ -70,30 +65,35 @@ type OpenRouterResponse = {
   error?: { message?: string }
 }
 
+/** What the answer says, with no notion of when it arrived — hence testable without a fetch stub. */
+export type ResponseReading = {
+  costUsd: number
+  servedProvider: string | null
+} & (
+  | { ok: true; extraction: Extraction; repairCount: number }
+  | { ok: false; kind: FailureKind; error: string }
+)
+
 function failure({
   kind,
   error,
   model,
   startedAt,
-  costUsd = 0,
-  servedProvider,
 }: {
   kind: FailureKind
   error: string
   model: string
   startedAt: number
-  costUsd?: number
-  servedProvider?: string
 }): ExtractionResult {
   return {
     ok: false,
     kind,
     error,
     model,
+    servedProvider: null,
     latencyMs: performance.now() - startedAt,
-    costUsd,
+    costUsd: 0,
     repairCount: 0,
-    ...(servedProvider === undefined ? {} : { servedProvider }),
   }
 }
 
@@ -103,6 +103,109 @@ export function bytesToBase64(bytes: Uint8Array): string {
     chunks.push(String.fromCharCode(...bytes.subarray(offset, offset + 0x8000)))
   }
   return btoa(chunks.join(''))
+}
+
+export function requestBody({
+  model,
+  provider,
+  dataUri,
+}: {
+  model: string
+  provider: string
+  dataUri: string
+}): string {
+  return JSON.stringify({
+    model,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: EXTRACTION_PROMPT },
+          { type: 'image_url', image_url: { url: dataUri } },
+        ],
+      },
+    ],
+    max_tokens: MAX_OUTPUT_TOKENS,
+    response_format: {
+      type: 'json_schema',
+      json_schema: {
+        name: JSON_SCHEMA_NAME,
+        strict: true,
+        schema: extractionJsonSchema,
+      },
+    },
+    provider: {
+      only: [provider],
+      allow_fallbacks: false,
+      require_parameters: true,
+    },
+    usage: { include: true },
+  })
+}
+
+export function interpretResponse({
+  ok,
+  status,
+  body,
+}: {
+  ok: boolean
+  status: number
+  body: string
+}): ResponseReading {
+  let raw: OpenRouterResponse
+  try {
+    raw = JSON.parse(body) as OpenRouterResponse
+  } catch {
+    return {
+      ok: false,
+      kind: 'transport',
+      error: `Réponse OpenRouter illisible : HTTP ${status}`,
+      costUsd: 0,
+      servedProvider: null,
+    }
+  }
+  // Billed even when the answer is unusable, so the cost is read before any rejection.
+  const costUsd = typeof raw.usage?.cost === 'number' ? raw.usage.cost : 0
+  const servedProvider = raw.provider ?? null
+  const refuse = (kind: FailureKind, error: string): ResponseReading => ({
+    ok: false,
+    kind,
+    error,
+    costUsd,
+    servedProvider,
+  })
+
+  if (!ok)
+    return refuse(
+      'transport',
+      `OpenRouter HTTP ${status} : ${raw.error?.message ?? body}`,
+    )
+  const choice = raw.choices?.[0]
+  if (choice?.message?.refusal) return refuse('refusal', choice.message.refusal)
+  if (choice?.finish_reason !== 'stop')
+    return refuse(
+      'truncated',
+      `Réponse tronquée (${String(choice?.finish_reason)})`,
+    )
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(choice.message?.content ?? '')
+  } catch (error) {
+    return refuse('invalid_json', `JSON invalide : ${String(error)}`)
+  }
+  const repaired = repairExtraction(parsed)
+  const validated = extractionSchema.safeParse(repaired.value)
+  if (!validated.success)
+    return refuse('invalid_schema', validated.error.message)
+  if (validated.data.recipes.length === 0)
+    return refuse('no_recipes', 'Aucune recette détectée')
+  return {
+    ok: true,
+    extraction: normalizeExtraction(validated.data),
+    repairCount: repaired.repairs.length,
+    costUsd,
+    servedProvider,
+  }
 }
 
 export async function extractImage({
@@ -137,156 +240,86 @@ export async function extractImage({
       startedAt,
     })
   }
-  const dataUri = `data:image/${header.format};base64,${bytesToBase64(bytes)}`
 
-  let lastTransportError = 'Erreur de transport OpenRouter'
-  let lastKind: 'timeout' | 'transport' = 'transport'
-  let totalCostUsd = 0
-  for (
-    let requestAttempt = 1;
-    requestAttempt <= MAX_TRANSPORT_ATTEMPTS;
-    requestAttempt += 1
-  ) {
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-    try {
-      const response = await fetchImpl(
-        `${OPENROUTER_API_URL}/chat/completions`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          signal: controller.signal,
-          body: JSON.stringify({
-            model,
-            messages: [
-              {
-                role: 'user',
-                content: [
-                  { type: 'text', text: EXTRACTION_PROMPT },
-                  { type: 'image_url', image_url: { url: dataUri } },
-                ],
-              },
-            ],
-            max_tokens: MAX_OUTPUT_TOKENS,
-            response_format: {
-              type: 'json_schema',
-              json_schema: {
-                name: JSON_SCHEMA_NAME,
-                strict: true,
-                schema: extractionJsonSchema,
-              },
-            },
-            provider: {
-              only: [provider],
-              allow_fallbacks: false,
-              require_parameters: true,
-            },
-            usage: { include: true },
-          }),
-        },
-      )
-      const responseText = await response.text()
-      let raw: OpenRouterResponse
-      try {
-        raw = JSON.parse(responseText) as OpenRouterResponse
-      } catch {
-        lastTransportError = `Réponse OpenRouter illisible : HTTP ${response.status}`
-        lastKind = 'transport'
-        continue
-      }
-      totalCostUsd += typeof raw.usage?.cost === 'number' ? raw.usage.cost : 0
-      const servedProvider = raw.provider
-      if (!response.ok) {
-        lastTransportError = `OpenRouter HTTP ${response.status} : ${raw.error?.message ?? responseText}`
-        lastKind = 'transport'
-        continue
-      }
-      const choice = raw.choices?.[0]
-      if (choice?.message?.refusal) {
-        return failure({
-          kind: 'refusal',
-          error: choice.message.refusal,
-          model,
-          startedAt,
-          costUsd: totalCostUsd,
-          servedProvider,
-        })
-      }
-      if (choice?.finish_reason !== 'stop') {
-        return failure({
-          kind: 'truncated',
-          error: `Réponse tronquée (${String(choice?.finish_reason)})`,
-          model,
-          startedAt,
-          costUsd: totalCostUsd,
-          servedProvider,
-        })
-      }
-      let parsed: unknown
-      try {
-        parsed = JSON.parse(choice.message?.content ?? '')
-      } catch (error) {
-        return failure({
-          kind: 'invalid_json',
-          error: `JSON invalide : ${String(error)}`,
-          model,
-          startedAt,
-          costUsd: totalCostUsd,
-          servedProvider,
-        })
-      }
-      const repaired = repairExtraction(parsed)
-      const validated = extractionSchema.safeParse(repaired.value)
-      if (!validated.success) {
-        return failure({
-          kind: 'invalid_schema',
-          error: validated.error.message,
-          model,
-          startedAt,
-          costUsd: totalCostUsd,
-          servedProvider,
-        })
-      }
-      if (validated.data.recipes.length === 0) {
-        return failure({
-          kind: 'no_recipes',
-          error: 'Aucune recette détectée',
-          model,
-          startedAt,
-          costUsd: totalCostUsd,
-          servedProvider,
-        })
-      }
-      return {
-        ok: true,
-        extraction: normalizeExtraction(validated.data),
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+  let response: Response
+  let body: string
+  try {
+    response = await fetchImpl(`${OPENROUTER_API_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+      body: requestBody({
         model,
-        latencyMs: performance.now() - startedAt,
-        costUsd: totalCostUsd,
-        repairCount: repaired.repairs.length,
-        ...(servedProvider === undefined ? {} : { servedProvider }),
-      }
-    } catch (error) {
-      const timedOut =
-        error instanceof DOMException && error.name === 'AbortError'
-      lastKind = timedOut ? 'timeout' : 'transport'
-      lastTransportError = timedOut
+        provider,
+        dataUri: `data:image/${header.format};base64,${bytesToBase64(bytes)}`,
+      }),
+    })
+    body = await response.text()
+  } catch (error) {
+    const timedOut =
+      error instanceof DOMException && error.name === 'AbortError'
+    return failure({
+      kind: timedOut ? 'timeout' : 'transport',
+      error: timedOut
         ? 'Délai OpenRouter dépassé'
-        : `Transport OpenRouter : ${String(error)}`
-    } finally {
-      clearTimeout(timer)
-    }
+        : `Transport OpenRouter : ${String(error)}`,
+      model,
+      startedAt,
+    })
+  } finally {
+    clearTimeout(timer)
   }
-  return failure({
-    kind: lastKind,
-    error: lastTransportError,
-    model,
-    startedAt,
-    costUsd: totalCostUsd,
+
+  const reading = interpretResponse({
+    ok: response.ok,
+    status: response.status,
+    body,
   })
+  const observation = {
+    model,
+    servedProvider: reading.servedProvider,
+    latencyMs: performance.now() - startedAt,
+    costUsd: reading.costUsd,
+  }
+  return reading.ok
+    ? {
+        ok: true,
+        extraction: reading.extraction,
+        repairCount: reading.repairCount,
+        ...observation,
+      }
+    : {
+        ok: false,
+        kind: reading.kind,
+        error: reading.error,
+        repairCount: 0,
+        ...observation,
+      }
+}
+
+/**
+ * Why a scan can never succeed, or the single image it is made of. Reservation needs both answers
+ * at once, so returning them together keeps the caller from re-deriving the image after the check.
+ */
+export type Eligibility =
+  | { eligible: true; storageId: Id<'_storage'> }
+  | { eligible: false; error: string }
+
+export function eligibility(scan: Doc<'scans'>): Eligibility {
+  if (scan.attempts >= MAX_ATTEMPTS)
+    return { eligible: false, error: 'Plafond de tentatives atteint' }
+  const storageId = scan.imageStorageIds.at(0)
+  if (!storageId || scan.imageStorageIds.length !== 1)
+    return {
+      eligible: false,
+      error: 'Le scan doit contenir exactement une image',
+    }
+  return { eligible: true, storageId }
 }
 
 const reserveResult = v.union(
@@ -328,57 +361,44 @@ export const reserve = internalMutation({
     const candidates = [...pending, ...expired].sort(
       (left, right) => left.createdAt - right.createdAt,
     )
-    let selection:
-      | {
-          candidate: (typeof candidates)[number]
-          storageId: (typeof candidates)[number]['imageStorageIds'][number]
-        }
-      | undefined
+
+    let selection: { scan: Doc<'scans'>; storageId: Id<'_storage'> } | undefined
     for (const scan of candidates) {
-      if (scan.attempts >= MAX_ATTEMPTS) {
-        await ctx.db.patch(scan._id, {
-          status: 'failed',
-          error: 'Plafond de tentatives atteint',
-        })
+      const verdict = eligibility(scan)
+      if (!verdict.eligible) {
+        await ctx.db.patch(scan._id, { status: 'failed', error: verdict.error })
         continue
       }
-      const storageId =
-        scan.imageStorageIds.length === 1
-          ? scan.imageStorageIds.at(0)
-          : undefined
-      if (!storageId) {
-        await ctx.db.patch(scan._id, {
-          status: 'failed',
-          error: 'Le scan doit contenir exactement une image',
-        })
-        continue
-      }
-      selection = { candidate: scan, storageId }
+      selection = { scan, storageId: verdict.storageId }
       break
     }
+    // A batch of nothing but disqualified scans is work done, not an empty queue: the next batch
+    // has to be loaded rather than letting the drain stop here.
     if (!selection) {
       return candidates.length > 0
         ? { status: 'continue' as const }
         : { status: 'no_work' as const }
     }
-    const { candidate, storageId } = selection
+
+    // Quota last, so idle presses of the button cannot exhaust it before any work is confirmed.
     const limit = await rateLimiter.limit(ctx, 'extraction')
     if (!limit.ok)
       return {
         status: 'rate_limited' as const,
         retryAfter: limit.retryAfter,
       }
-    const attemptId = `${candidate._id}:${candidate.attempts + 1}:${now}`
-    await ctx.db.patch(candidate._id, {
+    const { scan } = selection
+    const attemptId = `${scan._id}:${scan.attempts + 1}:${now}`
+    await ctx.db.patch(scan._id, {
       status: 'extracting',
       attemptId,
       startedAt: now,
-      attempts: candidate.attempts + 1,
+      attempts: scan.attempts + 1,
     })
     return {
       status: 'reserved' as const,
-      scanId: candidate._id,
-      storageId,
+      scanId: scan._id,
+      storageId: selection.storageId,
       attemptId,
     }
   },
@@ -387,7 +407,7 @@ export const reserve = internalMutation({
 const observationArgs = {
   attemptId: v.string(),
   model: v.string(),
-  servedProvider: v.optional(v.string()),
+  servedProvider: v.union(v.string(), v.null()),
   latencyMs: v.number(),
   costUsd: v.number(),
   repairCount: v.number(),
@@ -409,21 +429,9 @@ export const finalize = internalMutation({
     ),
   },
   returns: v.boolean(),
-  handler: async (
-    ctx,
-    {
-      scanId,
-      attemptId,
-      model,
-      servedProvider,
-      latencyMs,
-      costUsd,
-      repairCount,
-      recipes,
-    },
-  ) => {
+  handler: async (ctx, { scanId, recipes, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan || scan.attemptId !== attemptId) return false
+    if (!scan || scan.attemptId !== observation.attemptId) return false
     for (const recipe of recipes) {
       await ctx.db.insert(
         'recipes',
@@ -439,14 +447,7 @@ export const finalize = internalMutation({
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
-      lastAttempt: {
-        attemptId,
-        model,
-        latencyMs,
-        costUsd,
-        repairCount,
-        ...(servedProvider === undefined ? {} : { servedProvider }),
-      },
+      lastAttempt: { ...observation, failureKind: null },
     })
     return true
   },
@@ -456,51 +457,21 @@ export const recordFailure = internalMutation({
   args: {
     scanId: v.id('scans'),
     ...observationArgs,
-    failureKind: v.union(
-      v.literal('refusal'),
-      v.literal('truncated'),
-      v.literal('invalid_json'),
-      v.literal('invalid_schema'),
-      v.literal('timeout'),
-      v.literal('transport'),
-      v.literal('no_recipes'),
-      v.literal('invalid_image'),
-    ),
+    failureKind: literalUnion(FAILURE_KINDS),
     error: v.string(),
   },
   returns: v.boolean(),
-  handler: async (
-    ctx,
-    {
-      scanId,
-      attemptId,
-      model,
-      servedProvider,
-      latencyMs,
-      costUsd,
-      repairCount,
-      failureKind,
-      error,
-    },
-  ) => {
+  handler: async (ctx, { scanId, failureKind, error, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan || scan.attemptId !== attemptId) return false
+    if (!scan || scan.attemptId !== observation.attemptId) return false
     const terminal =
-      failureKind === 'invalid_image' || scan.attempts >= MAX_ATTEMPTS
+      isTerminalFailure(failureKind) || scan.attempts >= MAX_ATTEMPTS
     await ctx.db.patch(scanId, {
       status: terminal ? 'failed' : 'pending',
       error,
       attemptId: undefined,
       startedAt: undefined,
-      lastAttempt: {
-        attemptId,
-        model,
-        latencyMs,
-        costUsd,
-        repairCount,
-        failureKind,
-        ...(servedProvider === undefined ? {} : { servedProvider }),
-      },
+      lastAttempt: { ...observation, failureKind },
     })
     return true
   },
@@ -511,6 +482,8 @@ export const sweepTickets = internalMutation({
   returns: v.number(),
   handler: async (ctx) => {
     const now = Date.now()
+    // Two disjoint index ranges rather than one: consumed and unconsumed tickets share no prefix,
+    // so a batch of recent consumed rows can never starve the unconsumed purge.
     const unconsumedTickets = await ctx.db
       .query('uploadTickets')
       .withIndex('by_consumed_at_created_at', (q) =>
@@ -571,12 +544,10 @@ export const drain = internalAction({
       scanId: reservation.scanId,
       attemptId: reservation.attemptId,
       model: result.model,
+      servedProvider: result.servedProvider,
       latencyMs: result.latencyMs,
       costUsd: result.costUsd,
       repairCount: result.repairCount,
-      ...(result.servedProvider === undefined
-        ? {}
-        : { servedProvider: result.servedProvider }),
     }
     if (result.ok) {
       await ctx.runMutation(internal.extract.finalize, {

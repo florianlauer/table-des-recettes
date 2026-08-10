@@ -13,6 +13,7 @@ import type * as auth from "../auth.js";
 import type * as devImages from "../devImages.js";
 import type * as extract from "../extract.js";
 import type * as lib_recipeWrites from "../lib/recipeWrites.js";
+import type * as lib_validators from "../lib/validators.js";
 import type * as rateLimits from "../rateLimits.js";
 import type * as recipes from "../recipes.js";
 import type * as seed from "../seed.js";
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   devImages: typeof devImages;
   extract: typeof extract;
   "lib/recipeWrites": typeof lib_recipeWrites;
+  "lib/validators": typeof lib_validators;
   rateLimits: typeof rateLimits;
   recipes: typeof recipes;
   seed: typeof seed;

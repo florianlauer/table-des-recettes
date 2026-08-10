@@ -5,14 +5,17 @@ import { internal } from './_generated/api'
 import schema from './schema'
 import {
   bytesToBase64,
+  eligibility,
   extractImage,
+  interpretResponse,
   LEASE_MS,
-  MAX_TRANSPORT_ATTEMPTS,
+  MAX_ATTEMPTS,
   REQUEST_TIMEOUT_MS,
   RESERVE_SCAN_BATCH,
   TICKET_SWEEP_BATCH,
   UNCONSUMED_TICKET_GRACE_MS,
 } from './extract'
+import type { Doc, Id } from './_generated/dataModel'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = {
@@ -34,11 +37,8 @@ function setup() {
 }
 
 describe('extraction transport', () => {
-  test('keeps the lease beyond every request deadline', () => {
-    expect(LEASE_MS).toBeGreaterThan(
-      REQUEST_TIMEOUT_MS * MAX_TRANSPORT_ATTEMPTS,
-    )
-    expect(MAX_TRANSPORT_ATTEMPTS).toBe(1)
+  test('keeps the lease beyond the request deadline', () => {
+    expect(LEASE_MS).toBeGreaterThan(REQUEST_TIMEOUT_MS)
     expect(bytesToBase64(new Uint8Array([0, 1, 2]))).toBe('AAEC')
   })
 
@@ -158,6 +158,128 @@ describe('extraction transport', () => {
     ).resolves.toMatchObject({ ok: false, kind: 'transport' })
     expect(fetchImpl).toHaveBeenCalledTimes(1)
   })
+
+  test('classifies an aborted request as a timeout', async () => {
+    const fetchImpl = vi.fn(() =>
+      Promise.reject(new DOMException('aborted', 'AbortError')),
+    )
+    await expect(
+      extractImage({ blob: jpeg(), environment, fetchImpl }),
+    ).resolves.toMatchObject({ ok: false, kind: 'timeout', costUsd: 0 })
+  })
+})
+
+// The interpretation carries no notion of time or transport, so each failure kind costs one object
+// literal instead of a fetch stub returning a whole OpenRouter envelope.
+describe('answer interpretation', () => {
+  const answer = (payload: unknown, status = 200) => ({
+    ok: status < 400,
+    status,
+    body: JSON.stringify(payload),
+  })
+  const content = (value: unknown) => ({
+    provider: 'served-provider',
+    usage: { cost: 0.0045 },
+    choices: [
+      { finish_reason: 'stop', message: { content: JSON.stringify(value) } },
+    ],
+  })
+
+  test('reports a model refusal', () => {
+    expect(
+      interpretResponse(
+        answer({
+          provider: 'served-provider',
+          choices: [{ finish_reason: 'stop', message: { refusal: 'non' } }],
+        }),
+      ),
+    ).toMatchObject({ ok: false, kind: 'refusal', error: 'non' })
+  })
+
+  test('reports a truncated answer', () => {
+    expect(
+      interpretResponse(
+        answer({ choices: [{ finish_reason: 'length', message: {} }] }),
+      ),
+    ).toMatchObject({ ok: false, kind: 'truncated' })
+  })
+
+  test('reports an answer that misses the schema', () => {
+    expect(
+      interpretResponse(answer(content({ recipes: [{ title: 'Soup' }] }))),
+    ).toMatchObject({ ok: false, kind: 'invalid_schema' })
+  })
+
+  test('reports an answer that found no recipe', () => {
+    expect(interpretResponse(answer(content({ recipes: [] })))).toMatchObject({
+      ok: false,
+      kind: 'no_recipes',
+    })
+  })
+
+  test('keeps the billed cost of an answer it rejects', () => {
+    expect(
+      interpretResponse(
+        answer({
+          provider: 'served-provider',
+          usage: { cost: 0.0045 },
+          choices: [{ finish_reason: 'length', message: {} }],
+        }),
+      ),
+    ).toMatchObject({
+      ok: false,
+      costUsd: 0.0045,
+      servedProvider: 'served-provider',
+    })
+  })
+
+  test('reports an unreadable body without inventing a provider', () => {
+    expect(
+      interpretResponse({ ok: false, status: 502, body: '<html>' }),
+    ).toMatchObject({
+      ok: false,
+      kind: 'transport',
+      costUsd: 0,
+      servedProvider: null,
+    })
+  })
+})
+
+describe('scan eligibility', () => {
+  const scan = (fields: Partial<Doc<'scans'>>): Doc<'scans'> => ({
+    _id: 'scan' as Id<'scans'>,
+    _creationTime: 0,
+    status: 'pending',
+    imageStorageIds: ['image' as Id<'_storage'>],
+    attempts: 0,
+    createdAt: 0,
+    ...fields,
+  })
+
+  test('yields the single image of a healthy scan', () => {
+    expect(eligibility(scan({}))).toEqual({
+      eligible: true,
+      storageId: 'image',
+    })
+  })
+
+  test('disqualifies a scan that exhausted its attempts', () => {
+    expect(eligibility(scan({ attempts: MAX_ATTEMPTS }))).toMatchObject({
+      eligible: false,
+      error: 'Plafond de tentatives atteint',
+    })
+  })
+
+  test('disqualifies a scan that does not hold exactly one image', () => {
+    for (const imageStorageIds of [
+      [],
+      ['a' as Id<'_storage'>, 'b' as Id<'_storage'>],
+    ])
+      expect(eligibility(scan({ imageStorageIds }))).toMatchObject({
+        eligible: false,
+        error: 'Le scan doit contenir exactement une image',
+      })
+  })
 })
 
 describe('extraction state machine', () => {
@@ -256,6 +378,7 @@ describe('extraction state machine', () => {
       scanId,
       attemptId: 'attempt-1',
       model: 'model',
+      servedProvider: null,
       latencyMs: 1,
       costUsd: 0,
       repairCount: 0,

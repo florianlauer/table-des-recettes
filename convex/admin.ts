@@ -3,6 +3,7 @@ import { internal } from './_generated/api'
 import { mutation, query } from './_generated/server'
 import { requireAdmin } from './auth'
 import { rateLimiter } from './rateLimits'
+import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
 
 const createScanResult = v.union(
@@ -15,26 +16,6 @@ export const SCANS_LISTED = 100
 // is therefore far above any sound extraction, and reaching it means the extraction is malformed,
 // which is exactly what `draftsTruncated` has to tell the operator rather than hide.
 export const DRAFTS_LISTED_PER_SCAN = 50
-
-const lastAttempt = v.object({
-  attemptId: v.string(),
-  model: v.string(),
-  servedProvider: v.union(v.string(), v.null()),
-  latencyMs: v.number(),
-  costUsd: v.number(),
-  failureKind: v.union(
-    v.literal('refusal'),
-    v.literal('truncated'),
-    v.literal('invalid_json'),
-    v.literal('invalid_schema'),
-    v.literal('timeout'),
-    v.literal('transport'),
-    v.literal('no_recipes'),
-    v.literal('invalid_image'),
-    v.null(),
-  ),
-  repairCount: v.number(),
-})
 
 export const generateUploadUrl = mutation({
   args: { adminToken: v.string() },
@@ -151,12 +132,7 @@ export const listScans = query({
   returns: v.array(
     v.object({
       id: v.id('scans'),
-      status: v.union(
-        v.literal('pending'),
-        v.literal('extracting'),
-        v.literal('done'),
-        v.literal('failed'),
-      ),
+      status: scanStatus,
       imageCount: v.number(),
       error: v.union(v.string(), v.null()),
       drafts: v.array(
@@ -167,7 +143,7 @@ export const listScans = query({
         }),
       ),
       draftsTruncated: v.boolean(),
-      lastAttempt: v.union(lastAttempt, v.null()),
+      lastAttempt: v.union(attemptRecord, v.null()),
       createdAt: v.number(),
     }),
   ),
@@ -194,13 +170,7 @@ export const listScans = query({
             ingredientsInferred: recipe.ingredientsInferred,
           })),
           draftsTruncated: truncated,
-          lastAttempt: scan.lastAttempt
-            ? {
-                ...scan.lastAttempt,
-                servedProvider: scan.lastAttempt.servedProvider ?? null,
-                failureKind: scan.lastAttempt.failureKind ?? null,
-              }
-            : null,
+          lastAttempt: scan.lastAttempt ?? null,
           createdAt: scan.createdAt,
         }
       }),

@@ -1,17 +1,17 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
+import { FAILURE_KINDS } from '../src/lib/failureKinds'
 import { RECIPE_TYPES } from '../src/lib/recipeTypes'
+import { literalUnion } from './lib/validators'
 
-const recipeTypeLiterals = RECIPE_TYPES.map((type) => v.literal(type)) as [
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[0]>>,
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[1]>>,
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[2]>>,
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[3]>>,
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[4]>>,
-  ReturnType<typeof v.literal<(typeof RECIPE_TYPES)[5]>>,
-]
+export const recipeType = literalUnion(RECIPE_TYPES)
 
-export const recipeType = v.union(...recipeTypeLiterals)
+export const scanStatus = literalUnion([
+  'pending',
+  'extracting',
+  'done',
+  'failed',
+] as const)
 
 export const ingredient = v.object({
   raw: v.string(),
@@ -20,41 +20,28 @@ export const ingredient = v.object({
   label: v.optional(v.string()),
 })
 
+// Nullable rather than optional, throughout: an absent field would force every producer and every
+// reader to spread it conditionally, which is where the five copies of
+// `...(x === undefined ? {} : { x })` came from.
+export const attemptRecord = v.object({
+  attemptId: v.string(),
+  model: v.string(),
+  servedProvider: v.union(v.string(), v.null()),
+  latencyMs: v.number(),
+  costUsd: v.number(),
+  failureKind: v.union(literalUnion(FAILURE_KINDS), v.null()),
+  repairCount: v.number(),
+})
+
 export default defineSchema({
   scans: defineTable({
     imageStorageIds: v.array(v.id('_storage')),
-    status: v.union(
-      v.literal('pending'),
-      v.literal('extracting'),
-      v.literal('done'),
-      v.literal('failed'),
-    ),
+    status: scanStatus,
     attemptId: v.optional(v.string()),
     startedAt: v.optional(v.number()),
     attempts: v.number(),
     error: v.optional(v.string()),
-    lastAttempt: v.optional(
-      v.object({
-        attemptId: v.string(),
-        model: v.string(),
-        servedProvider: v.optional(v.string()),
-        latencyMs: v.number(),
-        costUsd: v.number(),
-        failureKind: v.optional(
-          v.union(
-            v.literal('refusal'),
-            v.literal('truncated'),
-            v.literal('invalid_json'),
-            v.literal('invalid_schema'),
-            v.literal('timeout'),
-            v.literal('transport'),
-            v.literal('no_recipes'),
-            v.literal('invalid_image'),
-          ),
-        ),
-        repairCount: v.number(),
-      }),
-    ),
+    lastAttempt: v.optional(attemptRecord),
     purgeAfter: v.optional(v.number()),
     createdAt: v.number(),
   })
@@ -72,17 +59,17 @@ export default defineSchema({
     ingredientsInferred: v.boolean(),
     steps: v.array(v.string()),
     searchText: v.string(),
-    status: v.union(v.literal('review'), v.literal('published')),
+    status: literalUnion(['review', 'published'] as const),
     publishedAt: v.optional(v.number()),
     imageStorageId: v.optional(v.id('_storage')),
     beautifiedStorageId: v.optional(v.id('_storage')),
     beautifiedAccepted: v.boolean(),
-    beautifyStatus: v.union(
-      v.literal('idle'),
-      v.literal('generating'),
-      v.literal('review'),
-      v.literal('failed'),
-    ),
+    beautifyStatus: literalUnion([
+      'idle',
+      'generating',
+      'review',
+      'failed',
+    ] as const),
     beautifyAttemptId: v.optional(v.string()),
     beautifyError: v.optional(v.string()),
   })
@@ -100,11 +87,7 @@ export default defineSchema({
     storageId: v.optional(v.id('_storage')),
     scanId: v.optional(v.id('scans')),
     outcome: v.optional(
-      v.union(
-        v.literal('ok'),
-        v.literal('missing_storage'),
-        v.literal('too_large'),
-      ),
+      literalUnion(['ok', 'missing_storage', 'too_large'] as const),
     ),
     error: v.optional(v.string()),
   })
