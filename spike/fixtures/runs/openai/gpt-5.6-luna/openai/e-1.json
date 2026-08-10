@@ -1,0 +1,237 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "e",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "LE SOUFFLE AU FROMAGE",
+        "type": "plat",
+        "servings": 3,
+        "ingredients": [
+          {
+            "raw": "4 œufs",
+            "quantity": 4,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "2 pincées de sel",
+            "quantity": 2,
+            "unit": "pincées",
+            "label": "sel"
+          },
+          {
+            "raw": "25 cl de lait",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait"
+          },
+          {
+            "raw": "40 g de beurre",
+            "quantity": 40,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "40 g de farine",
+            "quantity": 40,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "3 jaunes d'œufs",
+            "quantity": 3,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "1 c à soupe de crème épaisse, sel, poivre et noix muscade",
+            "quantity": 1,
+            "unit": "c à soupe",
+            "label": "crème épaisse, sel, poivre et noix muscade"
+          },
+          {
+            "raw": "100 g de comté finement râpé",
+            "quantity": 100,
+            "unit": "g",
+            "label": "comté finement râpé"
+          }
+        ],
+        "steps": [
+          "Beurrez un moule à soufflé de 16 cm de diamètre.",
+          "Préchauffez le four à 180 °C.",
+          "Cassez 4 œufs en séparant les blancs des jaunes.",
+          "Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+          "Faites bouillir 25 cl de lait.",
+          "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez sur feu doux.",
+          "Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse, jusqu'à obtention d'une crème épaisse.",
+          "Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+          "Ajoutez 1 c à soupe de crème épaisse, sel, poivre et noix muscade.",
+          "Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.",
+          "Mélangez vivement du fouet puis versez ce mélange dans le reste des blancs.",
+          "Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.",
+          "Versez la préparation dans le moule qu'elle doit remplir aux 3/4.",
+          "Glissez au four et laissez cuire, jusqu'à ce que le soufflé soit gonflé et doré.",
+          "Servez aussitôt."
+        ]
+      },
+      {
+        "title": "LA VERSION LIGHT DE DAVID ZUDDAS*",
+        "type": "plat",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "300 g de pommes de terre",
+            "quantity": 300,
+            "unit": "g",
+            "label": "pommes de terre"
+          },
+          {
+            "raw": "25 cl de lait chaud",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait chaud"
+          },
+          {
+            "raw": "120 g de comté râpé fin",
+            "quantity": 120,
+            "unit": "g",
+            "label": "comté râpé fin"
+          },
+          {
+            "raw": "6 jaunes d'œufs",
+            "quantity": 6,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "8 blancs en neige",
+            "quantity": 8,
+            "unit": null,
+            "label": "blancs en neige"
+          },
+          {
+            "raw": "mesclun et de tranches de magret fumé",
+            "quantity": null,
+            "unit": null,
+            "label": "mesclun et tranches de magret fumé"
+          }
+        ],
+        "steps": [
+          "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.",
+          "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+          "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+          "Préchauffez le four à 170 °C.",
+          "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser. Versez-y la préparation et glissez au four.",
+          "Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.",
+          "Servez aussitôt, accompagné de mesclun et de tranches de magret fumé."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306209-kS1WPEYKlPLKAOlWEd1P",
+    "object": "chat.completion",
+    "created": 1786306209,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"LE SOUFFLE AU FROMAGE\",\"type\":\"plat\",\"servings\":3,\"ingredients\":[{\"raw\":\"4 œufs\",\"quantity\":4,\"unit\":null,\"label\":\"œufs\"},{\"raw\":\"2 pincées de sel\",\"quantity\":2,\"unit\":\"pincées\",\"label\":\"sel\"},{\"raw\":\"25 cl de lait\",\"quantity\":25,\"unit\":\"cl\",\"label\":\"lait\"},{\"raw\":\"40 g de beurre\",\"quantity\":40,\"unit\":\"g\",\"label\":\"beurre\"},{\"raw\":\"40 g de farine\",\"quantity\":40,\"unit\":\"g\",\"label\":\"farine\"},{\"raw\":\"3 jaunes d'œufs\",\"quantity\":3,\"unit\":null,\"label\":\"jaunes d'œufs\"},{\"raw\":\"1 c à soupe de crème épaisse, sel, poivre et noix muscade\",\"quantity\":1,\"unit\":\"c à soupe\",\"label\":\"crème épaisse, sel, poivre et noix muscade\"},{\"raw\":\"100 g de comté finement râpé\",\"quantity\":100,\"unit\":\"g\",\"label\":\"comté finement râpé\"}],\"steps\":[\"Beurrez un moule à soufflé de 16 cm de diamètre.\",\"Préchauffez le four à 180 °C.\",\"Cassez 4 œufs en séparant les blancs des jaunes.\",\"Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\"Faites bouillir 25 cl de lait.\",\"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez sur feu doux.\",\"Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse, jusqu'à obtention d'une crème épaisse.\",\"Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\"Ajoutez 1 c à soupe de crème épaisse, sel, poivre et noix muscade.\",\"Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.\",\"Mélangez vivement du fouet puis versez ce mélange dans le reste des blancs.\",\"Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.\",\"Versez la préparation dans le moule qu'elle doit remplir aux 3/4.\",\"Glissez au four et laissez cuire, jusqu'à ce que le soufflé soit gonflé et doré.\",\"Servez aussitôt.\"]},{\"title\":\"LA VERSION LIGHT DE DAVID ZUDDAS*\",\"type\":\"plat\",\"servings\":8,\"ingredients\":[{\"raw\":\"300 g de pommes de terre\",\"quantity\":300,\"unit\":\"g\",\"label\":\"pommes de terre\"},{\"raw\":\"25 cl de lait chaud\",\"quantity\":25,\"unit\":\"cl\",\"label\":\"lait chaud\"},{\"raw\":\"120 g de comté râpé fin\",\"quantity\":120,\"unit\":\"g\",\"label\":\"comté râpé fin\"},{\"raw\":\"6 jaunes d'œufs\",\"quantity\":6,\"unit\":null,\"label\":\"jaunes d'œufs\"},{\"raw\":\"8 blancs en neige\",\"quantity\":8,\"unit\":null,\"label\":\"blancs en neige\"},{\"raw\":\"mesclun et de tranches de magret fumé\",\"quantity\":null,\"unit\":null,\"label\":\"mesclun et tranches de magret fumé\"}],\"steps\":[\"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.\",\"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\"Préchauffez le four à 170 °C.\",\"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser. Versez-y la préparation et glissez au four.\",\"Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.\",\"Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Evaluating soufflé preparation**\n\nI see a potential contradiction in the ingredient list, mentioning four eggs but then only three yolks — probably a typo. I'll also consider the cream, salt, pepper, nutmeg, and comté cheese as ingredients. I need to clarify whether to keep the cooking times since the user wants me to ignore them, so I'll remove those references. I’ll preserve the exact step-by-step instructions while considering how to label the recipe correctly, aiming for a clear title and description. Lastly, I’ll clarify ingredient inclusion, noting what to avoid in the instructions.**Structuring ingredient details**\n\nI'm working on the main paragraph, which I see is continuous. However, I can segment the sentences to improve clarity. For the raw ingredient fields, I need to ensure each part is labeled correctly. For instance, for the eggs, it's quantity 4 with no unit specified, so I'll label them as \"œufs.\" Similarly, I’ll label \"2 pincées de sel\" as quantity 2, unit \"pincées,\" and label it \"sel.\" I’ll keep formatting consistent for the other ingredients like milk as well.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Evaluating soufflé preparation**\n\nI see a potential contradiction in the ingredient list, mentioning four eggs but then only three yolks — probably a typo. I'll also consider the cream, salt, pepper, nutmeg, and comté cheese as ingredients. I need to clarify whether to keep the cooking times since the user wants me to ignore them, so I'll remove those references. I’ll preserve the exact step-by-step instructions while considering how to label the recipe correctly, aiming for a clear title and description. Lastly, I’ll clarify ingredient inclusion, noting what to avoid in the instructions.**Structuring ingredient details**\n\nI'm working on the main paragraph, which I see is continuous. However, I can segment the sentences to improve clarity. For the raw ingredient fields, I need to ensure each part is labeled correctly. For instance, for the eggs, it's quantity 4 with no unit specified, so I'll label them as \"œufs.\" Similarly, I’ll label \"2 pincées de sel\" as quantity 2, unit \"pincées,\" and label it \"sel.\" I’ll keep formatting consistent for the other ingredients like milk as well.",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6oMlg6_lNpGCaPQxVRf-oDDMjJ4sygJ9_ZI6wHoM96UwqruN-Uzh-874zMLRkN6bHY5JEt4r80tI-C8BCuAGcWQu7jeC4Yj21PqKhCok0Vs_8QBes__eqpxiiUj3UVD6379nWg52JK-l2qF8deQwcMvg__V8QaukkmKYpFB_PQKpEVoNnkQVZtP8jnecrOmLlK_lUvX98PQVXmhtlwf6tFiUDK7oa-P9ELbAe1WLc6zR41wpMgJV51XZGGzM5xtR5CgKAnmaIQ9Pm0kPbSlYHdgR4O98d4ytXTMQ2THuMqJtH9Adcv6m8zOg8VTpwG9gvD24k4z6e5fUemHh93J2nk0ra1HtkcaUEw1FvFkaR1csZECFfblipMBjnAsSnxcRBps8bQvQMhpn_ADbeYqs4aheJu4LQ5IubnY_-XuVweHYqNkofajhH72kchBAiT8ZEJb9MfSi6I7nuO3A7yv-bNKKGNJuQdS-XjF-QS6INUUlRTk9A1MubH07Qi0BGUuuU1_oyGlPMpG8XMdcNrakIYoIFmRcm4wB6MhCCR4vKoGwqunFRLSTByuRyi1MDN1SaobGIOmRFvh0Nu5TaQxf9LhUQRrZccQ8gUgsPC1H0lLQuSkrl1PWcHLM4hiQddrJfcmvyxOrSDxrKDzsm3hNjq-9ffbQb9nDvoB-Gf6LcSeRWXD0mnyBj4mThtyucwxwe1LC0MADp90EWuCbTzhg6bAjSQdYzJXFjklsp69u708fT-hQiKTriDTSuUVG2kTs863B6zF8RFtR8LD99WR-ZlKh1x9btkytyakDYdyN6c6If_tou4CPhypfPegK0G_kakub3Lx26RIU6ttnfjCpRj6Vc-_-3uQOZ35s0y5h0s5uroz9bH-IVUtCmJebVYccpNkNVXRg64_NZxc7_YSk3k43Nz2ELWAIqDMXZj71jvSiQrXtDtv_oQaixGGL7QHoKL66ceo-rwFZCz5hFfu-ytI9TWUqeoCJWEpr263fSm7xLxYrGdl5XOmBNg1CRO4wpdjtgyDF4ARi8-iqzc4bfs_rB0990z5dwsnQXdye1oJZRBJ0bvB5vPVFNFu4EMusStj28W9PJud40Wi_Xqtnyh7KWWr1H2VOHGJkew0rTbWXs3Oru896vALk9WLCn_E7hZGwssMm7tqIhG1OVSg2X0BnWeLAIlFQAuTBbUKW99hF4Zojs9eIbcBlCJiquUiaq1feWjvdp2_4qhkAC4VUFG_av3BEEmQC0OEbxwHPN6jRIx-dmPyp12YYKj1BuIH0wg8lP8uNysH5Ko_bUzRbeIzgRkVYnn8r2CxQyMx1SzLNGcfy8bcCxLSpTxKwRAET5q4QNEXTlCpt87ADNWorr_SnCO-CCFgcPaB_9su_q_b_Qjtjg5ZU_3HHx8V_L44Gw3SHbqel7TpLNqeU0I--208WFGq2FNMzVhkH1ujqOcx9rRfgZ_5YE3knYKfpR0KBc3RFiPvVro0qohD6VY_TVZIXjhLLQSAO7aTRqXcpHhqX1lXBf8kcZs_XzzYQcxNZEzAlTVgF-idQ39z_no0kQ-643IZfDN8uYZbH0r3CTTvjK7V7GTUDdjrburhdq1qw96XSj0jFntMjGKZrRTiGSfHzEnEWc5GpxJoGdcN8ceVKbe07-znTaOxPPjFUgF-BpbVKRJpzaosNbO6x5ttL7g6I1MqaE8GCxrFVEPwjqXJ3neR_hrT-3GGCI7fNoNQGFK3Lvh7Aqga91CQ31aOXDBmI6K1mScT1_ogVIgaDJc5-CJqem-nOklA2F_7JPJfFfdavxKGcefv4tqQzlgr72ruEJwYqC_lPMsCag1AacDydh-sANQo1fV__P2Gjb9XvMD--Nc326klXCFAiQffELl0ASDunewXym75Z905volcKci9VDMsIorpDp3Yqc-1sUAmR5uHg85gZWrwtIwMxvkBY5LkRoVODkwBOpkAntFr_SJzFYNmWrOC_rEgrc_EYfD_G1YkJejNzwO-HZp6vJj4i1K7gXQ3AgEjKq2gnYFt72dl5Ax9iYfCfa6CPKIOn7UCdLNppmKFiC5jIZmFy7vIjtsjFWsnXiUUPaCrhtqYzpeklvdmvb2Brbu4slMvFouDsgS4kYZNUa8-7juUYmaw9ERr52SieGr0TK3c_iZjhYze0clk4EB4wNxHFv_yrh6aKtiEArVrDGMtpz1Me5h8gs1JQkbDfM_vyYl7mkUZYS3851aJY_eYfSXbfEZqVDdN4AyIOFp_DBiRB5akpAdxirAyNRZnyoF1-PRpUnMtlWihMQMjLuXswIdRAf4YGtFM5yagzNoRKOMAqXBGwi8z9wcfxraCvCIhjiCYn2exBsW6wmjmURyrIzvuLY4Nn4dcsqWu-P32L-a8TqSzWvjSbOq-eMZSnsCVUqDYV9AwS3dhXdBIvyhSFEG86MCe65YXaaIDcYiT6s3tFpdd_j75O_3hlhEM0ttGjOjGO5DdBSdnAosYzhZbEUE4P72r7wwQlHHffK3DJyiqbTN364mp0h7LkXVzK7AtxNkbp0EejXF9EJg0P7NyBpnMy6t2asZo7o3fNB5x0zyT2rziIAuCwgGf-Zs5uLqn6PHUwGPqss4SwL0LnwIpBoJwb-j4_Z_8oWMIpfH4QaSVJqRLu9_g1tS0aQ34_Zklp71HisBBoBawjQoVsZGiGwV6OsSIbd4glQFh0YEIuNyNCTx8F1pv22AeHcqfMM-dOTSPcI2-Z8oDxFVPHko_qId902ttq7lO6Ka5-mNxGdm-XO1N4HO6j51tmI14tq6eYPuXq95kJbYVTQQDvSPfycTgjIJAqghpSFNzUaxBB61opFgSmb3HZzIeo74E-Gr4pErYJehupIOKDdHQhjV7HchZPzmuwVoTSkeNrXzeEhnfRp8zoiayew-ULjD34lU3WzGxKVgMIWdRw9Id_sVbkNwteAt8z9DTtV2vM8OBRCdD0gOhzQ2AsC4cI7-lnpHTrvf9yOY0QdKs5KGeR3m8x9LB9R8cfjXlLE0h9rA32YajqB0oSL5iD7-JR1at-53WKxH54PUBpTWeydzmffvpbUIbHRjgyEUIrKtIeSJXKTXBgycx4_JM5WvSHSo-AFiCbUytTd1zwrhY5U9-fy1uNNwI8KA-lzQ8wSILhpovyTY3ar4GRbkolED6kOt2eTfJFBwo6MEPnT8jJoqCB7CHgV81VQSLQKOL_BD0E35YMhiyRYPqAavGVRtTmclD6TAiktE-xK5wVGH0xsVF0j6uK-b6fp2p85-ebGrTYrrgNcYoPR2CqHKV0M6Q84CnEhQpv8C65Spb_cKYSJZQarhAju9H7tg9kA6BIGVs_YFezxHK5D-V5vHct9WDDBY38NScI7xpVozOB8IHTFBMNC_Bukvco0gyINawBOz38FPf9lhcSTQWK-WZxKgptsN6diXZaJ3Clly3VABL3MTHwvkxGM47w-LqRAfD4BK2YK4tfAYOySGH5nDUrX2uGDdmdzcEPnGkv9H_aWUxAgJ28YPQX9Ue7W_Kl4p44-9z6BphYhmoWwLTZ--8l8q6XlfvQJslSdhbHACdzdnnnt1vsVckWL6wH2d1oUrAjDkMCTa9BLXTT_VUACZzihvt6x0M5GmoTa-8QkWjGuD58hidXmTqIcoUuIuMTSiDJtf50FBvSLpO9z4c0L8ca9vTdHwUE_SnXC4lc-rJUh993iTc-X09VexU1JWxKqrOMR-VII4jNB2CgygdE2T6t8E-EcV3bRQOppSh_mZ5l2oPvbiGivpSRRIdVWZ5lDs.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_087245fa90e15abf016a78dea21f2881979302482a1c94ab18",
+              "index": 1
+            },
+            {
+              "type": "reasoning.summary",
+              "summary": "**Analyzing ingredient visibility**\n\nI'm thinking about how to format the ingredient list. Since there's \"40 g de beurre,\" I wonder if butter greasing and the butter itself should be separate lines because they mention distinct ingredients. Since it's all in a raw full line, I need to reflect that accurately. For the eggs (4 total) and yolks (3), they should also be separate entries. Salt appears later, so I need to avoid any duplicates. The user likely wants one line per ingredient as visible in the recipe format, which might be integrated into prose. I'll include unique lines but ensure the raw format reflects the exact phrases.**Determining ingredient formats**\n\nI'm considering how to list ingredients like salt, pepper, and nutmeg based on the instruction \"Ajoutez 1 c à soupe de crème épaisse, sel, poivre et noix muscade.\" Each ingredient is visible but on the same line, which makes me think about how to format it. I need to follow the rule of one entry per ingredient line without dividing phrases. It seems raw should be \"1 c à soupe de crème épaisse, sel, poivre et noix muscade\" as one complete entry. I’ll also need to ensure to capture any necessary accents and punctuation.",
+              "format": "openai-responses-v1",
+              "index": 2
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6rHlOwhIUkzrjslsTJq-4nFWqrPlVf0Cvr-Vdp9hA1fUHNd5kVCZ4xEAlfL_q8p8eYXu-ppC_KBomV7_QWmNw8PTqun3iYV1zlF6uvFj0npAI9l2sxKhaSbNReCdWMOJEf8MrDBTBeQJaXgG3ffJ2-bdGMHYnTC6N9dtwjtTmgIZfbTd6BAbAoJ8_y6dDyYA08jKSTj5lpm92XwonzcS0orQj6eed5BZLmZ6Hg7zxC7D9DWR11ChY22GOqse6L1zynG9fNkkY9g_a8d32hywJoVeYxsCpukGEZI7SEZ6IVTYfpeVTAnf3WRTdxcqHwEAXVbgvICGHh4ywDamlYzaIciKszU9-RFrbfbN0NmxdQAdWfi7Z5kxq0aP2BgokdHkWGoJ0kQulHm_ezp8XpJCRMnAFwstGLwVFWyAzbktEbh0hpZBiUvI6ZT242BRc-bUnh7BxO74S_tX_0mc2oXybcNt6CZBJo6itfPEhcNdNBohRCulD_gN3dAex7zcuKwLxKGjU10Z2QnkNQtJKiIN3QFlSAxQE8QB4idPPJrkTfGw_Iiq9Dea97DwM85nXPfhCv6sgnR3-Qa8V3tLDNfB5iV9ktaoiS7rbGebHw3FTPfjQ8A1mZ9jv5kDtmZS4so3OjYYaWGUSpQ1dyixi9d6lSzEYCCyN3vGZxhHJnFrc2jdl2lCs_bcQ0RCWwaYCQniy9YSwESa468-bj1iUnDtVNNkSCd19lKiP6eoV722AZIs598wNAgIwVLuWkQXMDbCfwO0qMUjgUS0DgkTIH0j4HJ2Qi5oGGIktiGLYrYnvSS3tc2ItZ4FrH9YKRA7dqppahdbsWioeThaUGBSCNBR3uvFXCL969mlt08vrrBP2zMpex6NJdz4z3o9RWeFQYCQl8C9jyNeW_FbWImwH2wMzuiUvomLJcix-eQyFsSeztpZh8YOXJzYiKzFyGJ0AfTI9UuWbE-Wccnoz246Y2lyaY_mqPdtYtLSPkTOM1S8AEm1N5DMLMaCmXMAgFNqUUqzy9R3SH-c4ZO_A7Zy4Eu5VilEsjXBcUQamzZXxzQEt6l7oGLxDGj27-4NOTyGRYTrm_nvRsPW8uRVjNWNMi5ZzuzJyArx6s7blKumMljmUahf8RCMlUwVSvFAplHNQlwDzvp6AqOzAIzxLKKy_ydpHbl1cBbt2FS5vn7-y9M7jSataeWf8kG0QgESxlHE9U6OLKLEedUApdJvR0O3VB5YC5CIy5v8qRWzd3KBTYTkvgrc3HmYGRpIWqYQmdVhiJeJqWs1ubj3OMjcmE-ziglalk0hm1ImxD-hFeCtB36S2DIlOcpLxPoWPBqRWtQTXcQaqLJW0CS3yU1cNzelvZOicjvWU_Sr9XJRHY3cEN5b0iXnWh6v4bqk_tbodvXH22OqkReXyO1J6I8hOo8flj9fJkcuFagi9RFQ7z_lIS7_EElWvIC4qp4sUBnibIIoY0FyVrFD66ldZ0rnotpR63s0LKhhQaGzaXP4pK_QbF6-rvGcHJTXO1ZzHa--N_SiyIwyGmKujzjcp-IZeIG7fdpHmoPtsJ8oZacwBJYcgqdXFcRGfX26nTZ477OgMDjokh2nEInmX-oSgwJfLLzcauJ8iFMWacS7QsrKIuNG7z1vtUQbo144Ad-9OaYhKihvaX2Nf-rM0C8XvdzwtJFJGS0D6GY9TXh9OVg1IO5QaxqurxbPJY9SXjJzi8DO9xRkGaTgxj2ddLmB_4sbTr3RymXxSUyep6cI-4FcTc6pXmJBnwHd4kBzt6Dcsp9XKR-nGn2C6cxaMJx5fN0aKTD9bEeh5zua48Joo2myJ-80AYE_g67XPZG42anxrMNxokAPVYfds1mS3teE7LzRNNoD-OWpEGoYAJ6_4OZtIrG03zB9lQ-SPYfXxK9yWLqzx2xQC-SPLs7mjqOBmwHpkiChsNNoZ3yi-q00NGs27Gka_qKc_tst9d65bARboCWLsnLG3QubXLUJcs5_6xL7XF-tmvfQUbyn6OaChxVo9Dc860VisnUsrmFV01aSUeq-DawfEOlXRZW54nR4f3doNKb2W_lA8-R-NNCwOByXKyXeFvJQIDMQcVVK4NInpMDFfz2vr5YPtPDNNnJfXGFAv1k4lC1kM_xG2k-2XWrDn4Cbn1Crjp6ZnltoHhuxh_ZVopPwaQjex7PCEGqVqnVB84mL-jEa2rux41z6jMMAYbiCtn0AgrwMFmit1gxbeYPAt7kjy2lkX0K1fwlXnImoNg_rG28H-UBNNkP33qCYRfAhVIpwnwj9Gwg_qVvoYMxdl6Rx72RKCsAKcNtQtdaVUkM-JGaH2z8mOix7QFkjgF0_IzUmO7VZkv2ct7HRzDMBD1ZrqxHJR30agiF7zsSpf7vIghA6t1khj9TOY22oSHtWEk9ro10hXavuQVGDju0W27j2QfjwfuzMEN2VrUZ1oUCtAgX9Zut7FIhvDDkhbStPh_lyyXwWazA5GX0NAWsOFqOYN_5Din27-siCBm3A3gleHFr4i9mE3vhxnyTQHVVspiYcGKnW54kRIJPGhyxQ6cd4amuSzifmMVty_NzNdVzaLY8udHBksksNQJtWfiBod0WRR72bmYAZwC9Ak7uc8ui2vnivkFrKEiq2CPVkXQNfRXqGSB9PsFrhxVVJxsLmS5JI2XntRlFb_Bdikfa3EneDdmdxfI_oJEtvdB86U2QWNImSa5idFVnfD5DyqwB8BA5axEMy9MTuLoYhUcxHZE-bOtz7sQn52RRedkKGTePtvbFyXboAN4GEjPK4vz9fbnEX3E8FKFIY4AcikSLBxcET_XAMfnTNzVvTE07tDZZqd5h8IEyZkj8JGo4I0FH-i_FMWTzqzAwK7r5UQD2GsWPOY3fBHtLbioZHKHaEvYGag5q1hRw0p24aTWI2qa6akhLXBatuLsjYx7HAHUiKn_FQWPFJN_QIK2zjCOnch3GJuff_1n8pILoS5WgIu2jDRCEre2IM3FVlOX8bGCPQIlEv2FdiqvBYVQ6vTI7eYfRtOz3YIpZt8kygoWBryzAzZg63ILxtqgsW8WzB1dl4Baqnhim1B4zA7Awd2BUFgc78Xf_wnbEwW6-I3bqenny4e96obAI-aXvZmaHDf_yPrH9Zwrkd06DNuvna-3byxeIlIay-m2bqFB76zeEWLL1cKVZ4gHduWmftaHKS62yeUjfZt9LKTpw7a3wvXHAKzRu1nKknGvgNtSZ2_Jr7gJ48kpBuWtCz-VwV3C7lxyx3MXoVGvEexokUh-f0TNpJ5daWMnu6X3fdjMwOcyugLkwGZV5ZASlEi1eUgluvSWiTqaAWgPQ3J0W5NF3UVuEqHsX9J2_Ik7SfJDZxOkMzuiUThaYM3uSAMQ6TWOrffIK4-WkwRU1QTCEJKzZE2c-grhpvYpRzlx82nD4xUlDDfEl3xXKpSIlwmSVoRer0Bvl58j1DLFrnmA7kWTHSJ3XFcE4FPsvybxAs7anfv2QRFuN_hoemqcdvi5rxGjPC4ZUGtQOJBugZDel1O5PGcHFOWqoSSXKsj-yYqCpfN2nh2jyXOUu1UD4GDWAh3EpCfIOFujyZ3ul6AddOIIr5q38pda8EZ5aJ4VgiDzaATIbXNLBJjwpnp5s6bUoMq_ccMhNZ5Hsgs16X6REVpScIoQ8WVYC_B8Fs1pH3TETLjieeKiM1Up2wgV3c1Alovxf-thVPkt3IYmq4SvpDppBNIenF7hh6mcHASkbJhJFPIOUxrW5DtCwLszgcMQyVdvJmlmEmBdQpBBid2gCeEDfgpG8uoeRHf4_D9GTAtDTJZlvsitFvRya1X8oU5GAWL4Z1MIAkRvkBKu8WhkxBVkkLs1GBSsbdX1LKHY-uo7GOuxZUjr87JfsXa0BfhITcPmgoYQ0j0eJ6KAqdMiM2MC6Ll6x5uRMSjhKxD2I6Z0HS3EzHiCMV83fY5GEfatjY6ACYvOOj_8-FvTwmdBlPojHT1nZk_3KxQKFZa_T6Pxk0um6NUeRY5Jh3IDeYqgyWE00G_dYQBn3BjajXXCixlqXfG-rVrtyth3UK_Gyg==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_087245fa90e15abf016a78dea851888197a24aaa799d90dd0e",
+              "index": 3
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6tle2ac51-gzShd2HA-i8F6yUlKO2JmprKR9Ql2xPxmrb68LTlwxG_OoYKooDwyzhsP7AGvbTJ-wa3IYzQieKXB2RponoCb4BM17LEKthp4XSzqfaKx_4_z2BxnOKw32T7E9CwrAi4uQTzgvX1SkIq8ybzp1YZmMxZImUQXxWesXciO_uH-UUyn1cf6W8BZrlYPCi0_dVUfeVEFbJMY9XI_B7bjqiexnNiJqEWBJx5w0AuJkYbRstltCUtKVbDdASXARB3cQom3-6RUUIWQVbMCdTwqdOzq3JgdopocdZWhP2a7J5hRZge798wcyrdjMKG5El1ej6PrJCMTb8lt3JAZSRaVpAPNxg8kHIMA2sFKnhRO2QPm_iPbWVX1MfW6ssmSI4FRr-L6FBV3gjvytS4l2QoCAVsikLq-cTuCYY02WdG7HFHlo3WadkoWxIfNvJmDcSi1nY9Wn00kc1Scu1SaylVskFNM79sMXmY3TYhmlK2S3lNS7GtODcap86X0ckngu8ZoAyb_YQwtCr1p-zDQ2zCfbj-_ZLGsdPAzqgYNsk8imLGvr01e7K0YpSOr9WGv7ZRIMJ3iKv4IcOl7ouTNjuWEDMexSb3C6QtLJJn2KlDzBK4fGg8YYwb0RtFs5Uq3tmmSZqPGe4_3K2aUJIq_E01stoR8TTT3gIcjNggXVhdjXISHv4uMOYJ2L1aUWh3sT8yIYtIPnmt7faArWJEMnAzh5QAldwQgood7RNQoOBXGy46FuwQqPOPhYb7yO7hjN2BmM3NzEYAqUqPrVrS5jWAWQnGvX5rJ80JB4gYZsEsNuQ26FJlcGRDKHFmKEVL8cHi2mz1_MIAvMlMBdJKz9hTVCdjYmo240Y0klEF82RpKagt3-Loek5ovrcAXJq5PBEA4haxq-LByJ3C6KhtJyF6LjQv5PFm_W0b5QrkoEL7neQhSmY8GTlH10JosaAGpXFgmNzAMoxhJ5vc3YJVpd6LYJ4q9Z3WuCZIz9TNlAffeNTF5-jTV6pxdUNbIHjGnpw6QbicAoKdXJLE27Ws4kk83CJISgCOIKmZFaa5KW_H2zVckEz6flrXmfIlCTHA9ofEIhqIrLPXR34gJx1IZ9fq-pSa1URkcULgg1xRI_DViIffw6Pv24M1O3NUkDx3eEF_7caQTm_CJ80O8co8NynKx7GDnSD4lRisvnAT8LHjJofk8DL6l2yQ3trFhHS6oD9Hqn0XhlHKnzPj5lNRCjfDAgwMk1A9WEuE1WZB2i1n2FurIJcd7vh2OpDfmvJR69xa-8btLRhU83b-M-BwmjWuwA3C-TBBlrJtLa_JzV6rK87VQbaKaziWJxkwBC7wH5_-enPmhcclL5V-psl-tzYWqNCEuUwsbHfDpvj4sKtud7XEf2QHimUIUoKFeBm7MK0HzQY9vFGii6gDGMYzjFkf1wT8iRUcGhsftSQlRT5w7fyFdyI9-JLjSWIyaO1oABOldcWOWypotGDABm9r2LHOgXRT3u4SRXQ4AjfHh8-NieyHv4SmUGNufHKv_-hZDfWmsMf1md_OrKrimHdfY43ab_tyRTDoWI5eOvwiCa1DP1oPQrWS7xxROIMoMR5qzTiS53FkEBEo3EqW05S--aAIrGyyu87gseaQXMBrrdsLMTf1cUuJ9oQSVizcZPzByy8BiyjrrUJwlJYyzxv7iiSrKfVG8xRoDzKSWdzwoDb1a0hMiftqrsmPtSTMjSVfYHM2vqLp9wnUpp-jzLcdNZhmtCfc0Ofp9_iLVipxroXaiAZ62bX3lRj4AGpFDMUG0x4lIKWZGU_lxm6-U1l4rM3nBRtirlLxvZcq6p_rc8Jx9dsLqvs9AyHR_TkmrK_fuBU8z709VqaN8URTO5xC8pxzzKlUlQ7KS8e9Ej57WyKQeWFLqZvVSmIveL7un-SI7JZEkl29-eLoyRgLBAD9wP_kZXkK7lDH3OGcSE0kuwRUFz_qG6OudXQjXLajZz8jMjBQOQD-J1Cpyxu0iQlebNXLb4JrxNc3h3T6xwJCAmFPD0Kqc301_TOFPtIUXlX-HmtLGXuJudRyDx0G1ZyCJFm71PsiWyvbj7GSKmZKX9f9lOfGB8pHyXA7yAIkKOfeb1ePAtMVZ8FIoRx9QpEygCtln8oa6TdvAtRXT_2W3KMwO4sUQvk2l615nEpHhKcqsi8_rkuQhVviGlN0JNgzGIzJU12EO5ezxpnPITrrTb9v0GVvE5LwNLri1S1tL3040j5si7Bn-vvkKMfSCEaDk3RKNcsLRSomOXDCobH3AT-qPGZhm4Clm8xi3YchFMjqzfxXwgvCKgvnT3m-PFqXoR3QIDnM6eRuy5Dv0j4pr3KF44stmuATC5iQkdroOx4z05GiX-yag_cY8_gYnsUXnxRxzGIu_EvR52GnQuDF9gJo4RZ2PrEZGSFWp0hYEpb9OaaGL6aZe1vsR8b7kJ1glsaUOmRGG90O-GvE2revACanie0HUFU8ZukLcO-ysr32ib4XgUebzNz4igXrc_iubT8jEH-_2m32Qj79HV8WyNp6gc3UH3cQYXSi_oKzESnAEdCf8RNVPEfRoWWGqZpENRbka-GZf-YQG-TwKW_K_WKg6Bi-PlaOWJO4MfWugrXWVE52C6VZOqIJTJFyBAkXV_0HNzin4gtzQ5SpXNe4Asv05X2_T1kf1w13XlDI-ReQmbUJ_Csl4yU0fE_9VXrFfxBLRmuDAYGxHn7kUDGMe4sLjbTTn9i4Muauc3uWxTM-kRN49xh-HbjCzlxsOxNNh6PT-df8n2MLrKa10bXfFJkeXlD6kp3NipXE2FLMXSKvsQgAMnp2o5VU53Nog6k9aLSMNWmdw3iwnxuZooaoElwr07jROILRYpQtsW3oTx3wG7lM48QkzMvl56FeT_Q2NpWDGQmhKEJVRc230rgCode9-PLRTUdwWr9-uqr9nhH3XYeZUCifeH4YldvwYM953F0517wEHWxWuLdqPA6qXtKDBPI7hzhgcM3Ii2evXLQA_WfTv7eCcq4yFcLheFk1sc8zTORt9dGz-ot2jZ60THyxUfLJxRfwHYzjJGz13EZ7r30hAcKeueHBUYxqCvrwIVcz_-UfQ5gDCpsaeB3N_Fq1np7IvelhwR1bIk-SwSvmpWp3BLzKdrjEcTu0872zx1ZYXCU9cBHrEiARbxgI2Th90Ng07lP_VLg2QMM8tnjEYa3lBqOlHIJmNCRfMEV6TQxvFwQALHVgpnFN3BhwREDWy9U8clmOuU7i5V2O8_pVrmjZxvpLhXBIB5ydDIYqtQmLLKWVMDCMmKbLOQimKBhhreqcz6TiYclILDoZcXFdwlKIxSoknA4JQ8LJAvXlLPAkJppfN7ZBYPgTXNCBTfpIS_uDlZ_mkuvlC9WQur0NPG8gZUVqBCIyGD9WPiBdYwlSfa2tMrkYKkdLCCIUPjRQ304xaQFeGi7KptbZwEozbPEU_IUA4ApGJWNT0LvK6jJ50rxcUDTpQzbCqjkcNThfKL_F73d2Hr24Bd3EtE3rRgC6Ta-DHiQ3gsq0AEEQglPjOHw8yitJrPtiS_P9FAs=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_087245fa90e15abf016a78deab8fd48197b860803a46067220",
+              "index": 4
+            },
+            {
+              "type": "reasoning.summary",
+              "summary": "**Structuring recipe JSON**\n\nI'm trying to organize a recipe JSON. I know I need to ensure it has the right schema with fields for title and ingredients. The first title should be \"LE SOUFFLE AU FROMAGE,\" and the second could be \"LA VERSION LIGHT DE DAVID ZUDDAS.” It's crucial to properly label ingredients and units, like specifying \"3 jaunes d'œufs\" for yolks. For cream, I might group it with \"sel, poivre, et noix muscade” under one label. I'm considering how to best present the quantity and units clearly.**Clarifying serving instructions**\n\nI'm considering how to label ingredients like \"blancs en neige\" for egg whites. The serving instruction should read \"Pour 3 ou 4 personnes,\" indicating it's suitable for three or four people. I need to ensure that the number is clear and properly formatted. I’ll also remember to use an escaped apostrophe to avoid any formatting issues. It's all about making everything as clear as possible for anyone using the recipe.",
+              "format": "openai-responses-v1",
+              "index": 5
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6xktgAm8SGw54YoZCgziUybUKyYo20c7Z8yaNQo8B7F5xh0i3urDW4n2ES1pf4Liae4twuzVNyhI6CJqfLpRafL6kKBzC2MmXh0ruTu7dPZ9jwpd49dfDLFQy8qv5UKYT6vMrWnQb5XvSNRgewoUABqd0KufQBMoYtEHup3cxHUOvPrlISVZjqjhltOwzq0M9mRQ8YKPgRIMN_V83AAeJTXX1_eiLZ9M-GzPzlrT4tJutvj8osmHJRlJeqrhkPu2OtiUTg_HMbVvsVwlJDvuijUXtOf0IAqiOfPsN2ZFh8NY13zCv2poO_DRHyaU3UWMa2OX7HPIs7Z5Y39tqyHODO9I0LfA2gZViyArtCR-Ymj-UL4Bz_8I5mjgJr72BeAN141g3s-GWFRhOTxZoDn1MjkP8TebSJMcK4aV81cOYvq2xMf9xx82xTDDK3Wt4Q3r4KRm5k_iatkwVsg8J8aShzmxv5Q2XIrB01F1DoMIXC22jvaKxZUccS6cYRoT5VCwJ4fLR7euDWg9pGT3m9GiOD8aM6we-zi8kQLwndMBI5xWXWJX1x6G5HHe4qEHROgS0L8nCoCCfhRWVac_FUKdOfF-FQjAFHu9-iniHX358n_WiaE2tM_f4iqFtMihilow8Q4P0F0kMpabZaGrh3hRTlkzkX19yOyAvkeGdK2WycQMPV25kmzUeTVBexMq1euqhp8pPcuo7JCZ0FIa9MKj2cpVx-1CvzpVsO6fj_IRTtWcriv7Xp7Hdu-lnQMfcanOA8j56newoztM_QMJJ-dB9scINGgZaVmqOiZK__-hMN_16ryTeNy4Dz5TXCSHC9T8Vf2ymtWyGKBZXNc5DRxz2eP26p-kxQTSYrjv-HqzrhWflhq9afa2lhO5keGclk6ec35k1Kt_qiHSbv1mLNfX6wG-K7OJXMpKEBllx4HQdqjrRvO2j64qoFAyEKM66R5flhNn1bv37wNTT7AJ75_qkCkeyGLjxKmrqpNAy_MtJm-MqwZmbhHrbLytcinE0CaLD1i8tmLc_Ev7zQPVtWqk_wuJyjIiiIfEVsj2IkW7a12nxLRf_ldimwBub8YbpcD4zp2Zg9D3dTChvZAyQqxj9EWxHJHb7UQwrWwhwS1f3ou-ZoVrR50zQizzUrOkkcV22YYLZfqwbr9b6Bw9TrNouk9x3vrvCI-yKZWzF2SApazB2cisqnSE_VzdgYUV0WH3rr6CdysRXOPd7m1v6DOAU946OwyD0jjGHPXlmIBeF7Yth25DU56rg9BmJSTMDwwJcwbMXJs2ab19rxvpJx-00hNmeL2oPIaRO3bG68h3cTwgBGYs5D2QWXGPk_zKJYSHtm5JRq_gu8Le4ZLqnSbQDA66J8VEdVATZjpKMGLlmm4HtQN5bHI_32-Y099YUITL3_WoahCEvkdgSIp9YCM0bB9XLeEfe2whq4k3QLsK7OSfFM4uz37ZQvicKOBK3EZvUxVDNMpPCgt2EsYa48WZG3aVB9qJeupWZ3w12ej3rVQQJeZzVIA3vb_G_KuPqE6jjHyMnoSRvUf3mmPRlKVGtD-cozCR867efUjWphn9oJbzL4PaOj2shZYmcZTzuQJhnzGqIi6Yifl9c3ttwjAXQkCdG2KlV6UC7akoX35E4C29eCe4ZdMhHpuRdmhbOfABSnN1ZdGVZkeyyyuC4mnUKgh7zL_ub14peRrkM58g0PpDncNP63x0-2ancfwbcEwD3hyTYFbfxVokdorxmW4iy8o_17VEw-nplbxY_nP0XQv3oNxYw98xakGdyOV78glUKUDjVl_-tCi2VkOvltaiBhHwGU3-Bt3b2zt_v5bYJBobTBaFZxLToGdELW3z3Dly3jGGPwWZRFRyQOc_iX93__az9p22qUZAx0yWSnIphtxVbSi_aimrxS5EQxJQTbIXYtASb8ewWzN3tqUUMwNESTOgRsJieYJIpWmoPegJEF0_4_9kCJ8_YTbjdn0j0eZW65qXkxsaS9sntau643L5JgzwWAk9sRoByP1BBnMzbSDfpeyv9i3beR9xRMFFxmfQWsSWpDYElrl3YucohhYIvGi-xV3apzmrOn7SqTsbHBLGbYAotRc_D7coLwRyX0j7_Oy5Djm1bsTkYbqS7s8PQNvUlW0y1YKKdCbdND_HV1yJ8Op31WsUIj5PY0pSmIR5JM8xG1g8xpxqafMnLWvMQylEtKx9ooXUrH-V5Ha4dXxikw-AgM07sAtXKLJcxd-mz-tp8-hcEHTdL-c1OUcZ36Xi0ZqcG-Km8GUgPMfjzA73EWQuTX2gXflu6qGOHvUrqajCNIz0_LQyHzcleZ1nQdE6QbOBE6wGbMu_zqmRoghbQ=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_087245fa90e15abf016a78deadb3808197bb7077ed03b1e8d5",
+              "index": 6
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 2714,
+      "total_tokens": 6844,
+      "cost": 0.002144575,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4127,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.002144575,
+        "upstream_inference_prompt_cost": 0.000516175,
+        "upstream_inference_completions_cost": 0.0016284
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1808,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 19773.330916000006,
+  "actualCostUsd": 0.002144575,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

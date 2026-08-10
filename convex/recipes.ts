@@ -1,15 +1,15 @@
-import { v } from "convex/values";
-import type { Infer } from "convex/values";
-import { query } from "./_generated/server";
-import type { QueryCtx } from "./_generated/server";
-import type { Doc } from "./_generated/dataModel";
-import { ingredient, recipeType } from "./schema";
-import { RECIPE_TYPES } from "../src/lib/recipeTypes";
-import { toSearchQuery } from "../src/lib/normalize";
-import { findMatchingIngredient } from "../src/lib/matchReason";
-import { pickDisplayImage } from "../src/lib/displayImage";
+import { v } from 'convex/values'
+import type { Infer } from 'convex/values'
+import { query } from './_generated/server'
+import type { QueryCtx } from './_generated/server'
+import type { Doc } from './_generated/dataModel'
+import { ingredient, recipeType } from './schema'
+import { RECIPE_TYPES } from '../src/lib/recipeTypes'
+import { toSearchQuery } from '../src/lib/normalize'
+import { findMatchingIngredient } from '../src/lib/matchReason'
+import { pickDisplayImage } from '../src/lib/displayImage'
 
-type StorageCtx = Pick<QueryCtx, "storage">;
+type StorageCtx = Pick<QueryCtx, 'storage'>
 
 /**
  * An index row. `matchedIngredient` answers "why is this row here": outside a search, or when
@@ -23,16 +23,16 @@ export const publishedRecipeRow = v.object({
   type: recipeType,
   imageUrl: v.union(v.string(), v.null()),
   matchedIngredient: v.union(v.string(), v.null()),
-});
+})
 
-export type PublishedRecipeRow = Infer<typeof publishedRecipeRow>;
+export type PublishedRecipeRow = Infer<typeof publishedRecipeRow>
 
 export const publishedRecipe = v.object({
   ...publishedRecipeRow.fields,
   servings: v.union(v.number(), v.null()),
   ingredients: v.array(ingredient),
   steps: v.array(v.string()),
-});
+})
 
 /**
  * Spelled out by hand rather than derived from `RECIPE_TYPES`: the handler builds a
@@ -49,15 +49,18 @@ const typeCounts = v.object({
     petitDej: v.number(),
     autre: v.number(),
   }),
-});
+})
 
-async function imageUrl(ctx: StorageCtx, doc: Doc<"recipes">): Promise<string | null> {
+async function imageUrl(
+  ctx: StorageCtx,
+  doc: Doc<'recipes'>,
+): Promise<string | null> {
   const picked = pickDisplayImage({
     imageStorageId: doc.imageStorageId ?? null,
     beautifiedStorageId: doc.beautifiedStorageId ?? null,
     beautifiedAccepted: doc.beautifiedAccepted,
-  });
-  return picked ? ctx.storage.getUrl(picked.storageId) : null;
+  })
+  return picked ? ctx.storage.getUrl(picked.storageId) : null
 }
 
 /**
@@ -66,11 +69,11 @@ async function imageUrl(ctx: StorageCtx, doc: Doc<"recipes">): Promise<string | 
  */
 async function toRow(
   ctx: StorageCtx,
-  doc: Doc<"recipes">,
+  doc: Doc<'recipes'>,
   tokens: string,
 ): Promise<PublishedRecipeRow> {
   if (!doc.slug) {
-    throw new Error(`Recette publiée sans slug : ${doc._id}`);
+    throw new Error(`Recette publiée sans slug : ${doc._id}`)
   }
   return {
     id: doc._id,
@@ -81,7 +84,7 @@ async function toRow(
     matchedIngredient: tokens
       ? findMatchingIngredient(doc.title, doc.ingredients, tokens)
       : null,
-  };
+  }
 }
 
 /**
@@ -92,63 +95,64 @@ export const browse = query({
   args: { query: v.optional(v.string()), type: v.optional(recipeType) },
   returns: v.array(publishedRecipeRow),
   handler: async (ctx, { query: rawQuery, type }) => {
-    const tokens = toSearchQuery(rawQuery ?? "");
+    const tokens = toSearchQuery(rawQuery ?? '')
 
     const docs = tokens
       ? await ctx.db
-          .query("recipes")
-          .withSearchIndex("search_recipes", (s) => {
-            const base = s.search("searchText", tokens).eq("status", "published");
-            return type ? base.eq("type", type) : base;
+          .query('recipes')
+          .withSearchIndex('search_recipes', (s) => {
+            const base = s
+              .search('searchText', tokens)
+              .eq('status', 'published')
+            return type ? base.eq('type', type) : base
           })
           .take(1024)
       : await ctx.db
-          .query("recipes")
-          .withIndex("by_status_type", (q) => {
-            const base = q.eq("status", "published");
-            return type ? base.eq("type", type) : base;
+          .query('recipes')
+          .withIndex('by_status_type', (q) => {
+            const base = q.eq('status', 'published')
+            return type ? base.eq('type', type) : base
           })
-          .collect();
+          .collect()
 
-    return Promise.all(docs.map((doc) => toRow(ctx, doc, tokens)));
+    return Promise.all(docs.map((doc) => toRow(ctx, doc, tokens)))
   },
-});
+})
 
 export const countsByType = query({
   args: {},
   returns: typeCounts,
   handler: async (ctx) => {
     const rows = await ctx.db
-      .query("recipes")
-      .withIndex("by_status_type", (q) => q.eq("status", "published"))
-      .collect();
+      .query('recipes')
+      .withIndex('by_status_type', (q) => q.eq('status', 'published'))
+      .collect()
     // Exhaustive over the closed union: a type with no recipe counts 0, it does not vanish
     // from the shape. The filter row therefore has nothing to guess.
-    const byType = Object.fromEntries(RECIPE_TYPES.map((t) => [t, 0])) as Record<
-      Doc<"recipes">["type"],
-      number
-    >;
-    for (const row of rows) byType[row.type] += 1;
-    return { total: rows.length, byType };
+    const byType = Object.fromEntries(
+      RECIPE_TYPES.map((t) => [t, 0]),
+    ) as Record<Doc<'recipes'>['type'], number>
+    for (const row of rows) byType[row.type] += 1
+    return { total: rows.length, byType }
   },
-});
+})
 
 export const getBySlug = query({
   args: { slug: v.string() },
   returns: v.union(publishedRecipe, v.null()),
   handler: async (ctx, { slug }) => {
     const doc = await ctx.db
-      .query("recipes")
-      .withIndex("by_slug", (q) => q.eq("slug", slug))
-      .unique();
-    if (!doc || doc.status !== "published") return null;
+      .query('recipes')
+      .withIndex('by_slug', (q) => q.eq('slug', slug))
+      .unique()
+    if (!doc || doc.status !== 'published') return null
     // The output type only exposes what the storefront needs: the admin fields (scanId,
     // beautifyAttemptId, beautifyError) never reach the client.
     return {
-      ...(await toRow(ctx, doc, "")),
+      ...(await toRow(ctx, doc, '')),
       servings: doc.servings ?? null,
       ingredients: doc.ingredients,
       steps: doc.steps,
-    };
+    }
   },
-});
+})

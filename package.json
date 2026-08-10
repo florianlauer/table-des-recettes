@@ -14,7 +14,14 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write . && eslint --fix",
-    "check": "prettier --check ."
+    "check": "prettier --check .",
+    "ingest": "tsx spike/ingest.ts",
+    "rank": "tsx spike/rank-endpoints.ts",
+    "walk": "tsx spike/walk.ts",
+    "run:spike": "tsx spike/run.ts",
+    "correct": "tsx spike/correct.ts",
+    "accept": "tsx spike/accept.ts",
+    "verify": "tsc --noEmit -p spike/tsconfig.json && vitest run --config spike/vitest.config.ts"
   },
   "dependencies": {
     "@convex-dev/react-query": "^0.1.0",
@@ -37,8 +44,11 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
     "convex-test": "^0.0.55",
+    "dotenv": "^17.2.2",
     "eslint": "^9.20.0",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.3",
+    "tsx": "^4.20.5",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.10"

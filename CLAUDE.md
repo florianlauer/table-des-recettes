@@ -35,7 +35,7 @@ entre 390 px et **plafonnant à 1100 px**. Pas de paliers d'appareil. Ne jamais 
 hériter des plus grandes tailles : c'est la surface la plus proche de l'œil, la tablette à 70 cm
 est celle qui a besoin du plafond.
 
-**Règle centrale** — *la donnée est typographique, la photo est une illustration.* Environ la
+**Règle centrale** — _la donnée est typographique, la photo est une illustration._ Environ la
 moitié des recettes n'aura jamais d'image.
 
 - `/` est un index **une colonne**, **aucune vignette**, aucune colonne d'images, **aucun numéro

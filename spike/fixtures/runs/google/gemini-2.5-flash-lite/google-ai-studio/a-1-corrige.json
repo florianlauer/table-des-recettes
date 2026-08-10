@@ -1,0 +1,94 @@
+{
+  "correctionPromptVersion": "c1",
+  "model": "google/gemini-2.5-flash-lite",
+  "provider": "google-ai-studio",
+  "costUsd": 0.0004047,
+  "corrections": [],
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Cabillaud à la milanaise poêlée de poivrons",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "4 filets de cabillaud",
+            "quantity": 4,
+            "unit": "filets",
+            "label": "cabillaud"
+          },
+          {
+            "raw": "3 poivrons de différentes couleurs",
+            "quantity": 3,
+            "unit": "poivrons",
+            "label": "de différentes couleurs"
+          },
+          {
+            "raw": "10 cl d'huile d'olive",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "huile d'olive"
+          },
+          {
+            "raw": "1 gousse d'ail",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "ail"
+          },
+          {
+            "raw": "1 cuil. à café de piment d'Espelette",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "piment d'Espelette"
+          },
+          {
+            "raw": "100 g de farine",
+            "quantity": 100,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "2 œufs",
+            "quantity": 2,
+            "unit": "œufs",
+            "label": null
+          },
+          {
+            "raw": "70 g de chapelure",
+            "quantity": 70,
+            "unit": "g",
+            "label": "chapelure"
+          },
+          {
+            "raw": "70 g de parmesan râpé",
+            "quantity": 70,
+            "unit": "g",
+            "label": "parmesan râpé"
+          },
+          {
+            "raw": "4 tranches de jambon de Parme",
+            "quantity": 4,
+            "unit": "tranches",
+            "label": "jambon de Parme"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Faites sauter les poivrons découpés en fines lamelles dans une poêle avec 1 cuil. à café d'huile d'olive, l'ail écrasé et le piment d'Espelette.",
+          "Salez et poivrez.",
+          "Une fois les poivrons bien dorés, retirez du feu et réservez au chaud.",
+          "Placez la farine, les 2 œufs battus et la chapelure mélangée au parmesan dans 3 assiettes creuses.",
+          "Enveloppez chaque filet de cabillaud dans une tranche de jambon de Parme.",
+          "Trempez-les dans la farine puis dans les œufs battus et enfin dans la chapelure au parmesan.",
+          "Faites dorer dans la poêle avec le restant d'huile puis déposez sur une feuille de papier absorbant.",
+          "Servez bien chaud avec la poêlée de poivrons."
+        ]
+      }
+    ]
+  }
+}

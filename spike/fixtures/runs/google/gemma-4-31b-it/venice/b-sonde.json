@@ -1,0 +1,7 @@
+{
+  "model": "google/gemma-4-31b-it",
+  "requestedProvider": "venice",
+  "page": "b",
+  "status": "harness_error",
+  "detail": "Erreur OpenRouter non évaluable — HTTP 404: No allowed providers are available for the selected model."
+}

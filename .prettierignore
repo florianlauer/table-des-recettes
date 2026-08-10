@@ -1,3 +1,10 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# Codegen Convex : reformater ces fichiers est annulé au prochain `convex dev`.
+convex/_generated
+
+# Artefacts du spike T1 : sortie brute du harnais, à comparer octet pour octet.
+spike/fixtures/runs
+spike/ladder.*.json

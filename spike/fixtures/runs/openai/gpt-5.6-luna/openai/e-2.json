@@ -1,0 +1,225 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "e",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "LE SOUFFLE AU FROMAGE",
+        "type": "plat",
+        "servings": 3,
+        "ingredients": [
+          {
+            "raw": "Beurrez un moule à soufflé de 16 cm de diamètre.",
+            "quantity": null,
+            "unit": null,
+            "label": "beurre"
+          },
+          {
+            "raw": "4 œufs",
+            "quantity": 4,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "2 pincées de sel",
+            "quantity": 2,
+            "unit": "pincées",
+            "label": "sel"
+          },
+          {
+            "raw": "25 cl de lait",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait"
+          },
+          {
+            "raw": "40 g de beurre",
+            "quantity": 40,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "40 g de farine",
+            "quantity": 40,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "1 c à soupe de crème épaisse",
+            "quantity": 1,
+            "unit": "c à soupe",
+            "label": "crème épaisse"
+          },
+          {
+            "raw": "sel, poivre et noix muscade",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre et noix muscade"
+          },
+          {
+            "raw": "100 g de comté finement râpé",
+            "quantity": 100,
+            "unit": "g",
+            "label": "comté finement râpé"
+          }
+        ],
+        "steps": [
+          "Beurrez un moule à soufflé de 16 cm de diamètre.",
+          "Préchauffez le four à 180 °C.",
+          "Cassez 4 œufs en séparant les blancs des jaunes.",
+          "Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+          "Faites bouillir 25 cl de lait.",
+          "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+          "Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse, jusqu'à obtention d'une crème épaisse.",
+          "Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+          "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+          "Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.",
+          "Mélangez vivement du fouet puis versez ce mélange dans le reste des blancs.",
+          "Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.",
+          "Versez la préparation dans le moule qu'elle doit remplir aux 3/4.",
+          "Glissez au four et laissez cuire, jusqu'à ce que le soufflé soit gonflé et doré.",
+          "Servez aussitôt."
+        ]
+      },
+      {
+        "title": "LA VERSION LIGHT DE DAVID ZUDDAS*",
+        "type": "plat",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "300 g de pommes de terre",
+            "quantity": 300,
+            "unit": "g",
+            "label": "pommes de terre"
+          },
+          {
+            "raw": "25 cl de lait chaud",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait chaud"
+          },
+          {
+            "raw": "120 g de comté râpé fin",
+            "quantity": 120,
+            "unit": "g",
+            "label": "comté râpé fin"
+          },
+          {
+            "raw": "6 jaunes d'œufs",
+            "quantity": 6,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "8 blancs en neige",
+            "quantity": 8,
+            "unit": null,
+            "label": "blancs en neige"
+          },
+          {
+            "raw": "mesclun et de tranches de magret fumé",
+            "quantity": null,
+            "unit": null,
+            "label": "mesclun et tranches de magret fumé"
+          }
+        ],
+        "steps": [
+          "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.",
+          "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+          "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+          "Préchauffez le four à 170 °C.",
+          "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.",
+          "Versez la préparation et glissez au four.",
+          "Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.",
+          "Servez aussitôt, accompagné de mesclun et de tranches de magret fumé."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306229-8uWNHMLZvA9CJ66RpCpK",
+    "object": "chat.completion",
+    "created": 1786306229,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"LE SOUFFLE AU FROMAGE\",\"type\":\"plat\",\"servings\":3,\"ingredients\":[{\"raw\":\"Beurrez un moule à soufflé de 16 cm de diamètre.\",\"quantity\":null,\"unit\":null,\"label\":\"beurre\"},{\"raw\":\"4 œufs\",\"quantity\":4,\"unit\":null,\"label\":\"œufs\"},{\"raw\":\"2 pincées de sel\",\"quantity\":2,\"unit\":\"pincées\",\"label\":\"sel\"},{\"raw\":\"25 cl de lait\",\"quantity\":25,\"unit\":\"cl\",\"label\":\"lait\"},{\"raw\":\"40 g de beurre\",\"quantity\":40,\"unit\":\"g\",\"label\":\"beurre\"},{\"raw\":\"40 g de farine\",\"quantity\":40,\"unit\":\"g\",\"label\":\"farine\"},{\"raw\":\"1 c à soupe de crème épaisse\",\"quantity\":1,\"unit\":\"c à soupe\",\"label\":\"crème épaisse\"},{\"raw\":\"sel, poivre et noix muscade\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre et noix muscade\"},{\"raw\":\"100 g de comté finement râpé\",\"quantity\":100,\"unit\":\"g\",\"label\":\"comté finement râpé\"}],\"steps\":[\"Beurrez un moule à soufflé de 16 cm de diamètre.\",\"Préchauffez le four à 180 °C.\",\"Cassez 4 œufs en séparant les blancs des jaunes.\",\"Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\"Faites bouillir 25 cl de lait.\",\"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\"Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse, jusqu'à obtention d'une crème épaisse.\",\"Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\"Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.\",\"Mélangez vivement du fouet puis versez ce mélange dans le reste des blancs.\",\"Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.\",\"Versez la préparation dans le moule qu'elle doit remplir aux 3/4.\",\"Glissez au four et laissez cuire, jusqu'à ce que le soufflé soit gonflé et doré.\",\"Servez aussitôt.\"]},{\"title\":\"LA VERSION LIGHT DE DAVID ZUDDAS*\",\"type\":\"plat\",\"servings\":8,\"ingredients\":[{\"raw\":\"300 g de pommes de terre\",\"quantity\":300,\"unit\":\"g\",\"label\":\"pommes de terre\"},{\"raw\":\"25 cl de lait chaud\",\"quantity\":25,\"unit\":\"cl\",\"label\":\"lait chaud\"},{\"raw\":\"120 g de comté râpé fin\",\"quantity\":120,\"unit\":\"g\",\"label\":\"comté râpé fin\"},{\"raw\":\"6 jaunes d'œufs\",\"quantity\":6,\"unit\":null,\"label\":\"jaunes d'œufs\"},{\"raw\":\"8 blancs en neige\",\"quantity\":8,\"unit\":null,\"label\":\"blancs en neige\"},{\"raw\":\"mesclun et de tranches de magret fumé\",\"quantity\":null,\"unit\":null,\"label\":\"mesclun et tranches de magret fumé\"}],\"steps\":[\"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.\",\"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\"Préchauffez le four à 170 °C.\",\"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.\",\"Versez la préparation et glissez au four.\",\"Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.\",\"Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting recipe details**\n\nI see that I need to extract two recipes: a main traditional version with ingredients in prose form and a lighter version. The user wants each ingredient on its own line, and the original recipe prose doesn't format them as such. I may have to identify ingredient mentions across the visible instructions. The main ingredients noted include 4 eggs, 2 pinches of salt, 25 cl of milk, and others. I’m considering how to handle the lack of an explicit ingredient list while ensuring all details are captured.**Organizing ingredient lines**\n\nI need to extract ingredient lines from visible mentions, aiming for raw clauses without duplication. For the light version, I have ingredients including 300g potatoes, 25cl milk, and others. It appears we’re serving eight, while the traditional version may serve three. I’ll preserve editorial instructions as steps, likely in two paragraphs per instruction. I should omit prep and cooking times but keep the necessary cooking details. The title for the light recipe might be \"LA VERSION LIGHT DE DAVID ZUDDAS,\" and I’ll use the complete title for the main dish as well.**Formulating recipe titles**\n\nIt seems the light recipe is a variation, and I like the title \"La version light de David Zuddas.\" I definitely need to ensure that the two recipes—main and light—are clearly separate, without merging their versions or instructions. I'm thinking I should stick to a precise JSON format, using raw strings that capture complete lines or even ingredient fragments. This clarity should help in presenting the recipes effectively. Let’s finalize this approach!",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting recipe details**\n\nI see that I need to extract two recipes: a main traditional version with ingredients in prose form and a lighter version. The user wants each ingredient on its own line, and the original recipe prose doesn't format them as such. I may have to identify ingredient mentions across the visible instructions. The main ingredients noted include 4 eggs, 2 pinches of salt, 25 cl of milk, and others. I’m considering how to handle the lack of an explicit ingredient list while ensuring all details are captured.**Organizing ingredient lines**\n\nI need to extract ingredient lines from visible mentions, aiming for raw clauses without duplication. For the light version, I have ingredients including 300g potatoes, 25cl milk, and others. It appears we’re serving eight, while the traditional version may serve three. I’ll preserve editorial instructions as steps, likely in two paragraphs per instruction. I should omit prep and cooking times but keep the necessary cooking details. The title for the light recipe might be \"LA VERSION LIGHT DE DAVID ZUDDAS,\" and I’ll use the complete title for the main dish as well.**Formulating recipe titles**\n\nIt seems the light recipe is a variation, and I like the title \"La version light de David Zuddas.\" I definitely need to ensure that the two recipes—main and light—are clearly separate, without merging their versions or instructions. I'm thinking I should stick to a precise JSON format, using raw strings that capture complete lines or even ingredient fragments. This clarity should help in presenting the recipes effectively. Let’s finalize this approach!",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN68LcfmTyafFHTCcLybv8s-QsIuB6HDKVonqbAp2pZCW1mg2PwHOnRLEmkhDvVByGd-CpE9865qBGZysX_-XzioOsEDOTv_LH3u4aEIlBq6-Lgp4rVjhOusHNKSkI3mcPn0PEk-NfUKpeQquOYHQ5ao0qxV5sHD2VmpWV5uKGlbAUIsaSxiiTKnadwo3V8BqcuWHtbnOMDIUup-H6NqgQRknm8oCew7eTUp57nFYvjKNntsEXvp76Aa7RRC3U5LJc8F3shQ3uli2XFMTd1H7G1cYglXOB1XjlvUUSLOu9ErbAzgUm7zjTVFDbEhdNRzOg9sDXNVURWq1VD-iKtbQqe0VSMnASNNkdFbI4EZ3oDwnHQO-w7B-TA0JGLsxP-0LYCLZqZnS6oehMsJP4dGlg-JVyVaCr64tFFyvHs4zrYhGDrFx_2n1dWHfSBERRIplxWEsgqK9WUTNjeCZUPRw306MoiYy57LEuIeG2moKFq6dsNcGBQ_basPoMEyd1lq-zeeUvjmviOk3afNveo9GQiMNcrna9UNljVafz3gi29Azt1r-LKMjMzBpdGZHy6NMIxvHFwRgbJVv5xO6tVp-FSLrD0U__HlD8Q2eLn3EWnFZ16Q8sSCJx9-lKIQaDfBJH2tkApF6V2lCoCcEHpUrWWkhUKzWfBrzs6_hUymUAEY0gtsRKhjoER7s-BLcHkQNlK_wuRXJuHDZsiERj1Lixnx8Zvy64l-K1dI0U9o01UjxFx03xzjQjMYNwEzc3sYY_g3vxjmWnpCBXjHJYfqtzsMSgX-2vA3oQd6LhNI9WJaAqAEiBs8qi-OR4lmAdMJLezGRO6p2RcxwLystAE6tz9VWde1Vb3g5e-8w6aPDB_5j8uKoy4k9JjmIuOlgOEk8KJM46CBZmQBU3uTVoztKbfD3Mq2e1BnkxbHimX-SQ9u5DzTiJQX77duBKGOIeUuOXK0RPx07Ey8BEliFEluMBKT2gjD6F0xFqnuIWG3lo52CX4uWZeVmEVrI1RYjgBEidi9UplXIxFznLNenGW9hl9RCJ80_8CidCHNXyuKK3SuMhhX2ZxJ1kljV3zXRpumwOsdSUh2On51IQPhz7x6_id1LxEfvn7XCnphuz-gSfyOJ-TGaTuAvIUJMWGo_pKdm3ewyn8eAWYdP8KFYhW2ovydBzxgCcc4GFUV8mLKyvnEhop0S7t_tG6V-6cyAVjkCw7kiPiXB16TixEOiG-Q0mkueIF7hOv2-sjg6V4Yl3J23VhUKRos0QSj8EyHbedYlQ-RXDPbwZQKZ0RdEgNRhqj0gYFwr5jzW_PWJexxEegjh2bKp43QJlsDogHfdx7Bdni6-iLlX3R_kMWoY-f-ZS9LxRMCb0NlyWCJmgihP9TPDZTwrXWyMjAjlqYkwdZofMPUz1vlK0ictiW4Y4zWO4gjExWoVIuU490j6d-MPd8kLSUcerWY28Ri5GLger6uwx2_wmqC8CW6uoYi11SF0ddvchjpQLGus9p9OoVFahGFDZVtyqzSluYAlv5tFruVMzlaXh1hYyUCPL_UXpL5P8P_mgN8N7EDw-fJy-tGmm9J4AiRB6ybKM4vYIGM9SxV8PVLi8FvQp3cZ6TCcwkTsDLCn_M34fpk9WZrFnlsXEpUH7XJr5XYFBfhNacwoBMpf_OEZtEnIO4j1wrvR22kRfAVfNoTYx2D4pcpa07UqvDIwou9K5nFHLDKIIEWJ4idp0m85jw2y4ExnuHO9URhYa6HhrnRax_dw4zYndEfBteiMgIvSXkI-mP2gZqvGsiG12i2msHiAC5cwbW3bmQD8J287wh8ryppl-X8jJkqejW6u3rGRyMZd1jR_RcbtC9PEZxA7_f4Pkm3KhL6WXK6SM5kNwMLh0WP1bx_RrnWvS5LY3xg9e0vHN4RSLmPSye2ewdTK995pnD-cMQG1ZD4q3MngL__XKaQQzu0cThzvI4Ahau5hFX58SesGpPTVy4XoUK6SggDKDb9vbNw9eeuf00bgse2Pl2PYmWxvGx6j2a98tgYUDx2r-TnzxpSvZChfl468-5WfWWtRDJB3ea_2WTLukjDnfJ0mU0nzZJy0BS-lQa-2iV-uqhNPggnX12Wp_KZvnEJP79lgeIOkk3rAxFHo9ofM26NJV_gZ7Z3w2ScDE-ufFg70x82mobKxDTi2E9wfxmkA4_HZFecu0sx3FB13u9qbHA0dJzsfcr5XRpz31ldxMKA1I9_vG7aTABnTCKZmMwf1CDlFBwD7KpJAwXJNILQ40gPUohA0ZCLeq2XoPqKdqcACAOAmtyG0nfO0YgEbMETR9MFGAQPojkDGVdP-Z-gboovQdmndjcMb9kcME75M3O3OVIYxKm_VD6Y3k7MYIrAmDmtAYXDbItNQnOswnZ1hsUstmHTfcOo2xAq-EV3vSzW9-6zlIQ2yLoZsqB8-2alr3UhBWvFbndT85Q9sop9KTB4XiqeYO4gjcsmgtubrPJ697Y80YRLlvbJ8EggsL37vsBHykJ-MuU6jO1gIJAHNpkhgiDF_1MefbPHhhA5K_9jDy0UdAIAnbaoCDU5acWIxbiyHEUmYxI5HxDkPwVXQjBLH2wevcu3MQEEW01P9Ot_iO1nfSNalfvlz-LyqsHleaTyoVxcZvCx8aN7BAqjdz5v0JtwnDF4yLwo2pTtDGz-DXKO6ZitAfzyFwnzR3yhrBmzoZYcXPQJxSQ6aaIi_Etzjwj--G2pz6aNUc2ZCRojpGiHbLxs0VPEkq0rYIgPxj6_Xwg5KxuJxT4L-Lu_GU4R0_qFJ0jVsapLXvToNj0m8Owr4WpcftdUN3RHE8ERNA7Rr9kbSLVzR8FFKAvfefn3tr9cw-JO1LuoRRnJGDe1h_ELWHXw2NgvWxC_tywjViD5Vl5R-vAMKyMlM8ZFZxXecMKvZfXmm8GawV2meOmUfLBHU3Im1NocFDhxqDqHOFeqjNNx2kztLz3mjBcWfPopKtijFlyF_HoEoVUJUe1akvrBP_Tauj-DpbpP1b-B7W6v_l7xvAfSjGzfVGsnPT-8_HChRjVMzNd1XJ0gV6LL2OWZMEr4RxjSlibFvQ__ck0yInDST50EOG4nV78cXPwQJDd3L6ckW7HgptgbXW-Cm1HT-RAZg80DCHVSteMQ-xB3SgbyeIkhKxxeaJZ3aOCMRB9m1XFXu8d7tQEOimbVSoZbZS36I8DeUxy73Pbv4yXRNNi6MVmtxMC8lFOqQ5P8Sj7ry6NoZ4Jw78CIBGvNAPe1URBEtXfARxC89K5KBp_rnjqTqLduHT_kJwjPeAO5tPaofthzjN5SQmBS2CDH3SgDkRmpcoKy8qn6EwJocP6Gcr4yzOxjOUAgjO6gOaXbCcWzW0SgdYy_EkXLfAjknxjLfnUal6mpFl720ou_S2n76sVdlEaJm2NmL3IDfSpOzlLhqD1PZmR-xr5bFbu3WGB0kZGH90Xzd_XIFGBYcgDZ09xUz1ujabdiM7t4JNy3qOipOQgQuOVl32wUDYR9BdDnOHYXblLFpjcmqHg5ZBg2HMZFkPBpFvQwHRRQL5_0p8-ZANSQ44QLvSAGl3hc6UXYdgPKooB80G3ShSA4aqjx3o6kWvw7Gx1WRnSFcv8sfXBtG-1U4L1rQnmLF9EPYhcnDPe_0_Ks1OuWuzfffn_e4BFnV-rHMhYKkSw2m4J95PnZsDG7Ng5PxHuGZydm20pQCz1oi7eQ22fNfwRp4XXymk-u9fj4RQ1h1KZ54_eGd3uAMR7oWDOga35nG5cy6DBsoBtPDl1GsawG_QkSThtiLsQvNaRkFeG2niQDdHEzj9mMriPB5iIbQFBlyB2xiEPdhZfs7vrslZ66ti-3JzcFVg1KkOa2KKlkekHn_xnefhuOxZ3oYGb6U-CElrMYoa5yxzr9N-gIUb2gRUcVltBxensYfAVh4brdrg4mAKlg7xXaGnQFQHdA2k1_JvXODhHDw51BSlqxWLli3KQulSBkY1l2TnnAlLBWreUwve413t5W53Lb7Kmc95YJz6_t5x6SFLNRiO8ZmILPvzyciKDfEEpVmQu4iDL6rkBrC3JOxllhPc9IGMmJI5YyucKUFXhJMhgkXb9PqPs4MgqKBVlRrUB-T2aPBpNDNGpt70DlpWXOfk24CFf65-33EvYutH3zaNnzdTXynU3u.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0ef558854687aeab016a78deb64e8c81979b1d21abe20d1ce4",
+              "index": 1
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6_d-kbng2aJV7GcE7UsX9-1gojqHBk_kcvMBf967mkze9B4PiGXbQMK5ojZg18nMrARycyuJ-nKmkr-fY3KrBucO8fJ40H5X0ao6tuLYs8470c5L0ogxMiK3TVljAFBlaXna5-6FY-aQtO1mjtYXAwx200sk3W2KMA1jyWaRx_gwNkTC3wV2uig6BtiE0Rc2zZUqDNVkfcS-Zb_-44oNdWECoqv_tvdBz9Wmv7UoCHNSI697rVldE_uSRoqdfkcYupbbWm1NLyZbBEvexH3t2bnLJG6PHqEBdst_rShcg5c5mG8DYnwlEcP7pj_nMsIJBP667dwi6ug0NOf01O0VkdP_U_qzEun-zMPISQXM51koYVjyUoSeqc11Dl_Vq7uMgb1wxOmfCll-TR3qkvopeeWD0Ou0d0iVbahfdRO7W7vfLSubRrpTzV6Vl7h7oXQSfsTFgjYiHi8lvopsHPn7sYBSl8fVVE2Y67NkiNowxfkoFqv_L88bqvOnLB7o_yn0gJ53PNyA4IO98FTC0BgJNWwUsOl-nRZE4L9YuEoxjUKVZs6hOuKReAp_bcCMNYATh8edhOUpinx7EBOl3G7fNDxw1K99GwmyPfDB-uSPYD-z1iOVymz4Iyoclcobs44Kvg-5K_7ABRM26tCVGHKhSOPCsrfepx-YUMHM9f7UsG7A1wAG5ZviyZA0MSMhfa2dOYpbxImsJo3rfGO1owMh7zwqH7ScT0-yjbwrnPgV1anx_K3Ee3AW0WAsrryg1OaJ3OmAWbZcrUQdphJWpZP6cyAlWT7lz6Xmwxd7l0w-yu9B_rnpR_QU8kfL55Wk9e1D9Af2kOZk8CZHtCezKaZOaEmsFaCJ6dQZDRt1R_B52H9qWxagglMmpx4XoiOVdGUjpBb64zTX4hv_rKapVj3LMfTgbVvzlpFtGQ2GtoBB0xEQYkA24zJ51JbnAdPp-xqvOwAP4Wt8QhKspp7Rlt6kiXdediZjqYiGWct_6s4r0P_0zCIeKDzu2Y7BVEkHghVZjlLfiPDY5PfMc-oFxV3IgMzvU9joGG0GrcLBHZeNbkh32gW4Z3wn2ONOCtk1kzWxwLRsQFXDE9AYfkFMzuDoCceBUkTBD--dAGfuVAhmpTbRLQQRpCBGyndmw6cItPgXE-s2qtlp_DiQk0E3YHDRJw6DBrvF-4uPiRzpHl4qKVjJQP309BuFcpy2IozCdRQTK9izdyPBJjkp4a1eadLmbTyor64ZQzanLUjENWiCHN0ZxdtctZJE3kQ6gIHhDYDp7T5JscGEeo9TMraLCULdU2ePGoB9JzLYIyqmvaCE42YKrU142p-MmDq3wBvj4TxB2YPij2GmMeOM7o0Wn88-_P1-rLffFgs9rPL5EhFbUD4JESUVsi-WckL_1gGmuS4tkr0crhBkMyIWa_QnopSK1hnD5rtSM4xd8YEdPsWuLZ8JSm5TC588hBIpswtb22WCJMcW5P00xJP7iFFhdbJVCOPuOy6PE5zygbnJvtpr36HdeKrUbnQcZj4MRR8SNkUaQ0eCnHK226LFTEKSu8QjO7jluxF09pg-0HA7vtlBBw4zxY5veZIHQQ4lXwI_A-re25dlEUqaYBPX2pP6Sbb5bVYp8Xdsa5_h0yNodTHTMRYSEtblsjXHU8FEuqEjUnQqCXUbxLx2mM9xUcYKMXkD7UqInbwB8DGEf1FAY1YUHDSkjn_f4Ra07GawBdqfXieznNDIGCZ2PE3BqbCkhC3tkLxcUnVe2m3eVQD6XEi7i_2nJAUToZlQFIbV39Ss-UXrzOHFMZpkVcYrOe8NumffRytEygg0r0U1ywQ1cp07L4AjBk2nd5xyAUYJydPfzz1-wqFuA767CKQcUKdV5J6s5XwdDo3QFuu5guTkVtALxbsiEw1FDo3E1k9UEyV2dXecE7VOcirBOGKiIqkkgknUfxvdo2gHZkL9vsdaH8HDMsM7BFHY-TP1DoFGwAe44-2cbO3cEalVKG0Srz93-VUOpP5mxZYa3kVqxQ_Dl-3D_hA3aQh6LLWGCUSrElSlBwargncxb5ZRV2DwyyDmiV4NvDqc7jyEKcJHNtd52JF97PPcreIZQ5GOPB6edpyLjVvsSRzETf94x2ylWPfrkzhUav_UEKdj2LxSw9zxwznypfJe6m38EAAr645mA2vwbNBCAKM6Vz-nu95aRQ1-BO5K3tcxq0xomjVLWLm77U4VxWkDdGS6oOByUKEy8VaR3eUyBeqj2PdcgLsltnCE-O-oZ5lB5VZg6D3ldmKG8t5ozuDGvUQPmvO5_EffSLV0Ad5lSLQgSEeNqToQ-j5X7Yx3X2jgVAIeX6hmZdnw2tfcx1rSIfCmrFhenymzxPK3c4vlA-NTxNQ5z0KCSScIBqwBSfutuBS28Pcx-AV2DYf1l7Zkbvi6UnsgVg2wjlnQvHTjc8ttZei4phM1rc-5xgo03_XedDWv0IRFWKByCtRT3CZ7LnIZw2FSdNudWXSxWiFeT9mi5lPC-R7HrAhs_KW-mnBaeeuY5Ta1vNQwNL8iY93kqFrfUPXdLvzL2ReTG8_zQK4vPvpYo3s9VknXO5WVzCC7Kjs5D5sN1BgtUtfiGm2CjtHIO8UKXhyNA1nDEZQEhrOpSL-kBCozJG3ShZbpyt-rWbVhZq9LzAj5UaGVl8IG4bBLgAXGFwI-JVt0GgSgDKBjTBBB-axAc6QbcmhjnhHJF1ZJAKZe64dBEypX-6q-OcxX2pdnrZFbeE70-Qc8_d3ITySCLNJYd66iPWtX1kueZn_XeojMGeEuO2wUbJrzsPRugoAiLLF1dKIIGMg8mptO7mAgkzxrEixF6zYJHJyxoYi3mAOr5mFxo0k6GFpyFzhKwELBSpBB31zh4TEXeIbHkJxP5fuX2Iqgz1Htz5GB2sNkCUbZsE62vR7C6Jxhnoyezth2bQ0RmSveKLsmm5HdsxtuAOrpWFtokPYcWFgL9GRdtEi2CoHXEQ_ZDOQHb02OPwi1_Gz0yhNJ0vwH7cuOngvWcXUEygH6dzXLg6loszhoz5Yqj7qpiuPZpHZiJ4ROapI0aWFpvyExQNgEFyhSYNWLJFyKoxK_nl8iG9lwS16eqiVvhbpVW36AW76vo1lz23gWg12dRAbQLBTGXUcgXCsbb5kHwHQuHCdw5PhlsDFK4tAj3aTHpHRPlZg7FkbPlJ_E4sEydP_oz5oCt7i1G9EhA4yqQI2YaDY9SQupq6H1yCKRiLDcrYrJTRno9Fh1Wve9oXI19bRd9ZXHOMSfRygMdNiGb6MY3qQtoAHhFqeJRBi50YZ5qniINNqLE5mlKsUMXi80Q4j4sUXZh48tLNn-RM9J3VDzksI_Dug6724DjmrhRBoDOEHc1iiWc1RdoLAJQUNzOcNDnKWBrmkr-2fapTZQxNsJbz-kJ4WfP7Sk7adO90AKsmk9sO9jW22tsl3Lp7RaeOYv4OBQEiKNZiGStymWB3g_aP6lA7o4FoaMvhtw1gyD0Y6L55YUTYiiJnOHdK_xr3Del9NZY7FzTwwjB40i35RSTWeJfsbrizx0wT-yIiX-cPiTuk2CQ7zHYMWrjl0-ENr40MyyBSDgzLnvUA0jJ0gtQdrvp5KZCD53iHJu36Q6FBxHKfpN2Jj_ZePFSGtYZ7wOkCIIyqIW6X1aKU5Z4R9JlKZ2kf_W23eFGX0p7KH5hGzK4ur0I7zLKUC382D806vsZQVHSdc8eMViMSgpO4AUqUfKs70PP6q2ttuJ3Eya8q85WPlRBu2-Ce4lA7p0JwjI9nnHGI5tQ6kb62koYJSP0dTZaV0JLiu-e9hwMpGvhGOucVxYvYRGx7ri2NH9CJKqEjiIS0rLHZK4f-buPr-7X69glXrPoH9qe8UV9uA_d2LFgTtFdXvE-IotTLMn4VyhXdOex6uOJr67qcelcTcL0npD0QaGn2_q5zGIufWAedFUr91O--dlpgTRpcKG6o3QojJBlfgjTnArvG5pB0WIHJORy5C6DZ3wk_tmGfpud5zwu65fFiiAgDhkpr4SDPBteitV-HKY2AfjnWJkrMzqL8fuEHVwtk5rY12N3hFFTsDNb01wtEDIPZOlAOnFcQdRJlWIxCrpqcFxo6Y8kuI_zKS_2xeObVBZ1eHj144JPk94rk9ihuzmLZP31QBxVypWsxhNmF6dQLBBKCtFW_pTRuI4nIag==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0ef558854687aeab016a78debce8948197ad2ecb2ecc3af713",
+              "index": 2
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN7FI-jUOcfqxsnyvcVZRt74z3r5cERliw0GtKVYcJBuKlW6AHlL0RUWAwtFB6DXWWzKM5CezA5zrACtPOgm_hI8pY97rs930RMwfk7JnZxViZijzdBGs7IFeXaVMUb-znxv86YkGYA1L93lSCgDjS1_LM4q9qSFHMCgxH6BNNjXJy4lVHL-yW6GHTJCMXu4Te8OI-JbZtcgqCdwRAm-Q-DwZh9D-r2Us_PnDxAaYcYQZZqXdIXdznSWgw4OYI3egc0bLUBhm4feUqsRSGRjwhSvPk3dGID0u4jaHIX_JBbUf01o1vYnX_QT-kHdnxCuHTLcSX5tuzYLbWSWAWrSIxi65tSSqjZeJCDpeo1tbaWb0nYcYGhLYQGSqIjyWY_m-u9mEfHoKZjuh_sQMfW9dqGqU10cpXyRnhyJm5MW2FfSiQsrBbI_uwhihvoXNCHABb5JYDrbIcJ_THmcf0aoqnwP-wSow0pG7QQuHleX9aPBj8yfOzSaE8rWCMiIvL4v1TV9RAeJ8k2FN_cT8itXN6UxM1f6oqi6naQkBk_5cAv18fJYtyRA3krum0cixl5gkSKLtQLZXhI3tpJv1mkh8SB5idnLPLDbDhCJ3BvuD7dCc1nID8ZWVwYOauA49qcGU-NTEx1Opqhiqtq7wd2CGo3Jv0L7J-nCzSwTv3FAQyXErjBbBndQK8KUKHppVbFaOGr2JrSmd5HHyJssP48znSBWWvRhfyfqb-OJ9ov_yFlMXG7TxUHlwkgCQLRMZKEmE2CTYmbEFQl4cNYP5bqKpGJfMl5F_sKMEc2erniYbJBeke_bijQe7TcYOlhn0q7WXE93w54K3_h3clJ-rSY1fl_nHIsfoUwf8J-uiQ8SqzZa0aSML-Vl1JfgbatffEaVTqgboRAVYJYF7rmn-2WePvFRIvfoqURS2R5NbVUAH2Uw9sATpe4loGxW8Ia0Y0ZuSlDSqZexwsKGE9ouLRQyxGgxKcsSPMrsZIOzg7dE4Dr5LB-AYD5uZIBpOsxj-x1nOgHUoqewYhsgSLqAHu3c2g4az2GxoCnJrpmp5XKY4WOf252xAN8S15a5uQX51IPmbRj6tOJR0qvTrgZPHxymsnE5U3M2hpdqaMYVfQT4YGdREfFBHpAW5LTGMDlVnOjoSS_SCSP40oU5WZTiVyxPpgqoVu-Cq4C-ckukXSIwdNJmZuPR5apI-qe_bo0cFjlIXogLpHyylrVktQuPW6tNv_3eCZsBME_gCXgdJPP0aWUKOin8IL9JJ0PIFNLrR3zY1MTqCXOLFmkIZotM7F7tH8TSCVUJA-ia1kvDSO0qmXyplmvBBCnsIQ2V21PucLt0_iHLb2W5ILijs8Stz78HcrphhTGIFSugyTaFxmX1t9XHndKOtJQrb-RPgl-0lg9JT0nTUQj9bc82eLgdG58Tlg2vIENe6YEiSfbxYVdrVMEObMU230Ea4PtiFoNwlEFn8DAUODGaS9nYD67cHoPwX-RDebk2S7WgybZPlpzW3hnlTCbaCnOQEHoEc-QtXsQHtpgqorsOj70u_BFmKtDLbSzP92kvI9EYmgcVhxoWNSa3KQxefzOBp6Y8DzqYZmzgeXs2Ty9WCe26ljt2BmWjSsv0sr2TtETP0dOGdiTKVduSQsdCn_97RSfXLSDae0Yid56cj3Ws5UmqokwY4vLL43xY9BGtbk2LCJRtdNgbnJ2_wKfnPGiggmVloux2YyebSwYI0sv7qyBVuaM-9scidz-ZmCKqIonzC7pYPjLgbkJTIQHPjAo38xD8IXFdkL188mvqyYWxnmXWOClfQfDAKxkPP1v-qYJk-HvwM5UEhfQ5aezrdpmLj9t5hpF-H4wKRoCZzij2Dlel3go4S3dd9gGu8yghR6ydDTStnQukMOTCNJWgrkGmCPs7ceNX5-3CMw2m5I-YD7gkQPsB5RknIx_92QvVEzYw2SNkFU0l2hrj-niyPrceNCWmyorC9bRoH415TVALo9tKci1CB_mHdvZN8zoy9pOCVIA265xWrnG_C5Z26YU1I4ubxpdlT50v2KMRnNF3CwgvYC8yaH_SEKO4ZaL5CTRU-p_h-2trdIxZaMHt34mMIXhWC-zjgWwx-KmnzQgB1bsjCdhbQB29k2ztK8l0lhYoLy3fiuZQywNxYinxv97f6XR54RoL5SUOvsBztYeW05qrpOLKeqJB_shY3PSrGHc9v0NjIPDqRK_BCA22zxQRg0sFOWxfV5UMMOzuBYxiRlrSj8R1iTMOjQ7m1uowBQWNBgD3tSZPT7xeHokywN7QxAw3Hfa25TeSpPdcZQWPYb-TchE-sz4Cb1hFOEX0D5gAtOhTAnV_OnCv_c8gSk1TDn4ujv8dIH4xvwfRWQa0E7EHv-7J21D95DVl4LaPBUrroM7-zxhNDWTPSMPUFDoeNyMPCtIpJ9E_XWrqSYuVj8jPEatgOr7Wm9z-D0TwNzFFueIX0QEL6JTpZviCI-l-Hmu-CqRKcpOvnFMjKf94nY4GzhfvI6Vj0sWMLLbXvB0pZl3eF0OdMAeaVVM7c40RzaGaI_ATlg7Owwm8f90ylHuehGeRYFAaIXXyRcx1eEWXeFPcPSCy_eXHETY4cqs2n726xg2bjBvF7N-rkeh7Dd1gFcgKU9hBhjgk7iLkBHrEifXy7QdgGk7EG8i0xJTsE9ZGGDYsBW-D2SAPyY9RT3idB46ryScK9JciL8uMAJMGnA_o74mjZayBQWxaPadyPAj6FZPULUX5gRFT.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0ef558854687aeab016a78debf5138819781d2817811c8c1b6",
+              "index": 3
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 2306,
+      "total_tokens": 6436,
+      "cost": 0.00142517,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00142517,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.0013836
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1378,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 20532.281208,
+  "actualCostUsd": 0.00142517,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

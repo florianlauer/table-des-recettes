@@ -1,0 +1,215 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "f",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Petits soufflés à l’orange",
+        "type": "dessert",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "8 Pim’s® Orange",
+            "quantity": 8,
+            "unit": null,
+            "label": "Pim’s® Orange"
+          },
+          {
+            "raw": "500 ml de lait",
+            "quantity": 500,
+            "unit": "ml",
+            "label": "lait"
+          },
+          {
+            "raw": "3 œufs",
+            "quantity": 3,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "1 gousse de vanille",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "vanille"
+          },
+          {
+            "raw": "Le zeste râpé d’une orange",
+            "quantity": null,
+            "unit": null,
+            "label": "Le zeste râpé d’une orange"
+          },
+          {
+            "raw": "100 g de sucre",
+            "quantity": 100,
+            "unit": "g",
+            "label": "sucre"
+          },
+          {
+            "raw": "30 g de farine",
+            "quantity": 30,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "30 g de fécule de pomme de terre",
+            "quantity": 30,
+            "unit": "g",
+            "label": "fécule de pomme de terre"
+          },
+          {
+            "raw": "1 pincée de sel",
+            "quantity": 1,
+            "unit": "pincée",
+            "label": "sel"
+          }
+        ],
+        "steps": [
+          "Mélanger dans un saladier 3 jaunes d’œufs et réserver les blancs. Y incorporer le sucre, la farine et la fécule de pomme de terre. Porter à ébullition le lait avec la gousse de vanille.",
+          "Ajouter le lait au mélange dans le saladier. Mélanger jusqu’à obtenir une pâte homogène. Cuire ce mélange dans une casserole jusqu’à obtenir une pâte très épaisse.",
+          "Remettre le mélange dans le saladier et ajouter le zeste. Prendre les 3 blancs d’œufs et les battre, puis les ajouter dans la pâte quand elle est tiède.",
+          "Beurrer et sucrer 4 petits ramequins en porcelaine, poser un Pim’s® au fond avec une couche d’appareil à soufflé. Cuire 7-10 min à 180°C. Déguster !"
+        ]
+      },
+      {
+        "title": "Millefeuille croustillant",
+        "type": "dessert",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "1 tablette de Poulain® Dessert Pralinoise",
+            "quantity": 1,
+            "unit": "tablette",
+            "label": "Poulain® Dessert Pralinoise"
+          },
+          {
+            "raw": "400 ml de lait demi-écrémé",
+            "quantity": 400,
+            "unit": "ml",
+            "label": "lait demi-écrémé"
+          },
+          {
+            "raw": "2 œufs",
+            "quantity": 2,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "6 feuilles de brick",
+            "quantity": 6,
+            "unit": "feuilles",
+            "label": "brick"
+          },
+          {
+            "raw": "20 g de sucre",
+            "quantity": 20,
+            "unit": "g",
+            "label": "sucre"
+          },
+          {
+            "raw": "1 c. à soupe de farine",
+            "quantity": 1,
+            "unit": "c. à soupe",
+            "label": "farine"
+          },
+          {
+            "raw": "1 noix de beurre",
+            "quantity": 1,
+            "unit": "noix",
+            "label": "beurre"
+          },
+          {
+            "raw": "20 g de noisettes concassées",
+            "quantity": 20,
+            "unit": "g",
+            "label": "noisettes concassées"
+          }
+        ],
+        "steps": [
+          "Préchauffer le four à 220°C. Faire fondre dans une casserole la tablette de chocolat et le lait sur feu doux. Dans un saladier, mélanger les œufs et la farine. Verser le lait chocolaté dessus et reverser dans la casserole. Laisser épaissir. Laisser refroidir la crème 1h au réfrigérateur.",
+          "Verser le sucre dans une casserole et ajouter 1 c. à soupe d’eau. Laisser chauffer jusqu’à caramélisation. Ajouter les noisettes concassées. Mélanger et verser sur une feuille d’aluminium.",
+          "Couper 4 rectangles dans chaque feuille de brick. Les badigeonner de beurre puis ajouter des petits morceaux de noisette caramélisée sur 8 d’entre elles. Faire cuire sur une plaque au four 5 min.",
+          "Réaliser les millefeuilles en commençant par une feuille de brick puis de la crème pralinée à l’aide d’une poche à douille. Renouveler l’opération et terminer par une feuille de brick aux noisettes caramélisées."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306249-2XvmFvIw98HA2YlZ50jF",
+    "object": "chat.completion",
+    "created": 1786306249,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Petits soufflés à l’orange\",\"type\":\"dessert\",\"servings\":4,\"ingredients\":[{\"raw\":\"8 Pim’s® Orange\",\"quantity\":8,\"unit\":null,\"label\":\"Pim’s® Orange\"},{\"raw\":\"500 ml de lait\",\"quantity\":500,\"unit\":\"ml\",\"label\":\"lait\"},{\"raw\":\"3 œufs\",\"quantity\":3,\"unit\":null,\"label\":\"œufs\"},{\"raw\":\"1 gousse de vanille\",\"quantity\":1,\"unit\":\"gousse\",\"label\":\"vanille\"},{\"raw\":\"Le zeste râpé d’une orange\",\"quantity\":null,\"unit\":null,\"label\":\"Le zeste râpé d’une orange\"},{\"raw\":\"100 g de sucre\",\"quantity\":100,\"unit\":\"g\",\"label\":\"sucre\"},{\"raw\":\"30 g de farine\",\"quantity\":30,\"unit\":\"g\",\"label\":\"farine\"},{\"raw\":\"30 g de fécule de pomme de terre\",\"quantity\":30,\"unit\":\"g\",\"label\":\"fécule de pomme de terre\"},{\"raw\":\"1 pincée de sel\",\"quantity\":1,\"unit\":\"pincée\",\"label\":\"sel\"}],\"steps\":[\"Mélanger dans un saladier 3 jaunes d’œufs et réserver les blancs. Y incorporer le sucre, la farine et la fécule de pomme de terre. Porter à ébullition le lait avec la gousse de vanille.\",\"Ajouter le lait au mélange dans le saladier. Mélanger jusqu’à obtenir une pâte homogène. Cuire ce mélange dans une casserole jusqu’à obtenir une pâte très épaisse.\",\"Remettre le mélange dans le saladier et ajouter le zeste. Prendre les 3 blancs d’œufs et les battre, puis les ajouter dans la pâte quand elle est tiède.\",\"Beurrer et sucrer 4 petits ramequins en porcelaine, poser un Pim’s® au fond avec une couche d’appareil à soufflé. Cuire 7-10 min à 180°C. Déguster !\"]},{\"title\":\"Millefeuille croustillant\",\"type\":\"dessert\",\"servings\":8,\"ingredients\":[{\"raw\":\"1 tablette de Poulain® Dessert Pralinoise\",\"quantity\":1,\"unit\":\"tablette\",\"label\":\"Poulain® Dessert Pralinoise\"},{\"raw\":\"400 ml de lait demi-écrémé\",\"quantity\":400,\"unit\":\"ml\",\"label\":\"lait demi-écrémé\"},{\"raw\":\"2 œufs\",\"quantity\":2,\"unit\":null,\"label\":\"œufs\"},{\"raw\":\"6 feuilles de brick\",\"quantity\":6,\"unit\":\"feuilles\",\"label\":\"brick\"},{\"raw\":\"20 g de sucre\",\"quantity\":20,\"unit\":\"g\",\"label\":\"sucre\"},{\"raw\":\"1 c. à soupe de farine\",\"quantity\":1,\"unit\":\"c. à soupe\",\"label\":\"farine\"},{\"raw\":\"1 noix de beurre\",\"quantity\":1,\"unit\":\"noix\",\"label\":\"beurre\"},{\"raw\":\"20 g de noisettes concassées\",\"quantity\":20,\"unit\":\"g\",\"label\":\"noisettes concassées\"}],\"steps\":[\"Préchauffer le four à 220°C. Faire fondre dans une casserole la tablette de chocolat et le lait sur feu doux. Dans un saladier, mélanger les œufs et la farine. Verser le lait chocolaté dessus et reverser dans la casserole. Laisser épaissir. Laisser refroidir la crème 1h au réfrigérateur.\",\"Verser le sucre dans une casserole et ajouter 1 c. à soupe d’eau. Laisser chauffer jusqu’à caramélisation. Ajouter les noisettes concassées. Mélanger et verser sur une feuille d’aluminium.\",\"Couper 4 rectangles dans chaque feuille de brick. Les badigeonner de beurre puis ajouter des petits morceaux de noisette caramélisée sur 8 d’entre elles. Faire cuire sur une plaque au four 5 min.\",\"Réaliser les millefeuilles en commençant par une feuille de brick puis de la crème pralinée à l’aide d’une poche à douille. Renouveler l’opération et terminer par une feuille de brick aux noisettes caramélisées.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Transcribing recipes**\n\nI need to extract two recipes and read the text carefully. On the left side, I have ingredients for \"Petits soufflés à l'orange,\" which serves 4 people. The ingredients list includes things like 8 Pim's® Orange, 500 ml of milk, and some eggs. There are exact steps to follow that involve mixing egg yolks and sugar, boiling milk with vanilla, and achieving a thick paste. Once I'm done, I'll ensure everything is faithfully transcribed!**Transcribing ingredients and steps**\n\nI'll continue with the instructions for the \"Petits soufflés à l'orange.\" After beating the egg whites, I'll add them to the mixture when it's warm, then prepare small porcelain ramekins by buttering and sugaring them. I'll place a Pim's® at the bottom and pour in the soufflé mixture before baking at 180°C for 7-10 minutes.\n\nNext, I need the recipe for \"Millefeuille croustillant.\" It serves eight and includes ingredients like a tablet of Poulain® Dessert Pralinoise and brick sheets. There are specific steps to follow for this dish as well!**Continuing the recipe steps**\n\nFor the \"Millefeuille croustillant,\" I'll start by pouring sugar into a saucepan and adding one tablespoon of water. I'll heat it until it caramelizes, then mix in the chopped hazelnuts. After that, I’ll pour the mixture onto a sheet of aluminum foil to cool and set. This step is crucial for creating a delicious topping for the dessert. I’ll need to ensure I follow these steps carefully to get everything just right!",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Transcribing recipes**\n\nI need to extract two recipes and read the text carefully. On the left side, I have ingredients for \"Petits soufflés à l'orange,\" which serves 4 people. The ingredients list includes things like 8 Pim's® Orange, 500 ml of milk, and some eggs. There are exact steps to follow that involve mixing egg yolks and sugar, boiling milk with vanilla, and achieving a thick paste. Once I'm done, I'll ensure everything is faithfully transcribed!**Transcribing ingredients and steps**\n\nI'll continue with the instructions for the \"Petits soufflés à l'orange.\" After beating the egg whites, I'll add them to the mixture when it's warm, then prepare small porcelain ramekins by buttering and sugaring them. I'll place a Pim's® at the bottom and pour in the soufflé mixture before baking at 180°C for 7-10 minutes.\n\nNext, I need the recipe for \"Millefeuille croustillant.\" It serves eight and includes ingredients like a tablet of Poulain® Dessert Pralinoise and brick sheets. There are specific steps to follow for this dish as well!**Continuing the recipe steps**\n\nFor the \"Millefeuille croustillant,\" I'll start by pouring sugar into a saucepan and adding one tablespoon of water. I'll heat it until it caramelizes, then mix in the chopped hazelnuts. After that, I’ll pour the mixture onto a sheet of aluminum foil to cool and set. This step is crucial for creating a delicious topping for the dessert. I’ll need to ensure I follow these steps carefully to get everything just right!",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN7PwmmI8Ekbu0rFRgxUhZsmaGDOAu2tbEWhQp6CYfId5ADlqCbvALrjkvq2xun8-gC8avf5dkeMUODANPj1Mo3nAEtLtWKTfgqzgisREXHUkmZqLq-ku25qVCa1VmC_waUL1svn6WeblUePg4mE7ItdWu4hyPe6PpYqQYriOmn7ixJMEAJxZwEp4N_sP9ZebpzwDkLJ2up8KfDIGGB7CUScW4Lq7ONbHtDmShPuXHIzK2MQKP-TB9py9urJM7ecJ4dOEfaZ4H1Zc90IG2y1WM21Uc1VKGvE5sG416r_nFpdqJyJ7Slrp5swlupgpkEP7r6XW7rof4Vn3LW43XLEpxsRZdglCLCMRZEM0WuBcEb5XpkGmr62gJaV5jj6XeCrReiUdahBLEBzbyRSRqf0BLwGU6w1c4GeGQZ8HPhK2VoR8no5vWXZvUtf1Cda7LKIXVn-DbrkdvngUHKdV8X2E8YImZ1S6QpYtwuEksuMeOtuEKqIHhfDfFDw753DVaYCqx-65YArkDhPxKMFnzwFdYr6RVlPRyI6Ic3nhd4_2M_qzsYTYH7WLVOeLuYdB0foIxe6ElMRZrADTfxmPuk2iy8g6JVFJ0gnTDeSG1_7E5Cpced26_W2QaTwTMnNu-U8DcsX1RYX-edB93OLcHx_x9uHXVwUqD-W35TW07gZnvGiWkDiHbYxfSm6MCFWIX-Vb23VxrJtYUnlApcvFk0DI4cIIM40oEFAfoahU_9MdMkhfxtn5WBIRvU49WvmJ0noWV71ysXSKvv0EKTR1IrxMtZOG7S7zGdS3ok220AcYnlgetfaBapQJ30yLVdERpderLq4UI-qM1XhsfTxHGOWXURxtQyQY4-ZWx3tCFoH0-amM_1h4houyVxiC82S2z_fCY7eO9Y9mEPJLDbsI7O09q4afxp0S4T2sttWbFXDmrF-9TLJPrgxeVpMymCNiNcBHxOs3YkkqpB0L3oWaLWRT_nAdI767SsRUdnWS7MGuPtwP5di_5NrxjF52syA823lJ1h45b4P5EOjkNENssRyENmUaZE4d07sy8AxAWqa_-bLzHbuzYRRnko-c8jSIyGLoWigFqN1L9yKC9vV1PUDcDk5w0o4IHN3RAeg5HurKfCsExWhN1dDnFXb_5gLZQKH2xMIYFG5K603e6mPxkGPX5RGa_7tZWlBwQz8oveUWqO6n8kGtQXdirRd1D9T22QE3PBx_9wvxaoskMC8tHfZKVivsSpKof4gprwr9MWPtEvN22x040Xtpq6BNQzgchzl_ESIdc1Z-ckZbcn6o8oFGDy1BEqzOmfFgROMGJwACyGVbKOkjOZ8UXBnzXdTFyYZU306cS2M2ovUKM2aV82v4E-Z9bkQmNr4TdItMU-qNFh0H93ym_p7fFfAkeBhk5Tbq3Vz-E6kUdHmeaZdJ9jZLbItZXup9Vz9MP8Q124uKgi6as1wcEtWGB1Mtm7Il0Yr8cxknPRP6eP2JK0pqlJnDEIZnRuXRIg9sTWDPFkpxnZAP6pG463Vzeiccx3aQNLZdYNb2jFQ9Df1zIRT0DNBhN_oxlj1y10pGBnOcZvCI6CXFUlS_yMq80E_XpHK_Qr7-Y6Hrn6dSiVWkgYxiDCHFdTssGTOy8sQ7fUgrdZvIJMOBAAiwTrwC2jEClEjwW05R59sxFIaLjTzZvdtZXYIzFGPzpgB86oYG65MWoPJiUnxmz54kQvH0LmgaAZDIkc5ystxUusT4RUasjqrX1MEthVllofDfdzeTsao_5Ph8BKhCch3wihgPF_x55cg5k8xzpGp0MZYmuG6U4ZsY627vmwJ5Ti3XPsxmaTcIYEziYJn-bGl4VxFDHI_NgJF56Ho6npkvMCiSysLX3TzdiH3lmhrv5FVMIgbqvpbLx4Hm8RPQ4HlVzhmXZv9as2ic5IauT8AesFQmGxOgQxjiEQhv4H7DSQs_PAWNng6tK_UGAqW-mizT4zO5HoBH_VxY7G0RJDRjeQ1OEGV01ERXlcfdYSwg_RrkFBAvacCj8eCjV88bKFgxV8JOLeKu6VlJRnJ3rPWvEGS_MwUQimOVLHXSTdhAAkvZs-BIxE1z_kVrBhNAsVx-PhHoBo5dkjosqb-EjC6RKQKyIxNOdXy5Z4jSijFPQJ2fMnNhQc-QLlqgoPAEivc_GATxN8zXoz8kDS6od8gfrMCcHs-TbAvVC-DwRMng4OSdFFhEf9CymObCzjTerGD_MpwJSXsA-DHKEDVStebN4hYi_8-pmg8Kp08zypqlPycuC6LbQ8OXfsT7KcP-VKgS6U5u-HpSIjE1F0I6Kl0_u75rmmtL1MmRtPfroy8JD8RBj2tcE0JyWHdbl4hLemH7wbVEpBp3Gt2oM0RiX3JutEIW3bnzavKm_FlcrcZc4thrbh5N0ukvJ5iARZ6PIq2JUDDCr1H0Ash7gPIEel8I19HBsy3OtbJxRLIHTl5ECNX98cdUsA1jqO9NirKdBxMf8Y-AcHx5KyhTZ7GA6D-4Sxadjfg_am24VMPEpbpaVtrzeSjvKw2b1s36knGqI4-4ZxCBE6R06iZEh_AFNLBQNPgVDkI6mkIK-FVFl0V5dOspth28cP40c9RIfghLPJVkUI9J6T03T1gww2JHBl4WE6GIMObyL-T1sToYYRiOhIOHP4fel0EondeTDaAEr7F-KHeEJ9QfzwQx9Q59r60Ds4-h4pyxEcZUJLIXw61RHVmJovdETuMHgAsdDhA4jIjtBa3jRWWob9Y_hr-dRVjG6mZOjbG6JekVmvSb4N6N9dB9VzLq5fLfymmdUXUQwgZZ4jMJLtnIJIU7mvmxbVvB_4sqo6NPHBWMneHlqxBAj7dZfVDBlUW56Yvx6EnNIpABBJqAoHPcvwOO4GHUCEw-UjLPduES-iH47P9Wf3fbdZhorDJNnUgkaobBeOvHXYjY2KZLeof4nky88BMVsNbOB1fb7OuJHze6TkQMUf10Yq6FJxUDznaVLcrtvoCFalIT1URk5Gr-PFA258nUZFTH_FxgjZEemE02clin_7fEMLKVWyLUU7dUKJypLxt78EebufA2GKbfK6doqkuieOHFlNdsrcX7JRSBxu4i9Hx2MF96yTWR1_Ji2xwhYaMl5xtNMnTND8Pe3V2JDnNx6x22XbWqYO_h4FLcQCe8pY3hFrEdZH41PnYuNdUEseCkcG3fZa_1AUy3YWJDebc2fOayIv7lsf-KXxOnAUJ6IZJJVlHFEKDgXe-E7FLjrX-haFoqVj6iqZGBnqmWZ28xLcB9jy3KEFibEWs0deP-2ajUmQwGAaIOlvA6hFyvAl0TA0CPWQdH6UmiL5QKzONpcyWYJ_51JnNdAAVu9g-jeYRK1W-83Mi-XSjr_EXRtLtQhTLJaIFBiD9maHnzcmFH9xfh6JBbRZQBK-FeAh5zWjFIaM2y-xtV6jvYGpJNG7gOW-VuNV-qJChcN0MYHzcuFh3zI-aTJr5DreLCailr2WhWvQwaRXOpUHC_71E-pRoyvWS34hOA_EAgazNEMutQmgpXwjQuTLCyFnCZcyo5d5EbQ==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_046cd3db88cccf8a016a78deca604c8196aab8e45cda418263",
+              "index": 1
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN7QAbkBmWN8NNyaq3aMQO6oONc361rVSOsDeT83jafIzkvndbAk92pBEhObTALAjuqbo5CZhbj3uCoeDQ1laKKFzvQ47a88V49_xHDDJTl7ii4L0YQQYdV5HwYdAhhpsMExKRf10wLKB9qylczcuKEfFgXBEaGbHPUI-9JcjAuy5TNduA5VwtpqGnOcHC5J8MYnbQkXBcgwJdm8DVHHx4VqrbmVzFr9xxFze85vtePf44th3wRRlAtcoG2iO1ttQqa1wmLacFrWBL54YlPCakgeUjhAScLkZGjNgRXiqrZOe4i207oA9dgUjsmz1lsIp75Qqdzc3mLABTTdmVQVV9ayPx0il7Gs6oFpufpX4xExj1mPAgc7VP6H23bM0z0RUHR3FnDis0gYa0_6OG5v6hMlFJ7oJNK-TD3XCnQEuvgVM053_qFKdO4vsmXNWkm-h4b7x0-P1bKMJ0zHgydIIKAIOay4H5yc9iIumFNQnfbxk2J0ru5YcWmvjTjMdLiVahHRO7oW8q3dEOTJExzZmITtQIImt6AFr4o1Qp6hzD83s7Z7qKeRzFEyLha9Y0gOb-Ahfwx4XrBzzlr8WAHU6WRTxQzjF32uOrOQnSiOSc8GK6HATj-WrXvE4KNj4z0LLyFPTNNu3uPgEbAs821J34UWbngG-9TI57F5x2UVIqHl7sbKequfXuGT3v6J-OOIO6vrITErT1hk3yPJdtRxGm6oTLu9q0mx9CbbIPtjgYHIzP-gOdJOttQMB5J87lWK5hG5XyUrFi8sM3JhR0g3gQ3qjpcS9r9_VIYY-claCsBh6_IVJTGSjoZFp_rZKx6-x1Y97zJJmXz3aJ1F2Nm0SlNtuG2F2PrRe03GdKGs1bvNGcqT2UnddAPdovLkvztY9lL5qf7xCfbZJ4jQiZEHD74zs03AQI3JxiMM_2N29ZOuyznJC5Z4y6uNvGXn09IfKzxjTjZXJfqnrLG3y7T6URXSL2zzNOEzudHh6e7MdM2f6f2Pt65S14DJ3rgDOywTuFQFJZTbAcJrowJ6oMQ0w1iBYIj36oLcnVyznO0ieBREANfzd0TxnQc_WE_-THuRx1KTo_QFw1Qg0QI6UcbmFbK1Y9H_5hkbun0bYDxLhWOKusHkOotZDWSzc7Zn9KNVPPuDhbw6T5o_NWLW09z6zNAYhNO5OZk8HSl4DO2NMdv8RnDi9IHjXPdOLY5H3lYqiny7ZGQoG0qoAG4Sl629UdxsBnSsh1KPbigKPCG4sdpn8HkGr4R5QIwphHOQ2P4dOIo_U0O2e4AtXkWIrAhBt7L6HGCkydusds6wvZOpCwdE2cl9DMopoWTcSmb-RurHezEpVcKAUEIvKmAR_FEyavUItplWR2CxNybIecfFBzH1TPUevIeBH4QmpAtk7RvBp5rTO6omtbirgzxEfbdkVcLzaePXdaowBb9yAT3azSDi9V8b0RQYRNuKde62ksKcuvlAgrfpEUorY7pc6tR9wGdHxgU1X-yWaniXf7BFft5EVvfTdW_cFVF-ooPFRUEAVx_q4aDzY4-B-9dAsaRkRrAP_ubuPutKHw_bN60RwRgrlnRWYoBdKs1LFDdG0Fj7ixugNMQkAHXrotEzUIU014KS3FGLSQ7GP4PmIko2eHLlOARAQyz9Bpu5SrcrRS3FXD-L7EDOX5yuTac89KUT5DWGL7hTE6MfP0Dja_UK4kjMxF9Iucw4DfGsoZThEDYZ6x2rHqTA4e1kqkgPmFfUuDNRB8lFf4Rvqxepqk6DCYZoHAm62sZGnp7ID_VIpVjEqN_Ezf5QygbZd3Csh6uvhauq-zkG0hAORO9w10QyD6JXRcZiG28k0W7tlEdi0KotcdNqhSZlXS1WuOg4u1klrwSW0cyOp0PFXFPCmGhcJqsWNRT9q97_oZPRAqkUdvR5uyUxlGOORxV6xIapq7okjSJUnwbeYoHhvcQpktLYFsv0FXyLzysUwdH8UVovOL5BohiKwGhLFDGoRtWdZCIN5nvVZxBqbDu-XGELkDXhwi61Cvolqhb--mavaKLa1ydszElimRlLrWlOzzT2v6oz8Y9xkiUFtBEsqi_5ktwDIz3qE7eRu65l6aWuVGFPqxx8AILaGV9gvaeBEuJ2_oN7bUi7rzrwAYUWknirtUp7gPKtGNHWadQFuGA01ajV5tTxr5EysEl2NLr_mkpdO5MQA85rcA==.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_046cd3db88cccf8a016a78decf9a2481968573375308c5fead",
+              "index": 2
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 1643,
+      "total_tokens": 5773,
+      "cost": 0.001501975,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4127,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.001501975,
+        "upstream_inference_prompt_cost": 0.000516175,
+        "upstream_inference_completions_cost": 0.0009858
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 753,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 9758.77554099998,
+  "actualCostUsd": 0.001501975,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

@@ -1,0 +1,168 @@
+{
+  "model": "mistralai/ministral-8b-2512",
+  "requestedProvider": "mistral",
+  "page": "g",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Poulet farci aux agrumes",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "4 blancs de poulet (avec la peau)",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "60 g de tranches d'agrumes confits (citrons, kumquats)",
+            "quantity": 60,
+            "unit": "g",
+            "label": "par blanc de poulet"
+          },
+          {
+            "raw": "un mélange d'épices (piment, ail, paprika, céleri, cumin, sel, poivre)",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "un filet d'huile d'olive",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "quelques feuilles de coriandre",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "sel, poivre",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "un filet d'huile d'olive (pour l'extérieur)",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "échalotes",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "jus de 1 orange",
+            "quantity": 1,
+            "unit": null,
+            "label": "orange"
+          },
+          {
+            "raw": "1 citron vert",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 citron jaune",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "20 cl de fond de volaille",
+            "quantity": 20,
+            "unit": "cl",
+            "label": null
+          },
+          {
+            "raw": "30 cl de lait de coco",
+            "quantity": 30,
+            "unit": "cl",
+            "label": null
+          },
+          {
+            "raw": "20 g de beurre",
+            "quantity": 20,
+            "unit": "g",
+            "label": null
+          }
+        ],
+        "steps": [
+          "Préparez le barbecue pour une cuisson à feu moyen (210 °C).",
+          "Coupez 4 blancs de poulet (avec la peau) de manière à créer une espèce de poche sur la face interne.",
+          "Disposez dans chacun 60 g de tranches d'agrumes confits (citrons, kumquats).",
+          "Assaisonnez avec un mélange d’épices (piment, ail, paprika, céleri, cumin, sel, poivre).",
+          "Arrosez d’un filet d’huile d’olive et refermez les suprêmes à l’aide de petites piques en bois.",
+          "Retournez-les et disposez quelques feuilles de coriandre sous la peau.",
+          "Assaisonnez l’extérieur en sel, poivre et d’un filet d’huile d’olive.",
+          "Saisissez les suprêmes sur la grille, côté peau sur le dessous en premier.",
+          "Faites cuire à feu moyen directement, couvercle du BBQ fermé.",
+          "Retournez-les au bout de 6 min et faites cuire encore 5 min."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306535-hfpqwNkpSxcjdOMf8CdD",
+    "object": "chat.completion",
+    "created": 1786306535,
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Poulet farci aux agrumes\",\n      \"type\": \"plat\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\n          \"raw\": \"4 blancs de poulet (avec la peau)\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"60 g de tranches d'agrumes confits (citrons, kumquats)\",\n          \"quantity\": 60,\n          \"unit\": \"g\",\n          \"label\": \"par blanc de poulet\"\n        },\n        {\n          \"raw\": \"un mélange d'épices (piment, ail, paprika, céleri, cumin, sel, poivre)\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"un filet d'huile d'olive\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"quelques feuilles de coriandre\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"sel, poivre\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"un filet d'huile d'olive (pour l'extérieur)\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"échalotes\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"jus de 1 orange\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"orange\"\n        },\n        {\n          \"raw\": \"1 citron vert\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"1 citron jaune\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"20 cl de fond de volaille\",\n          \"quantity\": 20,\n          \"unit\": \"cl\",\n          \"label\": null\n        },\n        {\n          \"raw\": \"30 cl de lait de coco\",\n          \"quantity\": 30,\n          \"unit\": \"cl\",\n          \"label\": null\n        },\n        {\n          \"raw\": \"20 g de beurre\",\n          \"quantity\": 20,\n          \"unit\": \"g\",\n          \"label\": null\n        }\n      ],\n      \"steps\": [\n        \"Préparez le barbecue pour une cuisson à feu moyen (210 °C).\",\n        \"Coupez 4 blancs de poulet (avec la peau) de manière à créer une espèce de poche sur la face interne.\",\n        \"Disposez dans chacun 60 g de tranches d'agrumes confits (citrons, kumquats).\",\n        \"Assaisonnez avec un mélange d’épices (piment, ail, paprika, céleri, cumin, sel, poivre).\",\n        \"Arrosez d’un filet d’huile d’olive et refermez les suprêmes à l’aide de petites piques en bois.\",\n        \"Retournez-les et disposez quelques feuilles de coriandre sous la peau.\",\n        \"Assaisonnez l’extérieur en sel, poivre et d’un filet d’huile d’olive.\",\n        \"Saisissez les suprêmes sur la grille, côté peau sur le dessous en premier.\",\n        \"Faites cuire à feu moyen directement, couvercle du BBQ fermé.\",\n        \"Retournez-les au bout de 6 min et faites cuire encore 5 min.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2775,
+      "completion_tokens": 845,
+      "total_tokens": 3620,
+      "cost": 0.00018471,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 2654,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00018471,
+        "upstream_inference_prompt_cost": 0.00005796,
+        "upstream_inference_completions_cost": 0.00012675
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 10940.678959000012,
+  "actualCostUsd": 0.00018471,
+  "servedProvider": "Mistral",
+  "repairs": []
+}

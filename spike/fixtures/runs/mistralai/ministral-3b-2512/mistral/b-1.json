@@ -1,0 +1,430 @@
+{
+  "model": "mistralai/ministral-3b-2512",
+  "requestedProvider": "mistral",
+  "page": "b",
+  "pass": 1,
+  "promptVersion": "v1",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Dinde aux piments et au cacao",
+        "type": "entree",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "2 filets de dinde de 500 g",
+            "quantity": 2,
+            "unit": "filets",
+            "label": null
+          },
+          {
+            "raw": "20 g de cacao brut",
+            "quantity": 20,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "2 poivrons rouges et 2 verts",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "2 petits piments verts doux d’Espagne",
+            "quantity": 2,
+            "unit": "cuill.",
+            "label": null
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de piment d’Espelette"
+          },
+          {
+            "raw": "2 oignons",
+            "quantity": 2,
+            "unit": "gousse d’ail",
+            "label": null
+          },
+          {
+            "raw": "1 petite boîte de pulpe de tomate",
+            "quantity": 1,
+            "unit": "petite boîte",
+            "label": null
+          },
+          {
+            "raw": "50 g de cacahuètes",
+            "quantity": 50,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "1/2 cuill.",
+            "quantity": 0.5,
+            "unit": "cuill.",
+            "label": "à café de cannelle"
+          },
+          {
+            "raw": "1/2 cuill.",
+            "quantity": 0.5,
+            "unit": "cuill.",
+            "label": "à café de clous de girofle"
+          },
+          {
+            "raw": "1/2 cuill.",
+            "quantity": 0.5,
+            "unit": "cuill.",
+            "label": "à café de grains de coriandre"
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à café de grains d’anis"
+          },
+          {
+            "raw": "3 cuill.",
+            "quantity": 3,
+            "unit": "cuill.",
+            "label": "à soupe de graines de sésame"
+          },
+          {
+            "raw": "1/2 l de bouillon de volaille",
+            "quantity": 0.5,
+            "unit": "l",
+            "label": null
+          },
+          {
+            "raw": "4 cuill.",
+            "quantity": 4,
+            "unit": "cuill.",
+            "label": "à soupe d’huile"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "poivre",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis. Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.",
+          "Pouvez, salez et laissez mijoter 20 min. Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes. Essuyez la cocotte et faites dorer les filets avec l’huile restante. Salez, poivrez, couvrez et laissez cuire à petit feu 20 min. Versez la sauce, couvrez et poursuivez encore la cuisson 10 min. Parsemez le plat de sésame et accompagnez ce plat de riz."
+        ]
+      },
+      {
+        "title": "Cornes de gazelle et salade d’oranges",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "250 g d’amandes",
+            "quantity": 250,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "125 g de sucre glace",
+            "quantity": 125,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "75 g de beurre",
+            "quantity": 75,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "3 cuill.",
+            "quantity": 3,
+            "unit": "cuill.",
+            "label": "à soupe d’eau de fleur d’oranger"
+          },
+          {
+            "raw": "250 g de farine",
+            "quantity": 250,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "3 cuill.",
+            "quantity": 3,
+            "unit": "cuill.",
+            "label": "à soupe d’eau de fleur d’oranger"
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "75 g de beurre mou",
+            "quantity": 75,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "10 oranges",
+            "quantity": 10,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "30 g d’amandes émincées",
+            "quantity": 30,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "à soupe de sucre glace",
+            "quantity": null,
+            "unit": "cuill.",
+            "label": null
+          },
+          {
+            "raw": "10 feuilles de menthe",
+            "quantity": 10,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Formez une boule de pâte en mélangeant ses ingrédients. Laissez reposer 30 min. Mixez les amandes mondées avec le sucre glace. Ajoutez l’œuf, le beurre, la fleur d’oranger. Mélangez et mettez au frais 15 min. Étalez la pâte finement.",
+          "Découpez des cercles et, au centre de chacun, posez 1 cuillère de farce aux amandes. Roulez la pâte, soudez les bords et recourbez les croissants. Laissez reposer 24 h au sec et au frais. Le lendemain, préchauffez le four à th. 5/6 (160 °C). Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.",
+          "Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger. Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe."
+        ]
+      },
+      {
+        "title": "Escalopes de foie gras au pain d’épice",
+        "type": "entree",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 foie gras de canard entier frais (600 g)",
+            "quantity": 1,
+            "unit": "foie gras",
+            "label": null
+          },
+          {
+            "raw": "6 tranches de pain d’épice",
+            "quantity": 6,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "200 g de salades mélangées",
+            "quantity": 200,
+            "unit": "g",
+            "label": null
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de quatre-épices"
+          },
+          {
+            "raw": "2 cuill.",
+            "quantity": 2,
+            "unit": "cuill.",
+            "label": "à soupe de farine"
+          },
+          {
+            "raw": "1 verre de porto",
+            "quantity": null,
+            "unit": "verre",
+            "label": null
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de vinaigre balsamique"
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de vinaigre de vin"
+          },
+          {
+            "raw": "3 cuill.",
+            "quantity": 3,
+            "unit": "cuill.",
+            "label": "à soupe d’huile d’olive"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "fleur de sel",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive. Détaillez le foie gras en 6 tranches.",
+          "Mélangez la farine et les quatre-épices et roulez-y les tranches. Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.",
+          "Grilez légèrement le pain d’épice au gril-pain et gardez-le au chaud sur le plat de service dans le four très doux. Dans une poêle antiadhésive bien chaude, faites revenir la foie gras 1 min sur chaque face. Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.",
+          "Remettez en attente à four doux. Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras. Servez aussitôt avec la salade."
+        ]
+      },
+      {
+        "title": "Canard laqué au curry rouge",
+        "type": "entree",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Barbarie",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 ananas moyen",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "2 belles tomates fermes",
+            "quantity": 2,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de pâte de curry rouge"
+          },
+          {
+            "raw": "1 boîte de 50 cl de lait de coco",
+            "quantity": 50,
+            "unit": "cl",
+            "label": null
+          },
+          {
+            "raw": "10 cl de sauce soja",
+            "quantity": 10,
+            "unit": "cl",
+            "label": null
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe d’huile d’arachide"
+          },
+          {
+            "raw": "1 cuill.",
+            "quantity": 1,
+            "unit": "cuill.",
+            "label": "à soupe de nuoc-mâm"
+          },
+          {
+            "raw": "2 cuill.",
+            "quantity": 2,
+            "unit": "cuill.",
+            "label": "à soupe de miel toute fleur"
+          },
+          {
+            "raw": "1 bouquet de basilic thaï",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Préchauffez le four à th. 7 (210 °C). Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson. Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min. Laissez la refroidir avant de l’entreposer dans le réfrigérateur.",
+          "Le lendemain, tranchez la canette en 8 morceaux. Détaillez la chair de l’ananas en gros dés. Coupez les tomates en morceaux. Versez dans une cocotte un tiers du lait de coco, 1 cuillère d’huile et la pâte de curry rouge. Mélangez et faites cuire 5 min en remuant.",
+          "Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition. Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min. Otez du feu et laissez reposer 5 min avec le basilic. Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786302392-OGvv1aGAA3PuRYkiXvgW",
+    "object": "chat.completion",
+    "created": 1786302392,
+    "model": "mistralai/ministral-3b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Dinde aux piments et au cacao\",\n      \"type\": \"entree\",\n      \"servings\": 6,\n      \"ingredients\": [\n        {\"raw\": \"2 filets de dinde de 500 g\", \"quantity\": 2, \"unit\": \"filets\", \"label\": null},\n        {\"raw\": \"20 g de cacao brut\", \"quantity\": 20, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"2 poivrons rouges et 2 verts\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"2 petits piments verts doux d’Espagne\", \"quantity\": 2, \"unit\": \"cuill.\", \"label\": null},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de piment d’Espelette\"},\n        {\"raw\": \"2 oignons\", \"quantity\": 2, \"unit\": \"gousse d’ail\", \"label\": null},\n        {\"raw\": \"1 petite boîte de pulpe de tomate\", \"quantity\": 1, \"unit\": \"petite boîte\", \"label\": null},\n        {\"raw\": \"50 g de cacahuètes\", \"quantity\": 50, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"1/2 cuill.\", \"quantity\": 0.5, \"unit\": \"cuill.\", \"label\": \"à café de cannelle\"},\n        {\"raw\": \"1/2 cuill.\", \"quantity\": 0.5, \"unit\": \"cuill.\", \"label\": \"à café de clous de girofle\"},\n        {\"raw\": \"1/2 cuill.\", \"quantity\": 0.5, \"unit\": \"cuill.\", \"label\": \"à café de grains de coriandre\"},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à café de grains d’anis\"},\n        {\"raw\": \"3 cuill.\", \"quantity\": 3, \"unit\": \"cuill.\", \"label\": \"à soupe de graines de sésame\"},\n        {\"raw\": \"1/2 l de bouillon de volaille\", \"quantity\": 0.5, \"unit\": \"l\", \"label\": null},\n        {\"raw\": \"4 cuill.\", \"quantity\": 4, \"unit\": \"cuill.\", \"label\": \"à soupe d’huile\"},\n        {\"raw\": \"sel\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"poivre\", \"quantity\": null, \"unit\": null, \"label\": null}\n      ],\n      \"steps\": [\n        \"Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis. Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.\",\n        \"Pouvez, salez et laissez mijoter 20 min. Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes. Essuyez la cocotte et faites dorer les filets avec l’huile restante. Salez, poivrez, couvrez et laissez cuire à petit feu 20 min. Versez la sauce, couvrez et poursuivez encore la cuisson 10 min. Parsemez le plat de sésame et accompagnez ce plat de riz.\"\n      ]\n    },\n    {\n      \"title\": \"Cornes de gazelle et salade d’oranges\",\n      \"type\": \"plat\",\n      \"servings\": 6,\n      \"ingredients\": [\n        {\"raw\": \"250 g d’amandes\", \"quantity\": 250, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"125 g de sucre glace\", \"quantity\": 125, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"75 g de beurre\", \"quantity\": 75, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"1 jaune d’œuf\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"3 cuill.\", \"quantity\": 3, \"unit\": \"cuill.\", \"label\": \"à soupe d’eau de fleur d’oranger\"},\n        {\"raw\": \"250 g de farine\", \"quantity\": 250, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"3 cuill.\", \"quantity\": 3, \"unit\": \"cuill.\", \"label\": \"à soupe d’eau de fleur d’oranger\"},\n        {\"raw\": \"1 jaune d’œuf\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"75 g de beurre mou\", \"quantity\": 75, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"sel\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"10 oranges\", \"quantity\": 10, \"unit\": null, \"label\": null},\n        {\"raw\": \"30 g d’amandes émincées\", \"quantity\": 30, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"à soupe de sucre glace\", \"quantity\": null, \"unit\": \"cuill.\", \"label\": null},\n        {\"raw\": \"10 feuilles de menthe\", \"quantity\": 10, \"unit\": null, \"label\": null}\n      ],\n      \"steps\": [\n        \"Formez une boule de pâte en mélangeant ses ingrédients. Laissez reposer 30 min. Mixez les amandes mondées avec le sucre glace. Ajoutez l’œuf, le beurre, la fleur d’oranger. Mélangez et mettez au frais 15 min. Étalez la pâte finement.\",\n        \"Découpez des cercles et, au centre de chacun, posez 1 cuillère de farce aux amandes. Roulez la pâte, soudez les bords et recourbez les croissants. Laissez reposer 24 h au sec et au frais. Le lendemain, préchauffez le four à th. 5/6 (160 °C). Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.\",\n        \"Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger. Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe.\"\n      ]\n    },\n    {\n      \"title\": \"Escalopes de foie gras au pain d’épice\",\n      \"type\": \"entree\",\n      \"servings\": 6,\n      \"ingredients\": [\n        {\"raw\": \"1 foie gras de canard entier frais (600 g)\", \"quantity\": 1, \"unit\": \"foie gras\", \"label\": null},\n        {\"raw\": \"6 tranches de pain d’épice\", \"quantity\": 6, \"unit\": null, \"label\": null},\n        {\"raw\": \"200 g de salades mélangées\", \"quantity\": 200, \"unit\": \"g\", \"label\": null},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de quatre-épices\"},\n        {\"raw\": \"2 cuill.\", \"quantity\": 2, \"unit\": \"cuill.\", \"label\": \"à soupe de farine\"},\n        {\"raw\": \"1 verre de porto\", \"quantity\": null, \"unit\": \"verre\", \"label\": null},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de vinaigre balsamique\"},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de vinaigre de vin\"},\n        {\"raw\": \"3 cuill.\", \"quantity\": 3, \"unit\": \"cuill.\", \"label\": \"à soupe d’huile d’olive\"},\n        {\"raw\": \"sel\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"fleur de sel\", \"quantity\": null, \"unit\": null, \"label\": null},\n        {\"raw\": \"poivre du moulin\", \"quantity\": null, \"unit\": null, \"label\": null}\n      ],\n      \"steps\": [\n        \"Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive. Détaillez le foie gras en 6 tranches.\",\n        \"Mélangez la farine et les quatre-épices et roulez-y les tranches. Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.\",\n        \"Grilez légèrement le pain d’épice au gril-pain et gardez-le au chaud sur le plat de service dans le four très doux. Dans une poêle antiadhésive bien chaude, faites revenir la foie gras 1 min sur chaque face. Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.\",\n        \"Remettez en attente à four doux. Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras. Servez aussitôt avec la salade.\"\n      ]\n    },\n    {\n      \"title\": \"Canard laqué au curry rouge\",\n      \"type\": \"entree\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\"raw\": \"1 canette de Barbarie\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"1 ananas moyen\", \"quantity\": 1, \"unit\": null, \"label\": null},\n        {\"raw\": \"2 belles tomates fermes\", \"quantity\": 2, \"unit\": null, \"label\": null},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de pâte de curry rouge\"},\n        {\"raw\": \"1 boîte de 50 cl de lait de coco\", \"quantity\": 50, \"unit\": \"cl\", \"label\": null},\n        {\"raw\": \"10 cl de sauce soja\", \"quantity\": 10, \"unit\": \"cl\", \"label\": null},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe d’huile d’arachide\"},\n        {\"raw\": \"1 cuill.\", \"quantity\": 1, \"unit\": \"cuill.\", \"label\": \"à soupe de nuoc-mâm\"},\n        {\"raw\": \"2 cuill.\", \"quantity\": 2, \"unit\": \"cuill.\", \"label\": \"à soupe de miel toute fleur\"},\n        {\"raw\": \"1 bouquet de basilic thaï\", \"quantity\": 1, \"unit\": null, \"label\": null}\n      ],\n      \"steps\": [\n        \"Préchauffez le four à th. 7 (210 °C). Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson. Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min. Laissez la refroidir avant de l’entreposer dans le réfrigérateur.\",\n        \"Le lendemain, tranchez la canette en 8 morceaux. Détaillez la chair de l’ananas en gros dés. Coupez les tomates en morceaux. Versez dans une cocotte un tiers du lait de coco, 1 cuillère d’huile et la pâte de curry rouge. Mélangez et faites cuire 5 min en remuant.\",\n        \"Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition. Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min. Otez du feu et laissez reposer 5 min avec le basilic. Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2736,
+      "completion_tokens": 2884,
+      "total_tokens": 5620,
+      "cost": 0.000562,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000562,
+        "upstream_inference_prompt_cost": 0.0002736,
+        "upstream_inference_completions_cost": 0.0002884
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 15890.175333,
+  "actualCostUsd": 0.000562,
+  "servedProvider": "Mistral"
+}

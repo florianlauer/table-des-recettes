@@ -1,0 +1,157 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "c",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Canette de Challans",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Challans",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Challans"
+          },
+          {
+            "raw": "1 dizaine d’oignons grelots",
+            "quantity": 1,
+            "unit": "dizaine",
+            "label": "oignons grelots"
+          },
+          {
+            "raw": "1 vingtaine de pommes de terre grenaille",
+            "quantity": 1,
+            "unit": "vingtaine",
+            "label": "pommes de terre grenaille"
+          },
+          {
+            "raw": "200 g de marrons",
+            "quantity": 200,
+            "unit": "g",
+            "label": "marrons"
+          },
+          {
+            "raw": "1 tranche épaisse de lard (250 g env.)",
+            "quantity": 1,
+            "unit": "tranche",
+            "label": "épaisse de lard (250 g env.)"
+          },
+          {
+            "raw": "2 gousses d’ail",
+            "quantity": 2,
+            "unit": "gousses",
+            "label": "d’ail"
+          },
+          {
+            "raw": "1 potimarron",
+            "quantity": 1,
+            "unit": null,
+            "label": "potimarron"
+          },
+          {
+            "raw": "½ verre de bouillon de légumes",
+            "quantity": 0.5,
+            "unit": "verre",
+            "label": "bouillon de légumes"
+          },
+          {
+            "raw": "huile d’olive",
+            "quantity": null,
+            "unit": null,
+            "label": "huile d’olive"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d’huile d’olive.",
+          "Préchauffez le four à 180 °C (th. 6).",
+          "Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d’ail et des lamelles épaisses de potimarron.",
+          "Arrosez d’un généreux filet d’huile d’olive, salez et poivrez.",
+          "Posez la canette bien dorée au milieu de tous les légumes.",
+          "Enfournez et montez la température à 220 °C (th. 7-8).",
+          "Laissez cuire 35 min puis déglacez avec le bouillon de légumes.",
+          "Présentez dans un plat et servez."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306201-07GLiD6kEkXn5VtjU6TR",
+    "object": "chat.completion",
+    "created": 1786306201,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Canette de Challans\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"1 canette de Challans\",\"quantity\":1,\"unit\":null,\"label\":\"canette de Challans\"},{\"raw\":\"1 dizaine d’oignons grelots\",\"quantity\":1,\"unit\":\"dizaine\",\"label\":\"oignons grelots\"},{\"raw\":\"1 vingtaine de pommes de terre grenaille\",\"quantity\":1,\"unit\":\"vingtaine\",\"label\":\"pommes de terre grenaille\"},{\"raw\":\"200 g de marrons\",\"quantity\":200,\"unit\":\"g\",\"label\":\"marrons\"},{\"raw\":\"1 tranche épaisse de lard (250 g env.)\",\"quantity\":1,\"unit\":\"tranche\",\"label\":\"épaisse de lard (250 g env.)\"},{\"raw\":\"2 gousses d’ail\",\"quantity\":2,\"unit\":\"gousses\",\"label\":\"d’ail\"},{\"raw\":\"1 potimarron\",\"quantity\":1,\"unit\":null,\"label\":\"potimarron\"},{\"raw\":\"½ verre de bouillon de légumes\",\"quantity\":0.5,\"unit\":\"verre\",\"label\":\"bouillon de légumes\"},{\"raw\":\"huile d’olive\",\"quantity\":null,\"unit\":null,\"label\":\"huile d’olive\"},{\"raw\":\"sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre du moulin\"}],\"steps\":[\"Dans une cocotte, faites dorer la canette sur toutes les faces avec 1 filet d’huile d’olive.\",\"Préchauffez le four à 180 °C (th. 6).\",\"Dans un plat en fonte, disposez les oignons grelots, les grenailles, les marrons, le lard découpé en lamelles épaisses, les gousses d’ail et des lamelles épaisses de potimarron.\",\"Arrosez d’un généreux filet d’huile d’olive, salez et poivrez.\",\"Posez la canette bien dorée au milieu de tous les légumes.\",\"Enfournez et montez la température à 220 °C (th. 7-8).\",\"Laissez cuire 35 min puis déglacez avec le bouillon de légumes.\",\"Présentez dans un plat et servez.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting recipe details**\n\nI need to extract details from the recipe titled \"Canette de Challans.\" It serves 4, and the ingredients include a canette de Challans, onions, small potatoes, chestnuts, lard, garlic, potimarron, vegetable broth, olive oil, salt, and pepper. I want to preserve exact line entries, parsing quantities like 1 for the canette and possibly null for \"une dizaine.\" The cooking steps mention browning the canette in olive oil and preheating the oven to 180 °C.**Extracting cooking instructions**\n\nI’m reading the cooking instructions: Arrange the onions, potatoes, chestnuts, thick-cut lard, garlic, and potimarron slices in a cast iron dish. Drizzle with olive oil, season with salt and pepper, and then place the browned canette in the center. Bake at 220 °C for 35 minutes, then deglaze with vegetable broth. Serve it nicely presented. I note that I need to preserve key sentences as individual steps, so each instruction can be clear and precise.**Clarifying cooking steps**\n\nI’m noticing that the first sentence covers browning, the second mentions preheating, and the third instructs to arrange the ingredients. The fourth step, \"Arrosez..., salez et poivrez,\" contains two instructions with a comma, which might be better as one instruction per sentence for clarity. I think it might be best not to split the line for ingredients. Keeping each step clear and concise will make the recipe easier to follow!",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting recipe details**\n\nI need to extract details from the recipe titled \"Canette de Challans.\" It serves 4, and the ingredients include a canette de Challans, onions, small potatoes, chestnuts, lard, garlic, potimarron, vegetable broth, olive oil, salt, and pepper. I want to preserve exact line entries, parsing quantities like 1 for the canette and possibly null for \"une dizaine.\" The cooking steps mention browning the canette in olive oil and preheating the oven to 180 °C.**Extracting cooking instructions**\n\nI’m reading the cooking instructions: Arrange the onions, potatoes, chestnuts, thick-cut lard, garlic, and potimarron slices in a cast iron dish. Drizzle with olive oil, season with salt and pepper, and then place the browned canette in the center. Bake at 220 °C for 35 minutes, then deglaze with vegetable broth. Serve it nicely presented. I note that I need to preserve key sentences as individual steps, so each instruction can be clear and precise.**Clarifying cooking steps**\n\nI’m noticing that the first sentence covers browning, the second mentions preheating, and the third instructs to arrange the ingredients. The fourth step, \"Arrosez..., salez et poivrez,\" contains two instructions with a comma, which might be better as one instruction per sentence for clarity. I think it might be best not to split the line for ingredients. Keeping each step clear and concise will make the recipe easier to follow!",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN6fUaMoJ_Fgp1K_qDhT5OfAg-Ul55w95jHoXiMmrCIxywXCwfU8hN7FZZErIfdXHZDqHVCr3hAxn70GZMW7x9QG4gKM2cyIsgw9Tim0PAM12barQW8up6sV5hCMYE-WgPLh-lwGYugCuwkKbA8AUxxVwbktRyjchHU9DeMxUz_zoWB7Ab-_636LqcIztXaSrQOxhMxo-gK9wUu2XaxrpOhk1vjgkCkO5G9tzyFl5Py1h-A2t42zrzxAJB31p5259L5E3oFNXBCzS1b5TuUnvrbc0sZk4Zy07F1-xALPkv5oTUk6N2CCZX2UwkgRtaqFXjTLzqkm_Ybhu2hMMg6ykM2xUrOTAHHprn19ErsrPkHRUB2docHt3e2gAfI7JRWjr6flV1b2V3t4ZgF8B8WdTky_Z1yYflgBnqKqywCYNZHFEci9HTPcwdSvZ5P5TQcAYP8XD1cm4Dxqz8KcG_MTFF7i5kXFfW45vrvhVbpW5QwstguH7mGNCfNAiBWVF1LRm7yicQXDDmkV8fSGTnY9_xVglayrgrugodk-gWGUX7yZgn93fvipi0_ZM8bmhO_G38obRnOzhypbeJQmPKRbuK2XTvxi9A05hrR__GsAz6tyBZcodem5WVVihyvyB1jcHsk123J77V4Ao2I_dnDv-x-EcHLVHGxwAXSsBm6M3cjXs8FXwgmjaeNeNqFLBTgQlfnKKOtqd8RViUFzzHNjdzJYNMqpWoTfpb2hp4NzZZ--EJgKQmd4rKPh7ojZgGbw7c1vM9b1sa2jmebL6TiXJI0LjzNwqOkgBpkd4htnvZ8moiL_NtYMv1oi7hJRPgJRzEv72CMFjjkffkP197TPnF8sBsGj7nxveeSlHZwzqYuI8hak97epaEEwQuB0cP28fw-Ih0m5sbF8T3L2heJvu4ZIjNVIHo_edj66SnAVmw7mfzm-TXRpwpkYODtfjf7nJzQz3wfNiVVG0Dwn-ewH8hWD9-_-VSILP-6vUAONriPE2wZUqqVw3JwVP4B8Ral89g2l-ePRJib4Uf5GutXP9ZxUlYSadYABWw1N-YcQ3UE-IRG_qPZ4e9xhkgqCuWy3lfkHzH8xgGTH9fi900q1_qPi-wSj5-qLwmYNL-9ZNRlBOl6FlChUA5bG6sweF_xstZcykWcVuIhs0gutAB5SIEgplxCGauODOTRw9zlTL2hRHRSaSvr63k7_Ujw6cSTixnbvVpIu7bjQ0VjjV3X1_mGDr-tqRE26pIaT_GSucUPYeloMUkjQrvZ1WroMSi1I2rDmlESfOZzA0weNg4iXUfH3SWIE8VHf7wJ8BjDkkCiI9cdA8ehIIBOnGqVeBBxqVRU_yDKsPnLaMHxfSPJcEWAQy504WqfWgbvqWmIcovUEcu9UPnfDuueYbQokP7rzHlD4xyZledtvdsa9pL6DJ5D_DYuEScdOwcHYeS2PgJQhCIW4nIssxMsERWlb_PIvj6wZfcdyytKa8erLlbGITUAXsJdf6gTKadHVKfJ3-jQY4Xf0fLjjmpWAX49Q8WQlKMNnd9o6Pv_8xDwCw9wK3ufrTBTO_LF8LBkZ06eTKC7yr8_U9HEE544Ut4YHfKJZwPQxDeKszROLtHIxUPplKZolVwJ0P8-I-jPUiEKkZj_O0bj5neChJzes6cUFvqYqMUWYsioMYLx5MOoFYv_k97cnNHWG_x8Zvofq0HtYQyJTZm2vGN70aqhLnMHNoYJ8DRP1AEJMb9gO9ph60TtdSnK_F1QNZ7E3ummkf9Hvj65PgEDBT-PmUnoK009UhP3xWMH6me5Hgd6-AVMbtiNwRPwKivwUgcil-J2YZTvR-gn7PP2xwrk3RjSNFnLlwn1zoalpeJX5yd-uTEh0I7Pq1HGsUaaDJtWWcv6wMuqxl5kv94KJpDP1c-kOKpJmePTGdfcQRjxAYuKch-e2DN_3VvuuH23vx5cxB1-N1-wlk1wB23FrJgUP-7IkyqIazNsot48DTSgxOijBKNaeZbpAkEi7QgLbDbAJpFy9An4PA_FJvopNGpe4f-6r46YOeX6rdiAd0goksA_zBeE2UXYWtlqtqxuBERF79cgMab9hes_QvUT3Ymk5D6xF6jdipW-dDb9KmSrr3PftGUPS32sMVqDGN9CNiPT5AsQWi5UW76eSvqoKf3eJwpKU8rLLUMlGkFUN_oEMVPvfSsQmBElPgrnfwWA4arRzn7Ypx4jXGu8geH3Fmvc5FJQtgqngSXzFiW9M8D5IJ59u29SIb6ylCqx2iG2nRk0vPUvcaac_RpCuyCW9kBcXUz1XglK78IBAtRuYRCkCp13Uv4HVgDCqUXIAz0NZR7qEawbZW5kXIVrYbbD9vlFcsOEEZuYBgrPXonvl7_Gp00QrkBBd1NYftLNbEmp_l1eQ7UZRZtFEs4ZaOG8kWTZOAlhVQ8eLA9Za8MjjcOZnwG4Sg3cX91xgV2XWig-IicYlh3AT6lel56WKVfXZVnykTpg7uQIjGduevqcMIUUNrmMvkg4ahRAWI1vNPWucNy0b6k5BFCJreS0ObTeVSGHrlPRUoErmjANiAz1jteAE-fWjBChq5mo9vJh4OXPvgZj7c3WQJHvFBWhzTyNlPq18bSKMcl1-ucz-YYJtix2zZzgRzWvDeCJ9wzCWKDpg5_d3Fq5x7boUmclj1j688C3xmv1pbuCXSYNhzBWCE_Md27ib6Wz7vWvroTL30JTkD6Mpph4aRrdvBGcxyUf98dpCDM6js9QlYs5TFS7ZtCTN0oIF-_R5qYWckmxusk9DBPtxqQJQ-1wrdZ9-0EG43YEmOVovkdhwAZ3trfjnbYe2aGSQrcY8iL1xE0Y2bPHOcshODAtgOA1Z6xadBv5UTncIQMXqlxPtmLF2NjufLkkxzbFxMGZBAuA-1umaLS03ZN-tPZXkbBwsqeeEzLtDL3A1wu3_lapTWkdryDQRfvBAsqWDrCQDVxbzePoVcohdVBKpgA4yUFJSAUZ2T5IURdW8hE0DYJ2xCzz3y7jfncSyi7M-LIUM5ZDor3ADSChcbY3xkhnajkR02ySA2hwgEvNu8Btyt4XqL6m_4S5_cJXnh_gP6wV1jctL_j9nIgFHcKDN3cvuEXphMn2qDZOnFO_wkcOa3iiB_wQwN3QH_iAgXsAppFPGQ3Zj-q4eIkeXqLAI11Gx0vLs6z0sN617AZofCGpPEtpqhM3LDhb-ybnf-YwBtfqyJI5gGZiKLXe8LukLFFLbyLzuvdw6ZsAPaqmpFgqV-fT2VMhV9J9j1Zv-bi0cf-qSKkre6oBC9LbcbssvFLvHiwY_rGn82oXArU8_e8xBhTaf1PPAMzH5oQz_UNv-UmZ1RaxaTJy6FdLSj6Jmgxm8vVkjzfzpJtGhSH9EZjTgZ63LdBi0LcY33VZ1obxDNdf28KpLtK-8WCLRTuun7BZWLwqck5G_K9ciuMjyBWHpwa9kS0jD9B3-IpFGA1xLiVzK6eNNcFgYJBhWiQX1787kALXFjkyIU5r_7iqp6TYTbpGlha6gmy5Zt2-k-O3kiAzPzGk9qsOrDqkEqK6hM3zsaplsohhRzFB3oX1Dv145vaYwTPTkY0Ke.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0f23bb47d42f0f14016a78de9a0ed0819788cf351ab6b0a59f",
+              "index": 1
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 1008,
+      "total_tokens": 5138,
+      "cost": 0.00064637,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00064637,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.0006048
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 516,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 7912.445040999999,
+  "actualCostUsd": 0.00064637,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

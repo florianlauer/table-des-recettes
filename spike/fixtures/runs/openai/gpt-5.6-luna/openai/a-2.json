@@ -1,0 +1,163 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "a",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Cabillaud à la milanaise poêlée de poivrons",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "4 filets de cabillaud",
+            "quantity": 4,
+            "unit": "filets",
+            "label": "cabillaud"
+          },
+          {
+            "raw": "3 poivrons de différentes couleurs",
+            "quantity": 3,
+            "unit": "poivrons",
+            "label": "de différentes couleurs"
+          },
+          {
+            "raw": "10 cl d’huile d’olive",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "d’huile d’olive"
+          },
+          {
+            "raw": "1 gousse d’ail",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "d’ail"
+          },
+          {
+            "raw": "1 cuil. à café de piment d’Espelette",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "de piment d’Espelette"
+          },
+          {
+            "raw": "100 g de farine",
+            "quantity": 100,
+            "unit": "g",
+            "label": "de farine"
+          },
+          {
+            "raw": "2 œufs",
+            "quantity": 2,
+            "unit": "œufs",
+            "label": null
+          },
+          {
+            "raw": "70 g de chapelure",
+            "quantity": 70,
+            "unit": "g",
+            "label": "de chapelure"
+          },
+          {
+            "raw": "70 g de parmesan fraîchement râpé",
+            "quantity": 70,
+            "unit": "g",
+            "label": "de parmesan fraîchement râpé"
+          },
+          {
+            "raw": "4 tranches de jambon de Parme",
+            "quantity": 4,
+            "unit": "tranches",
+            "label": "de jambon de Parme"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Faites sauter les poivrons découpés en fines lamelles dans une poêle avec 1 cuil. à café d’huile d’olive, l’ail écrasé et le piment d’Espelette.",
+          "Salez et poivrez.",
+          "Une fois les poivrons bien dorés, retirez du feu et réservez au chaud.",
+          "Placez la farine, les 2 œufs battus et la chapelure mélangée au parmesan dans 3 assiettes creuses.",
+          "Enveloppez chaque filet de cabillaud dans une tranche de jambon de Parme.",
+          "Trempez-les dans la farine puis dans les œufs battus et enfin dans la chapelure au parmesan.",
+          "Faites dorer dans la poêle avec le restant d’huile puis déposez sur une feuille de papier absorbant.",
+          "Servez bien chaud avec la poêlée de poivrons."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306067-8H3C3h3Sn6GROmeLOab5",
+    "object": "chat.completion",
+    "created": 1786306067,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Cabillaud à la milanaise poêlée de poivrons\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"4 filets de cabillaud\",\"quantity\":4,\"unit\":\"filets\",\"label\":\"cabillaud\"},{\"raw\":\"3 poivrons de différentes couleurs\",\"quantity\":3,\"unit\":\"poivrons\",\"label\":\"de différentes couleurs\"},{\"raw\":\"10 cl d’huile d’olive\",\"quantity\":10,\"unit\":\"cl\",\"label\":\"d’huile d’olive\"},{\"raw\":\"1 gousse d’ail\",\"quantity\":1,\"unit\":\"gousse\",\"label\":\"d’ail\"},{\"raw\":\"1 cuil. à café de piment d’Espelette\",\"quantity\":1,\"unit\":\"cuil. à café\",\"label\":\"de piment d’Espelette\"},{\"raw\":\"100 g de farine\",\"quantity\":100,\"unit\":\"g\",\"label\":\"de farine\"},{\"raw\":\"2 œufs\",\"quantity\":2,\"unit\":\"œufs\",\"label\":null},{\"raw\":\"70 g de chapelure\",\"quantity\":70,\"unit\":\"g\",\"label\":\"de chapelure\"},{\"raw\":\"70 g de parmesan fraîchement râpé\",\"quantity\":70,\"unit\":\"g\",\"label\":\"de parmesan fraîchement râpé\"},{\"raw\":\"4 tranches de jambon de Parme\",\"quantity\":4,\"unit\":\"tranches\",\"label\":\"de jambon de Parme\"},{\"raw\":\"sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre du moulin\"}],\"steps\":[\"Faites sauter les poivrons découpés en fines lamelles dans une poêle avec 1 cuil. à café d’huile d’olive, l’ail écrasé et le piment d’Espelette.\",\"Salez et poivrez.\",\"Une fois les poivrons bien dorés, retirez du feu et réservez au chaud.\",\"Placez la farine, les 2 œufs battus et la chapelure mélangée au parmesan dans 3 assiettes creuses.\",\"Enveloppez chaque filet de cabillaud dans une tranche de jambon de Parme.\",\"Trempez-les dans la farine puis dans les œufs battus et enfin dans la chapelure au parmesan.\",\"Faites dorer dans la poêle avec le restant d’huile puis déposez sur une feuille de papier absorbant.\",\"Servez bien chaud avec la poêlée de poivrons.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting a recipe**\n\nI need to carefully extract one recipe titled \"Cabillaud à la milanaise poêlée de poivrons,\" designed for 4 servings. The ingredients list is in two bullet points, with each entry appearing clearly on its own line. I see a total of 11 ingredients, with items like “4 filets de cabillaud” and “3 poivrons de différentes couleurs.” I need to make sure that quantities and labels are parsed accurately for each ingredient to provide clarity in preparation.**Organizing the recipe steps**\n\nFor the ingredient quantities, I need \"1\" unit of \"cuil. à café\" for piment d'Espelette, and \"100 g\" for flour. It looks like there's some uncertainty around \"sel\" and \"poivre,\" which might refer to \"sel, poivre du moulin.\" The steps are in two columns going left to right. \n\nThe first column involves sautéing the peppers in olive oil with garlic and seasoning them, while the second column is about wrapping the cabillaud fillets in ham, then coating them in flour, eggs, and breadcrumbs before frying. Got to keep everything clear!**Clarifying recipe steps**\n\nIt seems like the first step should indeed include \"1 cuil. à café\" and at the same time reference the ingredient for oil, which is \"10 cl.\" I should pay attention to the punctuation in the title too, especially in terms of clarity. Since I'm working with JSON, I need to ensure that any schema type conflicts are okay to avoid errors. Keeping everything consistent will really help make the recipe clear and easy to follow!",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting a recipe**\n\nI need to carefully extract one recipe titled \"Cabillaud à la milanaise poêlée de poivrons,\" designed for 4 servings. The ingredients list is in two bullet points, with each entry appearing clearly on its own line. I see a total of 11 ingredients, with items like “4 filets de cabillaud” and “3 poivrons de différentes couleurs.” I need to make sure that quantities and labels are parsed accurately for each ingredient to provide clarity in preparation.**Organizing the recipe steps**\n\nFor the ingredient quantities, I need \"1\" unit of \"cuil. à café\" for piment d'Espelette, and \"100 g\" for flour. It looks like there's some uncertainty around \"sel\" and \"poivre,\" which might refer to \"sel, poivre du moulin.\" The steps are in two columns going left to right. \n\nThe first column involves sautéing the peppers in olive oil with garlic and seasoning them, while the second column is about wrapping the cabillaud fillets in ham, then coating them in flour, eggs, and breadcrumbs before frying. Got to keep everything clear!**Clarifying recipe steps**\n\nIt seems like the first step should indeed include \"1 cuil. à café\" and at the same time reference the ingredient for oil, which is \"10 cl.\" I should pay attention to the punctuation in the title too, especially in terms of clarity. Since I'm working with JSON, I need to ensure that any schema type conflicts are okay to avoid errors. Keeping everything consistent will really help make the recipe clear and easy to follow!",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4aKR-_X2o-bh4ZsC3wFJpXVyUC_sRcpgsaAJr6HsOFJF0LKPhUtzILEGdVXpF5rqBTQG1rfyI7dHijp3J0J6sKNpLmqsoolJ2R-5F159OiYkB9JvLRCl94J981nRzxYMJf37gaWUaDDBtAVbvrtlNAWADj74dy7jnBPgZHQJA9LK3pmgXZx4DW8wWTJ4mtO2jAIbrzkrZ2CwmL-vDGhHhr5CpkcrxY3V7X6qTl9WTYDlKSNcT6C6WwPKvhyqHXTsOafEa5RAkQwR2YDnZQICaL9xpCfUnh5uqvZyC1G69x7czdSWnl0ME8sYPWyOMW6mBYpUnHFDldnvYvFR8UeMChELKeewc5iVK5Jmpv-WVGahNTTCiqUgZpQISWh6G-n2DCsErsBkrf6lC1QXxYLyxdDndbK346XwjsGRt01jFu_sx7gKakab_YTbWctR7aXEeRjWj1fwt5K5G47RmPQ8TG9ppOsIZcFMG-yMZsVAUBUhsjVhPlqjRiGfpA41vRN2aB8tghIz_UvAHVQx5o6uP0bp-9wyA0mWHJFwp0inQ3HpqqjI8X5MUY4Gys7GBdLtSgH8sgEUug9yl-GE1hJERvSWIHGUtEN91Wr8KEPYj9EMDwoKgvyad0SqGzrXt2VuA_xwVoBP_-RhBZx3zMo4Jg4csxXHaQKwy8HB_BU5NFc0me4bJpnKQzvS_97SfzG67Twoa2nJXUU-4MYAUJ3ojd-ZQLUUoG0T5A7uW2JPpVy1avrvp3HjXG8l8ukNEikLNsyVKdqbYIzw8lQKpylaUGj2WIH_gmEWSY2KKZ0t--HeJW1KHfdBcEfq2WJjUI99h9psNiQoV4wGxpSMW9StNSSpl1Ija-psiM1QWjuToH4PBb2luU7w9V88JPLzrqeaGwXtwUE_tt_mfGmFJTjXMk_bXA6H6ziRqEqAnD74Viv8k5RYmGL1k7KX7v7exH279zm4UZNHR7oMzmGK6xls1ww3xUdh-IqtOOaxNp9Tk_ZKtpjJOcYbcIRdU-cWDW6IjGZ2n72hxhdJE-ue3EPoU9fyz33LQUGoqwGbH3wFFl3spFXPbkuyUHSU5Hhgf56OQA1qlR_lnKveDoGy67xzCudIbT7pSM5_mDZ8rO3_y6sT4WXEjSpQM86jtW6Zqw3CViHo0jtS3NKv2ds2F3wq0_3-2G8mVrz2SlykI0jpzLzZ0WWTdyg5IsjGkjU831lFyLfzcjeS1H_ddFP1_S1TaLdximGbTeHOGMZ71VOL4Ny2COpfHW12vm2eKAPUS9zZtt23CEtBskDwbUDXbwOxCdBkeBwRkhEacZpn-MGtISD9Fegglw4LdpY3rWyga1L4gYvVC5l9l3Cw9bYA7jvtMwX35-OchtpCaYXyD6gZAjyoP4wHH6UH3tcdekRW9fB-Yr7_M-cpZOyvMuRCIcHDGQVZ57q477T7xxWCZbLNQO2Rwpr4upEM99p-iXQ3z9R7XY1u2kssMDYOIGGZc2uxxxvj4P8WOnauk-AuSJ73LFGOlm4AG2VQnPd7KY9Jbho2VQY2ZVQw0835b94ecz0s_v1U3uFHWrDfMTYzicFLkHO9lEfsJQ9AUPTD_kpFgcJ53pSLIhxswRE08j3PkFFPxEYdEOUKd8FQZ70zFgqWkLR8DLQgEkh2XueIIZWXgQDbpOi8xzqJda6lOGlSzyF7iUUp2St83-v-W9lM5qyo3wI_ta6bRK_k-LRQ698pI0KdUax76zDosrcX6IbyeF1wLzdTW9DI2kxrKnhW8VxUHQCIO355iJKByalKTCO2iPQGnaz8lDWZtFY9Q34MpdRmhlQFThgAYXfVKpoxE22kFwAQhzdSTFs734lkMw-LEV5ZFlea2bQ69z9DQfhBRlSLmJ-qegDRdTfzrhnvbO-VhrNBjOdUvM60CQoQXpDN_nb_fbZeluWP7RAOiGHA5FpxP5VAwvIyGFHLL0RT6LSUhWbvj23F1ZUgQ0MNNSoGCDow_TCzzEWJsgKg_PvrEYoEOaFgBJYOxMt6zkOPUjwonQvgb4XxPf9PhYoorvVH9t-CLVR62xUzNHQ6q-xcoNgZd5i541fUWAvsf9gvyd3-5iKHhZ1zdHapjT5n12MVm1cP3QXozRkae-t1chplk6W4kIVY_Skr4e9CzLMvlczEIotJAFR9WDYgne7aL_TpQQHw4C9yurppyE8a15e7pIk8gjFxG8JMy4BYUIO9m6p1OZL8plAWLzoI6Ctx4bC_7E-yTg1GVZya7nlQYY55uR1tPMomWW6kfP1vuvKPbBbH0Lqsz-CGVK7UmER82KHquIPbmpEORadvqR97YzChFaXlfQnudlu--1hk35K-vgOXL9IcMMGif6srCAywdsXMk_GNXcOYbujDRCfKPdpSRcEPvD1zPKST9BOm2RXKzR4Ux7N6cev4aS1zbTxXfFd3Wl7lMju74C9dkdFQRQ839xWzJ1KONDaD4i5a7A6_Yk591PylPVzZt5rAIuV6Zp9E5zjdcbr5RlE1lllRVYQUTlM6NX4yreCnxV0n6sOB_p7ssDKDFaybQVH0w-oz3Y5_4IEYerTYlAZJLDnwDrIl_hENf0f_CM83n2f7mDKOFyvfZ5-TASo79HUCezIz2B_v1f4YwFt6tq23ddIZEi3SmBcD4HxPQaOPJ9RDy_-WbYOhDOXWgjtfZ_jKlDVa9gCdEnIl60AREoLFj1hvusUBZsqI232un2ToFmfje2CsSmMaBGhgLe-Q5CcUsT_Sz5AW5aVX06A6QbvI0kLGPy-ssczemMyOCw8zsaqmfSzw2rzKopZMfVKyo7WNq6Gl0EYu_Nq5OiqOuT0ge7c4EJkMYZhFSLIm6ZQoE3k99CmJHyiA2f1BSsh9vhCLitzFDVWP3P3F00-6DegjPWS2ZNWcLHDxS8HDlYAFcBJG3_wMVReCB-8qEt0vJBj_gXwWTvx5Fmc-i0DUgiVHMg-QV6-4ddAA2AseHZo3dTqEfUKn0PttpdtVzxR3a8JdyEbjVg3hWXXi_64hkk8G7BMu-TJu8GuN62BOziXHAJYDYGbCcwny8KA7UFVd1p3tbmKJrleX4dUKFCvgJEvEvG9aS45QGUF1TGvxxbIXZsp3lvzVbqLfYJeqg0eJz_hKjEQbA_fs3RupgRrrhHpBd84gi-lWXNE4HynKelf0HVYcXXX9gz8FQ16mav0grHiffnpW_ZDfuDDIJpLK5wqexe1pnnFcFLFClm0B4P5g1A0U1cgg16SJctwF6HKpeEX-gtw6PlA35E6enGwFYjiAZj5SOGJ3-oEVwC-NsuWtsXcmoDBJ8Zgho1VO_BbCVVIimOhu9KgefPl_UngJamagt1mba3NnTVO4k85p1W_mPgHcgglTmdz580wp3-sO6fQNtZn0UM4Nq0pzc2wAnDJ7SqlipyiDlHRIRZz62199XdwvB8ARpeTiAH2LDvcR8RDl_rfOgQQbN_dlh-PeAuYgNd6CFxckB9te73P2nYzW-9tZ8Lc6lV4rGkxEGp3qToB_FIVGSq5CT7J2qkfPnuPK8Q4WN0dkthDlZoxoNKgHG1xTuHT3U1sXGoKSs=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0679190f0dfaf290016a78de1411ec8190bd8d6a85dfe4ac8f",
+              "index": 1
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 1034,
+      "total_tokens": 5164,
+      "cost": 0.00066197,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00066197,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.0006204
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 511,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 12436.347709,
+  "actualCostUsd": 0.00066197,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

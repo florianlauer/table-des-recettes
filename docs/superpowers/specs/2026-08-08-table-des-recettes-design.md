@@ -27,7 +27,7 @@ en parallèle : on monte les échelons jusqu'au premier qui passe, et on s'arrê
 
 1. **Jeu d'essai** : trois photos réelles — une page mono-recette, une page multi-recettes
    recollée, une page difficile (colonnes, texte sur photo).
-2. **Échelon le plus bas** : le modèle le moins cher satisfaisant *simultanément* deux
+2. **Échelon le plus bas** : le modèle le moins cher satisfaisant _simultanément_ deux
    contraintes — entrée **vision** et **sortie structurée stricte**. Beaucoup de modèles bon
    marché ne cochent qu'une des deux cases ; le bas de l'échelle est défini par cette
    intersection, pas par le prix seul.
@@ -38,12 +38,12 @@ en parallèle : on monte les échelons jusqu'au premier qui passe, et on s'arrê
 
 Sur les trois pages du jeu d'essai :
 
-| Critère | Seuil |
-|---|---|
-| Segmentation | Nombre de recettes détectées = nombre réel, sur les trois pages |
-| Titre | Exact, sans reformulation |
-| Ingrédients | Toutes les lignes présentes, aucune inventée, aucune fusionnée |
-| Étapes | Toutes présentes, dans l'ordre |
+| Critère           | Seuil                                                                     |
+| ----------------- | ------------------------------------------------------------------------- |
+| Segmentation      | Nombre de recettes détectées = nombre réel, sur les trois pages           |
+| Titre             | Exact, sans reformulation                                                 |
+| Ingrédients       | Toutes les lignes présentes, aucune inventée, aucune fusionnée            |
+| Étapes            | Toutes présentes, dans l'ordre                                            |
 | Sortie structurée | Réponse valide contre le schéma du premier coup, sans refus ni troncature |
 
 Critère d'arbitrage final, celui qui compte vraiment : **corriger une recette extraite doit
@@ -82,7 +82,7 @@ seulement si le résultat ne passe pas.
 4. Si l'échelon échoue, on monte d'un cran. Le premier qui passe est figé en variable
    d'environnement, comme pour l'extraction.
 
-**À vérifier en premier :** la couverture d'OpenRouter en modèles à *sortie image* est plus
+**À vérifier en premier :** la couverture d'OpenRouter en modèles à _sortie image_ est plus
 étroite que sa couverture en texte et en vision. Si le modèle retenu n'y est pas routable, il
 faut une clé API Google directe — donc un second secret et un second fournisseur dans la
 section déploiement. Ce point conditionne l'architecture de la fonctionnalité, il se tranche
@@ -90,16 +90,16 @@ au spike, pas à l'implémentation.
 
 ## Décisions de cadrage
 
-| Sujet | Décision | Raison |
-|---|---|---|
-| Visibilité | Public mais `noindex` | Contenu issu d'œuvres protégées : accessible à qui a le lien, invisible des moteurs. Le SSR est conservé pour pouvoir indexer un jour sans réécriture. |
-| Filtres | Type de plat + recherche sur le titre **et les ingrédients** | Chaque filtre supplémentaire est de la correction manuelle à chaque scan. Les ingrédients, eux, sont déjà extraits : les rendre cherchables ne coûte rien à la saisie et sert le membre du foyer qui ne connaît pas le corpus. |
-| Photos | Rétention limitée (30 à 90 jours) puis purge | Aucune archive permanente, mais une fenêtre pour rattraper une recette que le modèle a manquée sur une page qu'il a par ailleurs bien traitée. |
-| Portions | Ligne brute canonique + structure optionnelle | La ligne du magazine fait foi ; le recalcul est un confort d'affichage, pas le format d'archivage. |
-| Authentification | Secret partagé, vérifié côté serveur | Un seul utilisateur. Ni comptes, ni sessions, ni fournisseur d'identité. |
-| Sauvegarde | Export automatique versionné dans git | Les corrections manuelles sont la donnée la plus coûteuse à reproduire, et la seule qui subsiste après purge des photos. |
-| Illustration | Photo du plat optionnelle, uploadée à part, embellie sur demande et validée à la main | Découplée du scan pour rester possible après publication. Le modèle invente forcément (couleurs, hors-champ) : l'originale est conservée et rien n'est publié sans acceptation explicite. |
-| Choix des modèles | Un seul modèle par usage, le moins cher qui passe les critères, figé en variable d'environnement | L'escalade se joue au spike, pas à l'exécution : le runtime ne porte aucune logique de repli. Révisable en changeant une variable, avec les fixtures du spike comme non-régression. |
+| Sujet             | Décision                                                                                         | Raison                                                                                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Visibilité        | Public mais `noindex`                                                                            | Contenu issu d'œuvres protégées : accessible à qui a le lien, invisible des moteurs. Le SSR est conservé pour pouvoir indexer un jour sans réécriture.                                                                         |
+| Filtres           | Type de plat + recherche sur le titre **et les ingrédients**                                     | Chaque filtre supplémentaire est de la correction manuelle à chaque scan. Les ingrédients, eux, sont déjà extraits : les rendre cherchables ne coûte rien à la saisie et sert le membre du foyer qui ne connaît pas le corpus. |
+| Photos            | Rétention limitée (30 à 90 jours) puis purge                                                     | Aucune archive permanente, mais une fenêtre pour rattraper une recette que le modèle a manquée sur une page qu'il a par ailleurs bien traitée.                                                                                 |
+| Portions          | Ligne brute canonique + structure optionnelle                                                    | La ligne du magazine fait foi ; le recalcul est un confort d'affichage, pas le format d'archivage.                                                                                                                             |
+| Authentification  | Secret partagé, vérifié côté serveur                                                             | Un seul utilisateur. Ni comptes, ni sessions, ni fournisseur d'identité.                                                                                                                                                       |
+| Sauvegarde        | Export automatique versionné dans git                                                            | Les corrections manuelles sont la donnée la plus coûteuse à reproduire, et la seule qui subsiste après purge des photos.                                                                                                       |
+| Illustration      | Photo du plat optionnelle, uploadée à part, embellie sur demande et validée à la main            | Découplée du scan pour rester possible après publication. Le modèle invente forcément (couleurs, hors-champ) : l'originale est conservée et rien n'est publié sans acceptation explicite.                                      |
+| Choix des modèles | Un seul modèle par usage, le moins cher qui passe les critères, figé en variable d'environnement | L'escalade se joue au spike, pas à l'exécution : le runtime ne porte aucune logique de repli. Révisable en changeant une variable, avec les fixtures du spike comme non-régression.                                            |
 
 ## Stack
 
@@ -108,8 +108,8 @@ au spike, pas à l'implémentation.
 - **OpenRouter** pour l'extraction vision, appelé exclusivement depuis une action Convex.
 
 Convex n'est pas un choix par défaut : ce projet est un pipeline asynchrone, et les quatre
-briques nécessaires sont natives — *actions* (appel HTTP sortant avec secrets serveur),
-*scheduler* (extraction en tâche de fond), *file storage* (photos temporaires), *réactivité*
+briques nécessaires sont natives — _actions_ (appel HTTP sortant avec secrets serveur),
+_scheduler_ (extraction en tâche de fond), _file storage_ (photos temporaires), _réactivité_
 (la file de validation se met à jour seule quand une extraction se termine).
 
 Réserves assumées : TanStack Start a un écosystème plus jeune que Next.js et son déploiement
@@ -137,47 +137,47 @@ recette — un scan peut produire plusieurs recettes, les deux cycles sont donc 
 
 ### `scans`
 
-| Champ | Type | Note |
-|---|---|---|
-| `imageStorageIds` | `Id<"_storage">[]` | 1 à N images traitées ensemble (recette à cheval sur deux pages) ; vidé à la purge |
-| `status` | `"pending" \| "extracting" \| "done" \| "failed"` | |
-| `attemptId` | `string?` | identifiant de la tentative en cours ; garantit l'idempotence |
-| `startedAt` | `number?` | horodatage de la réservation |
-| `attempts` | `number` | nombre d'extractions tentées |
-| `error` | `string?` | message lisible en cas d'échec |
-| `purgeAfter` | `number?` | date de purge des images, posée à la publication |
-| `createdAt` | `number` | |
+| Champ             | Type                                              | Note                                                                               |
+| ----------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `imageStorageIds` | `Id<"_storage">[]`                                | 1 à N images traitées ensemble (recette à cheval sur deux pages) ; vidé à la purge |
+| `status`          | `"pending" \| "extracting" \| "done" \| "failed"` |                                                                                    |
+| `attemptId`       | `string?`                                         | identifiant de la tentative en cours ; garantit l'idempotence                      |
+| `startedAt`       | `number?`                                         | horodatage de la réservation                                                       |
+| `attempts`        | `number`                                          | nombre d'extractions tentées                                                       |
+| `error`           | `string?`                                         | message lisible en cas d'échec                                                     |
+| `purgeAfter`      | `number?`                                         | date de purge des images, posée à la publication                                   |
+| `createdAt`       | `number`                                          |                                                                                    |
 
 Index : `by_status`, `by_purge_after`.
 
 ### `recipes`
 
-| Champ | Type | Note |
-|---|---|---|
-| `scanId` | `Id<"scans">?` | absent si saisie manuelle |
-| `title` | `string` | |
-| `slug` | `string?` | figé à la publication : dérivé du titre, unique, suffixé en cas de collision |
-| `type` | `"entree" \| "plat" \| "dessert" \| "apero" \| "petitDej" \| "autre"` | |
-| `servings` | `number?` | portions d'origine ; absent = pas de curseur |
-| `ingredients` | `Ingredient[]` | voir ci-dessous |
-| `steps` | `string[]` | une entrée = une étape |
-| `searchText` | `string` | dénormalisé, maintenu à l'écriture : titre + `raw` des ingrédients, normalisé sans accents. Porte l'index de recherche plein texte |
-| `status` | `"review" \| "published"` | |
-| `publishedAt` | `number?` | |
-| `imageStorageId` | `Id<"_storage">?` | photo du plat, uploadée à part — **permanente**, jamais purgée |
-| `beautifiedStorageId` | `Id<"_storage">?` | candidat embelli, ou version acceptée |
-| `beautifiedAccepted` | `boolean` | faux tant que tu n'as pas validé le rendu |
-| `beautifyStatus` | `"idle" \| "generating" \| "review" \| "failed"` | |
-| `beautifyAttemptId` | `string?` | même discipline d'idempotence que l'extraction |
-| `beautifyError` | `string?` | |
+| Champ                 | Type                                                                  | Note                                                                                                                               |
+| --------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `scanId`              | `Id<"scans">?`                                                        | absent si saisie manuelle                                                                                                          |
+| `title`               | `string`                                                              |                                                                                                                                    |
+| `slug`                | `string?`                                                             | figé à la publication : dérivé du titre, unique, suffixé en cas de collision                                                       |
+| `type`                | `"entree" \| "plat" \| "dessert" \| "apero" \| "petitDej" \| "autre"` |                                                                                                                                    |
+| `servings`            | `number?`                                                             | portions d'origine ; absent = pas de curseur                                                                                       |
+| `ingredients`         | `Ingredient[]`                                                        | voir ci-dessous                                                                                                                    |
+| `steps`               | `string[]`                                                            | une entrée = une étape                                                                                                             |
+| `searchText`          | `string`                                                              | dénormalisé, maintenu à l'écriture : titre + `raw` des ingrédients, normalisé sans accents. Porte l'index de recherche plein texte |
+| `status`              | `"review" \| "published"`                                             |                                                                                                                                    |
+| `publishedAt`         | `number?`                                                             |                                                                                                                                    |
+| `imageStorageId`      | `Id<"_storage">?`                                                     | photo du plat, uploadée à part — **permanente**, jamais purgée                                                                     |
+| `beautifiedStorageId` | `Id<"_storage">?`                                                     | candidat embelli, ou version acceptée                                                                                              |
+| `beautifiedAccepted`  | `boolean`                                                             | faux tant que tu n'as pas validé le rendu                                                                                          |
+| `beautifyStatus`      | `"idle" \| "generating" \| "review" \| "failed"`                      |                                                                                                                                    |
+| `beautifyAttemptId`   | `string?`                                                             | même discipline d'idempotence que l'extraction                                                                                     |
+| `beautifyError`       | `string?`                                                             |                                                                                                                                    |
 
 ```ts
 type Ingredient = {
-  raw: string;        // la ligne telle qu'écrite dans le magazine — canonique, toujours présente
-  quantity?: number;  // annotation, absente si la ligne ne s'y prête pas
-  unit?: string;      // "g", "ml", "cuillère à soupe", … ; absent pour les unités nues
-  label?: string;     // "farine", "œufs", "gousses d'ail"
-};
+  raw: string // la ligne telle qu'écrite dans le magazine — canonique, toujours présente
+  quantity?: number // annotation, absente si la ligne ne s'y prête pas
+  unit?: string // "g", "ml", "cuillère à soupe", … ; absent pour les unités nues
+  label?: string // "farine", "œufs", "gousses d'ail"
+}
 ```
 
 **La ligne brute fait foi, la structure est une annotation.** Beaucoup de lignes réelles
@@ -245,6 +245,7 @@ capture → upload (scan pending) → [bouton] worker → extraction → file de
    upload, comme le faisait la version précédente de cette spec, déclenche trente actions
    simultanées sur un lot de trente fichiers — le contraire de ce qui est recherché, et un
    rate limit OpenRouter garanti.
+
 5. **Extraction.** Une action Convex envoie les images du scan au modèle vision d'OpenRouter en
    **sortie structurée** (`strict: true`, `require_parameters: true`), avec **modèle et provider
    figés**. La réponse est validée contre le schéma Zod. Les refus et les réponses tronquées
@@ -257,6 +258,7 @@ capture → upload (scan pending) → [bouton] worker → extraction → file de
    partiel : la relance repaie l'appel et crée des doublons. Les actions Convex s'exécutent au
    plus une fois et ne sont pas réessayées automatiquement — l'idempotence est à la charge de
    l'application.
+
 7. **Journalisation par tentative.** Modèle, provider, version du prompt et du schéma, usage,
    coût et latence sont stockés à chaque tentative. Sans ces traces, une régression de qualité
    d'extraction est indiagnosticable a posteriori.
@@ -267,6 +269,7 @@ capture → upload (scan pending) → [bouton] worker → extraction → file de
    rattrapage, l'écran de file **affiche en permanence le nombre de scans `pending` et
    `extracting`** et propose un bouton de relance. Le blocage doit rester visible sans effort —
    c'est ce qui rend le bouton utilisable.
+
 9. **Correction.** Images d'origine et champs éditables côte à côte (empilés sur mobile).
    L'écran permet aussi d'**ajouter une recette** que le modèle a manquée sur la page et de
    **supprimer** un faux positif : une page mal segmentée se rattrape au lieu d'imposer de
@@ -452,14 +455,14 @@ le pipeline se met à casser en usage.
 
 ## GSTACK REVIEW REPORT
 
-| Review | Trigger | Why | Runs | Status | Findings |
-|--------|---------|-----|------|--------|----------|
-| CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
-| Codex Review | `/codex review` | Independent 2nd opinion | 0 | — | — |
-| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 1 | CLEAR | 15 issues, 0 critical gaps |
-| Design Review | `/plan-design-review` | UI/UX gaps | 0 | — | — |
-| DX Review | `/plan-devex-review` | Developer experience gaps | 0 | — | — |
-| Outside Voice | `/plan-eng-review` | Cross-model plan challenge | 1 | issues_found | 18 findings (codex) |
+| Review        | Trigger               | Why                             | Runs | Status       | Findings                   |
+| ------------- | --------------------- | ------------------------------- | ---- | ------------ | -------------------------- |
+| CEO Review    | `/plan-ceo-review`    | Scope & strategy                | 0    | —            | —                          |
+| Codex Review  | `/codex review`       | Independent 2nd opinion         | 0    | —            | —                          |
+| Eng Review    | `/plan-eng-review`    | Architecture & tests (required) | 1    | CLEAR        | 15 issues, 0 critical gaps |
+| Design Review | `/plan-design-review` | UI/UX gaps                      | 0    | —            | —                          |
+| DX Review     | `/plan-devex-review`  | Developer experience gaps       | 0    | —            | —                          |
+| Outside Voice | `/plan-eng-review`    | Cross-model plan challenge      | 1    | issues_found | 18 findings (codex)        |
 
 **CODEX :** 18 constats. 5 appliqués directement (auth sur les queries, plafond en octets,
 `strict`/`require_parameters` et journalisation par tentative, section déploiement, réserve sur

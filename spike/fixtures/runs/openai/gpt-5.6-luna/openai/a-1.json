@@ -1,0 +1,163 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "a",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Cabillaud à la milanaise poêlée de poivrons",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "4 filets de cabillaud",
+            "quantity": 4,
+            "unit": "filets",
+            "label": "cabillaud"
+          },
+          {
+            "raw": "3 poivrons de différentes couleurs",
+            "quantity": 3,
+            "unit": "poivrons",
+            "label": "de différentes couleurs"
+          },
+          {
+            "raw": "10 cl d’huile d’olive",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "huile d’olive"
+          },
+          {
+            "raw": "1 gousse d’ail",
+            "quantity": 1,
+            "unit": "gousse",
+            "label": "ail"
+          },
+          {
+            "raw": "1 cuil. à café de piment d’Espelette",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "piment d’Espelette"
+          },
+          {
+            "raw": "100 g de farine",
+            "quantity": 100,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "2 œufs",
+            "quantity": 2,
+            "unit": "œufs",
+            "label": null
+          },
+          {
+            "raw": "70 g de chapelure",
+            "quantity": 70,
+            "unit": "g",
+            "label": "chapelure"
+          },
+          {
+            "raw": "70 g de parmesan fraîchement râpé",
+            "quantity": 70,
+            "unit": "g",
+            "label": "parmesan fraîchement râpé"
+          },
+          {
+            "raw": "4 tranches de jambon de Parme",
+            "quantity": 4,
+            "unit": "tranches",
+            "label": "jambon de Parme"
+          },
+          {
+            "raw": "sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Faites sauter les poivrons découpés en fines lamelles dans une poêle avec 1 cuil. à café d’huile d’olive, l’ail écrasé et le piment d’Espelette.",
+          "Salez et poivrez.",
+          "Une fois les poivrons bien dorés, retirez du feu et réservez au chaud.",
+          "Placez la farine, les 2 œufs battus et la chapelure mélangée au parmesan dans 3 assiettes creuses.",
+          "Enveloppez chaque filet de cabillaud dans une tranche de jambon de Parme.",
+          "Trempez-les dans la farine puis dans les œufs battus et enfin dans la chapelure au parmesan.",
+          "Faites dorer dans la poêle avec le restant d’huile puis déposez sur une feuille de papier absorbant.",
+          "Servez bien chaud avec la poêlée de poivrons."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306056-OZzDOMSB3fIbO2acO7Yr",
+    "object": "chat.completion",
+    "created": 1786306056,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Cabillaud à la milanaise poêlée de poivrons\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"4 filets de cabillaud\",\"quantity\":4,\"unit\":\"filets\",\"label\":\"cabillaud\"},{\"raw\":\"3 poivrons de différentes couleurs\",\"quantity\":3,\"unit\":\"poivrons\",\"label\":\"de différentes couleurs\"},{\"raw\":\"10 cl d’huile d’olive\",\"quantity\":10,\"unit\":\"cl\",\"label\":\"huile d’olive\"},{\"raw\":\"1 gousse d’ail\",\"quantity\":1,\"unit\":\"gousse\",\"label\":\"ail\"},{\"raw\":\"1 cuil. à café de piment d’Espelette\",\"quantity\":1,\"unit\":\"cuil. à café\",\"label\":\"piment d’Espelette\"},{\"raw\":\"100 g de farine\",\"quantity\":100,\"unit\":\"g\",\"label\":\"farine\"},{\"raw\":\"2 œufs\",\"quantity\":2,\"unit\":\"œufs\",\"label\":null},{\"raw\":\"70 g de chapelure\",\"quantity\":70,\"unit\":\"g\",\"label\":\"chapelure\"},{\"raw\":\"70 g de parmesan fraîchement râpé\",\"quantity\":70,\"unit\":\"g\",\"label\":\"parmesan fraîchement râpé\"},{\"raw\":\"4 tranches de jambon de Parme\",\"quantity\":4,\"unit\":\"tranches\",\"label\":\"jambon de Parme\"},{\"raw\":\"sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre du moulin\"}],\"steps\":[\"Faites sauter les poivrons découpés en fines lamelles dans une poêle avec 1 cuil. à café d’huile d’olive, l’ail écrasé et le piment d’Espelette.\",\"Salez et poivrez.\",\"Une fois les poivrons bien dorés, retirez du feu et réservez au chaud.\",\"Placez la farine, les 2 œufs battus et la chapelure mélangée au parmesan dans 3 assiettes creuses.\",\"Enveloppez chaque filet de cabillaud dans une tranche de jambon de Parme.\",\"Trempez-les dans la farine puis dans les œufs battus et enfin dans la chapelure au parmesan.\",\"Faites dorer dans la poêle avec le restant d’huile puis déposez sur une feuille de papier absorbant.\",\"Servez bien chaud avec la poêlée de poivrons.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Transcribing a recipe**\n\nI need to transcribe a recipe titled \"Cabillaud à la milanaise poêlée de poivrons,\" meant for 4 servings. The ingredients are presented in bullet points, with each ingredient needing to be clearly visible on its own line. The first bullet point has multiple ingredients, but it's important not to split them. I need to extract each ingredient along with its quantity, unit, and label. The ingredients listed are: cabillaud, poivrons, olive oil, garlic, piment d’Espelette, flour, eggs, breadcrumbs, parmesan, ham, salt, and pepper.**Formulating recipe details**\n\nFor the ingredients, I need to identify the quantity and unit for salt and pepper, which might be labeled as \"sel, poivre du moulin.\" Each ingredient should be listed individually. I’ve noted the preparation steps that include actions like sautéing and seasoning. I’ll also disregard prep and cooking times, focusing on providing a simple JSON format. The recipe title is \"Cabillaud à la milanaise poêlée de poivrons,\" without punctuation. I’ll ensure to list quantities and units clearly for each ingredient when establishing the final format.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Transcribing a recipe**\n\nI need to transcribe a recipe titled \"Cabillaud à la milanaise poêlée de poivrons,\" meant for 4 servings. The ingredients are presented in bullet points, with each ingredient needing to be clearly visible on its own line. The first bullet point has multiple ingredients, but it's important not to split them. I need to extract each ingredient along with its quantity, unit, and label. The ingredients listed are: cabillaud, poivrons, olive oil, garlic, piment d’Espelette, flour, eggs, breadcrumbs, parmesan, ham, salt, and pepper.**Formulating recipe details**\n\nFor the ingredients, I need to identify the quantity and unit for salt and pepper, which might be labeled as \"sel, poivre du moulin.\" Each ingredient should be listed individually. I’ve noted the preparation steps that include actions like sautéing and seasoning. I’ll also disregard prep and cooking times, focusing on providing a simple JSON format. The recipe title is \"Cabillaud à la milanaise poêlée de poivrons,\" without punctuation. I’ll ensure to list quantities and units clearly for each ingredient when establishing the final format.",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN4PUSoILVtB1MYB8wwPe_oOu545c1qxpuRknR6PuSKCRUu9LY9wlAblzqSBFctaEVrEWIfhOfCMbCJFgwyEdJdS740F3Z0XxMKEoioNdxyfsTgrcGCbcOxM06JS42GB3LMy-xZhgZwvbrZJuxjssuCWN9Om2c4FFX8uJ0_h8M98VrCTZMCdGgE2Y1egyYZ2j8nTdJenMnMYo-4b_GCpywg6st3xjvVpwLDtoG43cux_gnHlBf9yqXZ3lz0bMDbgFWIZLTetBkuzfzfYig6w1KV5s94BncA5qt6UMbk_-Vtv-VsCCqou7VkxSsLBedWK_N0k4Af9uYg2vNvkCF8Qths7uquJHkVCiHBEDb1Zb3dFKQaEWLS3hS1N5Wz89n7ey_uqDiYGghUeTa61pWsVXIJYsXqjXcO74CTnScXP5uGxscoDV0Z4INZZd6FzAHgvb3TVpBAUABz98lIdpCgto3m_TbeqQuR5pFrbHab7MZRNmTf_Z-a3UtTASI62ghFU-sbP4bd-HZDMME5g3-kYSh2BLCp9k_4PCxcyw1JGr91acnkwTQtxPyB42YQEKrTBOzl8DZBBixjT_T9VGgWS5JaUAuoPmow6q8obl1f-ipa0g3R8PGOMSwXcbIg2snvM7DXIXUM1LrmFqpgKCakXbtqEdExWDo_Qx1ojSuOFL9tKlaXeBd1hDLvzjnPq-O7qogBTr4wpNku32EsZIN4KKZGIQ_B0-_YfqLd6fEeY7XUWfhyQDyZTWJ3VPTKyKWb3GQqf8JD81z-oglcWgOB79Nn-zMgy2hMDbFfAJiMerGie_P_KY_m5fEb_SZwbdmsUeRyDNXkyzmIPJS5AR9QK1S4tr7t-XMZn-Kss33bUh9pn1M2DuGJB1mcIPgAyh3TVIROjPUKWRXZjvLNIUMKmBe3qFtd91cJVF9gJQ4jligmPoMkpmUUeKDtJHgRILBkGkjfSj0P3bYUi-Y21Z4draE60tbq8mF39DAexzrGyrrSqBXVk3Ly0eavLn-0dnWvqN9hqYBOsFyWKRy0ewmXgtxUB5zfovXPY9tMAjmRxCtO-90w8VhKzfPQj3JxmJ8MWqF48dcbGymOG82Je5txHqNh0XCTV8iEPOODQGkkjtoO1a2BzyPQKXeZHQPgiRQcl7m1RtKyawQ9zm7M9e0he0dBJUXNGQD9H2KESE8aKUi9KIinAnN8sjK8hBlmSt8WHTM0CczGYu1mK7UnVGq3zfQsfXgKG8UFU-8FfpN4qvUNye0s1hGx2Q7LI4b47kXRkn2epQT_roQQADmUPn6FB7HVnW2e1tyUdPGERmHF2lLKEzXJRR2Z4xmkHRsebe1zzDzSkuAkv1BNOLXk9pZ1LyuhWRSz_VNHISdpNrg0Bc300LzlkKK1ShfbnBHXlJzdRe3c6QPJKOw0Yt3tGqTMz1dx32POZ60QkeMwX0xybAnuASwTMxMkuuOb62fUfL0_yV8dCPkezbfsH7-nczsV6JQyjaI_PEkYKh3NgNTTf-bbMufTJxUDxqSgGY1NkVjiRM26PGEBIrHvvvD8m68zY-31EwvVUqtmhioEVMW42ScksqzrxS9LTm_JxkjdOoV-WhzIaY1qTaJBEQUp-UKce31qO6ajV5Ri-l6Qwg-VEyya8x-lyQcIHg5zm_LLbWIdhS1sJP153y-KO3HSxI3A_jCxG0kSlGpgCsdd7FcBM8lX8cruwTbNg7Q8gbWBMDJ3S4jBn2Kl4_8OWllacCKyehuztstSLkjA8D3LO1MMhqKwbvMSAU-9DUn9bQPRu24lbE-qfFhxHfWhK0NKw4fWng1j9F68JrTfPXjNt4shCuFHmH3_WTrk5YS0HcCBMQofxTrBhBrE3968edizhzPgADrTdg_T98bdRyOEgeimgX4INql3QRrJW6MCJB3nl9kcqK3N99ZFMZt2ZQ0jQ4bhduul5yBy6PB8VSfHlxmPAhs7GZvHG2j8hHBwO9NmiQT11xmRZG1UUTxorz6S_AL-HiG3mEJzAqZDw-_oRS2RnS1vr4WS41LvZahj2EvQWhRxUPKYe8anYQQvh2wQZoO0sb0JSyxF6N--TvknqgBi9TRwtGNW4fDLoQCyCw8rC9AKxIbT1CqU0HD-8x_tSTa9YqBlDecSnPgf8tSRpqTxaVEMyDmKnJBEHQ2UPVxx542FViIxG8chI7ZBc2o41sOthlasfajzvPmJLgC7kYjGt5nzYZtxwD1jkvVeepJPCdNEvpqWDw8SCPiOPT2-L9TZlPYHOstK2RIKCtPVjavMFcDWVn0qP7y43EYzXGIy9pxjc1D_L5j0p_Gzsb4yUxkYHCpoBxElDyj9OnfiBCDpO0KY5sgzduW1XG1MX6eXEL4u1TKiCh88FBwb7ShL6ngR6wEARk5kNUUyqH6VyI0qdVJpB7VdFmmTHx2ao-p3d2MLcWScGgBnJVym9RjMpVQLfWuTrg-t457olqBphzygCgJXb_opLPmjlYCjGYUnmYbiNZEbXj45nAhE0SmyZ1UmnTBoiEZt8RS68i6zUwdnzJWENcrBdfvSFLplewqTcJ9GRrlcB1JwG41lFYRLuUDHxTPW4m-Q6K9uJCKRm_11brUHhSV8vESHB3Sgb7RXQAM9f54swVNhsWPFvre9NtVrptEFgF_7FdCTALdnDY15C_F8rIeyIsoL4ql_-oH5cquS-JRiRhawRDfRWmIiAIyclTre0O33NevC4Dc5ze9sWRn71NXE5EL-gXEnaShWT-z6iYHh4JPDTr5bo_3WPTKWU8P6C9-OisA93R636KCuR_9pYuUuY4cTIhUAK7fYBtoKE_A15qwHh5wga_1OZSyCZBhZm0xfhR68yKsOgXPCTXg7oqRwsf3O7J3aBKKHGXAjoMMXJOaEq-NL_XB5AMJH1O3Q6_Wu3qSBULVYNcKUybSnClfTmJjiDxbBBVITNDVIo7I-3FOQT0uSHSruKuDpb-I98iKPyqJgvWk4ZucZesnCgXHXg-zFYKry-mpVGAxaEaLu9Zh7WV6seKt54aNtVU5oIeowygwMBKIKwIAHw8pafCY6w9KsJ9xpf1Te23GwXbHz-ETQbODrrKY3uraxTkM5ad3STRlcqWiJ-cYlBxBJ5F1cY_ppcjh1bM8xe5Npbb5dcwcYW-o8q1Asi1t226m3P2LsvP4LbUzSL-ZIHhT5GmTlwNQSD_cJ9VzuWC2bY1j5KAgl6HfWxilgb0QKgvR6q7hmxEp67lodi1ZcwFQCwPgAflTo_rTJqbTw2dEYmvDSiIW8YXGhLABWbDoTjAdx_xH9d7hjfpNB4XDmNp295BX5dz8qyk-LQYEeFU1IAyAIRJ-0g0pqldADwbWfmf1NdVrbYEZx3y84-9_mt1APnMEQPtys2lb1mA1h1gdhJ-c3T.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_059fac1a6ae3799d016a78de091d9081938c27d86192a9b0f5",
+              "index": 1
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 982,
+      "total_tokens": 5112,
+      "cost": 0.001105375,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4127,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.001105375,
+        "upstream_inference_prompt_cost": 0.000516175,
+        "upstream_inference_completions_cost": 0.0005892
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 462,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 11103.481709,
+  "actualCostUsd": 0.001105375,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

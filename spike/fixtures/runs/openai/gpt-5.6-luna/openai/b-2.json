@@ -1,0 +1,485 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "requestedProvider": "openai",
+  "page": "b",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Dinde aux piments et au cacao",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "2 filets de dinde de 500 g",
+            "quantity": 2,
+            "unit": null,
+            "label": "filets de dinde de 500 g"
+          },
+          {
+            "raw": "20 g de cacao brut",
+            "quantity": 20,
+            "unit": "g",
+            "label": "cacao brut"
+          },
+          {
+            "raw": "2 poivrons rouges et 2 verts",
+            "quantity": 2,
+            "unit": null,
+            "label": "poivrons rouges et 2 verts"
+          },
+          {
+            "raw": "2 petits piments verts doux d’Espagne",
+            "quantity": 2,
+            "unit": null,
+            "label": "petits piments verts doux d’Espagne"
+          },
+          {
+            "raw": "1 cuil. à soupe de piment d’Espelette",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "piment d’Espelette"
+          },
+          {
+            "raw": "2 oignons",
+            "quantity": 2,
+            "unit": null,
+            "label": "oignons"
+          },
+          {
+            "raw": "1 gousse d’ail",
+            "quantity": 1,
+            "unit": null,
+            "label": "gousse d’ail"
+          },
+          {
+            "raw": "1 petite boîte de pulpe de tomate",
+            "quantity": 1,
+            "unit": null,
+            "label": "petite boîte de pulpe de tomate"
+          },
+          {
+            "raw": "50 g de cacahuètes",
+            "quantity": 50,
+            "unit": "g",
+            "label": "cacahuètes"
+          },
+          {
+            "raw": "1/2 cuil. à café de cannelle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "cannelle"
+          },
+          {
+            "raw": "1/2 cuil. à café de clous de girofle",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "clous de girofle"
+          },
+          {
+            "raw": "1/2 cuil. à café de grains de coriandre",
+            "quantity": 0.5,
+            "unit": "cuil. à café",
+            "label": "grains de coriandre"
+          },
+          {
+            "raw": "1 cuil. à café de graines d’anis",
+            "quantity": 1,
+            "unit": "cuil. à café",
+            "label": "graines d’anis"
+          },
+          {
+            "raw": "3 cuil. à soupe de graines de sésame",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "graines de sésame"
+          },
+          {
+            "raw": "1/2 l de bouillon de volaille",
+            "quantity": 0.5,
+            "unit": "l",
+            "label": "bouillon de volaille"
+          },
+          {
+            "raw": "4 cuil. à soupe d’huile",
+            "quantity": 4,
+            "unit": "cuil. à soupe",
+            "label": "huile"
+          },
+          {
+            "raw": "sel, poivre",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, poivre"
+          }
+        ],
+        "steps": [
+          "Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis.",
+          "Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.",
+          "Poivrez, salez et laissez mijoter 20 min.",
+          "Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes.",
+          "Essuyez la cocotte et faites dorer les filets avec l’huile restante.",
+          "Salez, poivrez, couvrez et laissez cuire à petit feu 20 min.",
+          "Versez la sauce, couvrez et poursuivez encore la cuisson 10 min.",
+          "Parsemez le plat de sésame et accompagnez ce plat de riz."
+        ]
+      },
+      {
+        "title": "Cornes de gazelle et salade d’oranges",
+        "type": "dessert",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "250 g d’amandes",
+            "quantity": 250,
+            "unit": "g",
+            "label": "amandes"
+          },
+          {
+            "raw": "125 g de sucre glace",
+            "quantity": 125,
+            "unit": "g",
+            "label": "sucre glace"
+          },
+          {
+            "raw": "75 g de beurre",
+            "quantity": 75,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": "jaune d’œuf"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "eau de fleur d’oranger"
+          },
+          {
+            "raw": "250 g de farine",
+            "quantity": 250,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "1 jaune d’œuf",
+            "quantity": 1,
+            "unit": null,
+            "label": "jaune d’œuf"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "eau de fleur d’oranger"
+          },
+          {
+            "raw": "75 g de beurre mou",
+            "quantity": 75,
+            "unit": "g",
+            "label": "beurre mou"
+          },
+          {
+            "raw": "sel",
+            "quantity": null,
+            "unit": null,
+            "label": "sel"
+          },
+          {
+            "raw": "10 oranges",
+            "quantity": 10,
+            "unit": null,
+            "label": "oranges"
+          },
+          {
+            "raw": "30 g d’amandes émincées",
+            "quantity": 30,
+            "unit": "g",
+            "label": "amandes émincées"
+          },
+          {
+            "raw": "3 cuil. à soupe d’eau de fleur d’oranger",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "eau de fleur d’oranger"
+          },
+          {
+            "raw": "5 cuil. à soupe de sucre glace",
+            "quantity": 5,
+            "unit": "cuil. à soupe",
+            "label": "sucre glace"
+          },
+          {
+            "raw": "10 feuilles de menthe",
+            "quantity": 10,
+            "unit": null,
+            "label": "feuilles de menthe"
+          }
+        ],
+        "steps": [
+          "Formez une boule de pâte en mélangeant ses ingrédients.",
+          "Laissez reposer 30 min.",
+          "Mixez les amandes mondées avec le sucre glace.",
+          "Ajoutez l’œuf, le beurre, la fleur d’oranger.",
+          "Mélangez et mettez au frais 15 min.",
+          "Étalez la pâte finement.",
+          "Découpez des cercles et, au centre de chacun, posez 1 cuillerée de farce aux amandes.",
+          "Roulez la pâte, soudez les bords et recourbez les croissants.",
+          "Laissez reposer 24 h au sec et au frais.",
+          "Le lendemain, préchauffez le four à th. 5/6 (160 °C).",
+          "Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.",
+          "Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger.",
+          "Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe."
+        ]
+      },
+      {
+        "title": "Escalopes de foie gras au pain d’épice",
+        "type": "entree",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 foie gras de canard entier frais (600 g)",
+            "quantity": 1,
+            "unit": null,
+            "label": "foie gras de canard entier frais (600 g)"
+          },
+          {
+            "raw": "6 tranches de pain d’épice",
+            "quantity": 6,
+            "unit": null,
+            "label": "tranches de pain d’épice"
+          },
+          {
+            "raw": "200 g de salades mélangées",
+            "quantity": 200,
+            "unit": "g",
+            "label": "salades mélangées"
+          },
+          {
+            "raw": "1 cuil. à soupe de quatre-épices",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "quatre-épices"
+          },
+          {
+            "raw": "2 cuil. à soupe de farine",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "farine"
+          },
+          {
+            "raw": "1 verre de porto",
+            "quantity": 1,
+            "unit": "verre",
+            "label": "porto"
+          },
+          {
+            "raw": "1,5 cuil. à soupe de vinaigre balsamique",
+            "quantity": 1.5,
+            "unit": "cuil. à soupe",
+            "label": "vinaigre balsamique"
+          },
+          {
+            "raw": "1 cuil. à soupe de vinaigre de vin",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "vinaigre de vin"
+          },
+          {
+            "raw": "3 cuil. à soupe d’huile d’olive",
+            "quantity": 3,
+            "unit": "cuil. à soupe",
+            "label": "huile d’olive"
+          },
+          {
+            "raw": "sel, fleur de sel, poivre du moulin",
+            "quantity": null,
+            "unit": null,
+            "label": "sel, fleur de sel, poivre du moulin"
+          }
+        ],
+        "steps": [
+          "Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive.",
+          "Détaillez le foie gras en 6 tranches.",
+          "Mélangez la farine et le quatre-épices et roulez-y les tranches.",
+          "Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.",
+          "Grillez légèrement le pain d’épice au grille-pain et gardez-le au chaud sur le plat de service dans le four très doux.",
+          "Dans une poêle antiadhésive bien chaude, faites revenir le foie gras 1 min sur chaque face.",
+          "Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.",
+          "Remettez en attente à four doux.",
+          "Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras.",
+          "Servez aussitôt avec la salade."
+        ]
+      },
+      {
+        "title": "Canard laqué au curry rouge",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "1 canette de Barbarie",
+            "quantity": 1,
+            "unit": null,
+            "label": "canette de Barbarie"
+          },
+          {
+            "raw": "1 ananas moyen",
+            "quantity": 1,
+            "unit": null,
+            "label": "ananas moyen"
+          },
+          {
+            "raw": "2 belles tomates fermes",
+            "quantity": 2,
+            "unit": null,
+            "label": "belles tomates fermes"
+          },
+          {
+            "raw": "1 cuil. à soupe rase de pâte de curry rouge",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "pâte de curry rouge"
+          },
+          {
+            "raw": "1 boîte de 50 cl de lait de coco",
+            "quantity": 1,
+            "unit": "boîte de 50 cl",
+            "label": "lait de coco"
+          },
+          {
+            "raw": "10 cl de sauce soja",
+            "quantity": 10,
+            "unit": "cl",
+            "label": "sauce soja"
+          },
+          {
+            "raw": "1 cuil. à soupe d’huile d’arachide",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "huile d’arachide"
+          },
+          {
+            "raw": "1 cuil. à soupe de nuoc-mâm",
+            "quantity": 1,
+            "unit": "cuil. à soupe",
+            "label": "nuoc-mâm"
+          },
+          {
+            "raw": "2 cuil. à soupe de miel toute fleur",
+            "quantity": 2,
+            "unit": "cuil. à soupe",
+            "label": "miel toute fleur"
+          },
+          {
+            "raw": "1 bouquet de basilic thaï",
+            "quantity": 1,
+            "unit": null,
+            "label": "bouquet de basilic thaï"
+          }
+        ],
+        "steps": [
+          "Préchauffez le four à th. 7 (210 °C).",
+          "Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson.",
+          "Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min.",
+          "Laissez-la refroidir avant de l’entreposer dans le réfrigérateur.",
+          "Le lendemain, tranchez la canette en 8 morceaux.",
+          "Détaillez la chair de l’ananas en gros dés.",
+          "Coupez les tomates en morceaux.",
+          "Versez dans une cocotte un tiers du lait de coco, 1 cuillerée d’huile et la pâte de curry rouge.",
+          "Mélangez et faites cuire 5 min en remuant.",
+          "Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition.",
+          "Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min.",
+          "Otez du feu et laissez reposer 5 min avec le basilic.",
+          "Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306146-vONjdyknTkq1xVzRLbSv",
+    "object": "chat.completion",
+    "created": 1786306146,
+    "model": "openai/gpt-5.6-luna",
+    "provider": "OpenAI",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": "{\"recipes\":[{\"title\":\"Dinde aux piments et au cacao\",\"type\":\"plat\",\"servings\":6,\"ingredients\":[{\"raw\":\"2 filets de dinde de 500 g\",\"quantity\":2,\"unit\":null,\"label\":\"filets de dinde de 500 g\"},{\"raw\":\"20 g de cacao brut\",\"quantity\":20,\"unit\":\"g\",\"label\":\"cacao brut\"},{\"raw\":\"2 poivrons rouges et 2 verts\",\"quantity\":2,\"unit\":null,\"label\":\"poivrons rouges et 2 verts\"},{\"raw\":\"2 petits piments verts doux d’Espagne\",\"quantity\":2,\"unit\":null,\"label\":\"petits piments verts doux d’Espagne\"},{\"raw\":\"1 cuil. à soupe de piment d’Espelette\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"piment d’Espelette\"},{\"raw\":\"2 oignons\",\"quantity\":2,\"unit\":null,\"label\":\"oignons\"},{\"raw\":\"1 gousse d’ail\",\"quantity\":1,\"unit\":null,\"label\":\"gousse d’ail\"},{\"raw\":\"1 petite boîte de pulpe de tomate\",\"quantity\":1,\"unit\":null,\"label\":\"petite boîte de pulpe de tomate\"},{\"raw\":\"50 g de cacahuètes\",\"quantity\":50,\"unit\":\"g\",\"label\":\"cacahuètes\"},{\"raw\":\"1/2 cuil. à café de cannelle\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"cannelle\"},{\"raw\":\"1/2 cuil. à café de clous de girofle\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"clous de girofle\"},{\"raw\":\"1/2 cuil. à café de grains de coriandre\",\"quantity\":0.5,\"unit\":\"cuil. à café\",\"label\":\"grains de coriandre\"},{\"raw\":\"1 cuil. à café de graines d’anis\",\"quantity\":1,\"unit\":\"cuil. à café\",\"label\":\"graines d’anis\"},{\"raw\":\"3 cuil. à soupe de graines de sésame\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"graines de sésame\"},{\"raw\":\"1/2 l de bouillon de volaille\",\"quantity\":0.5,\"unit\":\"l\",\"label\":\"bouillon de volaille\"},{\"raw\":\"4 cuil. à soupe d’huile\",\"quantity\":4,\"unit\":\"cuil. à soupe\",\"label\":\"huile\"},{\"raw\":\"sel, poivre\",\"quantity\":null,\"unit\":null,\"label\":\"sel, poivre\"}],\"steps\":[\"Faites revenir dans une cocotte les oignons et l’ail émincés avec 2 cuillerées d’huile, la cannelle, le girofle, la coriandre et l’anis.\",\"Après 5 min, ajoutez les poivrons et les piments en morceaux, la pulpe de tomate et le bouillon.\",\"Poivrez, salez et laissez mijoter 20 min.\",\"Hors du feu, ajoutez le cacao, puis mixez la sauce avec les cacahuètes.\",\"Essuyez la cocotte et faites dorer les filets avec l’huile restante.\",\"Salez, poivrez, couvrez et laissez cuire à petit feu 20 min.\",\"Versez la sauce, couvrez et poursuivez encore la cuisson 10 min.\",\"Parsemez le plat de sésame et accompagnez ce plat de riz.\"]},{\"title\":\"Cornes de gazelle et salade d’oranges\",\"type\":\"dessert\",\"servings\":6,\"ingredients\":[{\"raw\":\"250 g d’amandes\",\"quantity\":250,\"unit\":\"g\",\"label\":\"amandes\"},{\"raw\":\"125 g de sucre glace\",\"quantity\":125,\"unit\":\"g\",\"label\":\"sucre glace\"},{\"raw\":\"75 g de beurre\",\"quantity\":75,\"unit\":\"g\",\"label\":\"beurre\"},{\"raw\":\"1 jaune d’œuf\",\"quantity\":1,\"unit\":null,\"label\":\"jaune d’œuf\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"eau de fleur d’oranger\"},{\"raw\":\"250 g de farine\",\"quantity\":250,\"unit\":\"g\",\"label\":\"farine\"},{\"raw\":\"1 jaune d’œuf\",\"quantity\":1,\"unit\":null,\"label\":\"jaune d’œuf\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"eau de fleur d’oranger\"},{\"raw\":\"75 g de beurre mou\",\"quantity\":75,\"unit\":\"g\",\"label\":\"beurre mou\"},{\"raw\":\"sel\",\"quantity\":null,\"unit\":null,\"label\":\"sel\"},{\"raw\":\"10 oranges\",\"quantity\":10,\"unit\":null,\"label\":\"oranges\"},{\"raw\":\"30 g d’amandes émincées\",\"quantity\":30,\"unit\":\"g\",\"label\":\"amandes émincées\"},{\"raw\":\"3 cuil. à soupe d’eau de fleur d’oranger\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"eau de fleur d’oranger\"},{\"raw\":\"5 cuil. à soupe de sucre glace\",\"quantity\":5,\"unit\":\"cuil. à soupe\",\"label\":\"sucre glace\"},{\"raw\":\"10 feuilles de menthe\",\"quantity\":10,\"unit\":null,\"label\":\"feuilles de menthe\"}],\"steps\":[\"Formez une boule de pâte en mélangeant ses ingrédients.\",\"Laissez reposer 30 min.\",\"Mixez les amandes mondées avec le sucre glace.\",\"Ajoutez l’œuf, le beurre, la fleur d’oranger.\",\"Mélangez et mettez au frais 15 min.\",\"Étalez la pâte finement.\",\"Découpez des cercles et, au centre de chacun, posez 1 cuillerée de farce aux amandes.\",\"Roulez la pâte, soudez les bords et recourbez les croissants.\",\"Laissez reposer 24 h au sec et au frais.\",\"Le lendemain, préchauffez le four à th. 5/6 (160 °C).\",\"Faites cuire les cornes de gazelle sur la plaque beurrée 20 min.\",\"Tranchez les oranges pelées à vif et arrosez-les de fleur d’oranger.\",\"Faites dorer les amandes émincées, parsemez-les sur les fruits avec le sucre et la menthe.\"]},{\"title\":\"Escalopes de foie gras au pain d’épice\",\"type\":\"entree\",\"servings\":6,\"ingredients\":[{\"raw\":\"1 foie gras de canard entier frais (600 g)\",\"quantity\":1,\"unit\":null,\"label\":\"foie gras de canard entier frais (600 g)\"},{\"raw\":\"6 tranches de pain d’épice\",\"quantity\":6,\"unit\":null,\"label\":\"tranches de pain d’épice\"},{\"raw\":\"200 g de salades mélangées\",\"quantity\":200,\"unit\":\"g\",\"label\":\"salades mélangées\"},{\"raw\":\"1 cuil. à soupe de quatre-épices\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"quatre-épices\"},{\"raw\":\"2 cuil. à soupe de farine\",\"quantity\":2,\"unit\":\"cuil. à soupe\",\"label\":\"farine\"},{\"raw\":\"1 verre de porto\",\"quantity\":1,\"unit\":\"verre\",\"label\":\"porto\"},{\"raw\":\"1,5 cuil. à soupe de vinaigre balsamique\",\"quantity\":1.5,\"unit\":\"cuil. à soupe\",\"label\":\"vinaigre balsamique\"},{\"raw\":\"1 cuil. à soupe de vinaigre de vin\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"vinaigre de vin\"},{\"raw\":\"3 cuil. à soupe d’huile d’olive\",\"quantity\":3,\"unit\":\"cuil. à soupe\",\"label\":\"huile d’olive\"},{\"raw\":\"sel, fleur de sel, poivre du moulin\",\"quantity\":null,\"unit\":null,\"label\":\"sel, fleur de sel, poivre du moulin\"}],\"steps\":[\"Nettoyez la salade et préparez son assaisonnement en mélangeant sel, poivre, 1/2 cuillerée de vinaigre balsamique, le vinaigre de vin et l’huile d’olive.\",\"Détaillez le foie gras en 6 tranches.\",\"Mélangez la farine et le quatre-épices et roulez-y les tranches.\",\"Tapotez-les pour ôter le surplus et mettez-les sur une planche 15 min au congélateur.\",\"Grillez légèrement le pain d’épice au grille-pain et gardez-le au chaud sur le plat de service dans le four très doux.\",\"Dans une poêle antiadhésive bien chaude, faites revenir le foie gras 1 min sur chaque face.\",\"Disposez les escalopes sur les tranches de pain d’épice, saupoudrez de fleur de sel et poivrez.\",\"Remettez en attente à four doux.\",\"Conservez un peu de graisse rendue dans la poêle, versez-y le porto et le reste de vinaigre balsamique, laissez bouillir 2 min et arrosez-en les tranches de foie gras.\",\"Servez aussitôt avec la salade.\"]},{\"title\":\"Canard laqué au curry rouge\",\"type\":\"plat\",\"servings\":4,\"ingredients\":[{\"raw\":\"1 canette de Barbarie\",\"quantity\":1,\"unit\":null,\"label\":\"canette de Barbarie\"},{\"raw\":\"1 ananas moyen\",\"quantity\":1,\"unit\":null,\"label\":\"ananas moyen\"},{\"raw\":\"2 belles tomates fermes\",\"quantity\":2,\"unit\":null,\"label\":\"belles tomates fermes\"},{\"raw\":\"1 cuil. à soupe rase de pâte de curry rouge\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"pâte de curry rouge\"},{\"raw\":\"1 boîte de 50 cl de lait de coco\",\"quantity\":1,\"unit\":\"boîte de 50 cl\",\"label\":\"lait de coco\"},{\"raw\":\"10 cl de sauce soja\",\"quantity\":10,\"unit\":\"cl\",\"label\":\"sauce soja\"},{\"raw\":\"1 cuil. à soupe d’huile d’arachide\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"huile d’arachide\"},{\"raw\":\"1 cuil. à soupe de nuoc-mâm\",\"quantity\":1,\"unit\":\"cuil. à soupe\",\"label\":\"nuoc-mâm\"},{\"raw\":\"2 cuil. à soupe de miel toute fleur\",\"quantity\":2,\"unit\":\"cuil. à soupe\",\"label\":\"miel toute fleur\"},{\"raw\":\"1 bouquet de basilic thaï\",\"quantity\":1,\"unit\":null,\"label\":\"bouquet de basilic thaï\"}],\"steps\":[\"Préchauffez le four à th. 7 (210 °C).\",\"Enduisez la canette de sauce soja, mettez-la dans un plat et cuisez-la au four 50 min, en la retournant une fois en cours de cuisson.\",\"Otez la volaille du four, recouvrez-la de miel et poursuivez la cuisson encore 10 min.\",\"Laissez-la refroidir avant de l’entreposer dans le réfrigérateur.\",\"Le lendemain, tranchez la canette en 8 morceaux.\",\"Détaillez la chair de l’ananas en gros dés.\",\"Coupez les tomates en morceaux.\",\"Versez dans une cocotte un tiers du lait de coco, 1 cuillerée d’huile et la pâte de curry rouge.\",\"Mélangez et faites cuire 5 min en remuant.\",\"Mettez le reste de lait de coco, le nuoc-mâm, et portez à ébullition.\",\"Ajoutez les morceaux de volaille, l’ananas et les tomates, couvrez et laissez mijoter 20 min.\",\"Otez du feu et laissez reposer 5 min avec le basilic.\",\"Servez le canard laqué avec un riz parfumé de Thaïlande cuit à l’eau.\"]}]}",
+          "refusal": null,
+          "reasoning": "**Extracting recipes**\n\nI need to extract four recipes and focus on getting the exact lines of ingredients. The first recipe should have a title and serve fewer than six. I want to make sure every ingredient line is visible and kept whole, without dividing them. The layout should use bullet points, making each ingredient line clear. It feels like I need to ensure that the ingredient text wraps well but is easy to read with bullets marking each line. Let's start with the first recipe: Marché.**Organizing ingredient lines**\n\nI've got a list of ingredients to work with, starting with two turkey filets and some cacao, followed by several peppers and spices. I need to make sure that each ingredient appears on its own line to follow the user’s request—it's like creating a bullet for each item without wrapping the text. I’ll incorporate numeric quantities and fractions as needed. For the second recipe, I'll group the ingredients under \"Marché\" and \"Pour la pâte\" and \"Pour la salade,\" ensuring they're all bullet-separated as well.**Formatting ingredient labels**\n\nI need to include labels with the raw ingredients, parsing quantities accurately. For example, I see \"3 tablespoons of orange blossom water,\" which likely belongs in the Marché section. The ingredients I have include almonds, sugar, butter, and egg yolks along with others for the dough and salad. It's important to preserve these details. For recipes three and four, I'll make sure each step of the instructions is clear, perhaps treating them as individual sentences. I think I can skip mentioning time requirements for the steps.",
+          "reasoning_details": [
+            {
+              "type": "reasoning.summary",
+              "summary": "**Extracting recipes**\n\nI need to extract four recipes and focus on getting the exact lines of ingredients. The first recipe should have a title and serve fewer than six. I want to make sure every ingredient line is visible and kept whole, without dividing them. The layout should use bullet points, making each ingredient line clear. It feels like I need to ensure that the ingredient text wraps well but is easy to read with bullets marking each line. Let's start with the first recipe: Marché.**Organizing ingredient lines**\n\nI've got a list of ingredients to work with, starting with two turkey filets and some cacao, followed by several peppers and spices. I need to make sure that each ingredient appears on its own line to follow the user’s request—it's like creating a bullet for each item without wrapping the text. I’ll incorporate numeric quantities and fractions as needed. For the second recipe, I'll group the ingredients under \"Marché\" and \"Pour la pâte\" and \"Pour la salade,\" ensuring they're all bullet-separated as well.**Formatting ingredient labels**\n\nI need to include labels with the raw ingredients, parsing quantities accurately. For example, I see \"3 tablespoons of orange blossom water,\" which likely belongs in the Marché section. The ingredients I have include almonds, sugar, butter, and egg yolks along with others for the dough and salad. It's important to preserve these details. For recipes three and four, I'll make sure each step of the instructions is clear, perhaps treating them as individual sentences. I think I can skip mentioning time requirements for the steps.",
+              "format": "openai-responses-v1",
+              "index": 0
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN5rgyshH4BbW0fJMiAJdN0AZOtgGUH12ShEHtg8d_e1i80aHAEoWnss0pc02jJd9Wt8ZlNcBQl_YER_vFOA9-2QtQR4Ho8RxJWnPsR_NEV1uoazwJE6jKEbrTEkq5ANZeRijBzXP0CWkn5kVU9q3g_vJZL7qXd2UZEWg6s629T31IkVofZERZ-kwoQF_m-i7RDXZeuoYSSAu-gLyt6N3wl1Ct3TmsIMQiuo14-SBfDIEVEc7tUbtHATKtc6-7lTnP1Z_nZlwU9X4GK_Szkv-EskoxIKvLmQnkMZfHQ0vdgleFnkQqxYMUchL97pL1bYz3jCcnNW3J5VznN2XiwUgYTBcgYC8S0xvVerwGGKzTih2bXhD1xDx8V8vUaQVZMdiebiwKjx-3ZKFKJvx_Xys_ikf8OkJCFPQyWiORhstFFz6zEAHp48RiAaWTTKNH2Ma8o3hYOGdXfc7hSC05jcdzo1VVuLiBQxPt8T9vXKyxXeaSX0iT2i6kCzfWIeQhLEmKjgzVtt77_-kyJRgoQkCjVFsmkss3Mk2YOPPbVHJ9fz2ARDw9RLU-fam1Y-zl4pt7qAt17bodHOs4A2JWBxwTgzRF0eL-qpVbJ1kBXMnNKoi_v7MdWfjyxVUWahff7MG2sMTHtJdrQ9sXBcMDKIEZAYtIue8ezoWoXUjouiV20L11IKvJjIZBrM1d25O_XyT8MV0TxAhqwlMbv7OHjylC5aYU2i_teflDnAVvjqOm8C5Dni4U480wd1JaKEQRb5GYY9VNtfAgFziJlmAGaCLJAj4-xoMkcbBvlnlIsojjLhquf-zLKVhjcKDXVGj7WUkAHdWAgACw-1641svMHkyDAJAVMR-gifloap01JgL8uVzV82NREyw-X0ywQOaer3K-UbNZ53uDHj-x9ptM-zpgH-lg4Z5zVPGzkNEx6CZ3U0BSw8i9eWqGxHMnqqMb9QubOmmjQpEm-QSV0aTlxv2CBiDA1Pw7wb2Sxb91Ho12Cys2FwGsO1QbbqL_QRqA9RTWBUPts_XxMh9CyABS2rwGgJxMvzo_yq_ZlLZYpmGOeNL5JQBg3ZEsLaFkR840jF_cI9DMG65tdzWPXAiDG8lDLZroFojeRqOjQ5GU8NgQikb7ixEzdDAz6xfxDiqoPNp1OS-A3Jq0en0PgOqUhOG7hTS_gY2eOTqJGpCrWKxKe31m2gMMN0gOpyJZybmja__SXT2b9m0HgYB87_op_lG8DW3bjq-WQkdYTc7_MQjoSTh9XvyqClJGXuFAXJsnh-Uk4DXG_SJPCaQPzksWp-fr4qmgWlagz3YEabcGKqKzWuq89krsIYaf1Xr8KAhSeSYr068o28MtfZvDmvwA-lw_tTaQ9yVW7aUSh042o2qfQjK6Gcz5H0fo9ZVtKnZuptShyPng6q-fAUu17hRH6RyBvcNFc6iIGDHZJyRnv4_fuoLFK7oRfoJ6iuZt334kjq_0ao8YAuV9y886v_AddXRT9iD7TWWZMRkC6SSDkkXhG3aKfVpgfiANcFKJ-KCFY527jiN7okcgK4lyBY3gbeCRrxtGVb4h9jOENoJE95_oOoQFTb-Gqe_zc39Sn-TFqmWrWZ0vLd7r5xzD8p4L76B7qNz6VOpI1UkZb2hmJdoQknSSCkylTj-eLON_CJh0heorQ7ct2Q24GlUAbCHPj952kd43tPZOXrfK1cVjgumaEjpG3jEUE_P_-CyBv-pnL2-ObW2pr_gfpTagwwX-tS3uu0_uxBE4ln_7Xfl3PL_UfpBuRqQ0BtYYIcplqqiPZ4kmu5_YOLC03wiTXr3CdzNAvC8l11sjpjEHAKjMBQUv_lbHzGzfbqAqf8uyjLK1qYwVzhSaAVO-QOdJWNOSMCujuvpuHRmWfu3F_3X6l6zRsYey0nWvniUi_piw5VU-7uB_k-cMdm_AN5Ji8EbxNRQDay4n3ffiUCSq5l8VMwC1pk2zHp78zYJuylEzZt2gZDriZgEOg7K35zmre5CUULKnASfbI-iPOsnWWTB2zDcjh_alS2Zi_it9mEkVpbU11b9tTxYE0gy3SXDVMA3OfH-lHoe-wwcqM7W32lKecu8o-Bvw4_N5pHjv1PshOKrCSl3XGxMJaJFqmFDR9xEXZDHiDpKsW4hZ-6S9CptPSJWNL3p6V0GPJ0O80BpRWNzodV6U0HLvF-9vOKzFqszL6HSX3nrkr_uLVw3WH-tTQ3uWer-3RPCvel1tTKnLpP0pdhulXDLtlqF8LB3dfO7oX6W2lw86Iyt4-xApRSdRAwxb06zBHUiLjl1gsPfanKKMmvQ5UX5fvwz57WhrxaZkPFFH6MnYiNykpPhgLpH1WPm2EGX6DXKa4sEgH5F8Jl_cbkHAs1gSMBRomVh8MBFis41wY7cTKFxRQa6egPFJUwEfKVjuNlGm679AWXfjFJUcqHNLvS60GyvBXqJS8JSNXkSwDw-hJnrtZUOHHf80yDkJ3TAwbgkFyiOA9q4o6QYQJGEum23Ao6NVHy_U0GgUwW1e5KmhknKCegMGlEmFUHPFsi12OeU1kR6_uabXNnQPsE2wOZx-rCJnXJiPiOUu3DqplccROPORCOxnFX05RSrkDN2929NKt0mQNfBl-5zqHaHaihOzHP5NuP23KzN58gmQFJsbbZkjulayGDZH48gZ3vcs9hc1zIZOvqWETObxqiTdj5lGbSwiwcRjbkjhpIYgG-zYmRWnpjTU7KKTfeL08ofmex9h92IRpnj96tlTjbyxtRyNZlA820yiqsDZU06Q9okbMxUoLU36wD9xeQg5RLr7e1owJ9yNaP8fdbZSQquZLIsx2XBZaWCicFubCPBbXFjujOEbEEQT6DysagbMirWZCe0277ErfKLFqVGWFq6uKy3_bNI6-cbd2KOGcVe_kpW5O777GrKwokKpZ5ZZiwj5RmFJVsz1FfWKAVkHHzljx3SwaJCRa9JILSrv7oNJaehtc-QUz2sX5TNM9x8v2e8ki5HnpAIkGnWxSbB3fsJ58cSPCyNCO-pqS_eOd_4q0RQP818YhFucUBhMcO4ux8f5fS-8gz5zDlz3HQIpqZE00SVz7oboGkuPJLxofeB-6ts6eJZsOhKGi69HqO4o3-AX0FKU0JW2CQqtv8VSVDYRgpp32Dv-K2ClKbl5xVzVxyUIqLhWfnKidZVzGRO5hGIDlgFyCv1H5fHs8BcMh5yBdLbS1A_w2jl7sxkCv5g3kLghv-k5YZ8e933eM334HayJHvt9pK070Gv66mCpWcgNYS7hGCDgtkd02k5ikInrzScvH8r0GKFjBr_Wb2g2SWjbeXwhb9AB9_9UPC6HDlop58b4_K1dtDl6_Wlk8BlJBhFjW_irOTpK766KlbJtp-g399_te3qbfTN_kbfrk_-RSJcD1d73mp65X0NmWgqHgwAqnSzgHH-JrCmy6zwbtJHaVC7E4dhQax1wglBu_v2sY3XV3e4ZQyA-yGLXELDlC5s0l5I80ty7sgd8AyGWFoGKti2hnInIGcYuCKMvkmOTaw.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0cfa1f5b3bfd9adf016a78de64b2a88194a0ee57442e5b30b5",
+              "index": 1
+            },
+            {
+              "type": "reasoning.summary",
+              "summary": "**Navigating cooking instructions**\n\nThe instructions say to ignore prep and cooking times, but it looks like the steps might still include them, so I shouldn’t remove those. I’ll keep everything in JSON format, ensuring valid accents and apostrophes. For ingredients, I need to assign quantities, units, and labels properly, especially when they’re combined. It’s crucial to keep everything clear and organized, like grouping relevant items together and paying attention to detail—but it’s indeed tricky!**Clarifying recipe structure**\n\nI need to make sure the line correctly reflects the quantity and label for ingredients like “poivrons rouges et 2 verts,” but my schema isn't set up for multiple quantities. I'll figure it out by using just the first detectable quantity. \n\nFor four recipes: \n1. Dinde aux piments et au cacao (8 sentences)\n2. Cornes de gazelle et salade d’oranges (12 sentences)\n3. Escalopes de foie gras au pain d’épice (10 sentences)\n4. Canard laqué au curry rouge (13 sentences)\n\nI'll format the ingredients properly, excluding headings and ensuring everything is clear!",
+              "format": "openai-responses-v1",
+              "index": 2
+            },
+            {
+              "type": "reasoning.encrypted",
+              "data": "gAAAAABqeN5v9ZuF6n-c9T96LHFRlzY0Gi2fV4LUH7Od2as6YATLB_s9yDaTv9Agco_AclCij3AlVoLAWfrcF8BgfgfljUmVCwRRJt3mrMNmIk0xeaWWHraMneUxNlPSvC5a1PtaAhNxS4i9GbYBO6Asznlky5jKES1_yR6stXJKnmx2cu4Uf8oCasyBxNQfVCpS9fnY14VaPE0hhBi_iY93fgAswLq100yk_2e6fz-_nwfMgtu_i-6zJASelB9dJFEg5GZ5N8QWV3Gerp69A0QurJMmLdlmx_Vr0lDUEA1yeouQOVQkL43ogNxOrJgKsxaWVTinsGKRpFf15eFiepdsSbA-xuewn-gLZQsNSUWHwmUs-qHNct3v2rfTNNCpW5xE5E-pii6Nf3ZjNvv7ADRt2hFEwV2LjzHHO5ydNGZSa5IHSpz9Wd_f0XZhPMprtNuF3YeHKNsa6g_6q0i3lveArvxio_YwdW8_NTTbbTsCYkddDZH8I1wXEQKYbMroeVjtOS2J7lyCg0-y6sPLby5nUr5SHpTw4Ivxcb1jdQy9ZO5aMn2o5Gd4B02dQ90E7JqSQQNRXMVN9Kbk1UbaPcccWN0uwfL85rHLkSQvP0oezcIvjo1GL_T2JvnAQRZRTd1tryvzP4WSmEdlexLNbneGGs08zvhJBLfoSl4GkRpDaKCXaVzIKP7lALdBMWin56j0ZufwO_uGYJfhO9nl90iCLO6rhn46GOpK7x54bB5tB--cUTDU8PxlKwvOBhnjEWjhPS3ote2JLbme5d86E0MdMafR3T680zytK2sYd5yz6U_ssIYYcPFz9CNSWoSI-itQGg3_t4vEjNQJA34o5LWJBD5uktMFTWOI6UtFYpdR-RUhbxkFQ2ZkT5I1cxauz88SITSMfcyxbMzbmPBAc5u14TRRStaimFL5oXZWXJrAysucfhb9JYp2pF2-eaV713YPR1DUtSfjGXVXp1kNNbeCrKKILbK6PIvJfpbB_Kw1HyaMOl_JCmWlqhfzV4sGgYEkM6qOU8AUQETkP2qept_PgsCJT-TjOEtK0qmgbRg8f_k_vnbQ8qrCWANeaywJeYCPaOKK9WfALQY4CPPYoSkET-4MZGeFWtolnlOcAF8g1mrGyz7x2KdtHg6Uxyhec_yQLe3bhmYgSIAo7d4GlBcw0HXpmFuEvjOWUFF_xSAfJkEMbI35-Hi0fVSQcofzVWD_BxdIgdnVYZShOb0E9Y2igj7TDI_x8g815D97oTSJRuFyIWcWduN4RuUYAzwykb843VxGu96GIuCzX1Id8LD0hHHtcf1hWUNKHIJguLA9ujRSOvKUUL-MiMvn-HxaT0xIzRHb8hPvx0ijKq8EzIF3KW9J8pCCAz2fuaKYYP4LH-Zm_8sb7OncUk1UCyAIhQTgMgw5ZcNnXwnRaumrPHss0mQvhdPqfcTWzniW2KvBIP1nTPWLkDCq2HwX0RFU5DF46sEEVqAAEDqjbvv2eLuPGasbi5FgzNXtWjKmB3hE0JFCOtv9G6E1niqP4UEGMFhiy5pgM-4qPzK-ecCoNvJTS7OlNLY40IbHVsIrUByZH7EN9t4jUORskfeSJOFYdbQf4xJolPa5XZv3bfBw84ukY6DQL1ZAiMruHDLRPAa0BmkUGx91WVvBmHM61XlEA0DJRJNrxzy5owpiUCaprkvzE9KhsZhx054ov9YwfOKflpg8Ht6AjT43EiYHXJUqkWP3d5jsdQ3VbnZKGql6RgsbG1l45Nj-kmk1oYkBQBk0iZXxSSVYGAGFkqcqmyWDiSaDN1P702tdMm51Pkd04203TYjBPavW2RLq1sMmseGVBUIdAdlgrF4dxBMUl0_TJrVMXNnoFLiTkx-8L0Mn0GGdb6nZ8KaFNUNP93_ooVPL1v-6Cf1GExsfb7Kjra-UB462E6mdi26FDuOjE4i4iiIiuAjUfmFWTuj4srL9woR54dryVe2quhkhKMM8px806uDsRS9SgA8E7Xuj5JQqZI1yQMsTapR70YXTHDxm-Vu8vg3VscfrVSoCJQiRtNBLI3TOGwcpZno96VQ2WROvmYPi0tVFjZHYOQYibGfgj3Z5fBJLUvAss56DnnYh-l8famqzps3jB9LRRaUb7zXuq6N91d0It6a2kpQyGKFoPaqcxb_IQ_Sy-LlKFnLJ8gqETnp-A9V4fOR-3WFAx6zsvf5qhLJPVSDZrqZudWppHyrviRlok8RC7vV8RcRFCabPnIzbTw0psDXiLieORlurGgOrlF1_QrFfEta5as7AMld_IQ8mq7MxxC8cFmkQA1vwGDpndjxgt-c4US2IoMup2O2kpfSjFVCc1EGmnMYYFp9U_1kHyZ63580PkSYrLQIZhDBzROJNvND1tfne_waNUrb_zuYFV-NG37ndK9y60BKtcXtTZzgqiPDMJSNOJNVy5Zwb0ud-ZuwkdehmVZJ8IBhWXK5RSk2-qkB0PnowWi6MFFCPIS8m7g5PxqEnHZ3mwIin2wYgnn49fuZAIaf0Scr-3d5QQtnkPx3x-3ud1jigXXJtanhle1j2tETc8_b-62hSW7uBwsLaNenilOQffELC-mCXYzqZFvnCCMJN7F7EP2yXSAOUz_tstHq0TrJwdXSNbzo01kN_TIyzy99NCUwhnyp9_4lH6HOj94COBA6Hao-X5QJLe7ysUTvcEcqjxNMjnBFw1aWKbKFPjYGSyo1qlvNexS1OuVundRbmG2Q1hKNGJAS5Hf_x3Mj84CM0-HqvWpx5wTgs6G9q2OO8fznnnP3qZ8TIuAxtCUju3D4uS05sUgUXLzyqX2KiZhpqS7P9xwygpf32kwuultPhOXUABPiyB2WogUa0ktWcznjsZISq4nW_RlHWyBgWhk9-jCkzOULWgSetwJhFU0X6VP9f028diGMx-_GZAA62u8zCRi1zJ7GAg1Idm3ydNnOGYI2ehwpduKaSGdOg5CwflUkIBT2SgJgVb9C1XPlW5KfKNPJeBtoEDPj7qi_mM23IsIXOkCLLBjPSsYKVQdSVTtb9KbrD_8HATdNz9PVnYUcacnxMexvU84MhDIlKg2fItpBUSgpTAVvkoT-y_M95JoYQqqnQKAmLV76X6BelVJLMlDZDshVxjUHslSBDKbZQ71jpG2Jvg66HHTPier4YTg_kM9VjXK_ScnarCAPKXgfaAZBiQToyZWv-GUx-BNx992W9Rj9LPtwSvLE0ooutv12mf2xo1C0pZpzaEY5aYGew3EzXBEhFGoE=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LjYtbHVuYS0yMDI2MDcwOXxvcGVuYWkifQ",
+              "format": "openai-responses-v1",
+              "id": "rs_0cfa1f5b3bfd9adf016a78de6ba0ec8194929180a5ee28eaa6",
+              "index": 3
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4130,
+      "completion_tokens": 3437,
+      "total_tokens": 7567,
+      "cost": 0.00210377,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 4127,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00210377,
+        "upstream_inference_prompt_cost": 0.00004157,
+        "upstream_inference_completions_cost": 0.0020622
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 909,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 46444.94729200001,
+  "actualCostUsd": 0.00210377,
+  "servedProvider": "OpenAI",
+  "repairs": []
+}

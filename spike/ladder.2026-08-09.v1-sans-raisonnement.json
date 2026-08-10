@@ -1,0 +1,4433 @@
+{
+  "generatedAt": "2026-08-09T18:26:56.197Z",
+  "currency": "USD",
+  "ladder": [
+    {
+      "model": "google/gemma-4-26b-a4b-it:free",
+      "providerSlug": "darkbloom",
+      "providerName": "Darkbloom",
+      "dataCollection": null,
+      "rankingCostUsd": 0,
+      "maximumCallCostUsd": 0,
+      "priceSource": "published"
+    },
+    {
+      "model": "nex-agi/nex-n2-mini",
+      "providerSlug": "nex-agi",
+      "providerName": "Nex AGI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.000287875,
+      "maximumCallCostUsd": 0.000837875,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-4b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00032575,
+      "maximumCallCostUsd": 0.0008757499999999999,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/ministral-3b-2512",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0004015,
+      "maximumCallCostUsd": 0.0009514999999999999,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-12b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00045075,
+      "maximumCallCostUsd": 0.00127575,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0005208,
+      "maximumCallCostUsd": 0.0016208,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-27b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0005212,
+      "maximumCallCostUsd": 0.0014012,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-9b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0005265000000000001,
+      "maximumCallCostUsd": 0.0013514999999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-9b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0005265000000000001,
+      "maximumCallCostUsd": 0.0013514999999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-9b",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0005265000000000001,
+      "maximumCallCostUsd": 0.0013514999999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/ministral-8b-2512",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00060225,
+      "maximumCallCostUsd": 0.00142725,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-small-3.2-24b-instruct",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.000613625,
+      "maximumCallCostUsd": 0.0017136249999999999,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-flash-02-23",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.000748475,
+      "maximumCallCostUsd": 0.002178475,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-small-3.2-24b-instruct",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00076703125,
+      "maximumCallCostUsd": 0.00214203125,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-9b",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0007765000000000001,
+      "maximumCallCostUsd": 0.0021515,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/ministral-14b-2512",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.000803,
+      "maximumCallCostUsd": 0.0019029999999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "bytedance-seed/seed-1.6-flash",
+      "providerSlug": "seed",
+      "providerName": "Seed",
+      "dataCollection": null,
+      "rankingCostUsd": 0.000863625,
+      "maximumCallCostUsd": 0.002513625,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-9b",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00088255,
+      "maximumCallCostUsd": 0.00225755,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-small-3.2-24b-instruct",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0008863499999999999,
+      "maximumCallCostUsd": 0.0025363499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-scout",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0009015,
+      "maximumCallCostUsd": 0.0025515,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-27b-it",
+      "providerSlug": "nebius",
+      "providerName": "Nebius",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0009015,
+      "maximumCallCostUsd": 0.0025515,
+      "priceSource": "published"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0009121000000000001,
+      "maximumCallCostUsd": 0.0024521000000000005,
+      "priceSource": "published"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0009121000000000001,
+      "maximumCallCostUsd": 0.0024521000000000005,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00095605,
+      "maximumCallCostUsd": 0.0028260499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00098635,
+      "maximumCallCostUsd": 0.0028563499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "open-inference",
+      "providerName": "OpenInference",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0009961999999999998,
+      "maximumCallCostUsd": 0.0029212,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0010015,
+      "maximumCallCostUsd": 0.0028715,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-scout",
+      "providerSlug": "groq",
+      "providerName": "Groq",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00101665,
+      "maximumCallCostUsd": 0.0028866499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0010416,
+      "maximumCallCostUsd": 0.0032416,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0010416,
+      "maximumCallCostUsd": 0.0032416,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0010416,
+      "maximumCallCostUsd": 0.0032416,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0010818,
+      "maximumCallCostUsd": 0.0030618,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "chutes",
+      "providerName": "Chutes",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011068,
+      "maximumCallCostUsd": 0.0031418,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011469499999999999,
+      "maximumCallCostUsd": 0.00323695,
+      "priceSource": "published"
+    },
+    {
+      "model": "bytedance-seed/seed-2.0-mini",
+      "providerSlug": "seed",
+      "providerName": "Seed",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011515,
+      "maximumCallCostUsd": 0.0033515,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4.1-nano",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011515,
+      "maximumCallCostUsd": 0.0033515,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "nextbit",
+      "providerName": "NextBit",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011818,
+      "maximumCallCostUsd": 0.0033818,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0011818,
+      "maximumCallCostUsd": 0.0033818,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "ionstream",
+      "providerName": "Ionstream",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00119695,
+      "maximumCallCostUsd": 0.0033969499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00119695,
+      "maximumCallCostUsd": 0.0033969499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00119695,
+      "maximumCallCostUsd": 0.0033969499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00119695,
+      "maximumCallCostUsd": 0.0033969499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-32b-instruct",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00119756,
+      "maximumCallCostUsd": 0.0034855600000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0012121,
+      "maximumCallCostUsd": 0.0034120999999999995,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "friendli",
+      "providerName": "Friendli",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0012121,
+      "maximumCallCostUsd": 0.0034120999999999995,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "morph",
+      "providerName": "Morph",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0012121,
+      "maximumCallCostUsd": 0.0034120999999999995,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "crusoe",
+      "providerName": "Crusoe",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0012121,
+      "maximumCallCostUsd": 0.0034120999999999995,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00122725,
+      "maximumCallCostUsd": 0.0034272499999999997,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-27b-it",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0012461999999999998,
+      "maximumCallCostUsd": 0.0037212,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-8b-instruct",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0013147550000000001,
+      "maximumCallCostUsd": 0.003817255,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "phala",
+      "providerName": "Phala",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00137725,
+      "maximumCallCostUsd": 0.00390725,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-3-27b-it",
+      "providerSlug": "phala",
+      "providerName": "Phala",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00137725,
+      "maximumCallCostUsd": 0.00390725,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00149695,
+      "maximumCallCostUsd": 0.00435695,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "modelrun",
+      "providerName": "ModelRun",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0017083000000000003,
+      "maximumCallCostUsd": 0.0047333,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00172725,
+      "maximumCallCostUsd": 0.00502725,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-small-2603",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00172725,
+      "maximumCallCostUsd": 0.00502725,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00172725,
+      "maximumCallCostUsd": 0.00502725,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o-mini",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00172725,
+      "maximumCallCostUsd": 0.00502725,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o-mini-2024-07-18",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00172725,
+      "maximumCallCostUsd": 0.00502725,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00187488,
+      "maximumCallCostUsd": 0.00583488,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0019270000000000001,
+      "maximumCallCostUsd": 0.006052,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0019270000000000001,
+      "maximumCallCostUsd": 0.006052,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0019270000000000001,
+      "maximumCallCostUsd": 0.006052,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-maverick",
+      "providerSlug": "digitalocean",
+      "providerName": "DigitalOcean",
+      "dataCollection": null,
+      "rankingCostUsd": 0.002043,
+      "maximumCallCostUsd": 0.005871,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0020529999999999997,
+      "maximumCallCostUsd": 0.005903,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-scout",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0021287499999999996,
+      "maximumCallCostUsd": 0.00597875,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-small-2603",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0021590625000000004,
+      "maximumCallCostUsd": 0.0062840625,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-8b-instruct",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00225375,
+      "maximumCallCostUsd": 0.00637875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen2.5-vl-72b-instruct",
+      "providerSlug": "nebius",
+      "providerName": "Nebius",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00225375,
+      "maximumCallCostUsd": 0.00637875,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-maverick",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.002303,
+      "maximumCallCostUsd": 0.006703,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.002503,
+      "maximumCallCostUsd": 0.007343000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0025265,
+      "maximumCallCostUsd": 0.0077515,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-maverick",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0025340500000000004,
+      "maximumCallCostUsd": 0.007209050000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "akashml",
+      "providerName": "AkashML",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0027121000000000003,
+      "maximumCallCostUsd": 0.0082121,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0027121000000000003,
+      "maximumCallCostUsd": 0.0082121,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "akashml",
+      "providerName": "AkashML",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0027121000000000003,
+      "maximumCallCostUsd": 0.0082121,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00272725,
+      "maximumCallCostUsd": 0.00822725,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00272725,
+      "maximumCallCostUsd": 0.00822725,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-thinking",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00293935,
+      "maximumCallCostUsd": 0.00843935,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00293935,
+      "maximumCallCostUsd": 0.00843935,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0029939,
+      "maximumCallCostUsd": 0.0087139,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00301585,
+      "maximumCallCostUsd": 0.00835085,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-maverick",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00303025,
+      "maximumCallCostUsd": 0.00853025,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-flash",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0030965625,
+      "maximumCallCostUsd": 0.0092840625,
+      "priceSource": "published"
+    },
+    {
+      "model": "stepfun/step-3.7-flash",
+      "providerSlug": "stepfun",
+      "providerName": "StepFun",
+      "dataCollection": null,
+      "rankingCostUsd": 0.003178,
+      "maximumCallCostUsd": 0.009503,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0031874,
+      "maximumCallCostUsd": 0.0100624,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-image",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0031874,
+      "maximumCallCostUsd": 0.0100624,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-image",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0031874,
+      "maximumCallCostUsd": 0.0100624,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0031874,
+      "maximumCallCostUsd": 0.0100624,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta-llama/llama-4-maverick",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00340525,
+      "maximumCallCostUsd": 0.00973025,
+      "priceSource": "published"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0034545,
+      "maximumCallCostUsd": 0.0100545,
+      "priceSource": "published"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "morph",
+      "providerName": "Morph",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0034545,
+      "maximumCallCostUsd": 0.0100545,
+      "priceSource": "published"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0034545,
+      "maximumCallCostUsd": 0.0100545,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0034961875,
+      "maximumCallCostUsd": 0.0106461875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00350375,
+      "maximumCallCostUsd": 0.01037875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00350375,
+      "maximumCallCostUsd": 0.01037875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0035984375,
+      "maximumCallCostUsd": 0.0104734375,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.7-plus",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0036848000000000002,
+      "maximumCallCostUsd": 0.010724800000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen2.5-vl-72b-instruct",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.003712,
+      "maximumCallCostUsd": 0.009212,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "nextbit",
+      "providerName": "NextBit",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038332999999999996,
+      "maximumCallCostUsd": 0.0115333,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038540000000000002,
+      "maximumCallCostUsd": 0.012104,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038540000000000002,
+      "maximumCallCostUsd": 0.012104,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038540000000000002,
+      "maximumCallCostUsd": 0.012104,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038540000000000002,
+      "maximumCallCostUsd": 0.012104,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0038540000000000002,
+      "maximumCallCostUsd": 0.012104,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.004195425,
+      "maximumCallCostUsd": 0.012775425000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0042045,
+      "maximumCallCostUsd": 0.0124545,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0042394,
+      "maximumCallCostUsd": 0.0133144,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-plus-02-15",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0042939,
+      "maximumCallCostUsd": 0.0128739,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.004303,
+      "maximumCallCostUsd": 0.013102999999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-large-2512",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0045075,
+      "maximumCallCostUsd": 0.0127575,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4.1-mini",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.004606,
+      "maximumCallCostUsd": 0.013406,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.004840875,
+      "maximumCallCostUsd": 0.014740874999999999,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-35b-a3b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.004863599999999999,
+      "maximumCallCostUsd": 0.0147636,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-plus-20260420",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0049545,
+      "maximumCallCostUsd": 0.0148545,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0050681499999999996,
+      "maximumCallCostUsd": 0.01551815,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0050681499999999996,
+      "maximumCallCostUsd": 0.01551815,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "cerebras",
+      "providerName": "Cerebras",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00522485,
+      "maximumCallCostUsd": 0.01341985,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "digitalocean",
+      "providerName": "DigitalOcean",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0052707875000000005,
+      "maximumCallCostUsd": 0.015858287500000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-plus",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005367375,
+      "maximumCallCostUsd": 0.016092375,
+      "priceSource": "published"
+    },
+    {
+      "model": "bytedance-seed/seed-2.0-lite",
+      "providerSlug": "seed",
+      "providerName": "Seed",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00537875,
+      "maximumCallCostUsd": 0.01637875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00537875,
+      "maximumCallCostUsd": 0.01637875,
+      "priceSource": "published"
+    },
+    {
+      "model": "bytedance-seed/seed-1.6",
+      "providerSlug": "seed",
+      "providerName": "Seed",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00537875,
+      "maximumCallCostUsd": 0.01637875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-8b-thinking",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005522699999999999,
+      "maximumCallCostUsd": 0.0170727,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0055939,
+      "maximumCallCostUsd": 0.017033899999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0055939,
+      "maximumCallCostUsd": 0.017033899999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005606,
+      "maximumCallCostUsd": 0.016606,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-medium-3.1",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005606,
+      "maximumCallCostUsd": 0.016606,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-medium-3",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005606,
+      "maximumCallCostUsd": 0.016606,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "digitalocean",
+      "providerName": "DigitalOcean",
+      "dataCollection": null,
+      "rankingCostUsd": 0.005630625,
+      "maximumCallCostUsd": 0.016768125,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0058090500000000005,
+      "maximumCallCostUsd": 0.01768905,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-thinking",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063030000000000004,
+      "maximumCallCostUsd": 0.019503,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00630675,
+      "maximumCallCostUsd": 0.01868175,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-image",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-image",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0063748,
+      "maximumCallCostUsd": 0.0201248,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "morph",
+      "providerName": "Morph",
+      "dataCollection": null,
+      "rankingCostUsd": 0.006437835,
+      "maximumCallCostUsd": 0.019637835,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "phala",
+      "providerName": "Phala",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0064545,
+      "maximumCallCostUsd": 0.0196545,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0064545,
+      "maximumCallCostUsd": 0.0196545,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-build-0.1",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.006515,
+      "maximumCallCostUsd": 0.017515,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-build-0.1",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.006515,
+      "maximumCallCostUsd": 0.017515,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0068939000000000005,
+      "maximumCallCostUsd": 0.021193899999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0069372,
+      "maximumCallCostUsd": 0.0217872,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0069372,
+      "maximumCallCostUsd": 0.0217872,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0069372,
+      "maximumCallCostUsd": 0.0217872,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "baidu",
+      "providerName": "Baidu",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0069779425,
+      "maximumCallCostUsd": 0.0203979425,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0069923500000000005,
+      "maximumCallCostUsd": 0.02074235,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00743175,
+      "maximumCallCostUsd": 0.02228175,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "streamlake",
+      "providerName": "StreamLake",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0075680999999999995,
+      "maximumCallCostUsd": 0.0224181,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0077080000000000004,
+      "maximumCallCostUsd": 0.024208,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0077080000000000004,
+      "maximumCallCostUsd": 0.024208,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.007988549999999999,
+      "maximumCallCostUsd": 0.02366355,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "streamlake",
+      "providerName": "StreamLake",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0081218675,
+      "maximumCallCostUsd": 0.0237418675,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.3",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.3",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20-multi-agent",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20-multi-agent",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00814375,
+      "maximumCallCostUsd": 0.02189375,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "chutes",
+      "providerName": "Chutes",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00818175,
+      "maximumCallCostUsd": 0.02468175,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00818175,
+      "maximumCallCostUsd": 0.02468175,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-image",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.008257500000000001,
+      "maximumCallCostUsd": 0.0247575,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-flash-image-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.008257500000000001,
+      "maximumCallCostUsd": 0.0247575,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "phala",
+      "providerName": "Phala",
+      "dataCollection": null,
+      "rankingCostUsd": 0.008409,
+      "maximumCallCostUsd": 0.024909,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0084545,
+      "maximumCallCostUsd": 0.026054499999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0084848,
+      "maximumCallCostUsd": 0.0260848,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.008617375,
+      "maximumCallCostUsd": 0.026492375,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-5-image-mini",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0087875,
+      "maximumCallCostUsd": 0.0197875,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "digitalocean",
+      "providerName": "DigitalOcean",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0091514,
+      "maximumCallCostUsd": 0.026751399999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "decart",
+      "providerName": "Decart",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00939385,
+      "maximumCallCostUsd": 0.028093850000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "inceptron",
+      "providerName": "Inceptron",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009434,
+      "maximumCallCostUsd": 0.028189,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009509749999999999,
+      "maximumCallCostUsd": 0.028264749999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00958325,
+      "maximumCallCostUsd": 0.02883325,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0095984,
+      "maximumCallCostUsd": 0.0288484,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "siliconflow",
+      "providerName": "SiliconFlow",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009666550000000001,
+      "maximumCallCostUsd": 0.02836655,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009687,
+      "maximumCallCostUsd": 0.030312000000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009712,
+      "maximumCallCostUsd": 0.028412000000000003,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009757499999999999,
+      "maximumCallCostUsd": 0.0295575,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "ambient",
+      "providerName": "Ambient",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0098105,
+      "maximumCallCostUsd": 0.0290605,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "inceptron",
+      "providerName": "Inceptron",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0098105,
+      "maximumCallCostUsd": 0.0290605,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "crusoe",
+      "providerName": "Crusoe",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0098105,
+      "maximumCallCostUsd": 0.0290605,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009825649999999998,
+      "maximumCallCostUsd": 0.02907565,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00988625,
+      "maximumCallCostUsd": 0.029136250000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00988625,
+      "maximumCallCostUsd": 0.029136250000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00988625,
+      "maximumCallCostUsd": 0.029136250000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.00988625,
+      "maximumCallCostUsd": 0.029136250000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "parasail",
+      "providerName": "Parasail",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0099014,
+      "maximumCallCostUsd": 0.0291514,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "coreweave",
+      "providerName": "CoreWeave",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009909,
+      "maximumCallCostUsd": 0.029709,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "streamlake",
+      "providerName": "StreamLake",
+      "dataCollection": null,
+      "rankingCostUsd": 0.009909,
+      "maximumCallCostUsd": 0.029709,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-thinking",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.010606,
+      "maximumCallCostUsd": 0.032606,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "modelrun",
+      "providerName": "ModelRun",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01066275,
+      "maximumCallCostUsd": 0.03128775,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "novita",
+      "providerName": "Novita",
+      "dataCollection": null,
+      "rankingCostUsd": 0.010981679999999999,
+      "maximumCallCostUsd": 0.03210168,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "cloudflare",
+      "providerName": "Cloudflare",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "atlas-cloud",
+      "providerName": "AtlasCloud",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "cloudflare",
+      "providerName": "Cloudflare",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "baseten",
+      "providerName": "BaseTen",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "fireworks",
+      "providerName": "Fireworks",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01143925,
+      "maximumCallCostUsd": 0.033439250000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01147464,
+      "maximumCallCostUsd": 0.03622464,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash-image",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01147464,
+      "maximumCallCostUsd": 0.03622464,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01147464,
+      "maximumCallCostUsd": 0.03622464,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01147464,
+      "maximumCallCostUsd": 0.03622464,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.011562,
+      "maximumCallCostUsd": 0.036312000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.011562,
+      "maximumCallCostUsd": 0.036312000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "venice",
+      "providerName": "Venice",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01238625,
+      "maximumCallCostUsd": 0.03713625,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta/muse-spark-1.2",
+      "providerSlug": "meta",
+      "providerName": "Meta",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01251875,
+      "maximumCallCostUsd": 0.03589375,
+      "priceSource": "published"
+    },
+    {
+      "model": "meta/muse-spark-1.1",
+      "providerSlug": "meta",
+      "providerName": "Meta",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01251875,
+      "maximumCallCostUsd": 0.03589375,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01276,
+      "maximumCallCostUsd": 0.040260000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-build-0.1",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01303,
+      "maximumCallCostUsd": 0.03503,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-build-0.1",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01303,
+      "maximumCallCostUsd": 0.03503,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.013068,
+      "maximumCallCostUsd": 0.037818000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "phala",
+      "providerName": "Phala",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01315135,
+      "maximumCallCostUsd": 0.03845135,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0138744,
+      "maximumCallCostUsd": 0.0435744,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-flash-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0138744,
+      "maximumCallCostUsd": 0.0435744,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.014015,
+      "maximumCallCostUsd": 0.041515,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.014015,
+      "maximumCallCostUsd": 0.041515,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.014015,
+      "maximumCallCostUsd": 0.041515,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.015416000000000001,
+      "maximumCallCostUsd": 0.048416,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.015416000000000001,
+      "maximumCallCostUsd": 0.048416,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-pro-image-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.015416000000000001,
+      "maximumCallCostUsd": 0.048416,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0154165,
+      "maximumCallCostUsd": 0.0456665,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.3",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.3",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20-multi-agent",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20-multi-agent",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.20",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0162875,
+      "maximumCallCostUsd": 0.0437875,
+      "priceSource": "published"
+    },
+    {
+      "model": "qwen/qwen3.8-max",
+      "providerSlug": "alibaba",
+      "providerName": "Alibaba",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01803,
+      "maximumCallCostUsd": 0.05103,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.5",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01803,
+      "maximumCallCostUsd": 0.05103,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.5",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.01803,
+      "maximumCallCostUsd": 0.05103,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.019374,
+      "maximumCallCostUsd": 0.060624000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "mistralai/mistral-medium-3-5",
+      "providerSlug": "mistral",
+      "providerName": "Mistral",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0210225,
+      "maximumCallCostUsd": 0.06227250000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4.1",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.023030000000000002,
+      "maximumCallCostUsd": 0.06703,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.023124,
+      "maximumCallCostUsd": 0.07262400000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.023124,
+      "maximumCallCostUsd": 0.07262400000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0254364,
+      "maximumCallCostUsd": 0.07988640000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.02552,
+      "maximumCallCostUsd": 0.08052000000000001,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o-2024-11-20",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0287875,
+      "maximumCallCostUsd": 0.0837875,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o-2024-08-06",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0287875,
+      "maximumCallCostUsd": 0.0837875,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0287875,
+      "maximumCallCostUsd": 0.0837875,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-pro-image",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-pro-image",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview-customtools",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3-pro-image-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.030832000000000002,
+      "maximumCallCostUsd": 0.096832,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.03487319999999999,
+      "maximumCallCostUsd": 0.1091232,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.5",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.03606,
+      "maximumCallCostUsd": 0.10206,
+      "priceSource": "published"
+    },
+    {
+      "model": "x-ai/grok-4.5",
+      "providerSlug": "xai",
+      "providerName": "xAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.03606,
+      "maximumCallCostUsd": 0.10206,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "morph",
+      "providerName": "Morph",
+      "dataCollection": null,
+      "rankingCostUsd": 0.039242,
+      "maximumCallCostUsd": 0.116242,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "digitalocean",
+      "providerName": "DigitalOcean",
+      "dataCollection": null,
+      "rankingCostUsd": 0.039942750000000006,
+      "maximumCallCostUsd": 0.11831775,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "deepinfra",
+      "providerName": "DeepInfra",
+      "dataCollection": null,
+      "rankingCostUsd": 0.039942750000000006,
+      "maximumCallCostUsd": 0.11831775,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-5-image",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.040150000000000005,
+      "maximumCallCostUsd": 0.09515,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0416232,
+      "maximumCallCostUsd": 0.13072319999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.5-flash",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0416232,
+      "maximumCallCostUsd": 0.13072319999999998,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "modal",
+      "providerName": "Modal",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "fireworks",
+      "providerName": "Fireworks",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "chutes",
+      "providerName": "Chutes",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "together",
+      "providerName": "Together",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "wafer",
+      "providerName": "Wafer",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.042045,
+      "maximumCallCostUsd": 0.12454500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4o-2024-05-13",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045075,
+      "maximumCallCostUsd": 0.12757500000000002,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-2.5-pro-preview-05-06",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.045936,
+      "maximumCallCostUsd": 0.144936,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0462495,
+      "maximumCallCostUsd": 0.1369995,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0462495,
+      "maximumCallCostUsd": 0.1369995,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-vertex",
+      "providerName": "Google",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0554976,
+      "maximumCallCostUsd": 0.1742976,
+      "priceSource": "published"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "providerName": "Google AI Studio",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0554976,
+      "maximumCallCostUsd": 0.1742976,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "fireworks",
+      "providerName": "Fireworks",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0630675,
+      "maximumCallCostUsd": 0.18681750000000003,
+      "priceSource": "published"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "morph",
+      "providerName": "Morph",
+      "dataCollection": null,
+      "rankingCostUsd": 0.06534000000000001,
+      "maximumCallCostUsd": 0.18909000000000004,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "anthropic",
+      "providerName": "Anthropic",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "azure",
+      "providerName": "Azure",
+      "dataCollection": null,
+      "rankingCostUsd": 0.070075,
+      "maximumCallCostUsd": 0.207575,
+      "priceSource": "published"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "amazon-bedrock",
+      "providerName": "Amazon Bedrock",
+      "dataCollection": null,
+      "rankingCostUsd": 0.0770825,
+      "maximumCallCostUsd": 0.2283325,
+      "priceSource": "published"
+    },
+    {
+      "model": "openai/gpt-4-turbo",
+      "providerSlug": "openai",
+      "providerName": "OpenAI",
+      "dataCollection": null,
+      "rankingCostUsd": 0.09015,
+      "maximumCallCostUsd": 0.25515000000000004,
+      "priceSource": "published"
+    }
+  ],
+  "excluded": [
+    {
+      "model": "thinkingmachines/inkling-small",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "thinkingmachines/inkling-small",
+      "providerSlug": "together",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.7-flash",
+      "providerSlug": "alibaba",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5-fast",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "claude-on-aws",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.6-flash",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.6-flash:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.5-flash-lite:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "thinkingmachines/inkling",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "thinkingmachines/inkling",
+      "providerSlug": "baseten",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "thinkingmachines/inkling",
+      "providerSlug": "together",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "thinkingmachines/inkling:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "baseten",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k3",
+      "providerSlug": "moonshotai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-luna:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-terra:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.6-sol:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-image",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-image",
+      "providerSlug": "google-ai-studio",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "sakana/fugu-ultra",
+      "providerSlug": "sakana",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.1-flash-image",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "siliconflow",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "moonshotai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code",
+      "providerSlug": "moonshotai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.7-code:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-fable-5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "nex-agi/nex-n2-pro",
+      "providerSlug": "nex-agi",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "nex-agi/nex-n2-pro",
+      "providerSlug": "siliconflow",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "nvidia/nemotron-3.5-content-safety:free",
+      "providerSlug": "nvidia",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "gmicloud",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "venice",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "minimax",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "providerSlug": "atlas-cloud",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-m3:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "stepfun/step-3.7-flash",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "stepfun/step-3.7-flash",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8-fast",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.8:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemini-3.5-flash:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7-fast",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "perceptron/perceptron-mk1",
+      "providerSlug": "perceptron",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-chat-latest",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "providerSlug": "nvidia",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "venice",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "atlas-cloud",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "phala",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-35b-a3b",
+      "providerSlug": "io-net",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "chutes",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "io-net",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.6-27b",
+      "providerSlug": "phala",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "xiaomi",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "gmicloud",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "xiaomi/mimo-v2.5",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-image-2",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "chutes",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "moonshotai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.6",
+      "providerSlug": "sail-research",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "anthropic",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.7:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "cloudflare",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-4-26b-a4b-it:free",
+      "providerSlug": "google-ai-studio",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "together",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "providerSlug": "sambanova",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-4-31b-it:free",
+      "providerSlug": "google-ai-studio",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "z-ai/glm-5v-turbo",
+      "providerSlug": "z-ai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/lyria-3-pro-preview",
+      "providerSlug": "google-ai-studio",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/lyria-3-clip-preview",
+      "providerSlug": "google-ai-studio",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "rekaai/reka-edge",
+      "providerSlug": "reka",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-nano",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-nano",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-nano",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-nano:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.4-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-mini:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.4-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-pro",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.4:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-27b",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.3-codex",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3.1-pro-preview:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "alibaba",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "phala",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "qwen/qwen3.5-397b-a17b",
+      "providerSlug": "gmicloud",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.6:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "moonshotai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "moonshotai/kimi-k2.5",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2-codex",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-3-flash-preview:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.2-chat",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2-chat",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.2",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.2:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "z-ai/glm-4.6v",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "z-ai/glm-4.6v",
+      "providerSlug": "z-ai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1-codex-max",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-2-lite-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-2-lite-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.1",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5.1-codex",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5.1-codex-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-premier-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "perplexity/sonar-pro-search",
+      "providerSlug": "perplexity",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "providerSlug": "nvidia",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-thinking",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-codex:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "z-ai/glm-4.5v",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "z-ai/glm-4.5v",
+      "providerSlug": "z-ai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-mini:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-5-nano",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-nano",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-nano",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-nano",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-5-nano:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-opus-4.1",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-opus-4.1:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "bytedance/ui-tars-1.5-7b",
+      "providerSlug": "parasail",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "baidu/ernie-4.5-vl-424b-a47b",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemini-2.5-flash:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "google/gemini-2.5-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/o3-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o3-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-opus-4",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "anthropic/claude-sonnet-4",
+      "providerSlug": "google-vertex",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "meta-llama/llama-guard-4-12b",
+      "providerSlug": "deepinfra",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "meta-llama/llama-guard-4-12b",
+      "providerSlug": "together",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o4-mini-high",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o4-mini-high:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/o3",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o3:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/o4-mini",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o4-mini:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-4.1",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-4.1-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1-mini:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-4.1-nano",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1-nano",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4.1-nano:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "meta-llama/llama-4-scout",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o1-pro",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o1-pro:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "mistralai/mistral-small-3.1-24b-instruct",
+      "providerSlug": "cloudflare",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "google/gemma-3-27b-it",
+      "providerSlug": "novita",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "perplexity/sonar-reasoning-pro",
+      "providerSlug": "perplexity",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "perplexity/sonar-pro",
+      "providerSlug": "perplexity",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "perplexity/sonar",
+      "providerSlug": "perplexity",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "minimax/minimax-01",
+      "providerSlug": "minimax",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o1",
+      "providerSlug": "openai",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/o1:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "amazon/nova-lite-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-lite-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-pro-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "amazon/nova-pro-v1",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o-2024-08-06",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o-mini",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o-mini:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-4o",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o-2024-05-13",
+      "providerSlug": "azure",
+      "reason": "modalité image ou paramètres stricts absents"
+    },
+    {
+      "model": "openai/gpt-4o:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "openai/gpt-4-turbo:batch",
+      "providerSlug": "tous",
+      "reason": "variante batch asynchrone"
+    },
+    {
+      "model": "anthropic/claude-3-haiku",
+      "providerSlug": "amazon-bedrock",
+      "reason": "modalité image ou paramètres stricts absents"
+    }
+  ],
+  "notEvaluated": []
+}

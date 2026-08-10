@@ -1,0 +1,135 @@
+{
+  "model": "mistralai/ministral-8b-2512",
+  "requestedProvider": "mistral",
+  "page": "h",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "Thon rôti méditerranéen",
+        "type": "plat",
+        "servings": 6,
+        "ingredients": [
+          {
+            "raw": "1 tranche de thon de 1 kg",
+            "quantity": 1,
+            "unit": null,
+            "label": "kg"
+          },
+          {
+            "raw": "4 oignons",
+            "quantity": 4,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "3 cuillères à soupe d’huile d’olive",
+            "quantity": 3,
+            "unit": null,
+            "label": "cuillères à soupe"
+          },
+          {
+            "raw": "3 gousses d’ail",
+            "quantity": 3,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "1 bouquet garni",
+            "quantity": 1,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "100 g d’olives noires dénoyautées",
+            "quantity": 100,
+            "unit": null,
+            "label": "g"
+          },
+          {
+            "raw": "3 citrons confits",
+            "quantity": 3,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Le jus de 2 citrons",
+            "quantity": 2,
+            "unit": null,
+            "label": "jus de citrons"
+          },
+          {
+            "raw": "Sel et poivre",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Saler et poivrer le poisson.",
+          "Le piquer de gousses d’ail et de la moitié des olives.",
+          "Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l’huile d’olive pendant 5 min.",
+          "Les retirer de la poêle et les réserver.",
+          "Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.",
+          "Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.",
+          "Laisser cuire 20 min."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306554-PE5gkoFHDlQfpzQ8Swtr",
+    "object": "chat.completion",
+    "created": 1786306554,
+    "model": "mistralai/ministral-8b-2512",
+    "provider": "Mistral",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"Thon rôti méditerranéen\",\n      \"type\": \"plat\",\n      \"servings\": 6,\n      \"ingredients\": [\n        {\n          \"raw\": \"1 tranche de thon de 1 kg\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": \"kg\"\n        },\n        {\n          \"raw\": \"4 oignons\",\n          \"quantity\": 4,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"3 cuillères à soupe d’huile d’olive\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": \"cuillères à soupe\"\n        },\n        {\n          \"raw\": \"3 gousses d’ail\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"1 bouquet garni\",\n          \"quantity\": 1,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"100 g d’olives noires dénoyautées\",\n          \"quantity\": 100,\n          \"unit\": null,\n          \"label\": \"g\"\n        },\n        {\n          \"raw\": \"3 citrons confits\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Le jus de 2 citrons\",\n          \"quantity\": 2,\n          \"unit\": null,\n          \"label\": \"jus de citrons\"\n        },\n        {\n          \"raw\": \"Sel et poivre\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        }\n      ],\n      \"steps\": [\n        \"Saler et poivrer le poisson.\",\n        \"Le piquer de gousses d’ail et de la moitié des olives.\",\n        \"Peler et émincer les oignons, les faire fondre doucement dans une poêle avec l’huile d’olive pendant 5 min.\",\n        \"Les retirer de la poêle et les réserver.\",\n        \"Faire revenir le thon dans la même poêle, à feu vif, 3 min de chaque côté.\",\n        \"Baisser le feu, ajouter les oignons, le jus de citron, les citrons confits et les olives restantes.\",\n        \"Laisser cuire 20 min.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 2775,
+      "completion_tokens": 545,
+      "total_tokens": 3320,
+      "cost": 0.00013971,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 2654,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00013971,
+        "upstream_inference_prompt_cost": 0.00005796,
+        "upstream_inference_completions_cost": 0.00008175
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 7581.591083000007,
+  "actualCostUsd": 0.00013971,
+  "servedProvider": "Mistral",
+  "repairs": []
+}

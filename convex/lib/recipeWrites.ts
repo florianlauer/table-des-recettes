@@ -1,4 +1,4 @@
-import { buildSearchText } from "../../src/lib/normalize";
+import { buildSearchText } from '../../src/lib/normalize'
 
 /**
  * The only authorised entry point for writing the (title, ingredients) pair.
@@ -7,5 +7,8 @@ import { buildSearchText } from "../../src/lib/normalize";
 export function withSearchText<
   T extends { title: string; ingredients: readonly { raw: string }[] },
 >(fields: T): T & { searchText: string } {
-  return { ...fields, searchText: buildSearchText(fields.title, fields.ingredients) };
+  return {
+    ...fields,
+    searchText: buildSearchText(fields.title, fields.ingredients),
+  }
 }

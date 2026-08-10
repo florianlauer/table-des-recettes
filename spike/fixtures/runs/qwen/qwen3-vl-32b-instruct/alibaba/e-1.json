@@ -1,0 +1,205 @@
+{
+  "model": "qwen/qwen3-vl-32b-instruct",
+  "requestedProvider": "alibaba",
+  "page": "e",
+  "pass": 1,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "LE SOUFFLÉ AU FROMAGE LA VERSION TRADI",
+        "type": "plat",
+        "servings": 3,
+        "ingredients": [
+          {
+            "raw": "Beurrez un moule à soufflé de 16 cm de diamètre.",
+            "quantity": null,
+            "unit": null,
+            "label": "moule à soufflé de 16 cm de diamètre"
+          },
+          {
+            "raw": "Cassez 4 œufs en séparant les blancs des jaunes.",
+            "quantity": 4,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+            "quantity": 2,
+            "unit": "pincées",
+            "label": "sel"
+          },
+          {
+            "raw": "Faites bouillir 25 cl de lait.",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait"
+          },
+          {
+            "raw": "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+            "quantity": 40,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+            "quantity": 40,
+            "unit": "g",
+            "label": "farine"
+          },
+          {
+            "raw": "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+            "quantity": 1,
+            "unit": "c. à soupe",
+            "label": "crème épaisse"
+          },
+          {
+            "raw": "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+            "quantity": null,
+            "unit": null,
+            "label": "sel"
+          },
+          {
+            "raw": "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+            "quantity": null,
+            "unit": null,
+            "label": "poivre"
+          },
+          {
+            "raw": "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+            "quantity": null,
+            "unit": null,
+            "label": "noix muscade"
+          },
+          {
+            "raw": "et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+            "quantity": 1,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "en incorporant 100 g de comté finement râpé par cuillerées.",
+            "quantity": 100,
+            "unit": "g",
+            "label": "comté finement râpé"
+          }
+        ],
+        "steps": [
+          "Beurrez un moule à soufflé de 16 cm de diamètre. Préchauffez le four à 180 °C.",
+          "Cassez 4 œufs en séparant les blancs des jaunes. Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+          "Faites bouillir 25 cl de lait. Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+          "Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse. Retirez du feu.",
+          "Incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+          "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+          "Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole. Mélangez vivement au fouet puis versez ce mélange dans le reste des blancs.",
+          "Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.",
+          "Versez la préparation dans le moule qu'elle doit remplir aux 3/4. Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré. Servez aussitôt."
+        ]
+      },
+      {
+        "title": "LA VERSION LIGHT DE DAVID ZUDDAS*",
+        "type": "plat",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.",
+            "quantity": 300,
+            "unit": "g",
+            "label": "pommes de terre"
+          },
+          {
+            "raw": "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait chaud"
+          },
+          {
+            "raw": "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+            "quantity": 120,
+            "unit": "g",
+            "label": "comté râpé fin"
+          },
+          {
+            "raw": "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+            "quantity": 6,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+            "quantity": 8,
+            "unit": null,
+            "label": "blancs d'œufs"
+          },
+          {
+            "raw": "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.",
+            "quantity": 8,
+            "unit": "cercles",
+            "label": "papier sulfurisé"
+          }
+        ],
+        "steps": [
+          "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes. Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+          "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+          "Préchauffez le four à 170 °C.",
+          "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser. Versez-y la préparation et glissez 15 mn au four.",
+          "Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier. Servez aussitôt, accompagné de mesclun et de tranches de magret fumé."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786308971-8kD2Tk7JordSSstOjVFe",
+    "object": "chat.completion",
+    "created": 1786308971,
+    "model": "qwen/qwen3-vl-32b-instruct",
+    "provider": "Alibaba",
+    "system_fingerprint": null,
+    "service_tier": null,
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"ingredients\": [\n        {\n          \"label\": \"moule à soufflé de 16 cm de diamètre\",\n          \"quantity\": null,\n          \"raw\": \"Beurrez un moule à soufflé de 16 cm de diamètre.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"œufs\",\n          \"quantity\": 4,\n          \"raw\": \"Cassez 4 œufs en séparant les blancs des jaunes.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"sel\",\n          \"quantity\": 2,\n          \"raw\": \"Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\n          \"unit\": \"pincées\"\n        },\n        {\n          \"label\": \"lait\",\n          \"quantity\": 25,\n          \"raw\": \"Faites bouillir 25 cl de lait.\",\n          \"unit\": \"cl\"\n        },\n        {\n          \"label\": \"beurre\",\n          \"quantity\": 40,\n          \"raw\": \"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\n          \"unit\": \"g\"\n        },\n        {\n          \"label\": \"farine\",\n          \"quantity\": 40,\n          \"raw\": \"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\n          \"unit\": \"g\"\n        },\n        {\n          \"label\": \"crème épaisse\",\n          \"quantity\": 1,\n          \"raw\": \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n          \"unit\": \"c. à soupe\"\n        },\n        {\n          \"label\": \"sel\",\n          \"quantity\": null,\n          \"raw\": \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"poivre\",\n          \"quantity\": null,\n          \"raw\": \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"noix muscade\",\n          \"quantity\": null,\n          \"raw\": \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"jaunes d'œufs\",\n          \"quantity\": 1,\n          \"raw\": \"et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"comté finement râpé\",\n          \"quantity\": 100,\n          \"raw\": \"en incorporant 100 g de comté finement râpé par cuillerées.\",\n          \"unit\": \"g\"\n        }\n      ],\n      \"servings\": 3,\n      \"steps\": [\n        \"Beurrez un moule à soufflé de 16 cm de diamètre. Préchauffez le four à 180 °C.\",\n        \"Cassez 4 œufs en séparant les blancs des jaunes. Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\n        \"Faites bouillir 25 cl de lait. Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\n        \"Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse. Retirez du feu.\",\n        \"Incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\n        \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n        \"Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole. Mélangez vivement au fouet puis versez ce mélange dans le reste des blancs.\",\n        \"Mélangez avec une spatule souple, en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté finement râpé par cuillerées.\",\n        \"Versez la préparation dans le moule qu'elle doit remplir aux 3/4. Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré. Servez aussitôt.\"\n      ],\n      \"title\": \"LE SOUFFLÉ AU FROMAGE LA VERSION TRADI\",\n      \"type\": \"plat\"\n    },\n    {\n      \"ingredients\": [\n        {\n          \"label\": \"pommes de terre\",\n          \"quantity\": 300,\n          \"raw\": \"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.\",\n          \"unit\": \"g\"\n        },\n        {\n          \"label\": \"lait chaud\",\n          \"quantity\": 25,\n          \"raw\": \"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\n          \"unit\": \"cl\"\n        },\n        {\n          \"label\": \"comté râpé fin\",\n          \"quantity\": 120,\n          \"raw\": \"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\n          \"unit\": \"g\"\n        },\n        {\n          \"label\": \"jaunes d'œufs\",\n          \"quantity\": 6,\n          \"raw\": \"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"blancs d'œufs\",\n          \"quantity\": 8,\n          \"raw\": \"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\n          \"unit\": null\n        },\n        {\n          \"label\": \"papier sulfurisé\",\n          \"quantity\": 8,\n          \"raw\": \"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.\",\n          \"unit\": \"cercles\"\n        }\n      ],\n      \"servings\": 8,\n      \"steps\": [\n        \"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes. Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\n        \"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\n        \"Préchauffez le four à 170 °C.\",\n        \"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser. Versez-y la préparation et glissez 15 mn au four.\",\n        \"Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier. Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.\"\n      ],\n      \"title\": \"LA VERSION LIGHT DE DAVID ZUDDAS*\",\n      \"type\": \"plat\"\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 3273,
+      "completion_tokens": 1813,
+      "total_tokens": 5086,
+      "cost": 0.0010946,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0010946,
+        "upstream_inference_prompt_cost": 0.000340392,
+        "upstream_inference_completions_cost": 0.000754208
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 22288.53141699999,
+  "actualCostUsd": 0.0010946,
+  "servedProvider": "Alibaba",
+  "repairs": []
+}

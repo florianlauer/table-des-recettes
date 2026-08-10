@@ -1,0 +1,250 @@
+{
+  "model": "google/gemini-2.5-flash-lite",
+  "requestedProvider": "google-ai-studio",
+  "page": "e",
+  "pass": 2,
+  "promptVersion": "v2",
+  "schemaVersion": "1",
+  "dataCollection": null,
+  "status": "success",
+  "parsed": {
+    "recipes": [
+      {
+        "title": "LE SOUFFLÉ AU FROMAGE",
+        "type": "plat",
+        "servings": 4,
+        "ingredients": [
+          {
+            "raw": "Beurrez un moule à soufflé de 16 cm de diamètre.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Préchauffez le four à 180 °C.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Cassez 4 œufs en séparant les blancs des jaunes.",
+            "quantity": 4,
+            "unit": null,
+            "label": "œufs"
+          },
+          {
+            "raw": "Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+            "quantity": 2,
+            "unit": "pincées",
+            "label": "sel"
+          },
+          {
+            "raw": "Faites bouillir 25 cl de lait.",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait"
+          },
+          {
+            "raw": "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+            "quantity": 40,
+            "unit": "g",
+            "label": "beurre"
+          },
+          {
+            "raw": "Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse.",
+            "quantity": 5,
+            "unit": "mn",
+            "label": null
+          },
+          {
+            "raw": "Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+            "quantity": 3,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+            "quantity": 1,
+            "unit": "c. à soupe",
+            "label": "crème épaisse"
+          },
+          {
+            "raw": "Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.",
+            "quantity": null,
+            "unit": null,
+            "label": "blancs d'œufs"
+          },
+          {
+            "raw": "Mélangez avec une spatule souple en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté râpé par cuillérées.",
+            "quantity": 100,
+            "unit": "g",
+            "label": "comté râpé"
+          },
+          {
+            "raw": "Versez la préparation dans le moule qu'elle doit remplir aux 3/4.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré.",
+            "quantity": 30,
+            "unit": "mn",
+            "label": null
+          },
+          {
+            "raw": "Servez aussitôt.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Beurrez un moule à soufflé de 16 cm de diamètre.",
+          "Préchauffez le four à 180 °C.",
+          "Cassez 4 œufs en séparant les blancs des jaunes.",
+          "Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.",
+          "Faites bouillir 25 cl de lait.",
+          "Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.",
+          "Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse.",
+          "Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.",
+          "Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.",
+          "Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.",
+          "Mélangez avec une spatule souple en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté râpé par cuillérées.",
+          "Versez la préparation dans le moule qu'elle doit remplir aux 3/4.",
+          "Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré.",
+          "Servez aussitôt."
+        ]
+      },
+      {
+        "title": "LA VERSION LIGHT DE DAVID ZUDDAS",
+        "type": "plat",
+        "servings": 8,
+        "ingredients": [
+          {
+            "raw": "Bousculé par ce chef ultra créatif, servi avec magret et salade, le soufflé au fromage devient un vrai plat complet et diététiquement correct.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Pour 8 personnes.",
+            "quantity": 8,
+            "unit": null,
+            "label": "personnes"
+          },
+          {
+            "raw": "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.",
+            "quantity": 300,
+            "unit": "g",
+            "label": "pommes de terre"
+          },
+          {
+            "raw": "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+            "quantity": 25,
+            "unit": "cl",
+            "label": "lait chaud"
+          },
+          {
+            "raw": "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+            "quantity": 6,
+            "unit": null,
+            "label": "jaunes d'œufs"
+          },
+          {
+            "raw": "Préchauffez le four à 170 °C.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.",
+            "quantity": 8,
+            "unit": null,
+            "label": "cercles de papier sulfurisé"
+          },
+          {
+            "raw": "Versez-y la préparation et glissez 15 mn au four.",
+            "quantity": 15,
+            "unit": "mn",
+            "label": null
+          },
+          {
+            "raw": "Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          },
+          {
+            "raw": "Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.",
+            "quantity": null,
+            "unit": null,
+            "label": null
+          }
+        ],
+        "steps": [
+          "Bousculé par ce chef ultra créatif, servi avec magret et salade, le soufflé au fromage devient un vrai plat complet et diététiquement correct.",
+          "Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.",
+          "Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.",
+          "Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.",
+          "Préchauffez le four à 170 °C.",
+          "Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.",
+          "Versez-y la préparation et glissez 15 mn au four.",
+          "Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.",
+          "Servez aussitôt, accompagné de mesclun et de tranches de magret fumé."
+        ]
+      }
+    ]
+  },
+  "raw": {
+    "id": "gen-1786306021-1gsTiH2uWW8TrSBkhA0p",
+    "object": "chat.completion",
+    "created": 1786306021,
+    "model": "google/gemini-2.5-flash-lite",
+    "provider": "Google AI Studio",
+    "system_fingerprint": null,
+    "service_tier": "default",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "STOP",
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"recipes\": [\n    {\n      \"title\": \"LE SOUFFLÉ AU FROMAGE\",\n      \"type\": \"plat\",\n      \"servings\": 4,\n      \"ingredients\": [\n        {\n          \"raw\": \"Beurrez un moule à soufflé de 16 cm de diamètre.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Préchauffez le four à 180 °C.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Cassez 4 œufs en séparant les blancs des jaunes.\",\n          \"quantity\": 4,\n          \"unit\": null,\n          \"label\": \"œufs\"\n        },\n        {\n          \"raw\": \"Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\n          \"quantity\": 2,\n          \"unit\": \"pincées\",\n          \"label\": \"sel\"\n        },\n        {\n          \"raw\": \"Faites bouillir 25 cl de lait.\",\n          \"quantity\": 25,\n          \"unit\": \"cl\",\n          \"label\": \"lait\"\n        },\n        {\n          \"raw\": \"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\n          \"quantity\": 40,\n          \"unit\": \"g\",\n          \"label\": \"beurre\"\n        },\n        {\n          \"raw\": \"Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse.\",\n          \"quantity\": 5,\n          \"unit\": \"mn\",\n          \"label\": null\n        },\n        {\n          \"raw\": \"Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\n          \"quantity\": 3,\n          \"unit\": null,\n          \"label\": \"jaunes d'œufs\"\n        },\n        {\n          \"raw\": \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n          \"quantity\": 1,\n          \"unit\": \"c. à soupe\",\n          \"label\": \"crème épaisse\"\n        },\n        {\n          \"raw\": \"Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": \"blancs d'œufs\"\n        },\n        {\n          \"raw\": \"Mélangez avec une spatule souple en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté râpé par cuillérées.\",\n          \"quantity\": 100,\n          \"unit\": \"g\",\n          \"label\": \"comté râpé\"\n        },\n        {\n          \"raw\": \"Versez la préparation dans le moule qu'elle doit remplir aux 3/4.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré.\",\n          \"quantity\": 30,\n          \"unit\": \"mn\",\n          \"label\": null\n        },\n        {\n          \"raw\": \"Servez aussitôt.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        }\n      ],\n      \"steps\": [\n        \"Beurrez un moule à soufflé de 16 cm de diamètre.\",\n        \"Préchauffez le four à 180 °C.\",\n        \"Cassez 4 œufs en séparant les blancs des jaunes.\",\n        \"Mettez les blancs dans un saladier, ajoutez 2 pincées de sel.\",\n        \"Faites bouillir 25 cl de lait.\",\n        \"Faites fondre 40 g de beurre dans une casserole, ajoutez 40 g de farine et mélangez 1 mn sur feu doux.\",\n        \"Versez le lait bouillant en filet, sans cesser de remuer, et laissez épaissir sur feu doux, en tournant sans cesse 5 mn, jusqu'à obtention d'une crème épaisse.\",\n        \"Retirez du feu et incorporez un à un 3 jaunes d'œufs, en fouettant toujours.\",\n        \"Ajoutez 1 c. à soupe de crème épaisse, sel, poivre et noix muscade.\",\n        \"Battez les blancs d'œufs en neige pas trop ferme puis ajoutez-en 1/4 dans la casserole.\",\n        \"Mélangez avec une spatule souple en soulevant la préparation (et non en la tournant), en incorporant 100 g de comté râpé par cuillérées.\",\n        \"Versez la préparation dans le moule qu'elle doit remplir aux 3/4.\",\n        \"Glissez au four et laissez cuire 30 mn, jusqu'à ce que le soufflé soit gonflé et doré.\",\n        \"Servez aussitôt.\"\n      ]\n    },\n    {\n      \"title\": \"LA VERSION LIGHT DE DAVID ZUDDAS\",\n      \"type\": \"plat\",\n      \"servings\": 8,\n      \"ingredients\": [\n        {\n          \"raw\": \"Bousculé par ce chef ultra créatif, servi avec magret et salade, le soufflé au fromage devient un vrai plat complet et diététiquement correct.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Pour 8 personnes.\",\n          \"quantity\": 8,\n          \"unit\": null,\n          \"label\": \"personnes\"\n        },\n        {\n          \"raw\": \"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.\",\n          \"quantity\": 300,\n          \"unit\": \"g\",\n          \"label\": \"pommes de terre\"\n        },\n        {\n          \"raw\": \"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\n          \"quantity\": 25,\n          \"unit\": \"cl\",\n          \"label\": \"lait chaud\"\n        },\n        {\n          \"raw\": \"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\n          \"quantity\": 6,\n          \"unit\": null,\n          \"label\": \"jaunes d'œufs\"\n        },\n        {\n          \"raw\": \"Préchauffez le four à 170 °C.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.\",\n          \"quantity\": 8,\n          \"unit\": null,\n          \"label\": \"cercles de papier sulfurisé\"\n        },\n        {\n          \"raw\": \"Versez-y la préparation et glissez 15 mn au four.\",\n          \"quantity\": 15,\n          \"unit\": \"mn\",\n          \"label\": null\n        },\n        {\n          \"raw\": \"Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        },\n        {\n          \"raw\": \"Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.\",\n          \"quantity\": null,\n          \"unit\": null,\n          \"label\": null\n        }\n      ],\n      \"steps\": [\n        \"Bousculé par ce chef ultra créatif, servi avec magret et salade, le soufflé au fromage devient un vrai plat complet et diététiquement correct.\",\n        \"Faites cuire 300 g de pommes de terre à la vapeur puis réduisez-les en fine purée au moulin à légumes.\",\n        \"Incorporez-y 25 cl de lait chaud et 120 g de comté râpé fin.\",\n        \"Ajoutez 6 jaunes d'œufs, puis, délicatement, 8 blancs en neige.\",\n        \"Préchauffez le four à 170 °C.\",\n        \"Chemisez 8 cercles de papier sulfurisé, en le faisant dépasser.\",\n        \"Versez-y la préparation et glissez 15 mn au four.\",\n        \"Lorsque les soufflés sont cuits, dressez-les dans des assiettes et retirez le cercle et le papier.\",\n        \"Servez aussitôt, accompagné de mesclun et de tranches de magret fumé.\"\n      ]\n    }\n  ]\n}",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 673,
+      "completion_tokens": 2092,
+      "total_tokens": 2765,
+      "cost": 0.00085532,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 542,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00085532,
+        "upstream_inference_prompt_cost": 0.00001852,
+        "upstream_inference_completions_cost": 0.0008368
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "attempts": 1,
+  "latencyMs": 5661.700125000003,
+  "actualCostUsd": 0.00085532,
+  "servedProvider": "Google AI Studio",
+  "repairs": []
+}
