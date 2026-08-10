@@ -443,3 +443,27 @@ restreint à rien ; et les données périmées d'une preview réutilisée quand 
   le repli d'embellissement (R6) — aucun rapport avec le déploiement.
 - **Toute optimisation de build** : régions, cache, ISR, images Vercel. Le site est une vitrine
   SSR pour un seul foyer.
+
+---
+
+## Exécution — 2026-08-10
+
+Le plan a été appliqué tel quel. Ce qui a divergé ou s'est décidé en route :
+
+- **Région : US East, assumée.** Le déploiement `prod` a été créé avant que la question ne se pose,
+  et Convex ne sait pas déplacer un déploiement existant : passer en EU voulait dire le supprimer,
+  le recréer et refaire ses clés. Le passage aurait aussi coûté la perte des limites incluses plus
+  une surcharge de 30 %, pour un site que consulte un seul foyer. Décision : on reste en US, et la
+  fonction SSR Vercel reste sur son `iad1` par défaut, cohérent avec le backend.
+- **R5 est levé, sans incident.** `convex deploy` installe le composant `@convex-dev/rate-limiter`
+  sur un déploiement de production comme sur le dev ; `admin.js:createScan`, qui appelle
+  `rateLimiter.limit`, est bien poussé. Aucune manipulation supplémentaire n'a été nécessaire.
+- **Le premier déploiement de production est parti du CLI, pas d'un push.** La liaison git a été
+  faite après le merge de la PR #7, et Vercel ne construit qu'au push suivant : il n'y en avait
+  pas. `vercel deploy --prod` a donc publié le contenu de `main` par le même `vercel.json` et le
+  même `CONVEX_DEPLOY_KEY`. Ce que ça ne prouve pas : que le déclencheur git fonctionne. Le premier
+  merge suivant sur `main` en fait la preuve.
+- **Vérification de production** — `/` répond 200 sans session Vercel, l'URL générée répond 302
+  vers l'authentification (la protection est active), l'en-tête `X-Robots-Tag: noindex, nofollow`
+  et `<meta name="robots">` sont présents, `/robots.txt` sert bien `Disallow: /`, le bundle porte
+  `https://fleet-bat-50.convex.cloud`, et `admin:listScans` refuse un appel sans `adminToken`.

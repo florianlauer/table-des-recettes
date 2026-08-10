@@ -1,6 +1,6 @@
 # Suivi d'avancement
 
-État du projet au **2026-08-10**, `main` à `0bbc781`. Ce fichier dit **où on en est** ; il ne
+État du projet au **2026-08-10**, `main` à `b544547`. Ce fichier dit **où on en est** ; il ne
 remplace pas le contenu des tâches, qui reste dans
 [`specs/2026-08-08-table-des-recettes-tasks.md`](./superpowers/specs/2026-08-08-table-des-recettes-tasks.md).
 
@@ -23,16 +23,16 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`      |
 | **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`       |
 | **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                           |
+| **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`       |
 | **T7**  | Rétention `purgeAfter`                   | P2  | ⬜     | —                           | champs et index posés, logique absente               |
 | **T8**  | Scan multi-images + écran de correction  | P2  | ⬜     | —                           | `imageStorageIds` borné à 1 à l'entrée               |
 | **T9**  | Export automatique versionné dans git    | P2  | ⬜     | —                           | —                                                    |
 | **T10** | Compteurs de file + bouton relancer      | P2  | ⬜     | —                           | bouton nu posé dans `src/routes/admin.tsx`           |
 | **T11** | Durcissement de l'appel OpenRouter       | P2  | ⬜     | —                           | `lastAttempt` posé sur le scan, conçu pour déménager |
 | **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre    |
-| **T12** | Câbler Convex ↔ Vercel                   | P3  | ⬜     | —                           | —                                                    |
 
-**Reste à faire : 7 tâches, ~18 h humaines estimées** (T7 1 h · T8 4 h · T9 4 h · T10 1 h ·
-T11 1 h · T14 5 h · T12 2 h).
+**Reste à faire : 6 tâches, ~16 h humaines estimées** (T7 1 h · T8 4 h · T9 4 h · T10 1 h ·
+T11 1 h · T14 5 h).
 
 ---
 
@@ -46,6 +46,10 @@ T11 1 h · T14 5 h · T12 2 h).
   l'appel.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
+- **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
+  `fleet-bat-50` (région US East). `vercel.json` porte le build ; poser le label `preview` sur une
+  PR crée un backend Convex jetable avec une copie de la base de production et publie un frontend
+  derrière la protection de déploiement Vercel.
 
 Ce qui **n'existe pas encore** : la publication d'un brouillon. Aucune écriture de `slug`,
 `publishedAt` ni `status: 'published'` n'est implémentée — voir le reliquat R3.
@@ -89,10 +93,7 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   de `_storage` n'est sûr qu'avec la liste complète des propriétaires
   (`scans.imageStorageIds`, `recipes.imageStorageId`, `recipes.beautifiedStorageId`).
 
-- **R5 · `convex/convex.config.ts` est un fichier nouveau.** Monter le premier composant Convex
-  (`@convex-dev/rate-limiter`) l'a créé. Son effet sur le déploiement est à vérifier **avant** T12.
-
-- **R6 · Repli d'embellissement disponible et chiffré.** `PROMPT_V3` (`spike13/prompt.ts`) supprime
+- **R5 · Repli d'embellissement disponible et chiffré.** `PROMPT_V3` (`spike13/prompt.ts`) supprime
   l'inclinaison partout (7 franchissements sur 8 contre 5) au prix de +23 % de latence. À activer si
   des cadres inclinés apparaissent en usage réel — aucune mesure à refaire.
 
@@ -120,7 +121,7 @@ T9 export ─────┘
 
 T14 illustration (débloquée, parallèle — ne touche pas admin/ avant T8)
 
-T11 durcissement ──► T12 déploiement (après R5)
+T11 durcissement (indépendant)
 ```
 
 Lanes parallélisables : T9 (`convex/export.ts`) et T14 ne partagent aucun fichier avec T7/T8/T10.

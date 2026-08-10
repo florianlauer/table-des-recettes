@@ -278,7 +278,7 @@ livrable de T2, hors du socle.
     seul mainteneur, l'annotation suffit ; le critère « une PR mal formatée est bloquée » ci-dessus
     se lit donc « est signalée »
 
-- [ ] **T12 · P3 · déploiement** (human ~2h / CC ~20min) — Câbler Convex ↔ Vercel, previews comprises
+- [x] **T12 · P3 · déploiement** (human ~2h / CC ~20min) — Câbler Convex ↔ Vercel, previews comprises
   - **Origine** : Codex #3 — absent de la spec initiale
   - **Fichiers** : `package.json`, config Vercel
   - **Acquis de T13** : **aucun second fournisseur à câbler.** L'embellissement passe par la même
@@ -286,6 +286,14 @@ livrable de T2, hors du socle.
   - **Vérifier** : `npx convex deploy --cmd 'npm run build'` ; clés de déploiement production et
     preview distinctes ; variables d'environnement configurées sur les backends de preview, qui
     sont **vides et séparés**
+  - **Fait par PR #7** — production sur https://table-des-recettes.vercel.app, backend `fleet-bat-50`
+    (US East). Trois clés distinctes : déploiement production côté Vercel, `preview` et `backup`
+    production côté GitHub. Plan et revue adversariale dans
+    [`plans/2026-08-10-t12-deploiement/`](../plans/2026-08-10-t12-deploiement/)
+  - **Critère amendé** : les backends de preview ne sont **pas vides**. Le dépôt étant public, la
+    recette documentée par Convex (un `seed_data.zip` commité) est inapplicable ; une preview reçoit
+    donc une copie iso de la base de production, et son URL est fermée par la protection de
+    déploiement Vercel. Risque résiduel assumé et argumenté dans `PLAN-REVIEW-LOG.md`
 
 ---
 
