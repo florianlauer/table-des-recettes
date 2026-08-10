@@ -121,16 +121,56 @@ const MANDATORY_REASONING = /reasoning is mandatory/i
 export function normalizeProviderIdentifier(provider: string): string {
   return provider.toLocaleLowerCase('en').replace(/[\s_-]/g, '')
 }
+type UserContent = string | Array<Record<string, unknown>>
 
-export async function runVisionPass({
+type Answered = {
+  status: 'answered'
+  raw: OpenRouterResponse
+  content: string
+  attempts: number
+  latencyMs: number
+  actualCostUsd: number
+  servedProvider: string
+}
+
+/** Everything the transport can conclude on its own, without reading the answer's content. */
+export type TransportResult = Answered | PassFailure | PassInconclusive
+
+export type EndpointCall = {
+  model: string
+  providerSlug: string
+  // The response returns the display name ("Google"), never the routing slug ("google-vertex").
+  providerName: string
+  apiKey: string
+  budget: BudgetCounter
+  maximumEstimatedCostUsd: number
+  // Reasoning models reject `temperature` instead of ignoring it: sending it turns a capable endpoint
+  // into a 400. Their determinism comes from the model, not from the parameter.
+  supportsTemperature?: boolean
+  // Transcribing a page is a reading task, not a puzzle, and a model that thinks freely truncates its
+  // own answer. `effort: "low"` is measurably a no-op — alibaba returned *more* reasoning tokens with
+  // it than without — so the only lever that works is switching reasoning off. Endpoints that make it
+  // mandatory answer 400, and the call replays without the field.
+  disableReasoning?: boolean
+  maxTokens?: number
+  fetchImpl?: Fetch
+  sleep?: (milliseconds: number) => Promise<void>
+  timeoutMs?: number
+  onCostRecorded?: () => Promise<void>
+}
+
+// The single place that talks to OpenRouter. Both the extraction pass and the correction pass go
+// through it, so budget discipline, retries, provider attribution and the infrastructure-versus-model
+// split are written once. A second client would inherit none of them: `runCorrectionPass` used to be
+// one, and it silently sent `temperature` to endpoints that answer 400 to it.
+async function callEndpoint({
+  content,
   model,
   providerSlug,
   providerName,
-  imagePath,
   apiKey,
   budget,
   maximumEstimatedCostUsd,
-  dataCollection,
   supportsTemperature = true,
   disableReasoning = false,
   maxTokens = MAX_OUTPUT_TOKENS,
@@ -139,38 +179,19 @@ export async function runVisionPass({
     new Promise((resolveSleep) => setTimeout(resolveSleep, milliseconds)),
   timeoutMs = REQUEST_TIMEOUT_MS,
   onCostRecorded = async () => undefined,
-}: {
-  model: string
-  providerSlug: string
-  // The response returns the display name ("Google"), never the routing slug ("google-vertex").
-  providerName: string
-  imagePath: string
-  apiKey: string
-  budget: BudgetCounter
-  maximumEstimatedCostUsd: number
-  dataCollection: string | null
-  // Reasoning models reject `temperature` instead of ignoring it: sending it turns a capable endpoint
-  // into a 400. Their determinism comes from the model, not from the parameter.
-  supportsTemperature?: boolean
-  // Transcribing a page is a reading task, not a puzzle, and a model that thinks freely truncates its
-  // own answer. `effort: "low"` is measurably a no-op — alibaba returned *more* reasoning tokens with
-  // it than without — so the only lever that works is switching reasoning off. Endpoints that make it
-  // mandatory answer 400, and the call retries once without the field.
-  disableReasoning?: boolean
-  maxTokens?: number
-  fetchImpl?: Fetch
-  sleep?: (milliseconds: number) => Promise<void>
-  timeoutMs?: number
-  onCostRecorded?: () => Promise<void>
-}): Promise<PassResult> {
-  const image = await readFile(imagePath)
-  const contentType = imagePath.toLowerCase().endsWith('.png')
-    ? 'image/png'
-    : 'image/jpeg'
+}: EndpointCall & { content: UserContent }): Promise<TransportResult> {
   const startedAt = performance.now()
   let totalCost = 0
   let lastTransient = 'Erreur transitoire inconnue'
   let reasoningOff = disableReasoning
+
+  // Charging happens before any classification and is persisted on the spot: a `HarnessError` thrown
+  // afterwards must never leave a spend counted in memory and absent from disk.
+  const charge = async (amount: number): Promise<void> => {
+    budget.record(amount)
+    totalCost += amount
+    await onCostRecorded()
+  }
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
     budget.assertCanSpend(maximumEstimatedCostUsd)
@@ -188,20 +209,7 @@ export async function runVisionPass({
           signal: controller.signal,
           body: JSON.stringify({
             model,
-            messages: [
-              {
-                role: 'user',
-                content: [
-                  { type: 'text', text: EXTRACTION_PROMPT },
-                  {
-                    type: 'image_url',
-                    image_url: {
-                      url: `data:${contentType};base64,${image.toString('base64')}`,
-                    },
-                  },
-                ],
-              },
-            ],
+            messages: [{ role: 'user', content }],
             ...(supportsTemperature ? { temperature: 0 } : {}),
             ...(reasoningOff ? { reasoning: { enabled: false } } : {}),
             max_tokens: maxTokens,
@@ -230,15 +238,12 @@ export async function runVisionPass({
         raw = { error: { message: responseText || `HTTP ${response.status}` } }
       }
       const errorMessage = raw.error?.message ?? responseText
+      const reportedCost = actualCost(raw)
+
       if (!response.ok) {
-        const reportedCost = actualCost(raw)
-        if (reportedCost !== null) {
-          budget.record(reportedCost)
-          totalCost += reportedCost
-          await onCostRecorded()
-        }
+        if (reportedCost !== null) await charge(reportedCost)
         // Refusing to switch reasoning off says nothing about the model's ability to read a page:
-        // the request is simply retried as it would have been sent without the field.
+        // the request is simply replayed as it would have been sent without the field.
         if (reasoningOff && MANDATORY_REASONING.test(errorMessage)) {
           reasoningOff = false
           attempt -= 1
@@ -271,44 +276,19 @@ export async function runVisionPass({
             actualCostUsd: totalCost,
           }
         }
+        // An unattributable error stops the run, so the worst case is charged first: the walk states
+        // that every `HarnessError` it absorbs has already been paid for, and that has to be true.
+        if (reportedCost === null) await charge(maximumEstimatedCostUsd)
         throw new HarnessError(
           `Erreur OpenRouter non évaluable — HTTP ${response.status}: ${errorMessage}`,
         )
       }
 
-      const reportedCost = actualCost(raw)
-      const cost = reportedCost ?? maximumEstimatedCostUsd
-      budget.record(cost)
-      totalCost += cost
-      await onCostRecorded()
+      await charge(reportedCost ?? maximumEstimatedCostUsd)
       if (reportedCost === null) {
         throw new HarnessError(
           `usage.cost absent ; ${maximumEstimatedCostUsd} USD imputé par prudence. Arrêt du harnais.`,
         )
-      }
-
-      const choice = raw.choices?.[0]
-      if (choice?.message?.refusal) {
-        return {
-          status: 'failure',
-          reason: 'refusal',
-          detail: choice.message.refusal,
-          raw,
-          attempts: attempt,
-          latencyMs: performance.now() - startedAt,
-          actualCostUsd: totalCost,
-        }
-      }
-      if (choice?.finish_reason !== 'stop') {
-        return {
-          status: 'failure',
-          reason: 'truncation',
-          detail: `finish_reason=${String(choice?.finish_reason)}`,
-          raw,
-          attempts: attempt,
-          latencyMs: performance.now() - startedAt,
-          actualCostUsd: totalCost,
-        }
       }
       if (
         typeof raw.provider !== 'string' ||
@@ -320,42 +300,34 @@ export async function runVisionPass({
         )
       }
 
-      let parsedJson: unknown
-      try {
-        parsedJson = JSON.parse(choice.message?.content ?? '')
-      } catch (error) {
-        return {
-          status: 'failure',
-          reason: 'invalid_schema',
-          detail: `JSON invalide : ${String(error)}`,
-          raw,
-          attempts: attempt,
-          latencyMs: performance.now() - startedAt,
-          actualCostUsd: totalCost,
-        }
-      }
-      const { value: repairedJson, repairs } = repairExtraction(parsedJson)
-      const validated = extractionSchema.safeParse(repairedJson)
-      if (!validated.success) {
-        return {
-          status: 'failure',
-          reason: 'invalid_schema',
-          detail: validated.error.message,
-          raw,
-          attempts: attempt,
-          latencyMs: performance.now() - startedAt,
-          actualCostUsd: totalCost,
-        }
-      }
-      return {
-        status: 'success',
-        parsed: validated.data,
+      const settled = {
         raw,
         attempts: attempt,
         latencyMs: performance.now() - startedAt,
         actualCostUsd: totalCost,
+      }
+      const choice = raw.choices?.[0]
+      if (choice?.message?.refusal) {
+        return {
+          status: 'failure',
+          reason: 'refusal',
+          detail: choice.message.refusal,
+          ...settled,
+        }
+      }
+      if (choice?.finish_reason !== 'stop') {
+        return {
+          status: 'failure',
+          reason: 'truncation',
+          detail: `finish_reason=${String(choice?.finish_reason)}`,
+          ...settled,
+        }
+      }
+      return {
+        status: 'answered',
+        content: choice.message?.content ?? '',
         servedProvider: raw.provider,
-        repairs,
+        ...settled,
       }
     } catch (error) {
       const message =
@@ -387,6 +359,83 @@ export async function runVisionPass({
     latencyMs: performance.now() - startedAt,
     actualCostUsd: totalCost,
   }
+}
+
+/** Parse the answer as an extraction, repairing a string in a numeric field before validating. */
+export function readExtraction(
+  answered: Answered,
+):
+  | { ok: true; parsed: Extraction; repairs: SchemaRepair[] }
+  | { ok: false; detail: string } {
+  let parsedJson: unknown
+  try {
+    parsedJson = JSON.parse(answered.content)
+  } catch (error) {
+    return { ok: false, detail: `JSON invalide : ${String(error)}` }
+  }
+  const { value, repairs } = repairExtraction(parsedJson)
+  const validated = extractionSchema.safeParse(value)
+  return validated.success
+    ? { ok: true, parsed: validated.data, repairs }
+    : { ok: false, detail: validated.error.message }
+}
+
+export async function runVisionPass({
+  imagePath,
+  dataCollection: _dataCollection,
+  ...call
+}: EndpointCall & {
+  imagePath: string
+  dataCollection: string | null
+}): Promise<PassResult> {
+  const image = await readFile(imagePath)
+  const contentType = imagePath.toLowerCase().endsWith('.png')
+    ? 'image/png'
+    : 'image/jpeg'
+  const transported = await callEndpoint({
+    ...call,
+    content: [
+      { type: 'text', text: EXTRACTION_PROMPT },
+      {
+        type: 'image_url',
+        image_url: {
+          url: `data:${contentType};base64,${image.toString('base64')}`,
+        },
+      },
+    ],
+  })
+  if (transported.status !== 'answered') return transported
+
+  const read = readExtraction(transported)
+  const { raw, attempts, latencyMs, actualCostUsd, servedProvider } =
+    transported
+  return read.ok
+    ? {
+        status: 'success',
+        parsed: read.parsed,
+        raw,
+        attempts,
+        latencyMs,
+        actualCostUsd,
+        servedProvider,
+        repairs: read.repairs,
+      }
+    : {
+        status: 'failure',
+        reason: 'invalid_schema',
+        detail: read.detail,
+        raw,
+        attempts,
+        latencyMs,
+        actualCostUsd,
+      }
+}
+
+/** Send an already-built prompt through the shared transport and return the raw answer. */
+export async function askEndpoint(
+  call: EndpointCall & { content: UserContent },
+): Promise<TransportResult> {
+  return callEndpoint(call)
 }
 
 export function serializeRun({

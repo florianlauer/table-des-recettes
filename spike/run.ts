@@ -28,7 +28,7 @@ export function parseNamedArguments(
   return parsed
 }
 
-async function latestLadder(): Promise<LadderFile> {
+export async function latestLadder(): Promise<LadderFile> {
   const entries = (await readdir('spike'))
     .filter((entry) => /^ladder\.\d{4}-\d{2}-\d{2}\.json$/.test(entry))
     .sort()
@@ -41,7 +41,7 @@ async function latestLadder(): Promise<LadderFile> {
   ) as LadderFile
 }
 
-function endpointFromLadder({
+export function endpointFromLadder({
   ladder,
   model,
   providerSlug,

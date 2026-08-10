@@ -200,6 +200,27 @@ describe('acceptance classification', () => {
     })
   })
 
+  // Cardinalities would report no divergence here: one hard gate before, one after. What matters is
+  // that it is not the same one — the pass crossed a boundary, and counting cannot see it.
+  it('sees a hard gate swapped for another one', () => {
+    const raw = classifyAcceptance({
+      actual: actual({
+        ingredients: [
+          { raw: '50 cl de crème', quantity: 50, unit: 'cl', label: null },
+        ],
+      }),
+      truth,
+    })
+    const corrected = classifyAcceptance({
+      actual: actual({ steps: [truth.recipes[0]!.steps[0]] }),
+      truth,
+    })
+
+    expect(raw.hardGates).toHaveLength(1)
+    expect(corrected.hardGates).toHaveLength(1)
+    expect(compareReadings({ raw, corrected }).hardGatesDiverge).toBe(true)
+  })
+
   it('accepts only two passes clear of hard gates and yields an exit code', () => {
     const clear = classifyAcceptance({ actual: actual(), truth })
     const reading = { rawClassification: clear, corrections: [] }

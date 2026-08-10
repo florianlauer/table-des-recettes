@@ -64,12 +64,14 @@ describe('OpenRouter call classification', () => {
     providerName = 'Provider A',
     budget = new BudgetCounter(),
     disableReasoning = false,
+    onCostRecorded,
   }: {
     fetchImpl: typeof fetch
     providerSlug?: string
     providerName?: string
     budget?: BudgetCounter
     disableReasoning?: boolean
+    onCostRecorded?: () => Promise<void>
   }) {
     return runVisionPass({
       model: 'author/model',
@@ -81,6 +83,7 @@ describe('OpenRouter call classification', () => {
       maximumEstimatedCostUsd: 0.01,
       dataCollection: null,
       disableReasoning,
+      ...(onCostRecorded ? { onCostRecorded } : {}),
       fetchImpl,
       sleep: async () => undefined,
       timeoutMs: 10,
@@ -267,4 +270,67 @@ describe('OpenRouter call classification', () => {
       expect(fetchMock).toHaveBeenCalledTimes(1)
     },
   )
+
+  // A `HarnessError` stops the run, so nothing downstream will save the counter: the charge has to be
+  // both imputed and persisted before the throw, or the spend vanishes with the process.
+  it('charges and persists the estimate before halting on an error without a reported cost', async () => {
+    const fetchMock = vi.fn(async () =>
+      jsonResponse({ error: { message: 'unauthorized' } }, 401),
+    ) as unknown as typeof fetch
+    const budget = new BudgetCounter()
+    const persisted: number[] = []
+    await expect(
+      execute({
+        fetchImpl: fetchMock,
+        budget,
+        onCostRecorded: async () => {
+          persisted.push(budget.spent)
+        },
+      }),
+    ).rejects.toThrow(HarnessError)
+    expect(budget.spent).toBe(0.01)
+    expect(persisted).toEqual([0.01])
+  })
+
+  // Deliberate: a transient failure that OpenRouter reports no cost for is free, and imputing the
+  // ceiling for each of the three attempts would spend 0.03 USD of budget on nothing. The hard cap
+  // stays safe because `assertCanSpend` runs before every attempt, not because failures are charged.
+  it('leaves the budget untouched when a retried failure reports no cost', async () => {
+    const fetchMock = vi.fn(async () =>
+      jsonResponse({ error: { message: 'rate limited' } }, 429),
+    ) as unknown as typeof fetch
+    const budget = new BudgetCounter()
+    const persisted: number[] = []
+    const result = await execute({
+      fetchImpl: fetchMock,
+      budget,
+      onCostRecorded: async () => {
+        persisted.push(budget.spent)
+      },
+    })
+    expect(result).toMatchObject({ status: 'inconclusive', actualCostUsd: 0 })
+    expect(budget.spent).toBe(0)
+    expect(persisted).toEqual([])
+  })
+
+  // A capability refusal is a verdict on the rung, and the endpoint does bill the tokens it read.
+  it('charges the reported cost of a capability refusal', async () => {
+    const fetchMock = vi.fn(async () =>
+      jsonResponse(
+        {
+          error: { message: 'unsupported parameter: response_format' },
+          usage: { cost: 0.0002 },
+        },
+        422,
+      ),
+    ) as unknown as typeof fetch
+    const budget = new BudgetCounter()
+    const result = await execute({ fetchImpl: fetchMock, budget })
+    expect(result).toMatchObject({
+      status: 'failure',
+      reason: 'unsupported_request',
+      actualCostUsd: 0.0002,
+    })
+    expect(budget.spent).toBe(0.0002)
+  })
 })

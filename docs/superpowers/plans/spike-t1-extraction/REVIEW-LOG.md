@@ -548,3 +548,59 @@ revue, marqués « mesure invalide, non rejugé ». Ils n'ont pas été rejoués
 
 Le modèle retenu n'est pas concerné : il ne raisonne pas, et ses 6,1 s comme ses 0 réparation sont
 mesurés sans ce paramètre.
+
+## Acte 5 — Revue de qualité (Codex, lecture seule)
+
+`gpt-5.6-sol` a audité la branche entière sous la grille thermo-nucléaire. Verdict : `REVISE`, six
+constats. Quatre retenus, deux rejetés.
+
+### Retenu 1 — un second client OpenRouter
+
+`runCorrectionPass` parlait à OpenRouter par son propre `fetch`. Elle n'héritait donc ni des trois
+reprises, ni de la vérification du provider servi, ni de la taxonomie infrastructure/modèle. Et la
+dérive était déjà là : elle envoyait `temperature: 0` en dur, à des endpoints qui répondent 400.
+C'est la régression que j'avais introduite en câblant `supportsTemperature` dans `run.ts`, `walk.ts`
+et `rank-endpoints.ts` en oubliant celui-là.
+
+`callEndpoint` est désormais le seul point de contact. `runVisionPass` et `runCorrectionPass` ne
+fournissent que leur charge utile et n'interprètent que le contenu de la réponse — le seul endroit où
+elles diffèrent réellement.
+
+### Retenu 2 — le coût imputé perdu quand la repasse jetait
+
+`budget.record` était appelé, `budget.save` ne l'était qu'après le retour. Une `HarnessError` arrête
+le run : la dépense restait en mémoire et disparaissait avec le processus. Le transport impute
+maintenant par une fermeture qui persiste sur place, avant toute classification.
+
+### Retenu 3 — `hardGatesDiverge` comparait des nombres
+
+Un hard gate remplacé par un autre laissait le total inchangé, et le garde-fou annonçait aucune
+dégradation. Comparé par identité, comme les écarts éditables l'étaient déjà.
+
+### Retenu 4 — trois scripts codaient en dur le chemin de mon worktree
+
+`build-review.mjs`, `compare-passes.mjs` et `summarize-runs.mjs` dérivent la racine de
+`import.meta.url`.
+
+### Rejeté 1 — « la branche d'erreur viole le plafond dur »
+
+Faux. `assertCanSpend(maximumEstimatedCostUsd)` court avant chaque tentative : c'est ce
+pré-contrôle qui protège le plafond, pas l'imputation des échecs. Imputer le plafond à chacune des
+trois tentatives d'un 429 gratuit dépenserait 0,03 USD pour rien. Seul le point étroit était juste —
+le commentaire de `walk.ts` affirmait que le pire cas était déjà imputé, ce qui n'était vrai que
+lorsque `usage.cost` existait. Corrigé en imputant avant la `HarnessError` non évaluable, et pinné
+par deux tests qui figent l'asymétrie : erreur non attribuable → plafond imputé et persisté, échec
+transitoire sans coût rapporté → budget intact.
+
+### Rejeté 2 — « la marche doit relancer la `HarnessError` »
+
+C'est une décision explicite de Florian, bornée à la phase de tri : un barreau non mesurable est
+écarté et l'échelle continue. Le verdict `non_mesurable` existe pour ça.
+
+### Laissé à l'arbitrage — supprimer `accept.ts`
+
+450 lignes plus 230 de tests pour un protocole que rien n'alimente : `spike/fixtures/truth/` ne
+contient que son README. Le constat est exact. Conservé pour l'instant parce que la page D reste
+inédite de tout modèle et que la mesure demeure possible sans nouvelle ingestion.
+
+État : `tsc` propre des deux côtés, 56 tests spike, 74 tests application, eslint et prettier propres.

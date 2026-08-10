@@ -9,12 +9,9 @@ import { extractionSchema, repairExtraction } from '../src/lib/recipe-schema.js'
 import type { Extraction } from '../src/lib/recipe-schema.js'
 import { BudgetCounter } from './budget.js'
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from './json-schema.js'
-import {
-  HarnessError,
-  OPENROUTER_API_URL,
-  requireOpenRouterApiKey,
-} from './openrouter.js'
-import { parseNamedArguments } from './run.js'
+import { askEndpoint, requireOpenRouterApiKey } from './openrouter.js'
+import type { EndpointCall } from './openrouter.js'
+import { endpointFromLadder, latestLadder, parseNamedArguments } from './run.js'
 import { sameDigits, textSimilarity } from './text.js'
 
 export const CORRECTION_PROMPT_VERSION = 'c1'
@@ -132,86 +129,42 @@ export function mergeCorrection({
   return { value: { recipes }, corrections }
 }
 
+// La repasse emprunte le transport partagé : elle hérite ainsi du pré-contrôle budgétaire, des
+// reprises, de la vérification du provider servi et de la taxonomie d'échec. Elle n'interprète que le
+// contenu de la réponse, seul endroit où elle diffère de l'extraction.
 export async function runCorrectionPass({
   extraction,
-  model,
-  providerSlug,
-  apiKey,
-  budget,
-  maximumEstimatedCostUsd,
-  fetchImpl = fetch,
-}: {
+  ...call
+}: EndpointCall & {
   extraction: Extraction
-  model: string
-  providerSlug: string
-  apiKey: string
-  budget: BudgetCounter
-  maximumEstimatedCostUsd: number
-  fetchImpl?: typeof fetch
 }): Promise<{ value: Extraction; corrections: Correction[]; costUsd: number }> {
-  budget.assertCanSpend(maximumEstimatedCostUsd)
-  const response = await fetchImpl(`${OPENROUTER_API_URL}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        {
-          role: 'user',
-          content: `${CORRECTION_PROMPT}\n\n${JSON.stringify(extraction)}`,
-        },
-      ],
-      temperature: 0,
-      max_tokens: 8000,
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: JSON_SCHEMA_NAME,
-          strict: true,
-          schema: extractionJsonSchema,
-        },
-      },
-      provider: {
-        only: [providerSlug],
-        allow_fallbacks: false,
-        require_parameters: true,
-      },
-      usage: { include: true },
-    }),
+  const transported = await askEndpoint({
+    ...call,
+    content: `${CORRECTION_PROMPT}\n\n${JSON.stringify(extraction)}`,
   })
-
-  const body = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string | null } }>
-    usage?: { cost?: number }
-  }
-  // Même discipline que l'extraction : le coût est imputé avant tout jugement, et un coût illisible
-  // arrête le harnais plutôt que de laisser filer une dépense non comptée.
-  const reportedCost =
-    typeof body.usage?.cost === 'number' ? body.usage.cost : null
-  budget.record(reportedCost ?? maximumEstimatedCostUsd)
-  if (!response.ok) {
-    throw new Error(`Repasse impossible — HTTP ${response.status}.`)
-  }
-  if (reportedCost === null) {
-    throw new HarnessError(
-      `Repasse sans usage.cost ; ${maximumEstimatedCostUsd} USD imputé. Arrêt du harnais.`,
-    )
+  // Une repasse qui n'aboutit pas n'est pas une régression : l'extraction d'origine reste valable.
+  if (transported.status !== 'answered') {
+    return {
+      value: extraction,
+      corrections: [],
+      costUsd: transported.actualCostUsd,
+    }
   }
 
   let candidate: unknown
   try {
-    candidate = JSON.parse(body.choices?.[0]?.message?.content ?? '')
+    candidate = JSON.parse(transported.content)
   } catch {
-    // Une repasse illisible n'est pas une régression : l'extraction d'origine reste valable.
-    return { value: extraction, corrections: [], costUsd: reportedCost }
+    return {
+      value: extraction,
+      corrections: [],
+      costUsd: transported.actualCostUsd,
+    }
   }
 
   return {
     ...mergeCorrection({ original: extraction, corrected: candidate }),
-    costUsd: reportedCost,
+    costUsd: transported.actualCostUsd,
   }
 }
 
@@ -234,13 +187,24 @@ async function main(): Promise<void> {
   const extraction = extractionSchema.parse(artefact.parsed)
   const budgetPath = resolve('spike/fixtures/runs/budget.json')
   const budget = await BudgetCounter.load({ path: budgetPath })
-  const { value, corrections, costUsd } = await runCorrectionPass({
-    extraction,
+  // L'échelle figée porte le nom d'affichage du provider et ses capacités : sans elle, la repasse ne
+  // peut ni vérifier qui l'a servie, ni savoir si l'endpoint refuse `temperature`.
+  const endpoint = endpointFromLadder({
+    ladder: await latestLadder(),
     model,
     providerSlug: provider,
+  })
+  const { value, corrections, costUsd } = await runCorrectionPass({
+    extraction,
+    model: endpoint.model,
+    providerSlug: endpoint.providerSlug,
+    providerName: endpoint.providerName,
+    supportsTemperature: endpoint.supportsTemperature,
+    disableReasoning: endpoint.supportsReasoning,
     apiKey: requireOpenRouterApiKey(),
     budget,
     maximumEstimatedCostUsd: CORRECTION_COST_CEILING_USD,
+    onCostRecorded: () => budget.save(budgetPath),
   })
   await budget.save(budgetPath)
 

@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import type { Extraction } from '../src/lib/recipe-schema.js'
-import { acceptText, mergeCorrection } from './correct.js'
+import { BudgetCounter } from './budget.js'
+import { acceptText, mergeCorrection, runCorrectionPass } from './correct.js'
 
 const original: Extraction = {
   recipes: [
@@ -109,5 +110,66 @@ describe('correction pass', () => {
       corrected: corrected({ servings: 12 }),
     })
     expect(value.recipes[0]?.servings).toBe(6)
+  })
+})
+
+// These two pin the pass to the shared transport rather than to a second client of its own: the
+// capability flags and the provider check are exactly what the duplicate silently lacked.
+describe('correction pass over the shared transport', () => {
+  function call(overrides: Record<string, unknown> = {}) {
+    return {
+      extraction: original,
+      model: 'author/model',
+      providerSlug: 'provider-a',
+      providerName: 'Provider A',
+      apiKey: 'test-key',
+      budget: new BudgetCounter(),
+      maximumEstimatedCostUsd: 0.05,
+      sleep: async () => undefined,
+      timeoutMs: 10,
+      ...overrides,
+    }
+  }
+
+  it('omits temperature on an endpoint that rejects it', async () => {
+    const sent: Array<Record<string, unknown>> = []
+    const fetchMock = vi.fn(async (_url: unknown, init: { body: string }) => {
+      sent.push(JSON.parse(init.body) as Record<string, unknown>)
+      return new Response(
+        JSON.stringify({
+          provider: 'Provider A',
+          choices: [
+            {
+              finish_reason: 'stop',
+              message: { content: JSON.stringify(original) },
+            },
+          ],
+          usage: { cost: 0.0003 },
+        }),
+      )
+    }) as unknown as typeof fetch
+
+    const { costUsd } = await runCorrectionPass(
+      call({ supportsTemperature: false, fetchImpl: fetchMock }),
+    )
+
+    expect(sent[0]).not.toHaveProperty('temperature')
+    expect(costUsd).toBe(0.0003)
+  })
+
+  it('keeps the first extraction when the pass never answers', async () => {
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(JSON.stringify({ error: { message: 'rate limited' } }), {
+          status: 429,
+        }),
+    ) as unknown as typeof fetch
+
+    const { value, corrections } = await runCorrectionPass(
+      call({ fetchImpl: fetchMock }),
+    )
+
+    expect(value).toEqual(original)
+    expect(corrections).toEqual([])
   })
 })

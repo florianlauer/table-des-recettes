@@ -74,6 +74,13 @@ function issueKeys(issues: AcceptanceIssue[]): Set<string> {
   )
 }
 
+// Comparer des cardinalités laisserait passer un hard gate remplacé par un autre : le total ne bouge
+// pas alors que la repasse a franchi une frontière. Les écarts éditables sont déjà comparés par
+// identité juste en dessous, les hard gates doivent l'être de la même façon.
+function sameIssueSets(left: Set<string>, right: Set<string>): boolean {
+  return left.size === right.size && [...left].every((key) => right.has(key))
+}
+
 // Le seul garde-fou contre une repasse qui dégrade : comparer les deux lectures. Une correction qui
 // éloigne le texte de la vérité terrain apparaît ici en `created`, et un hard gate qui n'existe que
 // d'un côté signale que la repasse a franchi une frontière qu'elle ne devrait jamais franchir.
@@ -91,7 +98,10 @@ export function compareReadings({
     created: [...after].filter(
       (key) => !before.has(key) && !key.startsWith('schema_repair|'),
     ).length,
-    hardGatesDiverge: raw.hardGates.length !== corrected.hardGates.length,
+    hardGatesDiverge: !sameIssueSets(
+      issueKeys(raw.hardGates),
+      issueKeys(corrected.hardGates),
+    ),
   }
 }
 
@@ -389,9 +399,13 @@ async function main(): Promise<void> {
       extraction: result.parsed,
       model: endpoint.model,
       providerSlug: endpoint.providerSlug,
+      providerName: endpoint.providerName,
+      supportsTemperature: endpoint.supportsTemperature,
+      disableReasoning: endpoint.supportsReasoning,
       apiKey,
       budget,
       maximumEstimatedCostUsd: CORRECTION_COST_CEILING_USD,
+      onCostRecorded: () => budget.save(budgetPath),
     })
     await budget.save(budgetPath)
     await writeFile(

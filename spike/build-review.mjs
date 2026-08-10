@@ -1,7 +1,9 @@
 import { readFileSync, writeFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
-const ROOT =
-  '/Users/florianlauer/Documents/perso/table-des-recettes/.claude/worktrees/spike-t1-extraction'
+// Derive depuis l'emplacement du script: un chemin absolu code en dur cesse de fonctionner des
+// que le depot est clone ailleurs ou que ce worktree disparait.
+const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const RUNS = `${ROOT}/spike/fixtures/runs/google/gemini-3-flash-preview/google-ai-studio`
 
 const escape = (value) =>
