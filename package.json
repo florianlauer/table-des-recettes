@@ -21,7 +21,11 @@
     "run:spike": "tsx spike/run.ts",
     "correct": "tsx spike/correct.ts",
     "accept": "tsx spike/accept.ts",
-    "verify": "tsc --noEmit -p spike/tsconfig.json && vitest run --config spike/vitest.config.ts"
+    "verify": "tsc --noEmit -p spike/tsconfig.json && vitest run --config spike/vitest.config.ts",
+    "ingest13": "tsx spike13/ingest.ts",
+    "run13": "tsx spike13/run.ts",
+    "review13": "tsx spike13/review.ts",
+    "verify13": "tsc -p spike13/tsconfig.json --noEmit && vitest run --config spike13/vitest.config.ts"
   },
   "dependencies": {
     "@convex-dev/react-query": "^0.1.0",

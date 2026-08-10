@@ -1,5 +1,5 @@
 {
-  "exclude": ["spike"],
+  "exclude": ["spike", "spike13"],
   "include": [
     "**/*.ts",
     "**/*.tsx",
