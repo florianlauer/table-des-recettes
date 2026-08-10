@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import 'dotenv/config'
+import '../load-env.js'
 
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'

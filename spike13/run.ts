@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import 'dotenv/config'
+import '../load-env.js'
 
 import { BudgetCounter } from './budget.js'
 import { LADDER, modelSlug } from './models.js'
