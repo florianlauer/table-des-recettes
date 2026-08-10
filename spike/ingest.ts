@@ -4,7 +4,8 @@ import { homedir } from "node:os";
 import { basename, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import sharp, { type Metadata } from "sharp";
+import sharp from "sharp";
+import type {Metadata} from "sharp";
 
 const FORBIDDEN_METADATA_KEYS = [
   "orientation",

@@ -6,8 +6,9 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { BudgetCounter } from "./budget.js";
-import { HarnessError, requireOpenRouterApiKey, runVisionPass, serializeRun, type PassResult } from "./openrouter.js";
-import { type LadderEntry, type LadderFile } from "./rank-endpoints.js";
+import { HarnessError, requireOpenRouterApiKey, runVisionPass, serializeRun  } from "./openrouter.js";
+import type {PassResult} from "./openrouter.js";
+import type {LadderEntry, LadderFile} from "./rank-endpoints.js";
 import { parseNamedArguments } from "./run.js";
 
 // La sonde tourne sur B, pas sur A : A ne discrimine pas. ministral-3b l'a passée proprement — 8

@@ -7,11 +7,13 @@ import { fileURLToPath } from "node:url";
 
 import { z } from "zod";
 
-import { extractionSchema, repairExtraction, type Extraction } from "../src/lib/recipe-schema.js";
+import { extractionSchema, repairExtraction  } from "../src/lib/recipe-schema.js";
+import type {Extraction} from "../src/lib/recipe-schema.js";
 import { BudgetCounter } from "./budget.js";
-import { CORRECTION_COST_CEILING_USD, runCorrectionPass, type Correction } from "./correct.js";
+import { CORRECTION_COST_CEILING_USD, runCorrectionPass  } from "./correct.js";
+import type {Correction} from "./correct.js";
 import { requireOpenRouterApiKey, runVisionPass, serializeRun } from "./openrouter.js";
-import { type LadderEntry, type LadderFile } from "./rank-endpoints.js";
+import type {LadderEntry, LadderFile} from "./rank-endpoints.js";
 import { parseNamedArguments } from "./run.js";
 import { normalizedText, textSimilarity } from "./text.js";
 
@@ -242,7 +244,7 @@ async function main(): Promise<void> {
   }
   const apiKey = requireOpenRouterApiKey();
   const ladder = await latestLadder();
-  const endpoint = ladder.ladder.find((entry) => entry.model === model && entry.providerSlug === provider) as LadderEntry | undefined;
+  const endpoint = ladder.ladder.find((entry) => entry.model === model && entry.providerSlug === provider);
   if (!endpoint) throw new Error(`Couple ${model} / ${provider} absent de l'échelle figée.`);
   let acceptedTruth: AcceptanceTruth;
   try {

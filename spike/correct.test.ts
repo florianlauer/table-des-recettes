@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { type Extraction } from "../src/lib/recipe-schema.js";
+import type {Extraction} from "../src/lib/recipe-schema.js";
 import { acceptText, mergeCorrection } from "./correct.js";
 
 const original: Extraction = {

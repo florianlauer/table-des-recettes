@@ -7,9 +7,10 @@ import {
   classifyTextDifference,
   compareReadings,
   LOWER_SIMILARITY_BOUND,
-  type AcceptanceTruth,
-  UPPER_SIMILARITY_BOUND,
+  
+  UPPER_SIMILARITY_BOUND
 } from "./accept.js";
+import type {AcceptanceTruth} from "./accept.js";
 
 const truth: AcceptanceTruth = {
   recipes: [

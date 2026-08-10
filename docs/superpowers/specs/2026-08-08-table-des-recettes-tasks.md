@@ -38,17 +38,42 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
     image est plus étroite qu'en texte — si le modèle n'y est pas, il faut une clé Google
     directe, donc un second fournisseur)
 
-> Rien d'autre ne démarre avant T1, **sauf** les fonctions pures (T6 partiellement, T5) qui ne
-> dépendent d'aucun résultat du spike. T13 est indépendant de T1 et peut tourner en parallèle.
+> Rien de ce qui **dépend du résultat de l'extraction** ne démarre avant T1 : le formulaire de
+> correction, la file de traitement des scans, le schéma d'extraction lui-même. T13 est
+> indépendant de T1 et peut tourner en parallèle.
+
+**Arbitrage du 2026-08-09 — ce que T1 ne bloque pas.** La règle initiale (« rien d'autre ne
+démarre avant T1, sauf les fonctions pures ») a été remplacée après découpage en quatre plans
+d'exécution. Le **socle et la vitrine** — scaffold, schéma Convex des recettes publiées, index,
+fiche, recalcul de portions, recherche — ne consomment aucun résultat du spike : ils lisent des
+recettes déjà validées, quelle que soit la façon dont elles ont été extraites. Les faire attendre
+T1 sérialisait deux travaux indépendants sans réduire aucun risque. Ils démarrent donc en
+parallèle, et c'est le plan `docs/superpowers/plans/2026-08-08-socle-et-vitrine/PLAN.md` qui les
+porte.
+
+**Corollaire sur T2.** Le schéma Zod source unique reste la source de vérité pour l'extraction,
+mais il est désormais **rattaché au plan d'ingestion**, pas au socle : sa forme est déterminée
+par ce que le modèle retenu en T1 sait réellement produire, et la figer avant le spike reviendrait
+à la réécrire après. Le plan socle crée donc `convex/schema.ts` directement, en assumant qu'il
+sera la cible du pont Zod↔Convex quand T2 s'exécutera. `src/lib/recipe-schema.ts` reste un
+livrable de T2, hors du socle.
 
 ---
 
 ## Socle — P1
 
-- [ ] **T2 · P1 · schéma** (human ~2h / CC ~20min) — Schéma Zod source unique + pont vers les validateurs Convex
+> **Répartition entre plans.** T2, T3 et T4 appartiennent au **plan d'ingestion** et attendent
+> T1. T5 et T6 sont des fonctions pures, indépendantes du spike. `src/lib/scale.ts` (recalcul de
+> portions, moitié de T6) est livré par le **plan socle et vitrine**, qui en a besoin pour la
+> fiche recette ; T6 ne fait alors que le rejouer contre les fixtures du spike.
+
+- [ ] **T2 · P1 · schéma · plan d'ingestion** (human ~2h / CC ~20min) — Schéma Zod source unique + pont vers les validateurs Convex
   - **Origine** : Qualité de code, issue 4 + Codex #14 — structure dupliquée à trois endroits,
     et le pont Zod↔Convex n'est pas gratuit
-  - **Fichiers** : `src/lib/recipe-schema.ts`, `convex/schema.ts`
+  - **Ordre** : s'exécute **après** T1 et **après** le plan socle. `convex/schema.ts` existe déjà
+    à ce moment-là — le socle l'a créé pour la vitrine ; T2 ne le crée pas, il le fait **dériver**
+    du Zod et vérifie que la forme obtenue est identique à celle déjà en base
+  - **Fichiers** : `src/lib/recipe-schema.ts` (création), `convex/schema.ts` (refonte en dérivé)
   - **Vérifier** : le JSON schema OpenRouter et les types du formulaire dérivent du même Zod ;
     les fixtures du spike se rejouent contre lui ; le choix du pont (`convex-helpers` /
     `zodOutputToConvex`) est explicite, pas implicite

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { type PassResult } from "./openrouter.js";
+import type {PassResult} from "./openrouter.js";
 import { condemnsWholeModel, decideRung, DEFAULT_MAX_LATENCY_SECONDS, PROBE_PAGE } from "./walk.js";
 
 function success(latencyMs: number): PassResult {

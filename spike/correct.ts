@@ -5,7 +5,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { extractionSchema, repairExtraction, type Extraction } from "../src/lib/recipe-schema.js";
+import { extractionSchema, repairExtraction  } from "../src/lib/recipe-schema.js";
+import type {Extraction} from "../src/lib/recipe-schema.js";
 import { BudgetCounter } from "./budget.js";
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from "./json-schema.js";
 import { HarnessError, OPENROUTER_API_URL, requireOpenRouterApiKey } from "./openrouter.js";

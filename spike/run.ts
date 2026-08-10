@@ -6,7 +6,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { BudgetCounter } from "./budget.js";
-import { type LadderEntry, type LadderFile } from "./rank-endpoints.js";
+import type {LadderEntry, LadderFile} from "./rank-endpoints.js";
 import { requireOpenRouterApiKey, runVisionPass, serializeRun } from "./openrouter.js";
 
 export function parseNamedArguments(argumentsList: string[]): Record<string, string> {

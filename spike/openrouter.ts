@@ -3,11 +3,12 @@ import { readFile } from "node:fs/promises";
 import {
   extractionSchema,
   repairExtraction,
-  type Extraction,
-  RECIPE_SCHEMA_VERSION,
-  type SchemaRepair,
+  
+  RECIPE_SCHEMA_VERSION
+  
 } from "../src/lib/recipe-schema.js";
-import { type BudgetCounter } from "./budget.js";
+import type {Extraction, SchemaRepair} from "../src/lib/recipe-schema.js";
+import type {BudgetCounter} from "./budget.js";
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from "./json-schema.js";
 import { EXTRACTION_PROMPT, PROMPT_VERSION } from "./prompt.js";
 

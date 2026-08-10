@@ -35,3 +35,22 @@ dist-ssr
 # Page de revue du spike : 5,6 Mo, régénérable par `node spike/build-review.mjs`. Elle réencode en
 # base64 les photos déjà versionnées dans spike/fixtures/pages.
 spike/review-barreau-6.html
+
+# TanStack Start / Nitro
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# impeccable : état de cache régénérable
+.impeccable/hook.cache.json
+.impeccable/config.local.json
+
+# convex : bundles de skills d'agent, vendorisés en double et régénérables
+# via `npx convex ai-files install`
+.claude/skills/
+.agents/
+skills-lock.json

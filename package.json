@@ -1,29 +1,62 @@
 {
-  "name": "table-des-recettes-spike-t1",
-  "version": "0.0.0",
+  "name": "socle-et-vitrine",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=22"
+  "imports": {
+    "#/*": "./src/*"
   },
   "scripts": {
+    "dev": "vite dev --port 3000",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write . && eslint --fix",
+    "check": "prettier --check .",
     "ingest": "tsx spike/ingest.ts",
     "rank": "tsx spike/rank-endpoints.ts",
     "walk": "tsx spike/walk.ts",
     "run:spike": "tsx spike/run.ts",
     "correct": "tsx spike/correct.ts",
     "accept": "tsx spike/accept.ts",
-    "verify": "tsc --noEmit && vitest run --config spike/vitest.config.ts"
+    "verify": "tsc --noEmit -p spike/tsconfig.json && vitest run --config spike/vitest.config.ts"
   },
   "dependencies": {
-    "dotenv": "^17.2.2",
-    "sharp": "^0.35.3",
-    "tsx": "^4.20.5",
-    "zod": "^4.1.5"
+    "@convex-dev/react-query": "^0.1.0",
+    "@tanstack/react-query": "^5.101.4",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-ssr-query": "^1.167.1",
+    "@tanstack/react-start": "latest",
+    "convex": "^1.43.0",
+    "nitro": "3.0.260610-beta",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "typescript": "^5.9.2",
+    "@edge-runtime/vm": "^5.0.0",
+    "@tanstack/eslint-config": "latest",
+    "@tanstack/router-cli": "^1.132.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "convex-test": "^0.0.55",
+    "dotenv": "^17.2.2",
+    "eslint": "^9.20.0",
+    "prettier": "^3.8.1",
+    "sharp": "^0.35.3",
+    "tsx": "^4.20.5",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
     "vitest": "^4.1.10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
   }
 }

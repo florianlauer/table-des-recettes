@@ -36,13 +36,20 @@ utilitaire. `/recette/$slug` est une surface de **lecture** : généreuse, édit
 
 ## Couleur
 
-Fond neutre, pas de parchemin jauni, pas de faux grain de papier. La chaleur vient de l'ocre
-seul, pas d'un beige généralisé.
+> **Amendement du 2026-08-09.** La version initiale posait un fond neutre `#F8F8F8` et l'ocre
+> comme couleur unique. À l'usage, la vitrine rendue s'est révélée éteinte, et pour une raison
+> identifiable : l'encre et les filets sont des bruns chauds posés sur un papier gris froid.
+> Cette discordance est ce qui faisait « clinique ». Trois choses changent — un papier chaud,
+> une encre par type de plat, une reliure ocre. Ce qui ne change pas : aucun dégradé, aucun
+> faux grain, aucun blob, aucune couleur qui ne porte pas d'information.
+
+Papier **blanc cassé chaud**, à la teinte de l'encre et à très faible chroma. Toujours pas de
+parchemin jauni, toujours pas de faux grain.
 
 ```css
 :root {
-  --paper:        #F8F8F8;
-  --surface:      #FFFFFF;
+  --paper:        #F7F3EA;
+  --surface:      #FFFDF8;
 
   --ink:          #2E2723;
   --ink-muted:    #6E645C;
@@ -57,9 +64,43 @@ seul, pas d'un beige généralisé.
 }
 ```
 
-L'ocre ne sert qu'à trois choses : le filet sous le titre du site, les lettres de groupe dans la
-marge de l'index, l'état actif d'un filtre. **Jamais comme décoration**, jamais en aplat de fond,
-jamais en remplissage de bouton.
+### Une encre par type de plat
+
+```css
+:root {
+  --ink-entree:   #57683F;  /* vert laurier    85° — 5.49:1 */
+  --ink-plat:     #9A5B2B;  /* ocre, la marque 26° — 4.86:1 */
+  --ink-dessert:  #96455F;  /* prune          341° — 5.72:1 */
+  --ink-apero:    #3D6B78;  /* bleu ardoise   193° — 5.31:1 */
+  --ink-petitDej: #82631A;  /* miel brûlé      42° — 5.06:1 */
+  --ink-autre:    #6E645C;  /* gris chaud — le fourre-tout reste neutre */
+}
+```
+
+**Cette couleur est une information de balayage, pas une décoration** — c'est la seule raison
+pour laquelle elle passe l'anti-slop. Elle n'est jamais portée que par le **mot qui nomme le
+type** : la colonne de droite d'une ligne d'index, la ligne de type sous le titre d'une fiche,
+le filtre actif. Jamais un aplat, jamais une pastille, jamais une bordure, jamais un fond de
+ligne.
+
+Les six encres tiennent entre **4.86:1 et 5.72:1** sur `--paper`. Cet écart resserré est
+délibéré : dans une colonne d'étiquettes, une couleur nettement plus sombre que les autres
+serait lue comme une hiérarchie qui n'existe pas. Les teintes, elles, sont écartées (26°, 42°,
+85°, 193°, 341°, plus un neutre) — c'est l'écart de teinte qui rend le balayage possible, pas
+l'écart de valeur.
+
+Le type reste **écrit en toutes lettres**. La couleur double l'information, elle ne la remplace
+jamais : sous mauvaise lumière et sur écran taché, un code purement chromatique échouerait
+exactement là où `PRODUCT.md` exige qu'il tienne.
+
+Un composant ne fait **jamais** correspondre un type à une couleur en JavaScript : il pose
+`data-type="plat"` et le jeton `--type-ink` se résout en CSS.
+
+### L'ocre
+
+Le filet sous le titre du site, les lettres de groupe dans la marge de l'index, la reliure en
+tête de page, et le type « plat » dont il est l'encre. **Jamais comme décoration**, jamais en
+remplissage de bouton.
 
 **Pas de mode sombre.** Décision assumée : l'objet est un imprimé sur papier blanc ; une version
 inversée en fait un autre objet. Révisable si l'usage nocturne en cuisine se révèle réel.
@@ -78,6 +119,30 @@ lisibilité dégradée — à un mètre, sous mauvaise lumière, écran taché. 
 réelle du site.
 
 **Plancher dur : aucun texte fonctionnel sous 15 px.**
+
+### L'axe `opsz` de Fraunces est porteur — ne pas le retirer
+
+Mesuré le 2026-08-09 en téléchargeant réellement les `woff2` servis pour le français
+(latin + latin-ext) :
+
+| Requête Google Fonts | Poids |
+|---|---|
+| avec `opsz`, graisses 400..700 — l'actuelle | 175,8 kB |
+| avec `opsz`, graisses resserrées 500..600 / 400..600 | **175,8 kB** |
+| sans `opsz` | 120,4 kB |
+
+Deux pièges, tous deux vérifiés plutôt que supposés :
+
+**Resserrer les graisses ne gagne rien du tout.** Zéro octet. Google sert la plage variable
+entière quelle que soit la plage demandée. C'est le geste évident, et il est inutile.
+
+**Les 55,4 kB d'écart viennent uniquement de l'axe `opsz`**, soit −44 % sur Fraunces. Mais cet
+axe est appliqué automatiquement par le navigateur (`font-optical-sizing: auto`) et c'est lui
+qui fait tenir Fraunces de 15 à 72 px. Sans lui, les titres sont des lettres dessinées pour un
+petit corps puis agrandies : plus larges, moins contrastées. **Décision : on garde `opsz`.** La
+page mesure LCP 444 ms, CLS 0,0007, TTFB médian 100 ms — il n'y a pas de problème de performance
+à échanger contre la voix d'affichage, et `display=swap` fait que les polices ne bloquent pas le
+premier rendu.
 
 ### Une seule échelle, fluide
 
@@ -125,7 +190,7 @@ Les interlignes, eux, sont fixes : ils dépendent du rôle, pas de la taille.
 
 ### Premier écran de `/`
 
-Aucun bandeau coloré. Le masthead est purement typographique :
+Le masthead reste purement typographique :
 
 1. « La table des recettes » en grand, en haut à gauche.
 2. Un filet ocre fin directement dessous.
@@ -133,7 +198,20 @@ Aucun bandeau coloré. Le masthead est purement typographique :
 4. Recherche : uniquement le texte « Rechercher une recette » posé sur un filet fort pleine
    largeur. **Pas de carte, pas d'ombre, pas de loupe, pas de bordure de champ.**
 5. Filtres sur une seule ligne typographique : `Toutes 203  Entrées 31  Plats 94  Desserts 52
-   Apéro 26`. L'actif est imprimé en ocre. **Aucune pastille, aucun bouton.**
+   Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
+   actif reste en ocre. **Aucune pastille, aucun bouton.**
+
+### La reliure
+
+> **Amendement du 2026-08-09** — remplace « aucun bandeau coloré ».
+
+Un aplat ocre plein, pleine largeur, **collé au bord haut du viewport** : la tranche de toile
+d'un livre relié. `position: fixed`, 10 px en desktop, 7 px sous 640 px. Il encadre l'objet à
+n'importe quelle profondeur de défilement.
+
+C'est **le seul aplat de couleur du système**, et il ne touche aucun contenu : il borde la
+fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait interdit —
+ce serait un en-tête de site, pas la tranche d'un livre.
 6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
    desktop, quatre titres au minimum sur mobile.
 
@@ -143,16 +221,36 @@ Aucun bandeau coloré. Le masthead est purement typographique :
 immédiatement le titre, le type, les portions et les ingrédients. Cela réduit le défilement avec
 les mains sales, et empêche une fiche sans photo de sembler amputée.
 
-Desktop, la page forme une double page :
+> **Amendement du 2026-08-09.** La répartition initiale laissait la colonne de gauche vide du
+> titre jusqu'au bas de page, et « Préparation » ne commençait qu'après ce trou. Les étapes
+> remontent donc dans la colonne de gauche, et la photo passe dans celle de droite, sous les
+> ingrédients — elle y reste « après les ingrédients », comme prévu.
 
-- à gauche : retour discret, titre, type de plat ;
-- à droite : portions, puis ingrédients ;
-- le début de « Préparation » apparaît en bas du premier écran ;
-- la photo éventuelle arrive **ensuite**, comme une planche insérée entre les ingrédients et la
-  préparation.
+Desktop, la page forme une double page. Le retour occupe seule la première ligne, pleine
+largeur, **hors des deux colonnes** — placé dans l'une d'elles, son espacement décalait cette
+colonne vers le bas et l'autre démarrait plus haut :
+
+- à gauche : titre, type de plat, puis tout « Préparation » ;
+- à droite : portions, ingrédients, puis la photo éventuelle ;
+- les deux colonnes démarrent sur la même ligne, à hauteur du haut du titre.
+
+La colonne de gauche donne aux étapes une justification d'environ 40 signes — une colonne de
+lecture, pas une ligne de pleine page. C'est plus étroit que les 68 signes visés en pleine
+largeur, et c'est voulu : à deux colonnes, la mesure courte est la bonne.
 
 Mobile : titre, portions, ingrédients, puis étapes en paragraphes numérotés, le numéro dans la
-marge. Aucun accordéon, aucun panneau à ouvrir, aucun bloc flottant.
+marge, et **la photo en toute fin de fiche**. Aucun accordéon, aucun panneau à ouvrir, aucun
+bloc flottant.
+
+> **Amendement du 2026-08-09.** La photo se trouvait entre les ingrédients et « Préparation ».
+> Ce sont les deux seuls blocs que l'on lit *en séquence*, poêle en main : une illustration n'a
+> rien à faire entre eux. Elle ferme désormais la fiche. Desktop est inchangé — la colonne de
+> droite garde ingrédients puis photo, où rien n'est interrompu.
+>
+> C'est la seule surface où l'ordre visuel s'écarte de l'ordre du DOM. Le prix est nul ici :
+> l'image est décorative (`alt=""`) et non focalisable, donc ni le clavier ni un lecteur d'écran
+> ne perçoivent le déplacement. **Cette dérogation ne vaut que pour une image décorative** ;
+> aucun bloc porteur de texte ou de cible ne doit être déplacé par `order`.
 
 ---
 
@@ -175,8 +273,21 @@ qui suppose une image par recette est disqualifiée.
 - Marge gauche : **88 px** en desktop, séparée du corps par un filet vertical qui court sur toute
   la hauteur de l'index ; **44 px** sur mobile, sans filet vertical. Elle ne porte que la lettre
   de groupe, et reste vide en face des lignes.
-- Hauteur de ligne **constante**. Ordre : titre, puis type de plat aligné à droite.
+- Hauteur de ligne **constante**, plancher **48 px**. Ordre : titre, puis type de plat aligné à
+  droite.
 - Filet horizontal `--rule` entre chaque ligne.
+
+**La ligne entière est la cible.** Comme dans un répertoire imprimé, on désigne l'entrée, pas les
+mots : toute la surface de la ligne — y compris la photo et la ligne d'ingrédient — ouvre la
+recette. Mécanique : un `::after` en `inset: 0` sur le lien de titre, la ligne en `position:
+relative`. **Ne pas** envelopper la ligne dans une balise `<a>` — le lien avalerait la photo et
+la ligne d'ingrédient, et son nom accessible deviendrait illisible ; ici il reste le seul titre.
+
+L'anneau de focus se dessine alors **sur la ligne**, pas sur le texte : l'indicateur doit montrer
+la cible réelle.
+
+Coût assumé : le texte d'une ligne d'index n'est plus sélectionnable. Sur une surface dont le
+seul travail est d'ouvrir une recette, la cible vaut plus que la sélection.
 
 ### Regroupement alphabétique
 
@@ -230,6 +341,22 @@ qu'après avoir vu une vingtaine de photos restaurées, pas avant.
 
 ---
 
+## Recalcul de portions — signaler les échecs
+
+Le recalcul est *best-effort* : certaines lignes ne portent aucune annotation de quantité et
+restent affichées telles quelles. **Ces lignes doivent le dire.** Une quantité qui n'a pas bougé
+alors que tout le reste a changé passerait autrement pour une erreur.
+
+Le marqueur est une **dague `†`** placée en fin de ligne, en `--ochre`, avec une note unique sous
+la liste d'ingrédients. Elle n'apparaît que lorsque le facteur diffère de 1.
+
+Le choix de la dague plutôt qu'un simple grisé n'est pas décoratif : `PRODUCT.md` pose la
+lisibilité en conditions dégradées comme contrainte contraignante, et un signal porté par la
+seule couleur échoue précisément là — mauvaise lumière, écran taché, distance variable. La dague
+est une marque typographique de note, pas un pictogramme : elle ne heurte aucune règle anti-slop.
+
+---
+
 ## Recherche
 
 La recherche est **tolérante** : insensible aux accents et aux pluriels, et elle porte aussi sur
@@ -255,6 +382,38 @@ encouragement.
 
 ---
 
+## Résistance
+
+Trois états qui ne sont pas des écrans à dessiner mais des contrats à tenir.
+
+**Échec de chargement.** Convex injoignable rejette le loader ; sans filet, la route part dans le
+vide et la page est blanche en production. Une ligne qui nomme ce qui a échoué — « Les recettes
+n'ont pas pu être chargées. » — et le seul recours utile, « Réessayer », qui réinvalide le
+routeur. Rendu **côté serveur**, donc pas de page blanche puis bascule. Pas d'illustration, pas
+d'excuse, pas de message technique : la ligne factuelle du régime « sans résultat ».
+
+**Chargement.** Une ligne, « Chargement… », en `--type-meta`. Elle n'apparaît qu'au-delà du délai
+du routeur, jamais sur un chargement rapide. **Pas de roue qui tourne, pas de squelette** — ce
+serait un pictogramme décoratif et une fausse carte.
+
+### Ce que la couleur et la position ne disent pas
+
+`PRODUCT.md` pose la lecture en conditions dégradées comme contrainte. Le corollaire vaut aussi
+pour ce qui est lu à voix haute :
+
+- **Chaque groupe de l'index est un titre `<h2>`** — la lettre visible dans la marge *est* ce
+  titre, et sa section la désigne par `aria-labelledby`. L'ordre alphabétique est le seul ordre
+  de `/` ; sans cela il n'existe pas du tout pour un lecteur d'écran.
+- **Tout changement déclenché par un contrôle s'annonce.** Le compteur de portions (`aria-live`
+  + `aria-atomic`, pour lire « 6 personnes » et non « 6 ») et le nombre de résultats de la
+  recherche, qui se reconstruit 250 ms après une frappe, en silence.
+- **Aucun signe typographique ne porte seul un sens.** La dague `†` est masquée aux technologies
+  d'assistance et doublée d'un texte lu en fin de ligne. Un attribut `title` ne compte pas : il
+  n'est pas fiable au lecteur d'écran et **inatteignable au toucher**, qui est la surface
+  principale.
+
+---
+
 ## Anti-slop
 
 Interdits, sans exception :
@@ -266,7 +425,13 @@ Interdits, sans exception :
 - centrage général de la page ;
 - label en capitales répété au-dessus de chaque section ;
 - Inter, Roboto, Arial, Helvetica, `system-ui`, Open Sans, Lato, Montserrat, Poppins ;
-- pastilles de filtre, boutons à fond plein, ombre au survol.
+- pastilles de filtre, boutons à fond plein, ombre au survol ;
+- **toute couleur qui ne porte pas d'information.** Les encres de type sont admises parce
+  qu'elles nomment le type et rien d'autre ; le jour où l'une d'elles sert à décorer un filet,
+  un fond de ligne ou une bordure, elle sort du système.
+
+Une seule exception d'aplat : la reliure en tête de page, qui borde la fenêtre et ne coiffe
+aucun contenu.
 
 Les filets, la typographie, le blanc et les photographies réelles portent toute la composition.
 

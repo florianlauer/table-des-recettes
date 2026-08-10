@@ -1,0 +1,20 @@
+{
+  // Le spike est un harnais Node ESM : il importe en `.js`, lit `node:fs/promises` et `process`, et
+  // tourne sous `tsx`. Le tsconfig de l'application est en mode bundler avec `types: ["vite/client"]`
+  // et sans types Node : les deux contrats ne peuvent pas être fusionnés, donc la racine exclut
+  // `spike` et le spike garde le sien. `src/lib/recipe-schema.ts` est partagé et compilé ici aussi.
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["**/*.ts", "../src/lib/recipe-schema.ts"]
+}
