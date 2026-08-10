@@ -6,6 +6,7 @@ Convex + OpenRouter.
 
 Documents de référence :
 
+- [`docs/SUIVI.md`](./docs/SUIVI.md) — état d'avancement, reliquats, prochain pas
 - [`DESIGN.md`](./DESIGN.md) — système de design, source de vérité visuelle
 - [`docs/superpowers/specs/2026-08-08-table-des-recettes-design.md`](./docs/superpowers/specs/2026-08-08-table-des-recettes-design.md) — spec technique
 - [`docs/superpowers/specs/2026-08-08-table-des-recettes-tasks.md`](./docs/superpowers/specs/2026-08-08-table-des-recettes-tasks.md) — tâches d'implémentation

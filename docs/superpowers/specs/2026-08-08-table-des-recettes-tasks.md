@@ -6,11 +6,14 @@ Issu de `/plan-eng-review` du 2026-08-08. Chaque tâche découle d'un constat de
 
 Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même passe · **P3** suite.
 
+État d'avancement, reliquats et prochain pas : [`docs/SUIVI.md`](../../SUIVI.md). Ce fichier-ci
+décrit **ce qu'il y a à faire** ; le suivi dit **où on en est**.
+
 ---
 
 ## Phase 0 — bloquante
 
-- [ ] **T1 · P1 · spike** (human ~2h / CC ~30min) — Valider l'extraction vision multi-recettes
+- [x] **T1 · P1 · spike** — Valider l'extraction vision multi-recettes — **positif**
   - **Origine** : Architecture, issue 1 — l'hypothèse centrale du projet n'a jamais été vérifiée
   - **Méthode** : échelle du moins cher au meilleur. On ne compare pas des candidats en
     parallèle, on monte les échelons jusqu'au premier qui passe et on s'arrête. L'échelon le
@@ -24,6 +27,15 @@ Priorités : **P1** bloque le démarrage · **P2** doit atterrir dans la même p
     que la saisir à la main**. Sinon le modèle est rejeté, quel que soit son prix
   - **Livrables** : modèle et provider retenus (figés en variable d'environnement), schéma JSON
     réel, prompt, réponses brutes conservées comme fixtures de test
+  - **Résultats** : `spike/RESULTS.md`. Retenu : `google/gemini-3-flash-preview` sur
+    `google-ai-studio`, prompt `v3` / schéma `2` après rejeu, **0,0051 USD** et **7,5 s** par appel.
+    Sept modèles moins chers passés sur les mêmes pages, aucun ne fait mieux. Dépense totale du
+    spike : 0,403 USD sur un plafond de 5
+  - **Amendement, clos par décision du 2026-08-10** : le critère d'arbitrage ci-dessus n'a pas été
+    mesuré et ne le sera pas. La transcription manuelle de la vérité terrain a été refusée ; ce qui
+    a réellement séparé les huit modèles est l'égalité stricte des textes de deux passes sur la même
+    page, discriminant plus dur que prévu. `spike/accept.ts` et la page D restent en place, dormants
+    et sans emploi
 
 - [x] **T13 · P1 · spike** — Valider l'embellissement d'image — **positif, sous condition d'entrée**
   - **Résultats** : `spike13/RESULTS.md`. Banc et rendus sur la branche du spike
@@ -261,9 +273,10 @@ livrable de T2, hors du socle.
   - **Vérifié avant de pousser** : `node_modules` supprimé, `npm ci` rejoué, les six contrôles
     relancés — tous verts. C'est la seule façon de savoir si la CI sera verte sans l'apprendre sur la
     PR
-  - **Reste à faire, hors fichier** : la **protection de branche** sur `main`, qui seule rend le
-    contrôle bloquant. Un workflow sans elle annote sans empêcher de merger. À régler dans les
-    réglages du dépôt en exigeant le job `checks`
+  - **Protection de branche : écartée par décision du 2026-08-10.** Elle seule rendrait le contrôle
+    bloquant — sans elle le workflow annote sans empêcher de merger. Sur une archive domestique à un
+    seul mainteneur, l'annotation suffit ; le critère « une PR mal formatée est bloquée » ci-dessus
+    se lit donc « est signalée »
 
 - [ ] **T12 · P3 · déploiement** (human ~2h / CC ~20min) — Câbler Convex ↔ Vercel, previews comprises
   - **Origine** : Codex #3 — absent de la spec initiale
