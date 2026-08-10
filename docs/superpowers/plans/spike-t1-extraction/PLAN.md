@@ -7,7 +7,7 @@ _Locked via grill — by Claude + florianlauer, 2026-08-08 · révisé après re
 Trancher, sur un banc d'essai jetable et hors application, l'hypothèse centrale du projet : un
 modèle vision sait-il segmenter une page portant plusieurs coupures de magazine recollées et en
 sortir du JSON strict fidèle ? Protocole d'échelle, du moins cher au meilleur : on part de
-l'endpoint le moins cher satisfaisant *simultanément* entrée vision et sortie structurée stricte,
+l'endpoint le moins cher satisfaisant _simultanément_ entrée vision et sortie structurée stricte,
 on monte d'un échelon à chaque échec, on s'arrête au premier qui passe. Livrables : modèle et
 provider figés en variable d'environnement, schéma Zod canonique, prompt versionné, réponses
 brutes conservées comme fixtures. Un verdict **négatif** au sommet de l'échelle est un résultat
@@ -27,7 +27,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
    - **B** — multi-recettes recollée, au moins trois recettes sur une vraie feuille de collage ;
    - **C** — difficile : colonnes, texte incrusté sur photo, reflets ou pliure ;
    - **D** — **page d'acceptation**, multi-recettes également.
-   JPEG, grand côté ≥ 2000 px.
+     JPEG, grand côté ≥ 2000 px.
 2. Les originaux restent **hors du dépôt**, dans `~/Downloads/table-des-recettes-inbox/`. Ils ne sont jamais
    commités : une photo de téléphone porte les coordonnées GPS du domicile, et le dépôt est public.
 3. `spike/ingest.ts <page>` — normalise via `sharp` et écrit dans `spike/fixtures/pages/` :
@@ -62,11 +62,12 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
    domaine ; sans lui, le schéma refuserait sa propre sortie.
    Hors schéma par construction : `searchText`, `slug`, `imageId`, provenance, temps de
    préparation ou de cuisson.
+
 8. `spike/json-schema.ts` — dérivation du JSON Schema depuis le Zod (`z.toJSONSchema()`), puis
    normalisation stricte : `additionalProperties: false` partout et **toutes** les clés dans
    `required`. Avec des champs déjà nullables côté Zod, la dérivation est fidèle sans bricolage.
 9. `spike/prompt.ts` — prompt v1, exporté avec un identifiant de version explicite. **Commité.**
-   Ce commit *est* le gel : il horodate le fait que le prompt a été écrit sans connaissance de la
+   Ce commit _est_ le gel : il horodate le fait que le prompt a été écrit sans connaissance de la
    page d'acceptation.
 
 ### Étape 1b — Sceller l'oracle (strictement après le gel du prompt)
@@ -85,7 +86,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
 11. **Règle de péremption.** À partir de cet instant, D est connue de l'évaluateur. Si l'unique
     réécriture de prompt autorisée (étape 3) est déclenchée, `prompt v2` sera écrit par quelqu'un
     qui a lu D : **D est alors brûlée comme page d'acceptation** et remplacée par une page **D′**
-    fraîchement shootée, ingérée et transcrite *après* le commit de `prompt v2`. Même mécanique de
+    fraîchement shootée, ingérée et transcrite _après_ le commit de `prompt v2`. Même mécanique de
     contingence qu'à l'étape 4 : aucun travail anticipé, et dans le cas nominal D′ n'existe jamais.
 
 ### Étape 2 — Établir l'échelle
@@ -99,7 +100,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
       `max_tokens`) — sinon `require_parameters: true` rendra artificiellement indisponible un
       endpoint par ailleurs valide.
     - **Coût de classement** = `pricing.prompt × tokens_texte` + **`pricing.image × 1`** +
-      **`pricing.request`** + `pricing.completion × 2500` — une sortie *représentative*, pas le
+      **`pricing.request`** + `pricing.completion × 2500` — une sortie _représentative_, pas le
       plafond. Trier sur 8000 tokens classerait les pires cas et pourrait inverser l'ordre entre
       deux endpoints selon leur ratio prompt/completion, alors que le protocole demande « le moins
       cher », c'est-à-dire le coût attendu d'une extraction réelle. Les 8000 tokens ne servent
@@ -107,7 +108,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
     - Un poste tarifaire absent ou inconnu n'est **pas** traité comme zéro : l'endpoint sort de
       l'échelle principale et rejoint la **file « prix incertain »**.
       **Précision issue du catalogue réel (2026-08-09)** : cette règle ne vaut que pour `prompt` et
-      `completion`. OpenRouter *omet* une clé au lieu d'écrire `"0"` — `request` est absent des 125
+      `completion`. OpenRouter _omet_ une clé au lieu d'écrire `"0"` — `request` est absent des 125
       modèles vision+strict et `image` de 100 d'entre eux, où l'image est facturée comme des tokens
       de prompt. Appliquer la règle aux quatre postes enverrait 100 % du catalogue dans une file de
       trois sondes, et l'échelle naîtrait avec 3 barreaux au lieu de 123.
@@ -165,7 +166,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
     seulement un PASS/FAIL.
 18. Échelon rejeté si un critère échoue **ou** si les deux passes divergent sur le nombre de
     recettes détectées — un pipeline non reproductible n'est pas exploitable. Un échelon dont une
-    passe est *inconclusive* est rejoué plus tard, pas rejeté.
+    passe est _inconclusive_ est rejoué plus tard, pas rejeté.
 19. Échec → échelon suivant dans `ladder`. **Une seule réécriture de prompt** est autorisée sur
     toute l'escalade ; si elle est utilisée, elle produit `prompt v2` et l'escalade **repart de
     l'échelon le plus bas**, pour que tous les échelons soient jugés au même prompt. Comme
@@ -176,7 +177,7 @@ d'acceptation soit ouverte. L'inverse reviendrait à régler l'instrument sur l'
 ### Étape 4 — Acceptation sur la page D et verdict
 
 L'acceptation distingue deux natures d'écart, faute de quoi le critère se mord la queue : exiger
-une conformité *exacte* à l'oracle ne laisserait rien à corriger, `T_correction` vaudrait zéro, et
+une conformité _exacte_ à l'oracle ne laisserait rien à corriger, `T_correction` vaudrait zéro, et
 toute sortie réellement corrigeable serait déjà rejetée.
 
 - **Barrières structurelles (`hard gates`)** — non éditables en un geste, elles condamnent
@@ -187,7 +188,7 @@ toute sortie réellement corrigeable serait déjà rejetée.
   reformulation d'un titre, coupure de mot, `type` ou `servings` erronés. Ce sont eux, et eux
   seuls, que le chronomètre mesure. Tous portent sur des champs figurant dans l'ensemble
   d'identité transcrit à l'étape 1b — sans quoi l'état final serait invérifiable. Une unité mal lue
-  *à l'intérieur* d'une ligne est une erreur de texte dans `raw`, donc déjà couverte ; le champ
+  _à l'intérieur_ d'une ligne est une erreur de texte dans `raw`, donc déjà couverte ; le champ
   `unit`, lui, n'est ni transcrit ni chronométré.
 
 21. **Deux passes** du candidat sur D. Les **deux** doivent franchir toutes les barrières
@@ -238,7 +239,7 @@ toute sortie réellement corrigeable serait déjà rejetée.
    critère serait tautologique — exiger l'exactitude parfaite ne laisse rien à chronométrer, et
    toute sortie corrigeable est déjà rejetée. C'est aussi la définition opérationnelle de
    « corriger coûte moins cher que saisir » : un défaut qui force à relire toute la page contre
-   l'original *est* une saisie.
+   l'original _est_ une saisie.
 6. **Arbitrage temps chiffré**, `T_correction < T_saisie`, mesuré **une seule fois par page
    d'acceptation** et jamais rejoué sur une page déjà vue. Le critère le plus structurant du projet
    ne repose plus sur une impression.
@@ -255,7 +256,7 @@ toute sortie réellement corrigeable serait déjà rejetée.
    **observés, non bloquants**. Temps de préparation et de cuisson exclus : hors périmètre produit,
    définitivement (`PRODUCT.md:103`).
 10. **`raw` obligatoire et seul noté ; `quantity`, `unit`, `label` demandés mais non notés.** T6
-   s'informe gratuitement sans pouvoir faire échouer T1.
+    s'informe gratuitement sans pouvoir faire échouer T1.
 11. **Champs non garantis en `.nullable()`, pas `.optional()`**, plus une normalisation
     `null → undefined` vers le domaine. Le mode strict impose toutes les clés en `required` ; sans
     ce choix le schéma Zod refuserait la sortie qu'il a lui-même demandée.
@@ -263,7 +264,7 @@ toute sortie réellement corrigeable serait déjà rejetée.
 13. **2 passes par photo partout**, y compris à l'acceptation. `temperature: 0`, `provider.only`
     figé, provider servi vérifié. Sans `only`, la sélection initiale reste dynamique et la mesure
     porte sur l'hébergeur.
-14. **Retries bornés sur les seules erreurs transitoires**, passe marquée *inconclusive* plutôt
+14. **Retries bornés sur les seules erreurs transitoires**, passe marquée _inconclusive_ plutôt
     qu'échouée. Un 429 ne doit pas éliminer un échelon.
 15. **`max_tokens: 8000`, pas 2500.** Un plafond serré fabriquerait des troncatures et ferait
     recaler un modèle pour une faute qui serait la nôtre. Le contrôle de dépense passe par le
@@ -280,7 +281,7 @@ toute sortie réellement corrigeable serait déjà rejetée.
     filtré.
 18. **Dépôt public, fixtures commitées telles quelles.** Décision explicite de l'utilisateur après
     que le point a été soulevé ; le risque de diffusion de contenu protégé est acté et accepté.
-    Ce qui n'est *pas* couvert par cette acceptation — métadonnées GPS des originaux — est traité
+    Ce qui n'est _pas_ couvert par cette acceptation — métadonnées GPS des originaux — est traité
     séparément par la décision 8.
 
 19. **La file « prix incertain » est résorbée avant l'escalade, pas après.** Un endpoint sans prix

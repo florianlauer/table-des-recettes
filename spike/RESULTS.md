@@ -17,16 +17,16 @@
 Les pages E, F, G et H sont les pages de réserve : le modèle ne les avait jamais vues et aucune
 vérité terrain n'en a été transcrite.
 
-| Modèle | Provider | Pages | Passes | Échecs | Réparations de schéma | Pages instables |
-|---|---|---|---|---|---|---|
-| `google/gemini-3-flash-preview` | `google-ai-studio` | A B C E F G H | 14 | 0 | 0 | 1 (B) |
-| `google/gemini-2.5-flash-lite` | `google-ai-studio` | A B C E F G H | 14 | 0 | 2 | 0 |
-| `openai/gpt-5.6-luna` | `openai` | A B C E F G H | 14 | 0 | 0 | 7 |
-| `mistralai/ministral-8b-2512` | `mistral` | A B C E F G H | 14 | 0 | 0 | 6 |
-| `qwen/qwen3.5-9b` | `siliconflow` | A B (partiel) | 3 | 0 | 0 | 2 sur 3 |
-| `qwen/qwen3.5-35b-a3b` | `deepinfra` | A B C E F G H | 14 | 6 | 0 | 4 |
-| `qwen/qwen3-vl-32b-instruct` | `alibaba` | A B C E F G H | 14 | 0 | 0 | 5 |
-| `qwen/qwen3.6-flash` | `alibaba` | A B C E F G H | 14 | 14 | — | — |
+| Modèle                          | Provider           | Pages         | Passes | Échecs | Réparations de schéma | Pages instables |
+| ------------------------------- | ------------------ | ------------- | ------ | ------ | --------------------- | --------------- |
+| `google/gemini-3-flash-preview` | `google-ai-studio` | A B C E F G H | 14     | 0      | 0                     | 1 (B)           |
+| `google/gemini-2.5-flash-lite`  | `google-ai-studio` | A B C E F G H | 14     | 0      | 2                     | 0               |
+| `openai/gpt-5.6-luna`           | `openai`           | A B C E F G H | 14     | 0      | 0                     | 7               |
+| `mistralai/ministral-8b-2512`   | `mistral`          | A B C E F G H | 14     | 0      | 0                     | 6               |
+| `qwen/qwen3.5-9b`               | `siliconflow`      | A B (partiel) | 3      | 0      | 0                     | 2 sur 3         |
+| `qwen/qwen3.5-35b-a3b`          | `deepinfra`        | A B C E F G H | 14     | 6      | 0                     | 4               |
+| `qwen/qwen3-vl-32b-instruct`    | `alibaba`          | A B C E F G H | 14     | 0      | 0                     | 5               |
+| `qwen/qwen3.6-flash`            | `alibaba`          | A B C E F G H | 14     | 14     | —                     | —               |
 
 Modes d'échec observés :
 
@@ -45,7 +45,7 @@ Modes d'échec observés :
   déjà retenu et la mesure n'aurait rien changé au choix.
 - Les deux modèles `-thinking` (`qwen3-vl-8b-thinking` @alibaba,
   `qwen3-vl-30b-a3b-thinking` @siliconflow) refusent la coupure : `400 — Reasoning is mandatory for
-  this endpoint and cannot be disabled`, et `effort: "low"` est mesurablement inopérant (615 tokens
+this endpoint and cannot be disabled`, et `effort: "low"` est mesurablement inopérant (615 tokens
   de raisonnement avec, 518 sans). Leurs 5 000 à 9 000 tokens de réflexion par appel, leurs
   0,013–0,022 USD et leurs 48–93 s sont leur nature. Non retenus, sans reproche de qualité : seule
   la page A a été jouée.
@@ -102,6 +102,7 @@ visible, et le seul parfaitement stable corrompt en silence (`1 vingtaine` lu `1
    étapes quand la page n'en imprime pas, et le signaler dans la sortie. Tant que la règle n'est pas
    écrite, le comportement reste imprévisible : rien ne garantit qu'une autre page sans liste ne
    produira pas un tableau vide.
+
 3. **`strict: true` n'est pas contraignant sur OpenRouter.** Vérifié sur deux providers du même
    modèle, qui ont rendu `"6 à 8 personnes"` dans un champ déclaré `number`. `repairExtraction()`
    dans `src/lib/recipe-schema.ts` couvre le cas ; la validation doit rester défensive à la

@@ -8,12 +8,12 @@ Le second argument découple le rôle dans le protocole du nom de la photo :
 
 ## Correspondance rôle / source
 
-| Rôle | Source | Cas | Nombre réel de recettes | Ingestion |
-|---|---|---|---:|---|
-| A | `mono1` | Mono-recette — Cabillaud à la milanaise | 1 | Faite |
-| B | `4recettes` | Page 2×2, quatre recettes, traits de découpe | 4 | Faite |
-| C | `complexe` | Texte sur photo, contraste faible, surface incurvée et brillante | 1 | Faite |
-| D | `duo2` | Acceptation — collage de deux fiches découpées | Non utilisé avant l'acceptation | À faire après gel du prompt |
+| Rôle | Source      | Cas                                                              |         Nombre réel de recettes | Ingestion                   |
+| ---- | ----------- | ---------------------------------------------------------------- | ------------------------------: | --------------------------- |
+| A    | `mono1`     | Mono-recette — Cabillaud à la milanaise                          |                               1 | Faite                       |
+| B    | `4recettes` | Page 2×2, quatre recettes, traits de découpe                     |                               4 | Faite                       |
+| C    | `complexe`  | Texte sur photo, contraste faible, surface incurvée et brillante |                               1 | Faite                       |
+| D    | `duo2`      | Acceptation — collage de deux fiches découpées                   | Non utilisé avant l'acceptation | À faire après gel du prompt |
 
 Le nombre réel de recettes de A, B et C est la seule vérité terrain de ces trois pages : une erreur
 de saisie y rend le critère de segmentation faux sans que rien ne le signale. Valeurs relevées à
@@ -26,7 +26,7 @@ l'œil et **confirmées** par l'auteur le 2026-08-09.
 - **« Le conseil de Danone » n'est ni ingrédient ni étape** : de l'éditorial en fin de bloc. Le
   verser dans `steps` est une invention silencieuse, difficile à voir à l'œil.
 - **Les ingrédients sont un flux inline** (`Marché. 2 filets de dinde de 500 g • 20 g de cacao
-  brut • …`) et non une liste verticale : c'est le test du découpage ligne à ligne de `raw`, avec un
+brut • …`) et non une liste verticale : c'est le test du découpage ligne à ligne de `raw`, avec un
   vrai risque de fusion.
 - **« Pour 6 à 8 personnes »** alors que `servings` est un `number | null`. Tranché depuis : le prompt
   v2 impose la **borne basse**, donc `6`. Transcris la vérité terrain avec cette même règle ; la

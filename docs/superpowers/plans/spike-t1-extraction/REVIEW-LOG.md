@@ -110,7 +110,7 @@ VERDICT: REVISE
   marqué `incertain` au lieu d'être compté zéro, plafond de dépense calculé avant l'escalade.
 - **#5 filtre de capacité** — le filtre porte désormais sur tous les paramètres réellement envoyés.
 - **#9 erreurs transitoires** — timeout 120 s + 3 tentatives avec backoff sur 429/5xx/réseau, passe
-  marquée *inconclusive* et non *échouée*. Refus, troncatures et sorties invalides restent des
+  marquée _inconclusive_ et non _échouée_. Refus, troncatures et sorties invalides restent des
   échecs jamais rejoués.
 - **#10 EXIF (partiel)** — métadonnées supprimées avant envoi et avant stockage : les photos de
   téléphone portent le GPS du domicile et le dépôt est public.
@@ -146,21 +146,22 @@ VERDICT: REVISE
 La révision corrige l’essentiel des dix remarques précédentes : provider pinning, schéma nullable, `sharp`, coût détaillé, filtres de capacité, oracle, chronométrage, retries et EXIF. Quatre problèmes matériels restent.
 
 1. **Le budget est sous-estimé.** Le calcul suppose 2500 tokens, 6 appels par échelon et aucune relance, alors que l’exécution autorise 8000 tokens, jusqu’à trois tentatives et des appels supplémentaires sur D ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:75), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:80), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:91)).  
-Fix — Calculer le pire cas avec 8000 tokens, retries et acceptations D, puis imposer un plafond cumulatif vérifié avant chaque appel.
+   Fix — Calculer le pire cas avec 8000 tokens, retries et acceptations D, puis imposer un plafond cumulatif vérifié avant chaque appel.
 
 2. **D n’est pas réellement tenue hors de vue.** Elle est photographiée et transcrite avant la création ou le gel du prompt ; son contenu peut donc influencer `prompt v1` ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:22), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:32)).  
-Fix — Faire préparer D par une autre personne, ou geler définitivement le prompt avant que son évaluateur ouvre et transcrive D.
+   Fix — Faire préparer D par une autre personne, ou geler définitivement le prompt avant que son évaluateur ouvre et transcrive D.
 
 3. **L’acceptation repose sur un tir unique.** Un résultat chanceux sur D peut sélectionner un endpoint que les deux passes sur A/B/C avaient justement pour objectif de tester en reproductibilité ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:121)).  
-Fix — Exécuter deux passes indépendantes sur D et exiger que les deux respectent l’oracle et le seuil de correction.
+   Fix — Exécuter deux passes indépendantes sur D et exiger que les deux respectent l’oracle et le seuil de correction.
 
 4. **La réutilisation de D biaise le chronométrage.** Après le premier candidat, l’évaluateur connaît déjà la page, la vérité terrain et les erreurs typiques ; les candidats suivants obtiennent artificiellement un meilleur `T_correction` ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:128), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:131)).  
-Fix — Prévoir une page d’acceptation fraîche par candidat ou mesurer le temps avec des évaluateurs indépendants n’ayant jamais vu D.
+   Fix — Prévoir une page d’acceptation fraîche par candidat ou mesurer le temps avec des évaluateurs indépendants n’ayant jamais vu D.
 
 5. **La suppression EXIF n’est garantie que pour la copie envoyée.** Les originaux sont rangés dans les fixtures avant le passage par `sharp`, malgré l’affirmation qu’ils seront nettoyés avant stockage ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:29), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:87)).  
-Fix — Ingérer les photos hors dépôt, écrire uniquement les sorties Sharp nettoyées dans `spike/fixtures/pages`, puis vérifier automatiquement l’absence de métadonnées.
+   Fix — Ingérer les photos hors dépôt, écrire uniquement les sorties Sharp nettoyées dans `spike/fixtures/pages`, puis vérifier automatiquement l’absence de métadonnées.
 
 VERDICT: REVISE
+
 ### Claude's response — round 2
 
 Les cinq points sont fondés et tous intégrés. Deux méritaient de l'être sans discussion.
@@ -175,7 +176,7 @@ Les cinq points sont fondés et tous intégrés. Deux méritaient de l'être san
 - **#2 page D pas réellement hors de vue** — vraie faille de protocole, pas un détail : je faisais
   transcrire D à l'étape 0, donc l'auteur du prompt l'avait lue avant de l'écrire. L'ordre devient
   contraignant — A/B/C ingérées, prompt v1 écrit **et commité** (le commit fait office
-  d'horodatage), *puis seulement* D est désélée et transcrite (nouvelle étape 1b). La parade
+  d'horodatage), _puis seulement_ D est désélée et transcrite (nouvelle étape 1b). La parade
   complète (préparation de D par un tiers) reste hors de portée d'un projet mono-utilisateur ; le
   résidu est consigné en risque assumé.
 - **#1 budget sous-estimé** — le calcul mélangeait 2500 tokens d'estimation et 8000 d'exécution, et
@@ -198,31 +199,32 @@ Les cinq points sont fondés et tous intégrés. Deux méritaient de l'être san
 Les findings round 2 sur le budget, les deux passes, l’EXIF et la fraîcheur des pages suivantes sont largement traités. Quatre problèmes matériels restent.
 
 1. **D contamine encore `prompt v2`.** D est ouverte et transcrite à l’étape 1b, puis une réécriture du prompt reste autorisée pendant l’escalade ; l’affirmation selon laquelle D reste hors de vue pendant tout le réglage est donc fausse ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:72), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:131)).  
-Fix — Ne desceller et transcrire D qu’après le gel définitif de la dernière version du prompt, ou confier D à un évaluateur distinct.
+   Fix — Ne desceller et transcrire D qu’après le gel définitif de la dernière version du prompt, ou confier D à un évaluateur distinct.
 
 2. **L’arbitrage temporel est devenu tautologique.** Les deux sorties de D doivent satisfaire exactement l’oracle ; elles ne nécessitent alors aucune correction et `T_correction` vaut pratiquement zéro, tandis qu’une sortie nécessitant une correction est déjà rejetée ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:140), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:144)).  
-Fix — Séparer les hard gates structurels des erreurs éditables, puis chronométrer la correction de ces erreurs avec un seuil d’exactitude final explicite.
+   Fix — Séparer les hard gates structurels des erreurs éditables, puis chronométrer la correction de ces erreurs avec un seuil d’exactitude final explicite.
 
 3. **Le classement ne mesure plus le modèle “le moins cher”.** Utiliser systématiquement 8000 tokens pour trier les endpoints classe leur pire cas, pas le coût attendu d’une extraction réelle, et peut changer l’ordre selon le ratio prompt/completion ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:91)).  
-Fix — Utiliser une sortie représentative, par exemple 2500 tokens, pour le classement et réserver 8000 tokens au calcul de budget maximal.
+   Fix — Utiliser une sortie représentative, par exemple 2500 tokens, pour le classement et réserver 8000 tokens au calcul de budget maximal.
 
 4. **Le plafond de 5 € n’est pas réellement dur.** Vérifier uniquement la dépense déjà consommée avant l’appel autorise un dernier appel à faire dépasser le plafond ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:96)).  
-Fix — Refuser l’appel lorsque `dépense_cumulée + coût_maximal_estimé_du_prochain_appel > plafond`.
+   Fix — Refuser l’appel lorsque `dépense_cumulée + coût_maximal_estimé_du_prochain_appel > plafond`.
 
 5. **Le sommet de l’échelle reste indéfini pour les prix inconnus.** Les endpoints `prix incertain` sont “rangés à part”, sans dire s’ils sont testés, dans quel ordre, ou s’ils doivent passer avant un verdict négatif ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:91)).  
-Fix — Définir explicitement leur exclusion justifiée ou une queue manuelle bornée à parcourir avant de conclure négativement.
+   Fix — Définir explicitement leur exclusion justifiée ou une queue manuelle bornée à parcourir avant de conclure négativement.
 
 VERDICT: REVISE
+
 ### Claude's response — round 3
 
 Cinq points, tous fondés, tous intégrés. Aucun rejet ce tour-ci.
 
 - **#2 arbitrage temporel tautologique** — la meilleure trouvaille des trois rounds. Exiger que les
-  deux passes sur D satisfassent *exactement* l'oracle ne laissait rien à corriger (`T_correction`
+  deux passes sur D satisfassent _exactement_ l'oracle ne laissait rien à corriger (`T_correction`
   ≈ 0) tandis que toute sortie réellement corrigeable était déjà rejetée : le critère se mordait la
-  queue. L'acceptation passe à **deux étages** — *barrières structurelles* (recette manquante,
+  queue. L'acceptation passe à **deux étages** — _barrières structurelles_ (recette manquante,
   ligne inventée, fusionnée ou manquante, étape hors ordre, schéma invalide) qui condamnent
-  l'échelon, et *écarts éditables* (coquille, accent, casse, unité mal lue, `type`/`servings`
+  l'échelon, et _écarts éditables_ (coquille, accent, casse, unité mal lue, `type`/`servings`
   faux) qui sont seuls chronométrés. Bénéfice inattendu : cette frontière est la définition
   opérationnelle du critère produit — un défaut qui force à relire toute la page contre l'original
   **est** une saisie, pas une correction.
@@ -248,18 +250,19 @@ Cinq points, tous fondés, tous intégrés. Aucun rejet ce tour-ci.
 Les cinq findings du round 3 sont corrigés. Trois nouveaux problèmes matériels apparaissent.
 
 1. **L’oracle ne couvre pas les champs chronométrés.** `d-acceptation.json` ne transcrit que titre, lignes d’ingrédients et étapes, mais les écarts éditables incluent `unit`, `type` et `servings`; l’identité finale avec l’oracle est donc impossible à vérifier pour ces champs ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:74), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:167)).  
-Fix — Inclure tous les champs éditables dans l’oracle, ou retirer `unit`, `type` et `servings` du scoring et du chronométrage.
+   Fix — Inclure tous les champs éditables dans l’oracle, ou retirer `unit`, `type` et `servings` du scoring et du chronométrage.
 
 2. **La file “prix incertain” viole le protocole du moins cher.** Elle n’est sondée qu’avant un verdict négatif ; si un endpoint connu passe, un endpoint incertain potentiellement moins cher n’est jamais évalué ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:102), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:107)).  
-Fix — Sonder les trois endpoints incertains avant l’escalade, récupérer leur coût réel, puis les insérer à leur place dans l’échelle principale.
+   Fix — Sonder les trois endpoints incertains avant l’escalade, récupérer leur coût réel, puis les insérer à leur place dans l’échelle principale.
 
 3. **Le plafond dur est incompatible avec un prix inconnu.** Le coût maximal du prochain appel ne peut pas être pré-vérifié pour l’appel-sonde d’un endpoint précisément classé “prix incertain”; ce probe peut franchir les 5 € avant que son coût réel soit retourné ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:109), [PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:116)).  
-Fix — Exclure tout endpoint sans borne tarifaire vérifiable, ou obtenir une borne externe avant le probe et appliquer la même pré-vérification.
+   Fix — Exclure tout endpoint sans borne tarifaire vérifiable, ou obtenir une borne externe avant le probe et appliquer la même pré-vérification.
 
 4. **La contingence ne couvre que le second candidat.** Une page E est prévue après l’échec du premier candidat, mais aucun protocole ne définit une page F puis les suivantes si plusieurs candidats échouent successivement ([PLAN.md](/Users/florianlauer/Documents/perso/table-des-recettes/docs/superpowers/plans/spike-t1-extraction/PLAN.md:178)).  
-Fix — Généraliser la règle en “une page d’acceptation fraîche par candidat” avec nommage, oracle, deux passes et chronométrage identiques.
+   Fix — Généraliser la règle en “une page d’acceptation fraîche par candidat” avec nommage, oracle, deux passes et chronométrage identiques.
 
 VERDICT: REVISE
+
 ### Claude's response — round 4
 
 Quatre points, tous fondés, tous intégrés. Aucun rejet.
@@ -273,7 +276,7 @@ Quatre points, tous fondés, tous intégrés. Aucun rejet.
   dans le texte de `raw` (déjà couvert), et le champ `unit` lui-même reste observé-non-noté
   conformément à la décision sur T6.
 - **#2 la file « prix incertain » viole le protocole du moins cher** — juste, et c'est une faute de
-  raisonnement de ma part au round 3 : sonder ces endpoints *avant un verdict négatif* les rend
+  raisonnement de ma part au round 3 : sonder ces endpoints _avant un verdict négatif_ les rend
   invisibles dès qu'un endpoint connu passe, alors qu'un prix inconnu peut être le plus bas de
   l'échelle. Ils sont désormais **sondés avant l'escalade** et insérés à leur vraie place dans
   l'échelle unique.
@@ -350,6 +353,7 @@ templates humains. Aucune photo ni vérité terrain fabriquée, aucun appel rés
 Diff lu intégralement, `npm run verify` rejoué moi-même. Cinq problèmes.
 
 **Deux à conséquence de verdict** — les plus graves, parce qu'ils fabriquent un faux négatif :
+
 1. Un provider servi différent du provider demandé, et un `usage.cost` absent, étaient classés
    `failure`, donc **imputés au modèle**. Le plan est explicite : seuls refus, troncature et
    réponse invalide comptent contre l'échelon. Un caprice de routage aurait recalé un modèle qui
@@ -358,15 +362,12 @@ Diff lu intégralement, `npm run verify` rejoué moi-même. Cinq problèmes.
    (`"deepinfra"`) quand la réponse renvoie un nom d'affichage (`"DeepInfra"`). En l'état,
    potentiellement **tous** les appels réels tombaient en `provider_mismatch`.
 
-**Une infidélité au modèle de données** :
-3. `servings` et `quantity` typés `string`, alors que la spec design impose `number?` pour les
-   deux. Ce fichier est celui dont T2 hérite et sur lequel T6 fait de l'arithmétique de portions.
+**Une infidélité au modèle de données** : 3. `servings` et `quantity` typés `string`, alors que la spec design impose `number?` pour les
+deux. Ce fichier est celui dont T2 hérite et sur lequel T6 fait de l'arithmétique de portions.
 
-**Deux points de rigueur** :
-4. `accept.ts` n'émettait aucun verdict, alors que la spec exige que **les deux** passes franchissent
-   toutes les barrières.
-5. Un seuil de similarité unique (0,6) tranchait en silence la frontière barrière / éditable que le
-   plan désigne comme un jugement humain, avec la règle « dans le doute, c'est une barrière ».
+**Deux points de rigueur** : 4. `accept.ts` n'émettait aucun verdict, alors que la spec exige que **les deux** passes franchissent
+toutes les barrières. 5. Un seuil de similarité unique (0,6) tranchait en silence la frontière barrière / éditable que le
+plan désigne comme un jugement humain, avec la règle « dans le doute, c'est une barrière ».
 
 ### Round 1 — Codex fix
 
@@ -379,8 +380,8 @@ comptée comme barrière et remontée séparément pour arbitrage humain.
 
 Corrections bonnes. Mais une **décision supplémentaire prise seul par Codex** — « les erreurs HTTP
 non transitoires lèvent également `HarnessError` » — sur-appliquait la consigne et retournait la
-règle du plan : *« un provider peut annoncer `structured_outputs` et échouer en pratique. Un tel
-échec est un vrai échec d'échelon. »* Comme l'échelle est triée par prix, le premier endpoint bon
+règle du plan : _« un provider peut annoncer `structured_outputs` et échouer en pratique. Un tel
+échec est un vrai échec d'échelon. »_ Comme l'échelle est triée par prix, le premier endpoint bon
 marché refusant le mode strict aurait avorté le spike au lieu de le faire monter d'un cran — soit
 exactement le résultat que tout le protocole existe pour éviter.
 
@@ -410,7 +411,7 @@ réseau ne pouvait attraper.
    modèles et `pricing.image` de 100 : OpenRouter omet la clé au lieu d'écrire `"0"`. `parsePricing`
    renvoyait `null` dès qu'un des quatre postes manquait, donc **tout** le catalogue tombait dans la
    file « prix incertain », plafonnée à trois sondes. La règle « un poste absent n'est pas zéro »
-   reste juste pour un prix vraiment inconnu ; ici l'absence de `request` *signifie* zéro et celle
+   reste juste pour un prix vraiment inconnu ; ici l'absence de `request` _signifie_ zéro et celle
    de `image` signifie « facturée en tokens de prompt ». Le garde-fou ne porte plus que sur `prompt`
    et `completion`.
 2. **`provider.only` recevait une valeur non routable.** `providerSlug()` prenait `provider_name`
@@ -528,12 +529,12 @@ limite des endpoints : ils annoncent de 32768 à 262144 tokens de sortie.
 
 Ce qui a été mesuré ensuite, endpoint par endpoint :
 
-| Endpoint | `effort: low` | `enabled: false` |
-|---|---|---|
-| `qwen3-vl-8b-thinking` @alibaba | inopérant — 615 tokens avec, 518 sans | refusé, 400 |
-| `qwen3-vl-30b-a3b-thinking` @siliconflow | 743 → 729 | refusé, 400 |
-| `qwen3.5-35b-a3b` @deepinfra | 408 → 377 | fonctionne, raisonnement 0 |
-| `qwen3.6-flash` @alibaba | 566 → 600 | fonctionne, raisonnement 0 |
+| Endpoint                                 | `effort: low`                         | `enabled: false`           |
+| ---------------------------------------- | ------------------------------------- | -------------------------- |
+| `qwen3-vl-8b-thinking` @alibaba          | inopérant — 615 tokens avec, 518 sans | refusé, 400                |
+| `qwen3-vl-30b-a3b-thinking` @siliconflow | 743 → 729                             | refusé, 400                |
+| `qwen3.5-35b-a3b` @deepinfra             | 408 → 377                             | fonctionne, raisonnement 0 |
+| `qwen3.6-flash` @alibaba                 | 566 → 600                             | fonctionne, raisonnement 0 |
 
 `effort` est donc un leurre : sur alibaba il augmente le raisonnement. Le seul levier est
 `reasoning: { enabled: false }`, et les endpoints qui l'imposent répondent `400 — Reasoning is

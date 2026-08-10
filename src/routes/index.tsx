@@ -6,7 +6,11 @@ import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
 import { groupByLetter } from '../lib/groupByLetter'
-import { RECIPE_TYPES, TYPE_FILTER_LABELS, TYPE_LABELS } from '../lib/recipeTypes'
+import {
+  RECIPE_TYPES,
+  TYPE_FILTER_LABELS,
+  TYPE_LABELS,
+} from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
 
 const searchSchema = z.object({
@@ -21,7 +25,9 @@ export const Route = createFileRoute('/')({
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
     await Promise.all([
-      context.queryClient.ensureQueryData(convexQuery(api.recipes.countsByType, {})),
+      context.queryClient.ensureQueryData(
+        convexQuery(api.recipes.countsByType, {}),
+      ),
       context.queryClient.ensureQueryData(browseOptions(deps)),
     ])
   },
@@ -30,7 +36,10 @@ export const Route = createFileRoute('/')({
 
 /** A single query for the index: the list ↔ search switch lives in Convex. */
 function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
-  return convexQuery(api.recipes.browse, { query: q?.trim() || undefined, type })
+  return convexQuery(api.recipes.browse, {
+    query: q?.trim() || undefined,
+    type,
+  })
 }
 
 function IndexPage() {
@@ -56,7 +65,9 @@ function IndexPage() {
     return () => clearTimeout(id)
   }, [draft, q, navigate])
 
-  const counts = useSuspenseQuery(convexQuery(api.recipes.countsByType, {})).data
+  const counts = useSuspenseQuery(
+    convexQuery(api.recipes.countsByType, {}),
+  ).data
   const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
   return (
@@ -79,7 +90,9 @@ function IndexPage() {
         <button
           className="filters__item"
           aria-current={type === undefined}
-          onClick={() => navigate({ search: (prev) => ({ ...prev, type: undefined }) })}
+          onClick={() =>
+            navigate({ search: (prev) => ({ ...prev, type: undefined }) })
+          }
         >
           Toutes <span className="filters__count">{counts.total}</span>
         </button>
@@ -89,9 +102,12 @@ function IndexPage() {
             className="filters__item"
             data-type={t}
             aria-current={type === t}
-            onClick={() => navigate({ search: (prev) => ({ ...prev, type: t }) })}
+            onClick={() =>
+              navigate({ search: (prev) => ({ ...prev, type: t }) })
+            }
           >
-            {TYPE_FILTER_LABELS[t]} <span className="filters__count">{counts.byType[t]}</span>
+            {TYPE_FILTER_LABELS[t]}{' '}
+            <span className="filters__count">{counts.byType[t]}</span>
           </button>
         ))}
       </nav>
@@ -101,12 +117,16 @@ function IndexPage() {
         for the search is visual — a screen reader announces nothing at all while typing.
       */}
       <p className="visually-hidden" role="status">
-        {searching ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}` : ''}
+        {searching
+          ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}`
+          : ''}
       </p>
 
       {listed.length === 0 ? (
         <p className="empty">
-          {counts.total === 0 ? 'Aucune recette publiée.' : 'Aucune recette ne correspond.'}
+          {counts.total === 0
+            ? 'Aucune recette publiée.'
+            : 'Aucune recette ne correspond.'}
         </p>
       ) : searching ? (
         <ol className="index index--flat">
@@ -146,7 +166,11 @@ function RecipeRow({
   return (
     <li className="row">
       <div className="row__body">
-        <Link to="/recette/$slug" params={{ slug: recipe.slug }} className="row__title">
+        <Link
+          to="/recette/$slug"
+          params={{ slug: recipe.slug }}
+          className="row__title"
+        >
           {recipe.title}
         </Link>
         <span className="row__type" data-type={recipe.type}>
@@ -156,7 +180,12 @@ function RecipeRow({
           <p className="row__reason">{recipe.matchedIngredient}</p>
         ) : null}
         {showImage && recipe.imageUrl ? (
-          <img className="row__photo" src={recipe.imageUrl} alt="" loading="lazy" />
+          <img
+            className="row__photo"
+            src={recipe.imageUrl}
+            alt=""
+            loading="lazy"
+          />
         ) : null}
       </div>
     </li>

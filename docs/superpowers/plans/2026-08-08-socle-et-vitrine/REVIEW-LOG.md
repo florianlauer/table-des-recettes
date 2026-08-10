@@ -9,12 +9,12 @@ Acte 1 (grill-with-docs) terminé. Plan verrouillé, `CONTEXT.md` créé, ADR 00
 
 ## Acte 1 — arbitrages du grill
 
-| # | Question | Décision | Trace |
-|---|---|---|---|
-| 1 | `slug` typé `string?` alors qu'une recette publiée en a toujours un | Frontière de lecture : les queries publiques rendent `PublishedRecipe` avec `slug: string` obligatoire ; une publication sans slug lève | [ADR 0001](../../../adr/0001-frontiere-de-lecture-brouillon-publie.md) |
-| 2 | Recherche tronquée à 50 sans le dire | `.take(1024)`, plafond dur Convex — la troncature cesse d'exister | plan, tâche 8 |
-| 3 | Le recalcul produit `0 g de sel` en divisant | Trois paliers : entier > 10, demi de 1 à 10, quart en dessous, plancher `0,25` | plan, tâche 5 |
-| 4 | La substitution du nombre laisse `1 œufs` | Accord au singulier sous 2, avec liste d'invariables français | plan, tâche 5 |
+| #   | Question                                                            | Décision                                                                                                                                | Trace                                                                  |
+| --- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| 1   | `slug` typé `string?` alors qu'une recette publiée en a toujours un | Frontière de lecture : les queries publiques rendent `PublishedRecipe` avec `slug: string` obligatoire ; une publication sans slug lève | [ADR 0001](../../../adr/0001-frontiere-de-lecture-brouillon-publie.md) |
+| 2   | Recherche tronquée à 50 sans le dire                                | `.take(1024)`, plafond dur Convex — la troncature cesse d'exister                                                                       | plan, tâche 8                                                          |
+| 3   | Le recalcul produit `0 g de sel` en divisant                        | Trois paliers : entier > 10, demi de 1 à 10, quart en dessous, plancher `0,25`                                                          | plan, tâche 5                                                          |
+| 4   | La substitution du nombre laisse `1 œufs`                           | Accord au singulier sous 2, avec liste d'invariables français                                                                           | plan, tâche 5                                                          |
 
 Décision prise sans question, avec sa raison : le marqueur `†` des lignes non recalculées est
 conservé et inscrit dans `DESIGN.md`. Un signal porté par la seule couleur échouerait sur la
@@ -46,26 +46,26 @@ ligne du seed.
 
 ### Retenus et appliqués
 
-| # | Constat | Correctif |
-|---|---|---|
-| 2 | Câblage SSR incomplet : `setupRouterSsrQueryIntegration` absent | Paquet `@tanstack/react-router-ssr-query` (vérifié en 1.167.1) ajouté, intégration câblée |
-| 3 | `QueryClient` et `ConvexQueryClient` en singletons de module — cache partagé entre requêtes serveur | `getRouter()` crée les trois par requête |
-| 5 | `convex-test` ne prouve pas la recherche réelle | Tâche 9, étape 7 : table de vérification contre le déploiement de développement |
-| 6 | Convex refuse > 16 termes ou > 32 caractères par terme | `toSearchQuery()` tronque avant l'appel |
-| 7 | `searchText` sans frontière d'écriture | `convex/lib/recipeWrites.ts` — `withSearchText()`, seul point d'entrée autorisé |
-| 8 | Singularisation corruptrice | voir ci-dessus |
-| 9 | Le remplacement du premier nombre peut fabriquer une ligne fausse | Le nombre trouvé doit **égaler** l'annotation, sinon `scaled: false`. Meilleur que le correctif proposé : couvre aussi « 200 g de chocolat à 70 % » |
-| 10 | Frontières d'arrondi et valeurs non finies sous-testées | Gardes `Number.isFinite` + tests de frontière à 1, 10, 10,5 |
-| 11 | La dague pouvait s'afficher sans sa note | `lines` et `showNote` dérivés d'un calcul unique |
-| 12 | Le schéma Zod canonique de la spec disparaît | Report explicite documenté (voir ci-dessous) |
-| 13 | Seed destructif, fichiers orphelins, risque de mauvais déploiement | Argument littéral `confirm`, suppression des fichiers avant les documents |
-| 14 | `StorageCtx` typé à la main | `Pick<QueryCtx, "storage">` |
-| 15 | Recette inexistante en HTTP 200 | `notFound()` levé dans le loader + `notFoundComponent` |
-| 16 | La fiche ignore la double page desktop de `DESIGN.md` | Grille à deux colonnes ≥ 900 px, repli linéaire mobile |
-| 17 | Libellés pluriels utilisés pour une recette unique | `TYPE_LABELS` singulier / `TYPE_FILTER_LABELS` pluriel |
-| 18 | Chaque frappe empile une entrée d'historique et un abonnement | Champ local, synchronisation débouncée 250 ms en `replace` |
-| 19 | Le SSR n'est jamais vérifié | Étape `curl \| grep` sur la réponse brute |
-| 20 | Les étapes de commit contredisent la règle du dépôt | Renommées « point d'arrêt — relecture puis commit manuel » |
+| #   | Constat                                                                                             | Correctif                                                                                                                                           |
+| --- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2   | Câblage SSR incomplet : `setupRouterSsrQueryIntegration` absent                                     | Paquet `@tanstack/react-router-ssr-query` (vérifié en 1.167.1) ajouté, intégration câblée                                                           |
+| 3   | `QueryClient` et `ConvexQueryClient` en singletons de module — cache partagé entre requêtes serveur | `getRouter()` crée les trois par requête                                                                                                            |
+| 5   | `convex-test` ne prouve pas la recherche réelle                                                     | Tâche 9, étape 7 : table de vérification contre le déploiement de développement                                                                     |
+| 6   | Convex refuse > 16 termes ou > 32 caractères par terme                                              | `toSearchQuery()` tronque avant l'appel                                                                                                             |
+| 7   | `searchText` sans frontière d'écriture                                                              | `convex/lib/recipeWrites.ts` — `withSearchText()`, seul point d'entrée autorisé                                                                     |
+| 8   | Singularisation corruptrice                                                                         | voir ci-dessus                                                                                                                                      |
+| 9   | Le remplacement du premier nombre peut fabriquer une ligne fausse                                   | Le nombre trouvé doit **égaler** l'annotation, sinon `scaled: false`. Meilleur que le correctif proposé : couvre aussi « 200 g de chocolat à 70 % » |
+| 10  | Frontières d'arrondi et valeurs non finies sous-testées                                             | Gardes `Number.isFinite` + tests de frontière à 1, 10, 10,5                                                                                         |
+| 11  | La dague pouvait s'afficher sans sa note                                                            | `lines` et `showNote` dérivés d'un calcul unique                                                                                                    |
+| 12  | Le schéma Zod canonique de la spec disparaît                                                        | Report explicite documenté (voir ci-dessous)                                                                                                        |
+| 13  | Seed destructif, fichiers orphelins, risque de mauvais déploiement                                  | Argument littéral `confirm`, suppression des fichiers avant les documents                                                                           |
+| 14  | `StorageCtx` typé à la main                                                                         | `Pick<QueryCtx, "storage">`                                                                                                                         |
+| 15  | Recette inexistante en HTTP 200                                                                     | `notFound()` levé dans le loader + `notFoundComponent`                                                                                              |
+| 16  | La fiche ignore la double page desktop de `DESIGN.md`                                               | Grille à deux colonnes ≥ 900 px, repli linéaire mobile                                                                                              |
+| 17  | Libellés pluriels utilisés pour une recette unique                                                  | `TYPE_LABELS` singulier / `TYPE_FILTER_LABELS` pluriel                                                                                              |
+| 18  | Chaque frappe empile une entrée d'historique et un abonnement                                       | Champ local, synchronisation débouncée 250 ms en `replace`                                                                                          |
+| 19  | Le SSR n'est jamais vérifié                                                                         | Étape `curl \| grep` sur la réponse brute                                                                                                           |
+| 20  | Les étapes de commit contredisent la règle du dépôt                                                 | Renommées « point d'arrêt — relecture puis commit manuel »                                                                                          |
 
 ### Rejetés
 
@@ -101,18 +101,18 @@ Corrections du round 1 confirmées présentes par Codex : SSR par requête,
 frontières d'arrondi testées, gardes numériques, singularisation prudente, note `†`, helper
 `withSearchText`, vérification SSR brute, commits manuels.
 
-| # | Constat | Correctif appliqué |
-|---|---|---|
-| 1 | L'arbitrage des quatre plans contredit toujours la règle écrite de la spec | Règle réécrite dans `2026-08-08-table-des-recettes-tasks.md` : T1 ne bloque que ce qui **consomme** l'extraction ; l'arbitrage du 2026-08-09 est consigné |
-| 2 | Le schéma Zod n'est pas seulement reporté, il est contourné | Rattachement explicite de T2 au plan d'ingestion, avec la raison : sa forme dépend de ce que le modèle de T1 sait produire |
-| 3 | **Bloquant nouveau** — `ConvexHttpClient.mutation(internal.…)` est interdit par Convex | Script réécrit en `scripts/seed-images.sh` : `npx convex run` (authentifié administrateur, atteint les fonctions internes) pour les deux mutations, `curl` pour le POST du fichier |
-| 4 | `pickDisplayImage` rabotait `Id<"_storage">` en `string`, puis le passait à `ctx.storage.getUrl` | `RecipeImages`, `DisplayImage` et `pickDisplayImage` génériques sur `T extends string` |
-| 5 | Le littéral `"efface-et-repeuple"` ne prouve pas que le déploiement ciblé est de développement | Garde côté mutation : `process.env.ALLOW_DESTRUCTIVE_SEED !== "true"` lève |
-| 6 | Fuites de stockage : réexécution orpheline l'ancien fichier, échec d'`attach` orpheline le nouveau | `attach` supprime l'ancien fichier avant de réassigner, et supprime le nouveau si le slug est introuvable |
-| 7 | `{ raw: "2 à 3 gousses", quantity: 2 }` produisait `"4 à 3 gousses"` | Garde `RANGE_OR_FRACTION` : plage ou fraction après le nombre correspondant → ligne rendue telle quelle, `scaled: false` |
-| 8 | **Nouveau** — la vérification `courgette` sur le déploiement réel ne pouvait pas passer | Recette « Tian de courgettes » ajoutée au seed persistant |
-| 9 | La double page n'était pas composée en deux blocs : l'auto-placement donnait une ligne par enfant | Deux wrappers `.recipe__left` / `.recipe__right` placés en `grid-row: 1`, photo et préparation en `grid-column: 1 / -1` |
-| 10 | **Nouveau** — `git diff -A` n'existe pas, et la tâche 9 revenait de Step 7 à Step 6 | `git diff`, et le point d'arrêt de la tâche 9 devient Step 8 |
+| #   | Constat                                                                                            | Correctif appliqué                                                                                                                                                                 |
+| --- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | L'arbitrage des quatre plans contredit toujours la règle écrite de la spec                         | Règle réécrite dans `2026-08-08-table-des-recettes-tasks.md` : T1 ne bloque que ce qui **consomme** l'extraction ; l'arbitrage du 2026-08-09 est consigné                          |
+| 2   | Le schéma Zod n'est pas seulement reporté, il est contourné                                        | Rattachement explicite de T2 au plan d'ingestion, avec la raison : sa forme dépend de ce que le modèle de T1 sait produire                                                         |
+| 3   | **Bloquant nouveau** — `ConvexHttpClient.mutation(internal.…)` est interdit par Convex             | Script réécrit en `scripts/seed-images.sh` : `npx convex run` (authentifié administrateur, atteint les fonctions internes) pour les deux mutations, `curl` pour le POST du fichier |
+| 4   | `pickDisplayImage` rabotait `Id<"_storage">` en `string`, puis le passait à `ctx.storage.getUrl`   | `RecipeImages`, `DisplayImage` et `pickDisplayImage` génériques sur `T extends string`                                                                                             |
+| 5   | Le littéral `"efface-et-repeuple"` ne prouve pas que le déploiement ciblé est de développement     | Garde côté mutation : `process.env.ALLOW_DESTRUCTIVE_SEED !== "true"` lève                                                                                                         |
+| 6   | Fuites de stockage : réexécution orpheline l'ancien fichier, échec d'`attach` orpheline le nouveau | `attach` supprime l'ancien fichier avant de réassigner, et supprime le nouveau si le slug est introuvable                                                                          |
+| 7   | `{ raw: "2 à 3 gousses", quantity: 2 }` produisait `"4 à 3 gousses"`                               | Garde `RANGE_OR_FRACTION` : plage ou fraction après le nombre correspondant → ligne rendue telle quelle, `scaled: false`                                                           |
+| 8   | **Nouveau** — la vérification `courgette` sur le déploiement réel ne pouvait pas passer            | Recette « Tian de courgettes » ajoutée au seed persistant                                                                                                                          |
+| 9   | La double page n'était pas composée en deux blocs : l'auto-placement donnait une ligne par enfant  | Deux wrappers `.recipe__left` / `.recipe__right` placés en `grid-row: 1`, photo et préparation en `grid-column: 1 / -1`                                                            |
+| 10  | **Nouveau** — `git diff -A` n'existe pas, et la tâche 9 revenait de Step 7 à Step 6                | `git diff`, et le point d'arrêt de la tâche 9 devient Step 8                                                                                                                       |
 
 ### Claude's response
 
@@ -138,13 +138,13 @@ Confirmés présents : recherche Convex testée côté backend, dénormalisation
 cohérentes, singularisation et paliers d'arrondi, SSR, typage `Id<"_storage">` préservé, garde
 destructive du seed, recette avec courgettes, grille desktop, commandes Git.
 
-| # | Constat | Correctif appliqué |
-|---|---|---|
-| 1 | Conflit d'autorité T1 « non résolu » | Déjà corrigé avant ce round — Codex citait la spec d'avant l'amendement. Renforcé quand même : voir #2 |
-| 2 | T2 reste listé sous « Socle » avec `convex/schema.ts` en fichier, ce qui contredit son report | T2 retitré « plan d'ingestion », avec un bloc **Ordre** disant que `convex/schema.ts` existe déjà et que T2 le fait *dériver* du Zod. En-tête de section ajouté sur la répartition entre plans |
-| 3 | **Nouveau** — `convex/recipes.ts` importe `buildSearchText` et `toSearchTokens` sans les utiliser | Import réduit à `toSearchQuery` |
-| 4 | **Nouveau** — `devImages:attach` remplace et supprime des images sans aucune garde serveur | `assertDevDeployment()` exigeant `ALLOW_DEV_IMAGES === "true"`, appliqué aux trois mutations |
-| 5 | **Nouveau** — la promesse « aucun orphelin » du script est fausse : `curl` rend 0 sur un HTTP 500, `sed` accepterait un JSON d'erreur comme identifiant, et une panne entre l'upload et l'attachement laisse un blob sans référence | `curl --fail-with-body`, `jq -er '.storageId'`, mutation `discardOrphan` appelée par un `trap EXIT` levé seulement après l'attachement. `jq` ajouté à `devenv.nix` |
+| #   | Constat                                                                                                                                                                                                                             | Correctif appliqué                                                                                                                                                                             |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Conflit d'autorité T1 « non résolu »                                                                                                                                                                                                | Déjà corrigé avant ce round — Codex citait la spec d'avant l'amendement. Renforcé quand même : voir #2                                                                                         |
+| 2   | T2 reste listé sous « Socle » avec `convex/schema.ts` en fichier, ce qui contredit son report                                                                                                                                       | T2 retitré « plan d'ingestion », avec un bloc **Ordre** disant que `convex/schema.ts` existe déjà et que T2 le fait _dériver_ du Zod. En-tête de section ajouté sur la répartition entre plans |
+| 3   | **Nouveau** — `convex/recipes.ts` importe `buildSearchText` et `toSearchTokens` sans les utiliser                                                                                                                                   | Import réduit à `toSearchQuery`                                                                                                                                                                |
+| 4   | **Nouveau** — `devImages:attach` remplace et supprime des images sans aucune garde serveur                                                                                                                                          | `assertDevDeployment()` exigeant `ALLOW_DEV_IMAGES === "true"`, appliqué aux trois mutations                                                                                                   |
+| 5   | **Nouveau** — la promesse « aucun orphelin » du script est fausse : `curl` rend 0 sur un HTTP 500, `sed` accepterait un JSON d'erreur comme identifiant, et une panne entre l'upload et l'attachement laisse un blob sans référence | `curl --fail-with-body`, `jq -er '.storageId'`, mutation `discardOrphan` appelée par un `trap EXIT` levé seulement après l'attachement. `jq` ajouté à `devenv.nix`                             |
 
 ### Claude's response
 
@@ -156,7 +156,7 @@ livrable de création. Un lecteur qui saute la prose et lit la liste voyait touj
 contradiction.
 
 Le #4 est le meilleur constat des trois rounds. Le seed avait reçu sa garde au round 2, mais
-`devImages` avait été raisonné comme inoffensif *parce que ses mutations sont internes* — or
+`devImages` avait été raisonné comme inoffensif _parce que ses mutations sont internes_ — or
 c'est faux : la CLI s'authentifie en administrateur, donc « interne » ne protège de rien contre
 un `CONVEX_DEPLOYMENT` mal pointé. Ces mutations suppriment des images. La garde manquait au seul
 endroit où l'erreur est irréversible.
@@ -174,12 +174,12 @@ Constats des rounds précédents vérifiés comme corrigés par Codex : arbitrag
 de T2 inscrits dans la spec, imports morts supprimés, `ALLOW_DEV_IMAGES` côté serveur,
 `curl --fail-with-body` + `jq -er` + nettoyage sur échec.
 
-| # | Constat | Correctif appliqué |
-|---|---|---|
-| 1 | Le nettoyage introduit une race destructrice : si `attach` est validée mais que la CLI perd la réponse, le `trap` supprime un fichier désormais référencé | `discardOrphan` prend le slug, relit la recette et **ne supprime que si elle ne pointe pas** sur ce `storageId`. Lecture et suppression dans la même mutation |
-| 2 | La singularisation ampute l'adjectif antéposé : « 3 gros œufs » sous deux donnait « 1 gro œufs » | Ensemble fermé `PRENOMINAL_ADJECTIVES` ; `singularizeHead` accorde les adjectifs antéposés puis le nom, et s'arrête là. `gros`, `vieux`, `doux`, `frais`, `épais` ajoutés aux invariables |
-| 3 | Un facteur égal à 1 ne conservait pas la ligne brute : `1,50 L` devenait `1,5 L`, et une ligne déjà sous deux était accordée | Court-circuit `if (factor === 1) return { text: raw, scaled: true }` |
-| 4 | Le test manuel du bouton Retour était impossible : `replace` dès la première frappe efface l'entrée `/` | La transition vide→recherche est **empilée**, les frappes suivantes remplacent (`replace: current !== ""`). Le contrôle manuel est réécrit en conséquence |
+| #   | Constat                                                                                                                                                   | Correctif appliqué                                                                                                                                                                        |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Le nettoyage introduit une race destructrice : si `attach` est validée mais que la CLI perd la réponse, le `trap` supprime un fichier désormais référencé | `discardOrphan` prend le slug, relit la recette et **ne supprime que si elle ne pointe pas** sur ce `storageId`. Lecture et suppression dans la même mutation                             |
+| 2   | La singularisation ampute l'adjectif antéposé : « 3 gros œufs » sous deux donnait « 1 gro œufs »                                                          | Ensemble fermé `PRENOMINAL_ADJECTIVES` ; `singularizeHead` accorde les adjectifs antéposés puis le nom, et s'arrête là. `gros`, `vieux`, `doux`, `frais`, `épais` ajoutés aux invariables |
+| 3   | Un facteur égal à 1 ne conservait pas la ligne brute : `1,50 L` devenait `1,5 L`, et une ligne déjà sous deux était accordée                              | Court-circuit `if (factor === 1) return { text: raw, scaled: true }`                                                                                                                      |
+| 4   | Le test manuel du bouton Retour était impossible : `replace` dès la première frappe efface l'entrée `/`                                                   | La transition vide→recherche est **empilée**, les frappes suivantes remplacent (`replace: current !== ""`). Le contrôle manuel est réécrit en conséquence                                 |
 
 ### Claude's response
 
@@ -212,10 +212,10 @@ Les quatre constats du round 4 sont vérifiés corrigés par Codex : `discardOrp
 fichier déjà référencé, `factor === 1` conserve la ligne brute, les adjectifs antéposés sont
 couverts, la première recherche crée une entrée d'historique.
 
-| # | Constat | Correctif appliqué |
-|---|---|---|
-| 1 | L'ensemble des adjectifs antéposés produit encore du français faux : `beaux œufs` donnait « beau œuf » au lieu de « bel œuf » | `ELIDED_PRENOMINAL` pour `beaux`/`nouveaux`/`vieux`, avec une forme devant voyelle décidée sur le mot suivant. `h` volontairement exclu — il est aspiré dans « haricots » |
-| 2 | Les comptes de tests annoncés sont périmés (9 vs 8, 27 vs 34, 13 vs 16) | Comptes supprimés : « suite verte, aucun test ignoré ». Un compte devient faux à chaque test ajouté, et le round précédent en avait ajouté trois |
+| #   | Constat                                                                                                                       | Correctif appliqué                                                                                                                                                        |
+| --- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | L'ensemble des adjectifs antéposés produit encore du français faux : `beaux œufs` donnait « beau œuf » au lieu de « bel œuf » | `ELIDED_PRENOMINAL` pour `beaux`/`nouveaux`/`vieux`, avec une forme devant voyelle décidée sur le mot suivant. `h` volontairement exclu — il est aspiré dans « haricots » |
+| 2   | Les comptes de tests annoncés sont périmés (9 vs 8, 27 vs 34, 13 vs 16)                                                       | Comptes supprimés : « suite verte, aucun test ignoré ». Un compte devient faux à chaque test ajouté, et le round précédent en avait ajouté trois                          |
 
 ### Claude's response
 
@@ -246,7 +246,7 @@ lui-même confirmé au round 2).
 Le seul point qui mériterait un round 6 est la famille des accords en français, qui a produit un
 constat neuf à **chacun** des cinq rounds. Ce n'est pas une preuve que le correctif actuel est
 faux, c'est une preuve que le domaine est plus profond que le besoin : le recalcul de portions
-est déclaré *best-effort* dans `CONTEXT.md`, et une ligne mal accordée reste lisible. Si un
+est déclaré _best-effort_ dans `CONTEXT.md`, et une ligne mal accordée reste lisible. Si un
 sixième défaut d'accord apparaît à l'implémentation, le bon réflexe n'est pas d'élargir encore
 la règle mais de supprimer l'accord automatique.
 

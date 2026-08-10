@@ -10,9 +10,7 @@ que l'ensemble d'identité ci-dessous ; `quantity`, `unit` et `label` sont volon
       "title": "<titre transcrit>",
       "type": "<entree|plat|dessert|apero|petitDej|autre>",
       "servings": 4,
-      "ingredients": [
-        { "raw": "<ligne complète, dans l'ordre>" }
-      ],
+      "ingredients": [{ "raw": "<ligne complète, dans l'ordre>" }],
       "steps": ["<étape complète, dans l'ordre>"]
     }
   ]

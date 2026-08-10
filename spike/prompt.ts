@@ -1,4 +1,4 @@
-export const PROMPT_VERSION = "v2";
+export const PROMPT_VERSION = 'v2'
 
 export const EXTRACTION_PROMPT = `Tu extrais fidèlement toutes les recettes visibles sur une page de magazine française.
 
@@ -12,4 +12,4 @@ Pour chaque recette, respecte ces règles :
 - quantity est un nombre nu, sans unité ni texte, tandis que unit et label sont textuels. Ils décrivent la ligne raw sans perdre son texte. Utilise null pour chaque sous-champ absent ou incertain ; n'invente aucune valeur.
 - Recopie toutes les étapes dans leur ordre de lecture. Conserve une étape par instruction éditoriale ; ne résume pas, ne réordonne pas et ne complète pas avec tes connaissances culinaires.
 
-Ignore les temps de préparation et de cuisson, les conseils, les variantes, les accords, les crédits et les informations nutritionnelles. En cas d'incertitude, reste littéral et utilise null uniquement pour les champs qui l'autorisent. Retourne seulement l'objet JSON conforme au schéma fourni.`;
+Ignore les temps de préparation et de cuisson, les conseils, les variantes, les accords, les crédits et les informations nutritionnelles. En cas d'incertitude, reste littéral et utilise null uniquement pour les champs qui l'autorisent. Retourne seulement l'objet JSON conforme au schéma fourni.`

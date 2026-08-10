@@ -61,13 +61,13 @@ onboarding, aucune visite guidée, aucun état vide pédagogique ; aucune donné
 
 ## 5. États et amplitudes
 
-| | minimum | typique | maximum |
-|---|---|---|---|
-| Recettes dans l'index | 0 | 203 | ~400 à terme |
-| Recettes par lettre | 0 | 8-15 | ~35 (C, P, T) |
-| Ingrédients par recette | 3 | 8-12 | ~25 |
-| Étapes | 1 | 4-7 | ~15 |
-| Longueur de titre | 8 car. | ~25 | ~60 |
+|                         | minimum | typique | maximum       |
+| ----------------------- | ------- | ------- | ------------- |
+| Recettes dans l'index   | 0       | 203     | ~400 à terme  |
+| Recettes par lettre     | 0       | 8-15    | ~35 (C, P, T) |
+| Ingrédients par recette | 3       | 8-12    | ~25           |
+| Étapes                  | 1       | 4-7     | ~15           |
+| Longueur de titre       | 8 car.  | ~25     | ~60           |
 
 États matériels à traiter : index vide au tout début, sans pédagogie, une simple ligne
 factuelle ; recherche sans résultat ; recette sans photo ; recette sans `servings`, donc sans

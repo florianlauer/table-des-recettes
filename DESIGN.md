@@ -48,19 +48,19 @@ parchemin jauni, toujours pas de faux grain.
 
 ```css
 :root {
-  --paper:        #F7F3EA;
-  --surface:      #FFFDF8;
+  --paper: #f7f3ea;
+  --surface: #fffdf8;
 
-  --ink:          #2E2723;
-  --ink-muted:    #6E645C;
+  --ink: #2e2723;
+  --ink-muted: #6e645c;
 
-  --ochre:        #9A5B2B;
-  --ochre-hover:  #7C4720;
-  --on-ochre:     #FFFFFF;
+  --ochre: #9a5b2b;
+  --ochre-hover: #7c4720;
+  --on-ochre: #ffffff;
 
-  --rule:         #C6BDB4;
-  --rule-strong:  #8A7F74;
-  --focus:        #9A5B2B;
+  --rule: #c6bdb4;
+  --rule-strong: #8a7f74;
+  --focus: #9a5b2b;
 }
 ```
 
@@ -68,12 +68,12 @@ parchemin jauni, toujours pas de faux grain.
 
 ```css
 :root {
-  --ink-entree:   #57683F;  /* vert laurier    85° — 5.49:1 */
-  --ink-plat:     #9A5B2B;  /* ocre, la marque 26° — 4.86:1 */
-  --ink-dessert:  #96455F;  /* prune          341° — 5.72:1 */
-  --ink-apero:    #3D6B78;  /* bleu ardoise   193° — 5.31:1 */
-  --ink-petitDej: #82631A;  /* miel brûlé      42° — 5.06:1 */
-  --ink-autre:    #6E645C;  /* gris chaud — le fourre-tout reste neutre */
+  --ink-entree: #57683f; /* vert laurier    85° — 5.49:1 */
+  --ink-plat: #9a5b2b; /* ocre, la marque 26° — 4.86:1 */
+  --ink-dessert: #96455f; /* prune          341° — 5.72:1 */
+  --ink-apero: #3d6b78; /* bleu ardoise   193° — 5.31:1 */
+  --ink-petitDej: #82631a; /* miel brûlé      42° — 5.06:1 */
+  --ink-autre: #6e645c; /* gris chaud — le fourre-tout reste neutre */
 }
 ```
 
@@ -125,11 +125,11 @@ réelle du site.
 Mesuré le 2026-08-09 en téléchargeant réellement les `woff2` servis pour le français
 (latin + latin-ext) :
 
-| Requête Google Fonts | Poids |
-|---|---|
-| avec `opsz`, graisses 400..700 — l'actuelle | 175,8 kB |
+| Requête Google Fonts                                 | Poids        |
+| ---------------------------------------------------- | ------------ |
+| avec `opsz`, graisses 400..700 — l'actuelle          | 175,8 kB     |
 | avec `opsz`, graisses resserrées 500..600 / 400..600 | **175,8 kB** |
-| sans `opsz` | 120,4 kB |
+| sans `opsz`                                          | 120,4 kB     |
 
 Deux pièges, tous deux vérifiés plutôt que supposés :
 
@@ -159,30 +159,34 @@ Chaque palier interpole entre sa valeur à 390 px de large et sa valeur à 1100 
 
 ```css
 :root {
-  --type-meta:     clamp(0.9375rem, 0.869rem + 0.282vw, 1.0625rem);  /* 15 → 17 px */
-  --type-control:  clamp(1.0625rem, 0.994rem + 0.282vw, 1.1875rem);  /* 17 → 19 px */
-  --type-body:     clamp(1.125rem,  0.988rem + 0.563vw, 1.375rem);   /* 18 → 22 px */
-  --type-lead:     clamp(1.1875rem, 1.016rem + 0.704vw, 1.5rem);     /* 19 → 24 px */
-  --type-letter:   clamp(1.75rem,   1.338rem + 1.69vw,  2.5rem);     /* 28 → 40 px */
-  --type-section:  clamp(1.5rem,    1.294rem + 0.845vw, 1.875rem);   /* 24 → 30 px */
-  --type-title:    clamp(2.25rem,   1.426rem + 3.38vw,  3.75rem);    /* 36 → 60 px */
-  --type-masthead: clamp(2.5rem,    1.401rem + 4.51vw,  4.5rem);     /* 40 → 72 px */
+  --type-meta: clamp(0.9375rem, 0.869rem + 0.282vw, 1.0625rem); /* 15 → 17 px */
+  --type-control: clamp(
+    1.0625rem,
+    0.994rem + 0.282vw,
+    1.1875rem
+  ); /* 17 → 19 px */
+  --type-body: clamp(1.125rem, 0.988rem + 0.563vw, 1.375rem); /* 18 → 22 px */
+  --type-lead: clamp(1.1875rem, 1.016rem + 0.704vw, 1.5rem); /* 19 → 24 px */
+  --type-letter: clamp(1.75rem, 1.338rem + 1.69vw, 2.5rem); /* 28 → 40 px */
+  --type-section: clamp(1.5rem, 1.294rem + 0.845vw, 1.875rem); /* 24 → 30 px */
+  --type-title: clamp(2.25rem, 1.426rem + 3.38vw, 3.75rem); /* 36 → 60 px */
+  --type-masthead: clamp(2.5rem, 1.401rem + 4.51vw, 4.5rem); /* 40 → 72 px */
 }
 ```
 
 Les interlignes, eux, sont fixes : ils dépendent du rôle, pas de la taille.
 
-| Rôle | Palier | Famille / graisse | Interligne |
-|---|---|---|---|
-| Titre du site | `--type-masthead` | Fraunces 600 | `1.0` |
-| Titre de recette, fiche | `--type-title` | Fraunces 600, `letter-spacing: -0.02em` | `1.02` |
-| Titre de section | `--type-section` | Fraunces 600 | `1.1` |
-| Lettre de groupe, index | `--type-letter` | Fraunces 600 | `1.0` |
-| Titre de recette, index | `--type-lead` | Fraunces 500 | `1.15` |
-| Étapes | `--type-lead` | Atkinson 400, `max-width: 68ch` | `1.6` |
-| Ingrédients | `--type-body` | Atkinson 400 | `1.5` |
-| Contrôles | `--type-control` | Atkinson 600, cible tactile 48 px minimum | `1.25` |
-| Recherche, filtres, type de plat, légendes | `--type-meta` | Atkinson 400 | `1.45` |
+| Rôle                                       | Palier            | Famille / graisse                         | Interligne |
+| ------------------------------------------ | ----------------- | ----------------------------------------- | ---------- |
+| Titre du site                              | `--type-masthead` | Fraunces 600                              | `1.0`      |
+| Titre de recette, fiche                    | `--type-title`    | Fraunces 600, `letter-spacing: -0.02em`   | `1.02`     |
+| Titre de section                           | `--type-section`  | Fraunces 600                              | `1.1`      |
+| Lettre de groupe, index                    | `--type-letter`   | Fraunces 600                              | `1.0`      |
+| Titre de recette, index                    | `--type-lead`     | Fraunces 500                              | `1.15`     |
+| Étapes                                     | `--type-lead`     | Atkinson 400, `max-width: 68ch`           | `1.6`      |
+| Ingrédients                                | `--type-body`     | Atkinson 400                              | `1.5`      |
+| Contrôles                                  | `--type-control`  | Atkinson 600, cible tactile 48 px minimum | `1.25`     |
+| Recherche, filtres, type de plat, légendes | `--type-meta`     | Atkinson 400                              | `1.45`     |
 
 ---
 
@@ -198,7 +202,7 @@ Le masthead reste purement typographique :
 4. Recherche : uniquement le texte « Rechercher une recette » posé sur un filet fort pleine
    largeur. **Pas de carte, pas d'ombre, pas de loupe, pas de bordure de champ.**
 5. Filtres sur une seule ligne typographique : `Toutes 203  Entrées 31  Plats 94  Desserts 52
-   Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
+Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
    actif reste en ocre. **Aucune pastille, aucun bouton.**
 
 ### La reliure
@@ -211,9 +215,8 @@ n'importe quelle profondeur de défilement.
 
 C'est **le seul aplat de couleur du système**, et il ne touche aucun contenu : il borde la
 fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait interdit —
-ce serait un en-tête de site, pas la tranche d'un livre.
-6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
-   desktop, quatre titres au minimum sur mobile.
+ce serait un en-tête de site, pas la tranche d'un livre. 6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
+desktop, quatre titres au minimum sur mobile.
 
 ### Premier écran de `/recette/$slug`
 
@@ -243,7 +246,7 @@ marge, et **la photo en toute fin de fiche**. Aucun accordéon, aucun panneau à
 bloc flottant.
 
 > **Amendement du 2026-08-09.** La photo se trouvait entre les ingrédients et « Préparation ».
-> Ce sont les deux seuls blocs que l'on lit *en séquence*, poêle en main : une illustration n'a
+> Ce sont les deux seuls blocs que l'on lit _en séquence_, poêle en main : une illustration n'a
 > rien à faire entre eux. Elle ferme désormais la fiche. Desktop est inchangé — la colonne de
 > droite garde ingrédients puis photo, où rien n'est interrompu.
 >
@@ -343,7 +346,7 @@ qu'après avoir vu une vingtaine de photos restaurées, pas avant.
 
 ## Recalcul de portions — signaler les échecs
 
-Le recalcul est *best-effort* : certaines lignes ne portent aucune annotation de quantité et
+Le recalcul est _best-effort_ : certaines lignes ne portent aucune annotation de quantité et
 restent affichées telles quelles. **Ces lignes doivent le dire.** Une quantité qui n'a pas bougé
 alors que tout le reste a changé passerait autrement pour une erreur.
 
@@ -401,12 +404,12 @@ serait un pictogramme décoratif et une fausse carte.
 `PRODUCT.md` pose la lecture en conditions dégradées comme contrainte. Le corollaire vaut aussi
 pour ce qui est lu à voix haute :
 
-- **Chaque groupe de l'index est un titre `<h2>`** — la lettre visible dans la marge *est* ce
+- **Chaque groupe de l'index est un titre `<h2>`** — la lettre visible dans la marge _est_ ce
   titre, et sa section la désigne par `aria-labelledby`. L'ordre alphabétique est le seul ordre
   de `/` ; sans cela il n'existe pas du tout pour un lecteur d'écran.
 - **Tout changement déclenché par un contrôle s'annonce.** Le compteur de portions (`aria-live`
-  + `aria-atomic`, pour lire « 6 personnes » et non « 6 ») et le nombre de résultats de la
-  recherche, qui se reconstruit 250 ms après une frappe, en silence.
+  - `aria-atomic`, pour lire « 6 personnes » et non « 6 ») et le nombre de résultats de la
+    recherche, qui se reconstruit 250 ms après une frappe, en silence.
 - **Aucun signe typographique ne porte seul un sens.** La dague `†` est masquée aux technologies
   d'assistance et doublée d'un texte lu en fin de ligne. Un attribut `title` ne compte pas : il
   n'est pas fiable au lecteur d'écran et **inatteignable au toucher**, qui est la surface

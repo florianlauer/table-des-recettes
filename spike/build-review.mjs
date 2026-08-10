@@ -1,139 +1,258 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from 'node:fs'
 
-const ROOT = "/Users/florianlauer/Documents/perso/table-des-recettes/.claude/worktrees/spike-t1-extraction";
-const RUNS = `${ROOT}/spike/fixtures/runs/google/gemini-3-flash-preview/google-ai-studio`;
+const ROOT =
+  '/Users/florianlauer/Documents/perso/table-des-recettes/.claude/worktrees/spike-t1-extraction'
+const RUNS = `${ROOT}/spike/fixtures/runs/google/gemini-3-flash-preview/google-ai-studio`
 
 const escape = (value) =>
-  String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 
 const dataUri = (page) =>
-  `data:image/jpeg;base64,${readFileSync(`${ROOT}/spike/fixtures/pages/${page}.jpg`).toString("base64")}`;
+  `data:image/jpeg;base64,${readFileSync(`${ROOT}/spike/fixtures/pages/${page}.jpg`).toString('base64')}`
 
-const run = (page) => JSON.parse(readFileSync(`${RUNS}/${page}-1.json`, "utf8"));
+const run = (page) => JSON.parse(readFileSync(`${RUNS}/${page}-1.json`, 'utf8'))
 
 const PAGES = [
   {
-    id: "a", role: "A", source: "mono1", verified: true,
-    caption: "Mono-recette. Ingrédients et étapes en puces rouges, contraste franc.",
+    id: 'a',
+    role: 'A',
+    source: 'mono1',
+    verified: true,
+    caption:
+      'Mono-recette. Ingrédients et étapes en puces rouges, contraste franc.',
     truth: "1 recette · 11 puces d'ingrédients · 8 puces d'étapes",
-    verdict: "conforme",
-    verdictLine: "11 sur 11, 8 sur 8. Le « fraîchement râpé » que le modèle précédent perdait est ici.",
-    marks: { "0:ingredient:8": { kind: "fixed", note: "le modèle précédent écrivait « parmesan râpé »" } },
-  },
-  {
-    id: "b", role: "B", source: "4recettes", verified: true,
-    caption: "Quatre recettes en grille 2×2, en-têtes de pays plus gros que les titres, ingrédients en flux, étapes en prose non puçée.",
-    truth: "4 recettes · dinde 17 puces · gazelle 15 puces · foie gras 10 · canard 10",
-    verdict: "à discuter",
-    verdictLine: "Comptes exacts et segmentation parfaite, mais c'est la seule page où les deux passes ne s'accordent pas.",
+    verdict: 'conforme',
+    verdictLine:
+      '11 sur 11, 8 sur 8. Le « fraîchement râpé » que le modèle précédent perdait est ici.',
     marks: {
-      "1:ingredient:7": { kind: "fixed", note: "manquait chez le modèle précédent" },
-      "1:ingredient:8": { kind: "fixed", note: "manquait chez le modèle précédent" },
-      "1:ingredient:5": { kind: "minor", note: "la passe 2 écrit « Pour la pâte : 250 g de farine » — l'étiquette de section entre ou non dans la ligne selon l'appel" },
-      "1:ingredient:10": { kind: "minor", note: "la passe 2 écrit « Pour la salade : 10 oranges » — même hésitation" },
+      '0:ingredient:8': {
+        kind: 'fixed',
+        note: 'le modèle précédent écrivait « parmesan râpé »',
+      },
     },
   },
   {
-    id: "c", role: "C", source: "complexe", verified: true,
-    caption: "Texte sur photo, contraste faible, surface incurvée et brillante. La page la plus dure du lot.",
+    id: 'b',
+    role: 'B',
+    source: '4recettes',
+    verified: true,
+    caption:
+      'Quatre recettes en grille 2×2, en-têtes de pays plus gros que les titres, ingrédients en flux, étapes en prose non puçée.',
+    truth:
+      '4 recettes · dinde 17 puces · gazelle 15 puces · foie gras 10 · canard 10',
+    verdict: 'à discuter',
+    verdictLine:
+      "Comptes exacts et segmentation parfaite, mais c'est la seule page où les deux passes ne s'accordent pas.",
+    marks: {
+      '1:ingredient:7': {
+        kind: 'fixed',
+        note: 'manquait chez le modèle précédent',
+      },
+      '1:ingredient:8': {
+        kind: 'fixed',
+        note: 'manquait chez le modèle précédent',
+      },
+      '1:ingredient:5': {
+        kind: 'minor',
+        note: "la passe 2 écrit « Pour la pâte : 250 g de farine » — l'étiquette de section entre ou non dans la ligne selon l'appel",
+      },
+      '1:ingredient:10': {
+        kind: 'minor',
+        note: 'la passe 2 écrit « Pour la salade : 10 oranges » — même hésitation',
+      },
+    },
+  },
+  {
+    id: 'c',
+    role: 'C',
+    source: 'complexe',
+    verified: true,
+    caption:
+      'Texte sur photo, contraste faible, surface incurvée et brillante. La page la plus dure du lot.',
     truth: "1 recette · 10 puces d'ingrédients · 8 phrases d'étapes",
-    verdict: "conforme",
-    verdictLine: "Les quatre défauts du modèle précédent ont disparu, dont deux corruptions silencieuses.",
+    verdict: 'conforme',
+    verdictLine:
+      'Les quatre défauts du modèle précédent ont disparu, dont deux corruptions silencieuses.',
     marks: {
-      "0:ingredient:1": { kind: "fixed", note: "manquait entièrement chez le modèle précédent" },
-      "0:ingredient:2": { kind: "fixed", note: "était lu « 1 vinaigre de pommes de terre » — corruption silencieuse" },
-      "0:ingredient:7": { kind: "fixed", note: "était lu « 1/4 verre » — un chiffre avait bougé" },
+      '0:ingredient:1': {
+        kind: 'fixed',
+        note: 'manquait entièrement chez le modèle précédent',
+      },
+      '0:ingredient:2': {
+        kind: 'fixed',
+        note: 'était lu « 1 vinaigre de pommes de terre » — corruption silencieuse',
+      },
+      '0:ingredient:7': {
+        kind: 'fixed',
+        note: 'était lu « 1/4 verre » — un chiffre avait bougé',
+      },
     },
   },
   {
-    id: "e", role: "E", source: "duo1", verified: true,
-    caption: "Un titre unique coiffant deux versions du même plat. Aucune liste d'ingrédients imprimée : les quantités sont noyées dans la prose.",
+    id: 'e',
+    role: 'E',
+    source: 'duo1',
+    verified: true,
+    caption:
+      "Un titre unique coiffant deux versions du même plat. Aucune liste d'ingrédients imprimée : les quantités sont noyées dans la prose.",
     truth: "2 recettes · aucune liste d'ingrédients sur la page",
-    verdict: "à discuter",
-    verdictLine: "Segmentation en 2 réussie sur le cas le plus ambigu. Mais le modèle a déduit les ingrédients, ce que le prompt lui interdit.",
+    verdict: 'à discuter',
+    verdictLine:
+      'Segmentation en 2 réussie sur le cas le plus ambigu. Mais le modèle a déduit les ingrédients, ce que le prompt lui interdit.',
     marks: {
-      "0:ingredient:0": { kind: "minor", note: "déduit de la prose : la page n'imprime aucune liste d'ingrédients" },
-      "0:step:7": { kind: "minor", note: "la page se contredit — 4 œufs cassés à l'étape 3, 3 jaunes ici. Transcription fidèle" },
+      '0:ingredient:0': {
+        kind: 'minor',
+        note: "déduit de la prose : la page n'imprime aucune liste d'ingrédients",
+      },
+      '0:step:7': {
+        kind: 'minor',
+        note: "la page se contredit — 4 œufs cassés à l'étape 3, 3 jaunes ici. Transcription fidèle",
+      },
     },
   },
   {
-    id: "f", role: "F", source: "duo3", verified: false,
-    caption: "Deux recettes sur une même coupure.",
-    truth: "non vérifiée — à toi de juger",
-    verdict: "non annoté",
-    verdictLine: "Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.",
+    id: 'f',
+    role: 'F',
+    source: 'duo3',
+    verified: false,
+    caption: 'Deux recettes sur une même coupure.',
+    truth: 'non vérifiée — à toi de juger',
+    verdict: 'non annoté',
+    verdictLine:
+      'Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.',
     marks: {},
   },
   {
-    id: "g", role: "G", source: "mono2", verified: false,
-    caption: "Mono-recette.",
-    truth: "non vérifiée — à toi de juger",
-    verdict: "non annoté",
-    verdictLine: "Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.",
+    id: 'g',
+    role: 'G',
+    source: 'mono2',
+    verified: false,
+    caption: 'Mono-recette.',
+    truth: 'non vérifiée — à toi de juger',
+    verdict: 'non annoté',
+    verdictLine:
+      'Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.',
     marks: {},
   },
   {
-    id: "h", role: "H", source: "mono3", verified: false,
-    caption: "Mono-recette.",
-    truth: "non vérifiée — à toi de juger",
-    verdict: "non annoté",
-    verdictLine: "Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.",
+    id: 'h',
+    role: 'H',
+    source: 'mono3',
+    verified: false,
+    caption: 'Mono-recette.',
+    truth: 'non vérifiée — à toi de juger',
+    verdict: 'non annoté',
+    verdictLine:
+      'Deux passes identiques, aucune réparation de schéma. Le contenu reste à confronter à la photo.',
     marks: {},
   },
-];
+]
 
 const COMPARISON = [
-  ["Page A — « fraîchement râpé »", "perdu", "présent"],
-  ["Page B — cornes de gazelle", "13 lignes sur 15", "15 sur 15"],
-  ["Page B — étiquette de section", "absorbée dans la ligne", "propre"],
-  ["Page C — oignons grelots", "manquant", "présent"],
-  ["Page C — « 1 vingtaine »", "lu « 1 vinaigre »", "exact"],
-  ["Page C — « ½ verre »", "lu « 1/4 verre »", "« ½ »"],
-  ["Page C — accord vin", "versé dans les étapes", "absent"],
-  ["Réparations de schéma", "1", "0"],
-  ["Latence page B", "14,3 s", "8,8 s"],
-  ["Prix par appel, mesuré sur 14", "0,00064 $", "0,00452 $"],
-];
+  ['Page A — « fraîchement râpé »', 'perdu', 'présent'],
+  ['Page B — cornes de gazelle', '13 lignes sur 15', '15 sur 15'],
+  ['Page B — étiquette de section', 'absorbée dans la ligne', 'propre'],
+  ['Page C — oignons grelots', 'manquant', 'présent'],
+  ['Page C — « 1 vingtaine »', 'lu « 1 vinaigre »', 'exact'],
+  ['Page C — « ½ verre »', 'lu « 1/4 verre »', '« ½ »'],
+  ['Page C — accord vin', 'versé dans les étapes', 'absent'],
+  ['Réparations de schéma', '1', '0'],
+  ['Latence page B', '14,3 s', '8,8 s'],
+  ['Prix par appel, mesuré sur 14', '0,00064 $', '0,00452 $'],
+]
 
 // Mesuré le 2026-08-09 sur les sept mêmes pages, deux passes chacune. « Pages instables » compte les
 // pages dont les deux appels ne rendent pas exactement le même texte — la seule colonne qui sépare
 // vraiment ces modèles, et la seule qu'aucune fiche produit ne publie.
 const RIVALS = [
-  ["google/gemini-3-flash-preview", "0,00452", "6,1 s", "0", "1", "—", true],
-  ["google/gemini-2.5-flash-lite", "0,00064", "5,0 s", "0", "0", "corrompt en silence : « 1 vingtaine » lu « 1 vinaigre »"],
-  ["openai/gpt-5.6-luna", "0,00130", "18,1 s", "0", "7", "durées de cuisson qui apparaissent et disparaissent"],
-  ["mistralai/ministral-8b-2512", "0,00041", "18,0 s", "0", "6", "fusionne les étapes en un bloc, liste d'ingrédients mouvante"],
-  ["qwen/qwen3.5-9b", "0,00085", "302 s", "0", "2 / 3", "15 min pour un appel, 17 t/s"],
-  ["qwen/qwen3-vl-32b-instruct", "0,00097", "20,4 s", "0", "5", "redécoupe les étapes différemment à chaque appel"],
-  ["qwen/qwen3.5-35b-a3b", "0,00663", "41,5 s", "6", "4", "mesure invalide : le harnais n'envoyait aucun contrôle de raisonnement — non rejugé"],
-  ["qwen/qwen3.6-flash", "0,00217", "25,0 s", "14", "—", "mesure invalide, même cause — non rejugé"],
-];
+  ['google/gemini-3-flash-preview', '0,00452', '6,1 s', '0', '1', '—', true],
+  [
+    'google/gemini-2.5-flash-lite',
+    '0,00064',
+    '5,0 s',
+    '0',
+    '0',
+    'corrompt en silence : « 1 vingtaine » lu « 1 vinaigre »',
+  ],
+  [
+    'openai/gpt-5.6-luna',
+    '0,00130',
+    '18,1 s',
+    '0',
+    '7',
+    'durées de cuisson qui apparaissent et disparaissent',
+  ],
+  [
+    'mistralai/ministral-8b-2512',
+    '0,00041',
+    '18,0 s',
+    '0',
+    '6',
+    "fusionne les étapes en un bloc, liste d'ingrédients mouvante",
+  ],
+  [
+    'qwen/qwen3.5-9b',
+    '0,00085',
+    '302 s',
+    '0',
+    '2 / 3',
+    '15 min pour un appel, 17 t/s',
+  ],
+  [
+    'qwen/qwen3-vl-32b-instruct',
+    '0,00097',
+    '20,4 s',
+    '0',
+    '5',
+    'redécoupe les étapes différemment à chaque appel',
+  ],
+  [
+    'qwen/qwen3.5-35b-a3b',
+    '0,00663',
+    '41,5 s',
+    '6',
+    '4',
+    "mesure invalide : le harnais n'envoyait aucun contrôle de raisonnement — non rejugé",
+  ],
+  [
+    'qwen/qwen3.6-flash',
+    '0,00217',
+    '25,0 s',
+    '14',
+    '—',
+    'mesure invalide, même cause — non rejugé',
+  ],
+]
 
 function renderRecipe(recipe, recipeIndex, marks) {
   const line = (kind, index, content) => {
-    const flag = marks[`${recipeIndex}:${kind}:${index}`];
-    return `<li class="line${flag ? ` is-${flag.kind}` : ""}"><span class="line-text">${content}</span>${
-      flag ? `<span class="line-note">${escape(flag.note)}</span>` : ""
-    }</li>`;
-  };
+    const flag = marks[`${recipeIndex}:${kind}:${index}`]
+    return `<li class="line${flag ? ` is-${flag.kind}` : ''}"><span class="line-text">${content}</span>${
+      flag ? `<span class="line-note">${escape(flag.note)}</span>` : ''
+    }</li>`
+  }
 
   return `<article class="recipe">
     <h3 class="recipe-title">${escape(recipe.title)}</h3>
     <p class="recipe-meta">
       <span class="tag">${escape(recipe.type)}</span>
-      <span>${recipe.servings === null ? "portions non renseignées" : `${recipe.servings} portions`}</span>
+      <span>${recipe.servings === null ? 'portions non renseignées' : `${recipe.servings} portions`}</span>
       <span>${recipe.ingredients.length} ingrédients</span>
       <span>${recipe.steps.length} étapes</span>
     </p>
     <h4 class="field-label">Ingrédients</h4>
-    <ul class="lines">${recipe.ingredients.map((item, index) => line("ingredient", index, escape(item.raw))).join("")}</ul>
+    <ul class="lines">${recipe.ingredients.map((item, index) => line('ingredient', index, escape(item.raw))).join('')}</ul>
     <h4 class="field-label">Étapes</h4>
-    <ol class="lines lines-numbered">${recipe.steps.map((step, index) => line("step", index, escape(step))).join("")}</ol>
-  </article>`;
+    <ol class="lines lines-numbered">${recipe.steps.map((step, index) => line('step', index, escape(step))).join('')}</ol>
+  </article>`
 }
 
 const sections = PAGES.map((page) => {
-  const artefact = run(page.id);
+  const artefact = run(page.id)
   return `<section class="page" id="page-${page.id}">
     <header class="page-head">
       <div class="page-id">
@@ -143,7 +262,7 @@ const sections = PAGES.map((page) => {
       </div>
       <p class="page-caption">${escape(page.caption)}</p>
       <p class="page-truth"><span class="field-label">Ce que porte la page</span> ${escape(page.truth)}</p>
-      <p class="verdict verdict-${page.verified ? page.verdict.replace(/ /g, "-") : "non-annoté"}">
+      <p class="verdict verdict-${page.verified ? page.verdict.replace(/ /g, '-') : 'non-annoté'}">
         <span class="verdict-tag">${escape(page.verdict)}</span>${escape(page.verdictLine)}
       </p>
     </header>
@@ -155,11 +274,11 @@ const sections = PAGES.map((page) => {
         </figure>
       </div>
       <div class="reading">
-        ${artefact.parsed.recipes.map((recipe, index) => renderRecipe(recipe, index, page.marks)).join("")}
+        ${artefact.parsed.recipes.map((recipe, index) => renderRecipe(recipe, index, page.marks)).join('')}
       </div>
     </div>
-  </section>`;
-}).join("");
+  </section>`
+}).join('')
 
 const html = `<title>Spike T1 — sept pages, jugées à l'œil</title>
 <style>
@@ -279,9 +398,10 @@ const html = `<title>Spike T1 — sept pages, jugées à l'œil</title>
       <table>
         <thead><tr><th>Sur les trois pages du protocole</th><th>gemini-2.5-flash-lite</th><th>gemini-3-flash-preview</th></tr></thead>
         <tbody>
-          ${COMPARISON.map(([what, was, now], index) =>
-            `<tr><td>${escape(what)}</td><td class="${index < 7 ? "was" : ""}">${escape(was)}</td><td class="${index < 7 ? "now" : ""}">${escape(now)}</td></tr>`,
-          ).join("")}
+          ${COMPARISON.map(
+            ([what, was, now], index) =>
+              `<tr><td>${escape(what)}</td><td class="${index < 7 ? 'was' : ''}">${escape(was)}</td><td class="${index < 7 ? 'now' : ''}">${escape(now)}</td></tr>`,
+          ).join('')}
         </tbody>
       </table>
     </div>
@@ -304,15 +424,16 @@ const html = `<title>Spike T1 — sept pages, jugées à l'œil</title>
         <thead><tr><th>Modèle</th><th>$ / appel</th><th>Latence</th><th>Échecs /14</th><th>Pages instables /7</th><th>Ce qui le disqualifie</th></tr></thead>
         <tbody>
           ${RIVALS.map((row) => {
-            const [name, price, latency, failures, unstable, why, reference] = row;
-            return `<tr${reference ? ' class="now"' : ""}>
-              <td><code>${escape(name)}</code>${reference ? " <em>référence</em>" : ""}</td>
+            const [name, price, latency, failures, unstable, why, reference] =
+              row
+            return `<tr${reference ? ' class="now"' : ''}>
+              <td><code>${escape(name)}</code>${reference ? ' <em>référence</em>' : ''}</td>
               <td>${escape(price)}</td><td>${escape(latency)}</td>
-              <td class="${failures === "0" ? "" : "was"}">${escape(failures)}</td>
-              <td class="${unstable === "0" || unstable === "1" ? "" : "was"}">${escape(unstable)}</td>
+              <td class="${failures === '0' ? '' : 'was'}">${escape(failures)}</td>
+              <td class="${unstable === '0' || unstable === '1' ? '' : 'was'}">${escape(unstable)}</td>
               <td>${escape(why)}</td>
-            </tr>`;
-          }).join("")}
+            </tr>`
+          }).join('')}
         </tbody>
       </table>
     </div>
@@ -375,7 +496,7 @@ const html = `<title>Spike T1 — sept pages, jugées à l'œil</title>
     });
   });
 </script>
-`;
+`
 
-writeFileSync(`${ROOT}/spike/review-barreau-6.html`, html);
-console.log("écrit, taille :", (html.length / 1024 / 1024).toFixed(2), "Mo");
+writeFileSync(`${ROOT}/spike/review-barreau-6.html`, html)
+console.log('écrit, taille :', (html.length / 1024 / 1024).toFixed(2), 'Mo')
