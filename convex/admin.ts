@@ -10,6 +10,12 @@ const createScanResult = v.union(
   v.object({ ok: v.literal(false), error: v.string() }),
 )
 
+export const SCANS_LISTED = 100
+// A page yields a handful of recipes — four on the worst page measured during the spike. The cap
+// is therefore far above any sound extraction, and reaching it means the extraction is malformed,
+// which is exactly what `draftsTruncated` has to tell the operator rather than hide.
+export const DRAFTS_LISTED_PER_SCAN = 50
+
 const lastAttempt = v.object({
   attemptId: v.string(),
   model: v.string(),
@@ -160,29 +166,34 @@ export const listScans = query({
           ingredientsInferred: v.boolean(),
         }),
       ),
+      draftsTruncated: v.boolean(),
       lastAttempt: v.union(lastAttempt, v.null()),
       createdAt: v.number(),
     }),
   ),
   handler: async (ctx, { adminToken }) => {
     requireAdmin(adminToken)
-    const scans = await ctx.db.query('scans').order('desc').take(100)
+    const scans = await ctx.db.query('scans').order('desc').take(SCANS_LISTED)
     return Promise.all(
       scans.map(async (scan) => {
+        // One over the cap, so a truncation can be reported instead of silently shortening the
+        // list the page counts.
         const recipes = await ctx.db
           .query('recipes')
           .withIndex('by_scan', (q) => q.eq('scanId', scan._id))
-          .collect()
+          .take(DRAFTS_LISTED_PER_SCAN + 1)
+        const truncated = recipes.length > DRAFTS_LISTED_PER_SCAN
         return {
           id: scan._id,
           status: scan.status,
           imageCount: scan.imageStorageIds.length,
           error: scan.error ?? null,
-          drafts: recipes.map((recipe) => ({
+          drafts: recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map((recipe) => ({
             id: recipe._id,
             title: recipe.title,
             ingredientsInferred: recipe.ingredientsInferred,
           })),
+          draftsTruncated: truncated,
           lastAttempt: scan.lastAttempt
             ? {
                 ...scan.lastAttempt,

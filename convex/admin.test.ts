@@ -1,6 +1,7 @@
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { DRAFTS_LISTED_PER_SCAN } from './admin'
 import { api } from './_generated/api'
 import schema from './schema'
 
@@ -73,6 +74,69 @@ describe('admin boundary', () => {
       imageCount: 1,
       drafts: [],
     })
+  })
+
+  test('bounds the drafts of one scan and reports the truncation', async () => {
+    const t = setup()
+    const scanId = await t.run(async (ctx) => {
+      const id = await ctx.db.insert('scans', {
+        status: 'done',
+        imageStorageIds: [],
+        attempts: 1,
+        createdAt: 1,
+      })
+      for (let index = 0; index < DRAFTS_LISTED_PER_SCAN + 2; index += 1) {
+        await ctx.db.insert('recipes', {
+          title: `Brouillon ${index}`,
+          type: 'autre',
+          ingredients: [],
+          ingredientsInferred: false,
+          steps: [],
+          searchText: `brouillon ${index}`,
+          status: 'review',
+          scanId: id,
+          beautifiedAccepted: false,
+          beautifyStatus: 'idle',
+        })
+      }
+      return id
+    })
+    const scans = await t.query(api.admin.listScans, {
+      adminToken: 'test-secret',
+    })
+    expect(scans).toMatchObject([{ id: scanId, draftsTruncated: true }])
+    expect(scans.map((scan) => scan.drafts.length)).toEqual([
+      DRAFTS_LISTED_PER_SCAN,
+    ])
+  })
+
+  test('leaves a sound scan untruncated', async () => {
+    const t = setup()
+    await t.run(async (ctx) => {
+      const id = await ctx.db.insert('scans', {
+        status: 'done',
+        imageStorageIds: [],
+        attempts: 1,
+        createdAt: 1,
+      })
+      await ctx.db.insert('recipes', {
+        title: 'Brouillon unique',
+        type: 'autre',
+        ingredients: [],
+        ingredientsInferred: true,
+        steps: [],
+        searchText: 'brouillon unique',
+        status: 'review',
+        scanId: id,
+        beautifiedAccepted: false,
+        beautifyStatus: 'idle',
+      })
+    })
+    const scans = await t.query(api.admin.listScans, {
+      adminToken: 'test-secret',
+    })
+    expect(scans).toMatchObject([{ draftsTruncated: false }])
+    expect(scans.map((scan) => scan.drafts.length)).toEqual([1])
   })
 
   test('limits concurrent upload grants and propagates retryAfter', async () => {

@@ -127,8 +127,15 @@ function AdminPage() {
           <article key={scan.id} className="admin-page__scan">
             <h3>{scan.status}</h3>
             <p>
-              {scan.imageCount} image · {scan.drafts.length} brouillon(s)
+              {scan.imageCount} image · {scan.drafts.length}
+              {scan.draftsTruncated ? '+' : ''} brouillon(s)
             </p>
+            {scan.draftsTruncated && (
+              <p>
+                Plus de {scan.drafts.length} brouillons : extraction
+                probablement défectueuse.
+              </p>
+            )}
             {scan.error && <p>Échec : {scan.error}</p>}
             {scan.drafts.some((draft) => draft.ingredientsInferred) && (
               <p>Ingrédients déduits à vérifier.</p>
