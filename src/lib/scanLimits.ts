@@ -1,4 +1,5 @@
-import { MAX_INPUT_BYTES } from './imageHeader'
+// Extension-qualified: this module is reachable from the spike bench, which resolves as nodenext.
+import { MAX_INPUT_BYTES } from './imageHeader.js'
 
 // A recipe that continues overleaf needs two pages read together; three happens on a long magazine
 // feature. Four leaves margin without ever letting an accidental thirty-file selection become one
