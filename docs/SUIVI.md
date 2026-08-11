@@ -1,6 +1,6 @@
 # Suivi d'avancement
 
-État du projet au **2026-08-10**, `main` à `b544547`. Ce fichier dit **où on en est** ; il ne
+État du projet au **2026-08-11**, `main` à `1a292f4`. Ce fichier dit **où on en est** ; il ne
 remplace pas le contenu des tâches, qui reste dans
 [`specs/2026-08-08-table-des-recettes-tasks.md`](./superpowers/specs/2026-08-08-table-des-recettes-tasks.md).
 
@@ -58,17 +58,36 @@ Ce qui **n'existe pas encore** : la publication d'un brouillon. Aucune écriture
 
 ## Prochain pas
 
-**T7 puis T10**, dans cet ordre, avant T8.
+Rien en cours. L'ordre court : **T7 → T10 → T8**. Le reste s'insère où on veut.
 
-T7 et T10 sont les deux tâches d'une heure qui rendent la surface admin utilisable au quotidien :
-sans T7 les photos partent trop tôt, sans T10 un scan bloqué reste invisible. Elles touchent des
-zones disjointes de T8 et ne coûtent presque rien.
+### Chemin principal — dans cet ordre, une tâche par PR
 
-T8 est la grosse pièce (écran de correction) et partage `src/routes/admin/` avec T10 et T14 — à
-séquencer après T10 pour ne pas réécrire l'écran deux fois.
+1. **T7 · rétention `purgeAfter`** (1 h) — les champs et l'index sont déjà en base, seule la logique
+   manque. En premier parce que chaque upload abandonné laisse environ 600 Ko qui ne partiront
+   jamais tout seuls (reliquat R4) : la dette grossit à chaque scan tant qu'elle n'est pas là.
+2. **T10 · compteurs de file + bouton relancer** (1 h) — le bouton est déjà posé, nu. Sans elle un
+   scan bloqué est invisible depuis `/admin`. Avant T8 et pas après, parce que les deux écrivent
+   dans `src/routes/admin/` et que T8 réécrirait l'écran une seconde fois.
+3. **T8 · scan multi-images + écran de correction** (4 h) — la grosse pièce. **Y rattacher R3, la
+   publication d'un brouillon** : aucune tâche ne la porte, la vitrine reste vide sans elle, et
+   l'écran de correction est le seul endroit naturel pour le geste « publier ».
 
-T14 dépend de T4 (fait) et T5 (fait) : elle est **débloquée**, avec prompt et modèle déjà figés par
-T13. Elle peut se prendre en parallèle de T8/T9 par quelqu'un qui ne touche pas `admin/`.
+### En parallèle, à n'importe quel moment
+
+Aucune des trois ne dépend du chemin principal ni des autres.
+
+- **T14 · photo du plat** (5 h) — débloquée : T4 et T5 sont faits, le prompt et le modèle sont figés
+  par T13. Seule contrainte : elle finit dans `src/routes/admin/`, donc **pas en même temps que T8
+  par la même personne**.
+- **T9 · export versionné dans git** (4 h) — vit dans `convex/export.ts`, ne partage aucun fichier
+  avec le reste.
+- **T11 · durcissement de l'appel OpenRouter** (1 h) — indépendant. C'est aussi le seul endroit où
+  traiter R2, ce qui suppose une révision de prompt et un rejeu payant : à décider sur place.
+
+### Les deux pièges d'ordre
+
+- **T8 avant T10** : même écran, écrit deux fois.
+- **T8 et T14 en même temps** : collision sur `src/routes/admin/`.
 
 ---
 
@@ -108,24 +127,6 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 
 Coûts unitaires retenus, à reprendre en T11 et T14 : **0,0051 USD / 7,5 s** par extraction
 (prompt v3), **0,03944 USD / 9,1 s** par embellissement.
-
----
-
-## Ordre d'exécution restant
-
-```
-T7 rétention ──┐
-T10 file ──────┼──► T8 multi-images + écran de correction (+ R3 publication)
-               │
-T9 export ─────┘
-
-T14 illustration (débloquée, parallèle — ne touche pas admin/ avant T8)
-
-T11 durcissement (indépendant)
-```
-
-Lanes parallélisables : T9 (`convex/export.ts`) et T14 ne partagent aucun fichier avec T7/T8/T10.
-T8, T10 et T14 partagent `src/routes/admin/` — à séquencer ou à coordonner.
 
 ---
 
