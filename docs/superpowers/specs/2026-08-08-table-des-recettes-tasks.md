@@ -158,12 +158,13 @@ livrable de T2, hors du socle.
 
 ## Fonctionnel — P2
 
-- [ ] **T7 · P2 · photos** (human ~1h / CC ~10min) — Rétention `purgeAfter` au lieu de suppression immédiate
+- [x] **T7 · P2 · photos** (human ~1h / CC ~10min) — Cycle de rétention des photos avec `purgeAfter`
   - **Origine** : Tension cross-model 1 — le cas « le modèle voit 2 recettes sur 3 » est un
-    succès partiel, indétectable, et la photo partait avant qu'on puisse s'en rendre compte
-  - **Fichiers** : `convex/recipes.ts`, `convex/schema.ts`
-  - **Vérifier** : `purgeAfter` posé seulement quand plus aucune recette du scan n'est en
-    `review` ; purge effective à l'expiration ; purge manuelle possible depuis l'admin
+    succès partiel, indétectable ; toute future purge devait préserver le temps de le constater
+  - **Fichiers** : `convex/retention.ts`, `convex/schema.ts`, `convex/admin.ts`,
+    `convex/crons.ts`
+  - **Vérifier** : échéance jamais passée, purge hebdomadaire atomique par scan et reportée sous
+    bail vivant, purge manuelle possible depuis l'admin
 
 - [ ] **T8 · P2 · scans** (human ~4h / CC ~45min) — Scan multi-images + ajout/suppression de recettes
   - **Origine** : Codex #6 et #7 — cardinalité fausse (recette à cheval sur deux pages
@@ -179,11 +180,12 @@ livrable de T2, hors du socle.
   - **Vérifier** : export JSON des recettes publiées, commité dans un dépôt ; historique lisible
     recette par recette
 
-- [ ] **T10 · P2 · file** (human ~1h / CC ~10min) — Compteurs `pending`/`extracting` + bouton lancer/relancer
+- [x] **T10 · P2 · file** (human ~1h / CC ~10min) — Compteurs `pending`/`extracting` + bouton lancer/relancer
   - **Origine** : Architecture, issue 2 — sans cron de surveillance (choix assumé), le blocage
     doit rester visible sans effort, sinon le bouton ne sert à rien
-  - **Fichiers** : `src/routes/admin/file`
-  - **Vérifier** : un scan bloqué est visible sans action de ta part ; le bouton relance la file
+  - **Fichiers** : `src/routes/admin.tsx`, `src/lib/queueStatus.ts`, `convex/admin.ts`
+  - **Vérifier** : un scan bloqué est visible sans action de ta part ; le bouton relance la file et
+    annonce le verdict réel
 
 - [ ] **T11 · P2 · extraction** (human ~1h / CC ~10min) — Durcissement de l'appel OpenRouter
   - **Origine** : Codex #15 — la sortie structurée garantit la forme, pas la vérité
