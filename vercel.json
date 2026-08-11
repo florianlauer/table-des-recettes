@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL",
-  "ignoreCommand": "test \"$VERCEL_ENV\" != production",
+  "ignoreCommand": "test \"$VERCEL_ENV\" != production || git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ':(top,exclude)backup/**'",
   "headers": [
     {
       "source": "/(.*)",
