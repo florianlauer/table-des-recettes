@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
 import { expect, test } from 'vitest'
+import { z } from 'zod'
+import { backupRecipeSchema } from '../src/lib/backup-schema'
 import { internal } from './_generated/api'
 import schema from './schema'
 
@@ -25,6 +27,10 @@ test('backupPayload exports drafts and published recipes with nullable fields', 
   })
 
   const recipes = await t.query(internal.export.backupPayload, {})
+  // The backup shape is written four times — this Zod schema, the Convex validator, the query
+  // projection and its inverse in the restore script. `strictObject` makes this the assertion that
+  // catches a field missing on one side or surplus on the other, in both directions.
+  expect(() => z.array(backupRecipeSchema).parse(recipes)).not.toThrow()
   expect(recipes.map(({ status }) => status).sort()).toEqual([
     'published',
     'review',

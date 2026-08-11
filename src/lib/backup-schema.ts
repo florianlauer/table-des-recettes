@@ -46,32 +46,21 @@ export function compareBackupIds(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0
 }
 
-export function restorableProjection({
-  id,
-  creationTime,
-  title,
-  type,
-  servings,
-  ingredients,
-  ingredientsInferred,
-  steps,
-  status,
-  slug,
-  publishedAt,
-}: BackupRecipe): BackupRecipe {
+// A restore cannot bring the storage blobs back, so the two identifiers are what legitimately
+// differs between a snapshot and the database it was restored into. Both sides of a verification
+// go through here.
+export function restorableProjection(recipe: BackupRecipe): BackupRecipe {
   return backupRecipeSchema.parse({
-    id,
-    creationTime,
-    title,
-    type,
-    servings,
-    ingredients,
-    ingredientsInferred,
-    steps,
-    status,
-    slug,
-    publishedAt,
+    ...recipe,
     imageStorageId: null,
     beautifiedStorageId: null,
   })
+}
+
+export function countRecipesByStatus(
+  recipes: readonly BackupRecipe[],
+): BackupManifest['countsByStatus'] {
+  const counts = { review: 0, published: 0 }
+  for (const recipe of recipes) counts[recipe.status] += 1
+  return counts
 }

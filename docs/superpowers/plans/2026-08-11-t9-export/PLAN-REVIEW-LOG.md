@@ -281,3 +281,53 @@ pures qu'il entoure sont testées ; le tuyau ne l'est pas. Il se validera à la 
 réelle contre `dev`, qui fait partie du provisionnement.
 
 Total : 18 fichiers, +1493 −1. Deux rounds sur deux autorisés, aucune reprise en main nécessaire.
+
+## Act 4 — Audit de qualité (Claude, sur la PR #9)
+
+Revue exigeante sur la structure plutôt que sur le comportement. Deux blocages, trois suppressions,
+et un constat de ma part qui était faux.
+
+**Blocage 1 — la restauration contournait l'entrée canonique du dépôt.**
+`convex/lib/recipeWrites.ts` déclare `withSearchText` comme « the only authorised entry point for
+writing the (title, ingredients) pair… never insert or patch without going through here ».
+`restoreDocument` appelait `buildSearchText` en direct, alors qu'une restauration est exactement une
+écriture en masse de ce couple. Corrigé : le document passe par `withSearchText`. Sans ça, l'invariant
+documenté devenait faux au premier import.
+
+**Blocage 2 — quatre copies de la forme à treize champs, et aucun test ne les liait.**
+`backupRecipeSchema` (Zod), `backupRecipe` (validateur Convex), la projection du handler et son
+inverse `restoreDocument`. `convex/export.test.ts` vérifiait avec `toMatchObject`, une correspondance
+partielle qui n'attrape ni champ manquant ni champ surnuméraire. Ajout d'une assertion
+`z.array(backupRecipeSchema).parse(recipes)`.
+
+Vérifié par mutation, parce qu'une assertion non éprouvée ne vaut rien : en injectant un champ
+surnuméraire dans la seule projection, c'est le validateur Convex `returns` qui échoue d'abord — cette
+direction était donc déjà couverte. En l'injectant **dans le validateur Convex et la projection à la
+fois**, l'assertion Zod échoue sur `unrecognized_key`. C'est bien la dérive entre les deux définitions
+qu'elle attrape, celle que Convex laisse passer, et c'est le scénario réaliste : quelqu'un étend
+l'export et oublie le schéma Zod.
+
+**Suppressions.** `restorableProjection` énumérait onze champs pour en forcer deux : vingt-huit lignes
+devenues quatre, et ajouter un champ au format ne demande plus de la toucher. Le wrapper `spawn` était
+écrit deux fois à vingt lignes près : un seul `runNpx({ label, argumentsList, capture })`.
+`countsByStatus` existait dans les deux scripts : remonté en `countRecipesByStatus` à côté du schéma de
+manifeste.
+
+**Frontières.** `restoreDocument` renvoyait `Record<string, unknown>` — la frontière la plus lâche
+possible là où l'invariant compte le plus, puisque c'est la forme que Convex validera à l'import, sur
+le seul chemin sans test. Remplacé par un type `RestoredRecipe` nommant les treize clés : une clé
+oubliée est maintenant une erreur de compilation, plus une erreur d'import contre un déploiement.
+`.prettierignore` ignorait `backup` en entier, donc `backup/README.md` échappait à `npm run check` :
+restreint à `backup/*.json`.
+
+**Un constat retiré.** J'avais signalé une incohérence d'extensions d'import entre `scripts/` (`.js`)
+et `convex/` (sans). Faux : `src/lib/recipe-schema.ts` importe déjà `'./recipeTypes.js'` et tous les
+fichiers `convex/` importent `src/lib` sans extension. La convention est par répertoire et elle était
+respectée.
+
+Bilan : +107 −87, net +20 lignes. Le compte de lignes bouge peu — le type explicite et les
+commentaires rendent ce que les duplications libèrent. Ce qui baisse, c'est le nombre d'endroits à
+modifier pour ajouter un champ, de quatre sans filet à quatre avec un test qui casse.
+
+Cinq preuves relancées après le refactor : `typecheck` propre, 166 tests sur 26 fichiers, `eslint`,
+`prettier --check`, `actionlint`.

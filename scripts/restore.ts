@@ -14,14 +14,15 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { z } from 'zod'
+import { withSearchText } from '../convex/lib/recipeWrites.js'
 import {
   backupManifestSchema,
   backupRecipeSchema,
   compareBackupIds,
+  countRecipesByStatus,
   restorableProjection,
 } from '../src/lib/backup-schema.js'
 import type { BackupManifest, BackupRecipe } from '../src/lib/backup-schema.js'
-import { buildSearchText } from '../src/lib/normalize.js'
 import {
   BACKUP_DIRECTORY,
   MANIFEST_FILE_NAME,
@@ -31,6 +32,32 @@ import {
 export type RestoreSnapshot = {
   manifest: BackupManifest
   recipes: BackupRecipe[]
+}
+
+// The document `convex import` expects: the schema stores these as optional, so a null in the
+// snapshot means the key is absent here, not present and null. Naming the shape rather than
+// returning a loose record is what makes a forgotten key a type error instead of an import error
+// against a live deployment.
+type RestoredRecipe = {
+  _id: string
+  _creationTime: number
+  title: string
+  type: BackupRecipe['type']
+  servings?: number
+  ingredients: Array<{
+    raw: string
+    quantity?: number
+    unit?: string
+    label?: string
+  }>
+  ingredientsInferred: boolean
+  steps: string[]
+  searchText: string
+  status: BackupRecipe['status']
+  slug?: string
+  publishedAt?: number
+  beautifiedAccepted: boolean
+  beautifyStatus: 'idle'
 }
 
 const restoredRecipesSchema = z.array(backupRecipeSchema)
@@ -47,22 +74,24 @@ function restoreDocument({
   status,
   slug,
   publishedAt,
-}: BackupRecipe): Record<string, unknown> {
+}: BackupRecipe): RestoredRecipe {
   return {
     _id: id,
     _creationTime: creationTime,
-    title,
+    // `withSearchText` is the only authorised way to write the (title, ingredients) pair.
+    ...withSearchText({
+      title,
+      ingredients: ingredients.map(({ raw, quantity, unit, label }) => ({
+        raw,
+        ...(quantity === null ? {} : { quantity }),
+        ...(unit === null ? {} : { unit }),
+        ...(label === null ? {} : { label }),
+      })),
+    }),
     type,
     ...(servings === null ? {} : { servings }),
-    ingredients: ingredients.map(({ raw, quantity, unit, label }) => ({
-      raw,
-      ...(quantity === null ? {} : { quantity }),
-      ...(unit === null ? {} : { unit }),
-      ...(label === null ? {} : { label }),
-    })),
     ingredientsInferred,
     steps,
-    searchText: buildSearchText(title, ingredients),
     status,
     ...(slug === null ? {} : { slug }),
     ...(publishedAt === null ? {} : { publishedAt }),
@@ -89,15 +118,6 @@ export function canonicalDigest(recipes: readonly BackupRecipe[]): string {
   return createHash('sha256').update(JSON.stringify(canonical)).digest('hex')
 }
 
-function countsByStatus(recipes: readonly BackupRecipe[]): {
-  review: number
-  published: number
-} {
-  const counts = { review: 0, published: 0 }
-  for (const recipe of recipes) counts[recipe.status] += 1
-  return counts
-}
-
 export function assertRestoredBackup({
   expected,
   actual,
@@ -107,7 +127,7 @@ export function assertRestoredBackup({
   actual: readonly BackupRecipe[]
   manifest: BackupManifest
 }): void {
-  const actualCounts = countsByStatus(actual)
+  const actualCounts = countRecipesByStatus(actual)
   if (
     actual.length !== manifest.total ||
     actualCounts.review !== manifest.countsByStatus.review ||
@@ -128,7 +148,7 @@ export function assertManifestMatches({
   manifest,
   recipes,
 }: RestoreSnapshot): void {
-  const counts = countsByStatus(recipes)
+  const counts = countRecipesByStatus(recipes)
   if (
     manifest.total !== recipes.length ||
     manifest.countsByStatus.review !== counts.review ||
@@ -193,56 +213,35 @@ export function parseRestoreTarget(argumentsList: readonly string[]): {
   return { production }
 }
 
-async function runImport({
-  jsonlPath,
-  production,
+// stdin and stderr stay inherited in both modes: a production import keeps Convex's interactive
+// confirmation, and its progress reporting belongs on the terminal, not in the captured value.
+async function runNpx({
+  label,
+  argumentsList,
+  capture,
 }: {
-  jsonlPath: string
-  production: boolean
-}): Promise<void> {
-  const argumentsList = convexImportArguments({ jsonlPath, production })
-  await new Promise<void>((resolvePromise, reject) => {
-    const child = spawn('npx', argumentsList, { stdio: 'inherit' })
-    child.once('error', reject)
-    child.once('exit', (code, signal) => {
-      if (code === 0) resolvePromise()
-      else {
-        reject(
-          new Error(
-            `convex import failed (${signal ? `signal ${signal}` : `exit ${code}`}).`,
-          ),
-        )
-      }
-    })
-  })
-}
-
-async function readRestoredRecipes({
-  production,
-}: {
-  production: boolean
-}): Promise<BackupRecipe[]> {
-  const argumentsList = convexRunArguments({ production })
-  const output = await new Promise<string>((resolvePromise, reject) => {
-    const child = spawn('npx', argumentsList, {
-      stdio: ['inherit', 'pipe', 'inherit'],
+  label: string
+  argumentsList: readonly string[]
+  capture: boolean
+}): Promise<string> {
+  return new Promise<string>((resolvePromise, reject) => {
+    const child = spawn('npx', [...argumentsList], {
+      stdio: ['inherit', capture ? 'pipe' : 'inherit', 'inherit'],
     })
     const chunks: Buffer[] = []
-    child.stdout.on('data', (chunk: Buffer) => chunks.push(chunk))
+    child.stdout?.on('data', (chunk: Buffer) => chunks.push(chunk))
     child.once('error', reject)
     child.once('exit', (code, signal) => {
       if (code === 0) resolvePromise(Buffer.concat(chunks).toString('utf8'))
       else {
         reject(
           new Error(
-            `convex run failed (${signal ? `signal ${signal}` : `exit ${code}`}).`,
+            `${label} failed (${signal ? `signal ${signal}` : `exit ${code}`}).`,
           ),
         )
       }
     })
   })
-
-  return parseRestoredRecipes(output)
 }
 
 export function parseRestoredRecipes(output: string): BackupRecipe[] {
@@ -294,6 +293,31 @@ export function convexImportArguments({
     ...(production ? ['--prod'] : ['--yes']),
     jsonlPath,
   ]
+}
+
+async function runImport(options: {
+  jsonlPath: string
+  production: boolean
+}): Promise<void> {
+  await runNpx({
+    label: 'convex import',
+    argumentsList: convexImportArguments(options),
+    capture: false,
+  })
+}
+
+async function readRestoredRecipes({
+  production,
+}: {
+  production: boolean
+}): Promise<BackupRecipe[]> {
+  return parseRestoredRecipes(
+    await runNpx({
+      label: 'convex run',
+      argumentsList: convexRunArguments({ production }),
+      capture: true,
+    }),
+  )
 }
 
 export async function runRestore(

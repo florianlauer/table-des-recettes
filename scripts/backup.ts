@@ -8,6 +8,7 @@ import {
   BACKUP_FORMAT_VERSION,
   backupManifestSchema,
   backupRecipeSchema,
+  countRecipesByStatus,
 } from '../src/lib/backup-schema.js'
 import type { BackupManifest, BackupRecipe } from '../src/lib/backup-schema.js'
 
@@ -39,7 +40,8 @@ function serializeJson(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`
 }
 
-export function serializeBackupRecipe({ ...recipe }: BackupRecipe): string {
+// `parse` is what fixes the key order, so the bytes never depend on how the payload arrived.
+export function serializeBackupRecipe(recipe: BackupRecipe): string {
   return serializeJson(backupRecipeSchema.parse(recipe))
 }
 
@@ -93,13 +95,11 @@ function manifestFor({
   generatedAt,
   recipes,
 }: Pick<BackupPayload, 'generatedAt' | 'recipes'>): BackupManifest {
-  const countsByStatus = { review: 0, published: 0 }
-  for (const recipe of recipes) countsByStatus[recipe.status] += 1
   return backupManifestSchema.parse({
     formatVersion: BACKUP_FORMAT_VERSION,
     generatedAt,
     total: recipes.length,
-    countsByStatus,
+    countsByStatus: countRecipesByStatus(recipes),
   })
 }
 
