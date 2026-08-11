@@ -1,7 +1,7 @@
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
-import { DRAFTS_LISTED_PER_SCAN } from './admin'
+import { ATTEMPTS_SAMPLED, DRAFTS_LISTED_PER_SCAN } from './admin'
 import { api } from './_generated/api'
 import schema from './schema'
 
@@ -137,6 +137,77 @@ describe('admin boundary', () => {
     })
     expect(scans).toMatchObject([{ draftsTruncated: false }])
     expect(scans.map((scan) => scan.drafts.length)).toEqual([1])
+  })
+
+  test('reads the extraction journal newest first, behind the admin guard', async () => {
+    const t = setup()
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    await t.run(async (ctx) => {
+      for (const [index, promptVersion] of ['v3', 'v3', 'v4'].entries()) {
+        await ctx.db.insert('extractionAttempts', {
+          scanId,
+          attemptId: `attempt-${index}`,
+          model: 'model',
+          servedProvider: 'served',
+          latencyMs: 7000,
+          costUsd: 0.005,
+          failureKind: index === 0 ? 'timeout' : null,
+          repairCount: 0,
+          promptVersion,
+          schemaVersion: '2',
+          createdAt: index,
+        })
+      }
+    })
+
+    await expect(
+      t.query(api.admin.attemptStats, { adminToken: 'wrong' }),
+    ).rejects.toThrow('Accès administrateur refusé')
+    expect(
+      await t.query(api.admin.attemptStats, { adminToken: 'test-secret' }),
+    ).toMatchObject([
+      { promptVersion: 'v4', attempts: 1, failures: 0 },
+      { promptVersion: 'v3', attempts: 2, failures: 1 },
+    ])
+  })
+
+  test('caps the journal read at the sampled window', async () => {
+    const t = setup()
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    await t.run(async (ctx) => {
+      for (let index = 0; index <= ATTEMPTS_SAMPLED; index += 1) {
+        await ctx.db.insert('extractionAttempts', {
+          scanId,
+          attemptId: `attempt-${index}`,
+          model: 'model',
+          servedProvider: null,
+          latencyMs: 1,
+          costUsd: 0,
+          failureKind: null,
+          repairCount: 0,
+          promptVersion: 'v4',
+          schemaVersion: '2',
+          createdAt: index,
+        })
+      }
+    })
+    expect(
+      await t.query(api.admin.attemptStats, { adminToken: 'test-secret' }),
+    ).toMatchObject([{ attempts: ATTEMPTS_SAMPLED }])
   })
 
   test('limits concurrent upload grants and propagates retryAfter', async () => {

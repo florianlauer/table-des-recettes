@@ -23,6 +23,11 @@ function AdminPage() {
     enabled: adminToken.length > 0,
     retry: false,
   })
+  const attemptStats = useQuery({
+    ...convexQuery(api.admin.attemptStats, { adminToken }),
+    enabled: adminToken.length > 0,
+    retry: false,
+  })
 
   useEffect(() => {
     setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
@@ -153,6 +158,45 @@ function AdminPage() {
           </article>
         ))}
       </section>
+
+      <section className="admin-page__stats">
+        <h2>Tentatives d’extraction</h2>
+        {attemptStats.data?.length === 0 && (
+          <p>Aucune tentative journalisée.</p>
+        )}
+        {attemptStats.data?.map((group) => (
+          <article
+            key={`${group.model} ${group.promptVersion} ${group.schemaVersion}`}
+            className="admin-page__stat"
+          >
+            <h3>
+              {group.model} · prompt {group.promptVersion} · schéma{' '}
+              {group.schemaVersion}
+            </h3>
+            <p>
+              {group.attempts} tentative(s) · {group.failures} échec(s) (
+              {formatRate(group.failureRate)})
+              {group.failureKinds.length > 0 &&
+                ` · ${group.failureKinds
+                  .map(({ kind, count }) => `${kind} ${count}`)
+                  .join(', ')}`}
+            </p>
+            <p>
+              {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
+              {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
+              {Math.round(group.averageLatencyMs)} ms en moyenne
+            </p>
+            <p>
+              {group.repairs} réparation(s) de schéma sur{' '}
+              {group.repairedAttempts} tentative(s)
+            </p>
+          </article>
+        ))}
+      </section>
     </main>
   )
+}
+
+function formatRate(rate: number): string {
+  return `${(rate * 100).toFixed(rate > 0 && rate < 0.01 ? 1 : 0)} %`
 }

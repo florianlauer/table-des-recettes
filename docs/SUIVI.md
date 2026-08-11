@@ -12,27 +12,27 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 
 ## Vue d'ensemble
 
-| #       | Titre                                    | P   | Statut | Livré par                   | Preuve                                               |
-| ------- | ---------------------------------------- | --- | ------ | --------------------------- | ---------------------------------------------------- |
-| **T1**  | Spike extraction vision multi-recettes   | P1  | ✅     | PR #1 + rejeu v3 dans PR #5 | `spike/RESULTS.md`                                   |
-| **T13** | Spike embellissement d'image             | P1  | ✅     | PR #3                       | `spike13/RESULTS.md`                                 |
-| —       | Socle et vitrine publique                | P1  | ✅     | PR #2                       | `src/routes/index.tsx`, `recette.$slug.tsx`          |
-| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/lib/recipe-schema.ts`, `convex/schema.ts`       |
-| **T3**  | Finalisation atomique avec `attemptId`   | P1  | ✅     | PR #5                       | `convex/extract.ts`, `convex/extract.test.ts`        |
-| **T4**  | `requireAdmin` mutations/actions/queries | P1  | ✅     | PR #5                       | `convex/auth.ts`, `convex/rateLimits.ts`             |
-| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`      |
-| **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`       |
-| **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                           |
-| **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`       |
-| **T7**  | Rétention `purgeAfter`                   | P2  | ⬜     | —                           | champs et index posés, logique absente               |
-| **T8**  | Scan multi-images + écran de correction  | P2  | ⬜     | —                           | `imageStorageIds` borné à 1 à l'entrée               |
-| **T9**  | Export automatique versionné dans git    | P2  | ⬜     | —                           | —                                                    |
-| **T10** | Compteurs de file + bouton relancer      | P2  | ⬜     | —                           | bouton nu posé dans `src/routes/admin.tsx`           |
-| **T11** | Durcissement de l'appel OpenRouter       | P2  | ⬜     | —                           | `lastAttempt` posé sur le scan, conçu pour déménager |
-| **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre    |
+| #       | Titre                                    | P   | Statut | Livré par                   | Preuve                                            |
+| ------- | ---------------------------------------- | --- | ------ | --------------------------- | ------------------------------------------------- |
+| **T1**  | Spike extraction vision multi-recettes   | P1  | ✅     | PR #1 + rejeu v3 dans PR #5 | `spike/RESULTS.md`                                |
+| **T13** | Spike embellissement d'image             | P1  | ✅     | PR #3                       | `spike13/RESULTS.md`                              |
+| —       | Socle et vitrine publique                | P1  | ✅     | PR #2                       | `src/routes/index.tsx`, `recette.$slug.tsx`       |
+| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/lib/recipe-schema.ts`, `convex/schema.ts`    |
+| **T3**  | Finalisation atomique avec `attemptId`   | P1  | ✅     | PR #5                       | `convex/extract.ts`, `convex/extract.test.ts`     |
+| **T4**  | `requireAdmin` mutations/actions/queries | P1  | ✅     | PR #5                       | `convex/auth.ts`, `convex/rateLimits.ts`          |
+| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`   |
+| **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`    |
+| **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                        |
+| **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`    |
+| **T7**  | Rétention `purgeAfter`                   | P2  | ⬜     | —                           | champs et index posés, logique absente            |
+| **T8**  | Scan multi-images + écran de correction  | P2  | ⬜     | —                           | `imageStorageIds` borné à 1 à l'entrée            |
+| **T9**  | Export automatique versionné dans git    | P2  | ⬜     | —                           | —                                                 |
+| **T10** | Compteurs de file + bouton relancer      | P2  | ⬜     | —                           | bouton nu posé dans `src/routes/admin.tsx`        |
+| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | —                           | journal `extractionAttempts` + prompt v4          |
+| **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre |
 
-**Reste à faire : 6 tâches, ~16 h humaines estimées** (T7 1 h · T8 4 h · T9 4 h · T10 1 h ·
-T11 1 h · T14 5 h).
+**Reste à faire : 5 tâches, ~15 h humaines estimées** (T7 1 h · T8 4 h · T9 4 h · T10 1 h ·
+T14 5 h).
 
 ---
 
@@ -44,6 +44,11 @@ T11 1 h · T14 5 h).
   `compress.ts`, création de scan, liste brute des scans, bouton d'extraction nu. Un scan traverse
   compression → stockage → appel OpenRouter → brouillons en base, avec `lastAttempt` qui raconte
   l'appel.
+- **Journal des tentatives d'extraction** — une ligne par tentative dans `extractionAttempts`,
+  estampillée du modèle, du provider servi, de la version de prompt et de schéma, du coût, de la
+  latence et du nombre de réparations. Survit à la purge du scan. `/admin` en rend l'agrégat groupé
+  par modèle et version : taux d'échec, échecs par nature, coût moyen et total, latence moyenne,
+  volume de correction.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
 - **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
@@ -81,8 +86,6 @@ Aucune des trois ne dépend du chemin principal ni des autres.
   par la même personne**.
 - **T9 · export versionné dans git** (4 h) — vit dans `convex/export.ts`, ne partage aucun fichier
   avec le reste.
-- **T11 · durcissement de l'appel OpenRouter** (1 h) — indépendant. C'est aussi le seul endroit où
-  traiter R2, ce qui suppose une révision de prompt et un rejeu payant : à décider sur place.
 
 ### Les deux pièges d'ordre
 
@@ -95,14 +98,18 @@ Aucune des trois ne dépend du chemin principal ni des autres.
 
 Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche à elles.
 
-- **R1 · Prompt v4 à écrire.** La liste d'ingrédients déduite (pages sans liste imprimée) contient
-  des lignes qui n'en sont pas : `1 mn sur feu doux` sur la page E, et les œufs comptés trois fois.
-  v4 doit interdire les durées, les températures et les fractions d'un ingrédient déjà listé. Coût
-  d'un rejeu de contrôle chiffré : **0,071 USD**.
+- **R1 · Prompt v4 — fait en T11 le 2026-08-11.** v4 interdit les durées, les températures et les
+  fractions d'un ingrédient déjà listé dans une liste reconstituée, et impose de n'en omettre aucun.
+  Rejeu de contrôle exécuté : 14 appels, 0,0689 USD, comparaison conforme sur les sept pages. Le
+  rejeu a révélé que v3 **perdait aussi `40 g de farine`** sur la page E, ce qui n'était pas relevé ;
+  v4 la rend. Détail dans `spike/RESULTS.md` § « Rejeu sous prompt v4 ».
 
-- **R2 · Instabilité des étiquettes de section sur la page B.** `Pour la pâte :` entre une passe sur
-  deux dans la ligne d'ingrédient. Sans conséquence sur les comptes. Ouvert pour T11 — la corriger
-  demande une révision de prompt et un rejeu de plus.
+- ~~**R2 · Instabilité des étiquettes de section sur la page B.**~~ **Sans objet.** Cette entrée
+  décrivait la réserve 1 du spike, mesurée sous prompt **v2**. Elle ne s'est jamais reproduite
+  depuis : `Pour la pâte :` est écarté dans les quatre passes v2 archivées, les deux passes v3 et les
+  deux passes v4. Le comparateur v4 en fait désormais une divergence fatale sur **toutes** les pages,
+  donc un retour serait signalé au prochain rejeu plutôt que redécouvert à l'œil. Aucun prompt à
+  réviser, aucun rejeu à payer.
 
 - **R3 · Publication d'un brouillon.** Aucune tâche ne la porte explicitement. La vitrine lit
   `status: 'published'`, l'ingestion écrit des brouillons, et rien ne fait le pont. À rattacher à
@@ -122,11 +129,12 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 
 | Banc                        | Dépensé   | Plafond   |
 | --------------------------- | --------- | --------- |
-| `spike/` — extraction       | 0,403 USD | 5,00 USD  |
+| `spike/` — extraction       | 0,472 USD | 5,00 USD  |
 | `spike13/` — embellissement | 2,292 USD | 10,00 USD |
 
-Coûts unitaires retenus, à reprendre en T11 et T14 : **0,0051 USD / 7,5 s** par extraction
-(prompt v3), **0,03944 USD / 9,1 s** par embellissement.
+Coûts unitaires retenus, à reprendre en T14 : **0,0049 USD / 7,1 s** par extraction (prompt v4,
+mesuré sur 14 appels au rejeu de T11), **0,03944 USD / 9,1 s** par embellissement. Ce sont les
+chiffres que le bloc « Tentatives d'extraction » de `/admin` sert à confronter à l'usage réel.
 
 ---
 

@@ -1,7 +1,10 @@
 import { v } from 'convex/values'
+import type { Infer } from 'convex/values'
 import { internal } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
 import { internalAction, internalMutation } from './_generated/server'
+import type { MutationCtx } from './_generated/server'
+import type { attemptRecord } from './schema'
 import { ingredient, recipeType } from './schema'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
@@ -12,10 +15,11 @@ import {
   extractionJsonSchema,
   JSON_SCHEMA_NAME,
 } from '../src/lib/recipe-json-schema'
-import { EXTRACTION_PROMPT } from '../src/lib/recipe-prompt'
+import { EXTRACTION_PROMPT, PROMPT_VERSION } from '../src/lib/recipe-prompt'
 import {
   extractionSchema,
   normalizeExtraction,
+  RECIPE_SCHEMA_VERSION,
   repairExtraction,
 } from '../src/lib/recipe-schema'
 import { sniffImageHeader } from '../src/lib/imageHeader'
@@ -413,6 +417,27 @@ const observationArgs = {
   repairCount: v.number(),
 }
 
+/**
+ * Single writer of the journal, so success and failure cannot drift on what an attempt records. The
+ * versions are stamped here rather than passed in: the caller is the deployment that ran the call,
+ * so any other value would be a lie about which prompt produced the row.
+ */
+async function journalAttempt(
+  ctx: MutationCtx,
+  {
+    scanId,
+    attempt,
+  }: { scanId: Id<'scans'>; attempt: Infer<typeof attemptRecord> },
+): Promise<void> {
+  await ctx.db.insert('extractionAttempts', {
+    ...attempt,
+    scanId,
+    promptVersion: PROMPT_VERSION,
+    schemaVersion: RECIPE_SCHEMA_VERSION,
+    createdAt: Date.now(),
+  })
+}
+
 export const finalize = internalMutation({
   args: {
     scanId: v.id('scans'),
@@ -444,11 +469,13 @@ export const finalize = internalMutation({
         }),
       )
     }
+    const attempt = { ...observation, failureKind: null }
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
-      lastAttempt: { ...observation, failureKind: null },
+      lastAttempt: attempt,
     })
+    await journalAttempt(ctx, { scanId, attempt })
     return true
   },
 })
@@ -466,13 +493,15 @@ export const recordFailure = internalMutation({
     if (!scan || scan.attemptId !== observation.attemptId) return false
     const terminal =
       isTerminalFailure(failureKind) || scan.attempts >= MAX_ATTEMPTS
+    const attempt = { ...observation, failureKind }
     await ctx.db.patch(scanId, {
       status: terminal ? 'failed' : 'pending',
       error,
       attemptId: undefined,
       startedAt: undefined,
-      lastAttempt: { ...observation, failureKind },
+      lastAttempt: attempt,
     })
+    await journalAttempt(ctx, { scanId, attempt })
     return true
   },
 })

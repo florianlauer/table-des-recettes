@@ -16,6 +16,8 @@ import {
   UNCONSUMED_TICKET_GRACE_MS,
 } from './extract'
 import type { Doc, Id } from './_generated/dataModel'
+import { PROMPT_VERSION } from '../src/lib/recipe-prompt'
+import { RECIPE_SCHEMA_VERSION } from '../src/lib/recipe-schema'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = {
@@ -359,6 +361,97 @@ describe('extraction state machine', () => {
     await expect(
       t.mutation(internal.extract.reserve, {}),
     ).resolves.toMatchObject({ status: 'reserved' })
+  })
+
+  test('journals every attempt of a scan, stamped with the prompt and schema versions', async () => {
+    const t = setup()
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'extracting',
+        attempts: 1,
+        attemptId: 'attempt-1',
+        startedAt: 1,
+        createdAt: 1,
+      }),
+    )
+    const observation = {
+      scanId,
+      model: 'model',
+      servedProvider: 'served',
+      latencyMs: 7500,
+      costUsd: 0.0051,
+      repairCount: 0,
+    }
+    await t.mutation(internal.extract.recordFailure, {
+      ...observation,
+      attemptId: 'attempt-1',
+      failureKind: 'transport',
+      error: 'failed',
+    })
+    await t.run((ctx) =>
+      ctx.db.patch(scanId, {
+        status: 'extracting',
+        attemptId: 'attempt-2',
+        attempts: 2,
+      }),
+    )
+    await t.mutation(internal.extract.finalize, {
+      ...observation,
+      attemptId: 'attempt-2',
+      recipes: [],
+    })
+
+    const journal = await t.run((ctx) =>
+      ctx.db.query('extractionAttempts').collect(),
+    )
+    expect(
+      journal.map(({ attemptId, failureKind }) => ({ attemptId, failureKind })),
+    ).toEqual([
+      { attemptId: 'attempt-1', failureKind: 'transport' },
+      { attemptId: 'attempt-2', failureKind: null },
+    ])
+    expect(journal[0]).toMatchObject({
+      scanId,
+      model: 'model',
+      servedProvider: 'served',
+      latencyMs: 7500,
+      costUsd: 0.0051,
+      promptVersion: PROMPT_VERSION,
+      schemaVersion: RECIPE_SCHEMA_VERSION,
+    })
+  })
+
+  test('journals nothing for a stale attempt', async () => {
+    const t = setup()
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'extracting',
+        attempts: 1,
+        attemptId: 'current',
+        startedAt: 1,
+        createdAt: 1,
+      }),
+    )
+    expect(
+      await t.mutation(internal.extract.recordFailure, {
+        scanId,
+        attemptId: 'expired',
+        model: 'model',
+        servedProvider: null,
+        latencyMs: 1,
+        costUsd: 0,
+        repairCount: 0,
+        failureKind: 'transport',
+        error: 'failed',
+      }),
+    ).toBe(false)
+    expect(
+      await t.run((ctx) => ctx.db.query('extractionAttempts').collect()),
+    ).toEqual([])
   })
 
   test('requeues retryable failures and terminates invalid images', async () => {
