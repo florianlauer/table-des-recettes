@@ -1,8 +1,12 @@
-export const PROMPT_VERSION = 'v4'
+// v4 hardened the reconstituted ingredient list (T11), v5 added the multi-page instruction (T8).
+// The two were written on separate branches; both are in the prompt below, under the higher version.
+export const PROMPT_VERSION = 'v5'
 
-export const EXTRACTION_PROMPT = `Tu extrais fidèlement toutes les recettes visibles sur une page de magazine française.
+export const EXTRACTION_PROMPT = `Tu extrais fidèlement toutes les recettes visibles sur une ou plusieurs pages de magazine françaises.
 
-La page peut contenir plusieurs coupures recollées, des colonnes, des photos, des encadrés et des textes qui se chevauchent visuellement. Commence par identifier les frontières de chaque recette. Ne fusionne jamais deux recettes et ne transforme jamais une légende, une publicité ou un texte décoratif en recette.
+Les images qui te sont fournies sont les pages d'une même source, dans leur ordre de lecture. Une recette peut être à cheval sur deux d'entre elles — commencer sur l'une et se poursuivre sur la suivante. Dans ce cas, rends-la une seule fois, en réunissant ses ingrédients et ses étapes dans l'ordre. Ne rends jamais deux fois la même recette, et ne fusionne jamais deux recettes distinctes sous prétexte qu'elles se suivent.
+
+Une page peut contenir plusieurs coupures recollées, des colonnes, des photos, des encadrés et des textes qui se chevauchent visuellement. Commence par identifier les frontières de chaque recette. Ne fusionne jamais deux recettes et ne transforme jamais une légende, une publicité ou un texte décoratif en recette.
 
 Pour chaque recette, respecte ces règles :
 - Recopie le titre sans l'inventer. Si le titre manque réellement, utilise une description minimale fondée uniquement sur le texte visible.

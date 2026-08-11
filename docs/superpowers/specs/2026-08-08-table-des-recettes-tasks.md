@@ -166,12 +166,16 @@ livrable de T2, hors du socle.
   - **Vérifier** : échéance jamais passée, purge hebdomadaire atomique par scan et reportée sous
     bail vivant, purge manuelle possible depuis l'admin
 
-- [ ] **T8 · P2 · scans** (human ~4h / CC ~45min) — Scan multi-images + ajout/suppression de recettes
+- [x] **T8 · P2 · scans** (human ~4h / CC ~45min) — Scan multi-images + ajout/suppression de recettes
   - **Origine** : Codex #6 et #7 — cardinalité fausse (recette à cheval sur deux pages
     impossible) et aucune opération structurelle dans l'écran de correction
-  - **Fichiers** : `convex/schema.ts`, `src/routes/admin/`
-  - **Vérifier** : un scan porte 1 à N images envoyées ensemble au modèle ; l'écran de
+  - **Fichiers** : `convex/admin.ts`, `convex/recipeAdmin.ts`, `convex/extract.ts`,
+    `convex/retention.ts`, `convex/schema.ts`, `src/routes/admin_.scan.$id.tsx`
+  - **Vérifier** : un scan porte 1 à 4 images envoyées ensemble au modèle ; l'écran de
     correction permet d'ajouter une recette manquée et de supprimer un faux positif
+  - **Livré en plus** : R3 (publication, dépublication, slug figé), le déclencheur manquant de la
+    rétention de T7 rendu bidirectionnel, et `finalize` rendu non rejouable — sans quoi le bouton
+    « relancer » aurait dupliqué les recettes
 
 - [x] **T9 · P2 · sauvegarde** (human ~4h / CC ~40min) — Export automatique versionné dans git
   - **Origine** : Codex #17 — aucune stratégie de sauvegarde ; l'offre gratuite Convex ne garde

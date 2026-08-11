@@ -12,3 +12,12 @@ export function withSearchText<
     searchText: buildSearchText(fields.title, fields.ingredients),
   }
 }
+
+/**
+ * The compare-and-set token of the correction form. Optional in the schema because the recipes that
+ * predate it were never backfilled; a document without one is at revision zero, and the fallback
+ * lives here so that reading is not four places deciding the same thing.
+ */
+export function revisionOf(recipe: { revision?: number }): number {
+  return recipe.revision ?? 0
+}

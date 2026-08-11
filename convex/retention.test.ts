@@ -3,6 +3,8 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
 import schema from './schema'
+import type { Id } from './_generated/dataModel'
+import type { MutationCtx } from './_generated/server'
 import {
   BACKFILL_AUDIT_CAP,
   ceilingFor,
@@ -10,7 +12,7 @@ import {
   PURGE_FAILURE_BACKOFF_MS,
   PURGE_GRACE_MS,
   PURGED_ERROR,
-  releaseIfTreated,
+  reconcileRetention,
   RETENTION_AFTER_TREATMENT_MS,
   RETENTION_CEILING_MS,
 } from './retention'
@@ -94,61 +96,88 @@ describe('retention deadlines', () => {
     )
   })
 
-  test('releases only treated scans, lowering but never extending a deadline', async () => {
+  test('reconciles the deadline in both directions around publication', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(1_000_000)
     const t = setup()
-    const { reviewId, loweredId, preservedId } = await t.run(async (ctx) => {
-      const scanWithReviewId = await ctx.db.insert('scans', {
+    const insertScan = (ctx: MutationCtx, createdAt: number) =>
+      ctx.db.insert('scans', {
         imageStorageIds: [],
-        status: 'done',
+        status: 'done' as const,
         attempts: 1,
         purgeAfter: 9_999_999_999,
-        createdAt: 1,
+        createdAt,
       })
-      await ctx.db.insert('recipes', {
-        scanId: scanWithReviewId,
-        title: 'Review',
-        type: 'autre',
+    const insertRecipe = (
+      ctx: MutationCtx,
+      scanId: Id<'scans'>,
+      status: 'review' | 'published',
+    ) =>
+      ctx.db.insert('recipes', {
+        scanId,
+        title: 'Recette',
+        type: 'autre' as const,
         ingredients: [],
         ingredientsInferred: false,
         steps: [],
-        searchText: 'review',
-        status: 'review',
+        searchText: 'recette',
+        status,
         beautifiedAccepted: false,
-        beautifyStatus: 'idle',
+        beautifyStatus: 'idle' as const,
       })
-      return {
-        reviewId: scanWithReviewId,
-        loweredId: await ctx.db.insert('scans', {
+
+    const { treatedId, mixedId, emptiedId, purgedId } = await t.run(
+      async (ctx) => {
+        const treated = await insertScan(ctx, 1)
+        await insertRecipe(ctx, treated, 'published')
+        const mixed = await insertScan(ctx, 2)
+        await insertRecipe(ctx, mixed, 'published')
+        await insertRecipe(ctx, mixed, 'review')
+        const emptied = await insertScan(ctx, 3)
+        const purged = await ctx.db.insert('scans', {
           imageStorageIds: [],
-          status: 'done',
-          attempts: 1,
-          purgeAfter: 9_999_999_999,
-          createdAt: 2,
-        }),
-        preservedId: await ctx.db.insert('scans', {
-          imageStorageIds: [],
-          status: 'done',
+          status: 'done' as const,
           attempts: 1,
           purgeAfter: 2_000_000,
-          createdAt: 3,
-        }),
-      }
-    })
+          purgedAt: 500_000,
+          createdAt: 4,
+        })
+        return {
+          treatedId: treated,
+          mixedId: mixed,
+          emptiedId: emptied,
+          purgedId: purged,
+        }
+      },
+    )
 
-    await t.run((ctx) => releaseIfTreated(ctx, reviewId))
-    await t.run((ctx) => releaseIfTreated(ctx, loweredId))
-    await t.run((ctx) => releaseIfTreated(ctx, preservedId))
-    expect(await t.run((ctx) => ctx.db.get('scans', reviewId))).toMatchObject({
-      purgeAfter: 9_999_999_999,
-    })
-    expect(await t.run((ctx) => ctx.db.get('scans', loweredId))).toMatchObject({
+    for (const scanId of [treatedId, mixedId, emptiedId, purgedId])
+      await t.run((ctx) => reconcileRetention(ctx, scanId))
+
+    const ceiling = (createdAt: number) =>
+      ceilingFor({ createdAt, now: 1_000_000 })
+    // Published and nothing left in review: the photo has done its job.
+    expect(await t.run((ctx) => ctx.db.get('scans', treatedId))).toMatchObject({
       purgeAfter: 1_000_000 + RETENTION_AFTER_TREATMENT_MS,
     })
-    expect(
-      await t.run((ctx) => ctx.db.get('scans', preservedId)),
-    ).toMatchObject({ purgeAfter: 2_000_000 })
+    // One recipe back in review pulls the deadline back up — the case a one-way Math.min missed.
+    expect(await t.run((ctx) => ctx.db.get('scans', mixedId))).toMatchObject({
+      purgeAfter: ceiling(2),
+    })
+    // No recipe at all is a failed scan, not a treated one.
+    expect(await t.run((ctx) => ctx.db.get('scans', emptiedId))).toMatchObject({
+      purgeAfter: ceiling(3),
+    })
+    expect(await t.run((ctx) => ctx.db.get('scans', purgedId))).toMatchObject({
+      purgeAfter: 2_000_000,
+    })
+  })
+
+  test('ignores a recipe that has no parent scan', async () => {
+    const t = setup()
+    await expect(
+      t.run((ctx) => reconcileRetention(ctx, undefined)),
+    ).resolves.toBeNull()
   })
 })
 

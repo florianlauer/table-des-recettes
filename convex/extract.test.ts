@@ -6,7 +6,7 @@ import schema from './schema'
 import {
   bytesToBase64,
   eligibility,
-  extractImage,
+  extractImages,
   interpretResponse,
   RESERVE_SCAN_BATCH,
   TICKET_SWEEP_BATCH,
@@ -20,6 +20,7 @@ import {
   MAX_ATTEMPTS,
   REQUEST_TIMEOUT_MS,
 } from '../src/lib/queueContract'
+import { MAX_IMAGES_PER_SCAN } from '../src/lib/scanLimits'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = {
@@ -48,13 +49,71 @@ describe('extraction transport', () => {
 
   test('refuses invalid bytes before fetch', async () => {
     const fetchImpl = vi.fn()
-    const result = await extractImage({
-      blob: new Blob(['bad']),
+    const result = await extractImages({
+      blobs: [new Blob(['bad'])],
       environment,
       fetchImpl,
     })
     expect(result).toMatchObject({ ok: false, kind: 'invalid_image' })
     expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  test('names the failing page and never pays for a partial batch', async () => {
+    const fetchImpl = vi.fn()
+    // A missing member and an unreadable one both have to fail before encoding: an answer covering
+    // three pages out of four would be billed and look like a success.
+    await expect(
+      extractImages({ blobs: [jpeg(), null], environment, fetchImpl }),
+    ).resolves.toMatchObject({
+      ok: false,
+      kind: 'invalid_image',
+      error: expect.stringContaining('image 2/2'),
+    })
+    await expect(
+      extractImages({
+        blobs: [jpeg(), new Blob(['bad'])],
+        environment,
+        fetchImpl,
+      }),
+    ).resolves.toMatchObject({
+      ok: false,
+      kind: 'invalid_image',
+      error: expect.stringContaining('image 2/2'),
+    })
+    await expect(
+      extractImages({ blobs: [], environment, fetchImpl }),
+    ).resolves.toMatchObject({ ok: false, kind: 'invalid_image' })
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  test('sends every page of the scan in one message, in order', async () => {
+    let sentBody = ''
+    const fetchImpl = vi.fn(async (_url: unknown, init?: RequestInit) => {
+      sentBody = String(init?.body)
+      return new Response(
+        JSON.stringify({
+          provider: 'test',
+          choices: [
+            {
+              finish_reason: 'stop',
+              message: { content: JSON.stringify({ recipes: [] }) },
+            },
+          ],
+        }),
+      )
+    }) as unknown as typeof fetch
+    await extractImages({ blobs: [jpeg(), jpeg()], environment, fetchImpl })
+
+    const sent = JSON.parse(sentBody) as {
+      messages: [{ content: { type: string }[] }]
+    }
+    // One message, both pages: a recipe that continues overleaf is only extractable if the model
+    // sees the two sides together.
+    expect(sent.messages[0].content.map((part) => part.type)).toEqual([
+      'text',
+      'image_url',
+      'image_url',
+    ])
   })
 
   test('validates and normalizes a successful answer', async () => {
@@ -94,7 +153,11 @@ describe('extraction transport', () => {
           { status: 200 },
         ),
     )
-    const result = await extractImage({ blob: jpeg(), environment, fetchImpl })
+    const result = await extractImages({
+      blobs: [jpeg()],
+      environment,
+      fetchImpl,
+    })
     expect(result).toMatchObject({
       ok: true,
       repairCount: 1,
@@ -116,7 +179,7 @@ describe('extraction transport', () => {
         ),
     )
     await expect(
-      extractImage({ blob: jpeg(), environment, fetchImpl }),
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
     ).resolves.toMatchObject({ ok: false, kind: 'invalid_json' })
   })
 
@@ -158,7 +221,7 @@ describe('extraction transport', () => {
       )
 
     await expect(
-      extractImage({ blob: jpeg(), environment, fetchImpl }),
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
     ).resolves.toMatchObject({ ok: false, kind: 'transport' })
     expect(fetchImpl).toHaveBeenCalledTimes(1)
   })
@@ -168,7 +231,7 @@ describe('extraction transport', () => {
       Promise.reject(new DOMException('aborted', 'AbortError')),
     )
     await expect(
-      extractImage({ blob: jpeg(), environment, fetchImpl }),
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
     ).resolves.toMatchObject({ ok: false, kind: 'timeout', costUsd: 0 })
   })
 })
@@ -260,10 +323,15 @@ describe('scan eligibility', () => {
     ...fields,
   })
 
-  test('yields the single image of a healthy scan', () => {
+  test('yields every image of a healthy scan, in order', () => {
     expect(eligibility(scan({}))).toEqual({
       eligible: true,
-      storageId: 'image',
+      storageIds: ['image'],
+    })
+    const pair = ['recto' as Id<'_storage'>, 'verso' as Id<'_storage'>]
+    expect(eligibility(scan({ imageStorageIds: pair }))).toEqual({
+      eligible: true,
+      storageIds: pair,
     })
   })
 
@@ -288,15 +356,19 @@ describe('scan eligibility', () => {
     })
   })
 
-  test('disqualifies a scan that does not hold exactly one image', () => {
-    for (const imageStorageIds of [
-      [],
-      ['a' as Id<'_storage'>, 'b' as Id<'_storage'>],
-    ])
-      expect(eligibility(scan({ imageStorageIds }))).toMatchObject({
-        eligible: false,
-        error: 'Le scan doit contenir exactement une image',
-      })
+  test('disqualifies an empty scan and one past the image ceiling', () => {
+    expect(eligibility(scan({ imageStorageIds: [] }))).toMatchObject({
+      eligible: false,
+      error: 'Le scan ne contient aucune image',
+    })
+    const tooMany = Array.from(
+      { length: MAX_IMAGES_PER_SCAN + 1 },
+      (_, index) => `image-${index}` as Id<'_storage'>,
+    )
+    expect(eligibility(scan({ imageStorageIds: tooMany }))).toMatchObject({
+      eligible: false,
+      error: `Le scan dépasse ${MAX_IMAGES_PER_SCAN} images`,
+    })
   })
 })
 
@@ -542,5 +614,57 @@ describe('extraction state machine', () => {
     expect(
       await t.run((ctx) => ctx.db.get('uploadTickets', expiredTicketId)),
     ).toBeNull()
+  })
+})
+
+describe('finalization consumes its attempt', () => {
+  test('refuses a second identical call instead of inserting the recipes twice', async () => {
+    const t = setup()
+    const attemptId = 'scan:1:1'
+    const scanId = await t.run(async (ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [await ctx.storage.store(jpeg())],
+        status: 'extracting',
+        attemptId,
+        startedAt: Date.now(),
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    const call = {
+      scanId,
+      attemptId,
+      model: 'model',
+      servedProvider: null,
+      latencyMs: 10,
+      costUsd: 0.01,
+      repairCount: 0,
+      recipes: [
+        {
+          title: 'Tarte',
+          type: 'dessert' as const,
+          ingredients: [],
+          ingredientsInferred: false,
+          steps: [],
+        },
+      ],
+    }
+
+    expect(await t.mutation(internal.extract.finalize, call)).toBe(true)
+    // The attempt id survives a naive guard; requiring `extracting` and clearing it is what makes
+    // the write happen once. A rescan is the path that would otherwise duplicate.
+    expect(await t.mutation(internal.extract.finalize, call)).toBe(false)
+
+    const recipes = await t.run((ctx) =>
+      ctx.db
+        .query('recipes')
+        .withIndex('by_scan', (q) => q.eq('scanId', scanId))
+        .collect(),
+    )
+    expect(recipes).toHaveLength(1)
+    expect(await t.run((ctx) => ctx.db.get('scans', scanId))).toMatchObject({
+      status: 'done',
+      totalCostUsd: 0.01,
+    })
   })
 })

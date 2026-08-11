@@ -1,12 +1,17 @@
 import { v } from 'convex/values'
 import { internal } from './_generated/api'
+import type { Doc, Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
+import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
+import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
-import { ceilingFor } from './retention'
+import { ceilingFor, reconcileRetention } from './retention'
 import type { PurgeResult } from './retention'
-import { attemptRecord, scanStatus } from './schema'
+import { attemptRecord, ingredient, recipeType, scanStatus } from './schema'
+import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
+import type { Refusal } from './lib/validators'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
 import {
   ATTEMPTS_SAMPLED,
@@ -14,6 +19,11 @@ import {
   summarizeAttempts,
 } from '../src/lib/attemptStats'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
+import {
+  MAX_IMAGES_PER_SCAN,
+  MAX_RECIPES_PER_SCAN,
+  MAX_SCAN_BYTES,
+} from '../src/lib/scanLimits'
 
 const createScanResult = v.union(
   v.object({ ok: v.literal(true), scanId: v.id('scans') }),
@@ -22,10 +32,9 @@ const createScanResult = v.union(
 
 export const SCANS_LISTED = 100
 export const QUEUE_COUNT_CAP = 1000
-// A page yields a handful of recipes — four on the worst page measured during the spike. The cap
-// is therefore far above any sound extraction, and reaching it means the extraction is malformed,
+// The extraction schema refuses beyond this, so a scan over the cap can only be a historical one —
 // which is exactly what `draftsTruncated` has to tell the operator rather than hide.
-export const DRAFTS_LISTED_PER_SCAN = 50
+export const DRAFTS_LISTED_PER_SCAN = MAX_RECIPES_PER_SCAN
 
 export const generateUploadUrl = mutation({
   args: { adminToken: v.string() },
@@ -46,8 +55,7 @@ export const generateUploadUrl = mutation({
     const limit = await rateLimiter.limit(ctx, 'scanCreation')
     if (!limit.ok) {
       return {
-        ok: false as const,
-        error: 'Trop de scans créés, réessaie plus tard',
+        ...refuse('Trop de scans créés, réessaie plus tard'),
         retryAfter: limit.retryAfter,
       }
     }
@@ -62,61 +70,131 @@ export const generateUploadUrl = mutation({
   },
 })
 
-export const createScan = mutation({
+/**
+ * Structural edits share one gate. `extracting` is the only status that truly freezes the image set
+ * — the model is reading it — and a published recipe is the only downstream thing that depends on
+ * it. `done` and `failed` are not reasons: adding the verso a model missed, then rescanning, is the
+ * whole point of grouping images.
+ */
+async function structuralGuard(
+  ctx: MutationCtx,
+  scan: Doc<'scans'>,
+): Promise<Refusal | null> {
+  if (scan.purgedAt !== undefined)
+    return refuse('Les photos de ce scan sont purgées')
+  if (scan.status === 'extracting')
+    return refuse('Extraction en cours sur ce scan')
+  const published = await ctx.db
+    .query('recipes')
+    .withIndex('by_scan', (q) => q.eq('scanId', scan._id))
+    .filter((q) => q.eq(q.field('status'), 'published'))
+    .take(1)
+  return published.length > 0
+    ? refuse('Une recette de ce scan est publiée : dépublie-la d’abord')
+    : null
+}
+
+async function totalBytes(
+  ctx: MutationCtx,
+  storageIds: readonly Id<'_storage'>[],
+): Promise<number> {
+  const sizes = await Promise.all(
+    storageIds.map(
+      async (id) => (await ctx.db.system.get('_storage', id))?.size ?? 0,
+    ),
+  )
+  return sizes.reduce((sum, size) => sum + size, 0)
+}
+
+/**
+ * Creates the scan when `scanId` is absent, appends to it when present. One mutation rather than
+ * two because the delicate part — deciding what a replayed ticket means — must exist in a single
+ * place; two copies of it would drift.
+ */
+export const attachImage = mutation({
   args: {
     adminToken: v.string(),
     ticketId: v.id('uploadTickets'),
     storageId: v.id('_storage'),
+    scanId: v.optional(v.id('scans')),
   },
   returns: createScanResult,
-  handler: async (ctx, { adminToken, ticketId, storageId }) => {
+  handler: async (ctx, { adminToken, ticketId, storageId, scanId }) => {
     requireAdmin(adminToken)
     const ticket = await ctx.db.get('uploadTickets', ticketId)
-    if (!ticket)
-      return { ok: false as const, error: 'Ticket de téléversement inconnu' }
+    if (!ticket) return refuse('Ticket de téléversement inconnu')
     if (ticket.consumedAt !== undefined) {
       if (ticket.storageId !== storageId)
-        return {
-          ok: false as const,
-          error: 'Ticket déjà utilisé avec une autre image',
-        }
-      if (ticket.outcome === 'ok' && ticket.scanId)
+        return refuse('Ticket déjà utilisé avec une autre image')
+      if (ticket.outcome === 'ok' && ticket.scanId) {
+        // A replay is only idempotent against the scan that consumed it; asking for another one is
+        // a different intent and must not silently return the first scan.
+        if (scanId && scanId !== ticket.scanId)
+          return refuse('Ce téléversement appartient déjà à un autre scan')
         return { ok: true as const, scanId: ticket.scanId }
-      return {
-        ok: false as const,
-        error: ticket.error ?? 'Téléversement refusé',
       }
+      return refuse(ticket.error ?? 'Téléversement refusé')
+    }
+
+    const consumedAt = Date.now()
+    // Every refusal below happens after the bytes are already in storage. Deleting the blob and
+    // recording a durable outcome is what keeps a refusal from leaving the 600 kB orphan of R4.
+    const reject = async (
+      error: string,
+      outcome: 'missing_storage' | 'too_large' | 'rejected',
+    ) => {
+      if (outcome !== 'missing_storage') await ctx.storage.delete(storageId)
+      await ctx.db.patch(ticketId, {
+        consumedAt,
+        storageId,
+        outcome,
+        error,
+      })
+      return refuse(error)
     }
 
     const metadata = await ctx.db.system.get('_storage', storageId)
-    const consumedAt = Date.now()
-    if (!metadata) {
-      const error = 'Image téléversée introuvable'
+    if (!metadata)
+      return reject('Image téléversée introuvable', 'missing_storage')
+    if (metadata.size > MAX_INPUT_BYTES)
+      return reject('Image trop volumineuse (25 Mo maximum)', 'too_large')
+
+    if (scanId === undefined) {
+      const created = await ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'pending',
+        attempts: 0,
+        purgeAfter: ceilingFor({ createdAt: consumedAt, now: consumedAt }),
+        createdAt: consumedAt,
+      })
       await ctx.db.patch(ticketId, {
         consumedAt,
         storageId,
-        outcome: 'missing_storage',
-        error,
+        scanId: created,
+        outcome: 'ok',
       })
-      return { ok: false as const, error }
-    }
-    if (metadata.size > MAX_INPUT_BYTES) {
-      const error = 'Image trop volumineuse (25 Mo maximum)'
-      await ctx.db.patch(ticketId, {
-        consumedAt,
-        storageId,
-        outcome: 'too_large',
-        error,
-      })
-      return { ok: false as const, error }
+      return { ok: true as const, scanId: created }
     }
 
-    const scanId = await ctx.db.insert('scans', {
-      imageStorageIds: [storageId],
-      status: 'pending',
-      attempts: 0,
-      purgeAfter: ceilingFor({ createdAt: consumedAt, now: consumedAt }),
-      createdAt: consumedAt,
+    const scan = await ctx.db.get('scans', scanId)
+    if (!scan) return reject('Scan inconnu', 'rejected')
+    const blocked = await structuralGuard(ctx, scan)
+    if (blocked) return reject(blocked.error, 'rejected')
+    if (scan.imageStorageIds.length >= MAX_IMAGES_PER_SCAN)
+      return reject(
+        `Un scan porte au plus ${MAX_IMAGES_PER_SCAN} images`,
+        'rejected',
+      )
+    const existingBytes = await totalBytes(ctx, scan.imageStorageIds)
+    if (existingBytes + metadata.size > MAX_SCAN_BYTES)
+      return reject(
+        'Les images de ce scan dépasseraient la taille totale autorisée',
+        'rejected',
+      )
+
+    await ctx.db.patch(scanId, {
+      imageStorageIds: [...scan.imageStorageIds, storageId],
+      ...markImagesChanged(scan, consumedAt),
     })
     await ctx.db.patch(ticketId, {
       consumedAt,
@@ -125,6 +203,91 @@ export const createScan = mutation({
       outcome: 'ok',
     })
     return { ok: true as const, scanId }
+  },
+})
+
+/**
+ * Only meaningful once an extraction has run: before that the recipes do not exist yet, so nothing
+ * can diverge from the sources.
+ */
+function markImagesChanged(
+  scan: Doc<'scans'>,
+  now: number,
+): { imagesChangedAt?: number } {
+  return scan.status === 'done' || scan.status === 'failed'
+    ? { imagesChangedAt: now }
+    : {}
+}
+
+export const detachImage = mutation({
+  args: {
+    adminToken: v.string(),
+    scanId: v.id('scans'),
+    storageId: v.id('_storage'),
+  },
+  returns: okOrError,
+  handler: async (ctx, { adminToken, scanId, storageId }) => {
+    requireAdmin(adminToken)
+    const scan = await ctx.db.get('scans', scanId)
+    if (!scan) return refuse('Scan inconnu')
+    const blocked = await structuralGuard(ctx, scan)
+    if (blocked) return blocked
+    if (!scan.imageStorageIds.includes(storageId))
+      return refuse('Cette image n’est pas dans ce scan')
+    // Replacing a blurry page means passing through zero, which is fine everywhere except in the
+    // queue's reach: reservation would grab the scan in between and fail it under the operator.
+    if (scan.status === 'pending' && scan.imageStorageIds.length === 1)
+      return refuse('Un scan en attente doit garder au moins une image')
+
+    const now = Date.now()
+    await ctx.db.patch(scanId, {
+      imageStorageIds: scan.imageStorageIds.filter((id) => id !== storageId),
+      ...markImagesChanged(scan, now),
+    })
+    await ctx.storage.delete(storageId)
+    return succeeded
+  },
+})
+
+/**
+ * Puts a treated scan back in the queue. It drops the drafts first: `finalize` inserts without
+ * deduplicating, so leaving them would produce two sets side by side.
+ */
+export const rescan = mutation({
+  args: { adminToken: v.string(), scanId: v.id('scans') },
+  returns: okOrError,
+  handler: async (ctx, { adminToken, scanId }) => {
+    requireAdmin(adminToken)
+    const scan = await ctx.db.get('scans', scanId)
+    if (!scan) return refuse('Scan inconnu')
+    const blocked = await structuralGuard(ctx, scan)
+    if (blocked) return blocked
+    const imageCount = scan.imageStorageIds.length
+    if (imageCount === 0 || imageCount > MAX_IMAGES_PER_SCAN)
+      return refuse(
+        `Un scan à relancer doit porter de 1 à ${MAX_IMAGES_PER_SCAN} images`,
+      )
+
+    const drafts = await ctx.db
+      .query('recipes')
+      .withIndex('by_scan', (q) => q.eq('scanId', scanId))
+      .collect()
+    for (const draft of drafts) await ctx.db.delete(draft._id)
+
+    // The ceiling guards a queue replaying on its own; a human who changed the input and pressed a
+    // button is a new problem, not a retry of the old one. `totalReservations` and `totalCostUsd`
+    // keep what this scan actually consumed.
+    await ctx.db.patch(scanId, {
+      status: 'pending',
+      attempts: 0,
+      error: undefined,
+      attemptId: undefined,
+      startedAt: undefined,
+      nextAttemptAt: undefined,
+      imagesChangedAt: undefined,
+    })
+    await reconcileRetention(ctx, scanId)
+    return succeeded
   },
 })
 
@@ -334,5 +497,84 @@ export const listScans = query({
         }
       }),
     )
+  },
+})
+
+/**
+ * Everything the correction screen reads, in one query. The recipes come back whole — it is the
+ * only screen that edits them — bounded exactly like `listScans`, so a historical scan over the cap
+ * reports a truncation instead of quietly shortening what the operator is about to publish.
+ */
+export const getScanForCorrection = query({
+  args: { adminToken: v.string(), scanId: v.id('scans') },
+  returns: v.union(
+    v.null(),
+    v.object({
+      id: v.id('scans'),
+      status: scanStatus,
+      error: v.union(v.string(), v.null()),
+      images: v.array(
+        v.object({
+          storageId: v.id('_storage'),
+          url: v.union(v.string(), v.null()),
+        }),
+      ),
+      purgedAt: v.union(v.number(), v.null()),
+      imagesChangedAt: v.union(v.number(), v.null()),
+      totalCostUsd: v.union(v.number(), v.null()),
+      createdAt: v.number(),
+      recipes: v.array(
+        v.object({
+          id: v.id('recipes'),
+          title: v.string(),
+          type: recipeType,
+          servings: v.union(v.number(), v.null()),
+          ingredients: v.array(ingredient),
+          ingredientsInferred: v.boolean(),
+          steps: v.array(v.string()),
+          status: literalUnion(['review', 'published'] as const),
+          slug: v.union(v.string(), v.null()),
+          revision: v.number(),
+        }),
+      ),
+      recipesTruncated: v.boolean(),
+    }),
+  ),
+  handler: async (ctx, { adminToken, scanId }) => {
+    requireAdmin(adminToken)
+    const scan = await ctx.db.get('scans', scanId)
+    if (!scan) return null
+    const recipes = await ctx.db
+      .query('recipes')
+      .withIndex('by_scan', (q) => q.eq('scanId', scanId))
+      .take(DRAFTS_LISTED_PER_SCAN + 1)
+    return {
+      id: scan._id,
+      status: scan.status,
+      error: scan.error ?? null,
+      images: await Promise.all(
+        scan.imageStorageIds.map(async (storageId) => ({
+          storageId,
+          url: await ctx.storage.getUrl(storageId),
+        })),
+      ),
+      purgedAt: scan.purgedAt ?? null,
+      imagesChangedAt: scan.imagesChangedAt ?? null,
+      totalCostUsd: scan.totalCostUsd ?? null,
+      createdAt: scan.createdAt,
+      recipes: recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map((recipe) => ({
+        id: recipe._id,
+        title: recipe.title,
+        type: recipe.type,
+        servings: recipe.servings ?? null,
+        ingredients: recipe.ingredients,
+        ingredientsInferred: recipe.ingredientsInferred,
+        steps: recipe.steps,
+        status: recipe.status,
+        slug: recipe.slug ?? null,
+        revision: revisionOf(recipe),
+      })),
+      recipesTruncated: recipes.length > DRAFTS_LISTED_PER_SCAN,
+    }
   },
 })

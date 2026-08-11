@@ -47,6 +47,15 @@ export default defineSchema({
     purgeAfter: v.optional(v.number()),
     purgedAt: v.optional(v.number()),
     nextAttemptAt: v.optional(v.number()),
+    // Set when the image set moves after an extraction, cleared by a rescan or by an explicit
+    // acknowledgement. It blocks publication: recipes read from replaced sources must not reach the
+    // storefront unreviewed.
+    imagesChangedAt: v.optional(v.number()),
+    // `attempts` is reset by a rescan, so it cannot answer "what did this scan consume". These two
+    // never reset. Reservations are not billed calls — a missing blob fails before the request —
+    // which is why the money question is answered by the accumulated cost, not by the count.
+    totalReservations: v.optional(v.number()),
+    totalCostUsd: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index('by_status', ['status'])
@@ -76,6 +85,9 @@ export default defineSchema({
     ] as const),
     beautifyAttemptId: v.optional(v.string()),
     beautifyError: v.optional(v.string()),
+    // Compare-and-set token for the correction form. An integer, not a timestamp: two writes in the
+    // same millisecond would mint the same token and let the stale one through.
+    revision: v.optional(v.number()),
   })
     .index('by_status_type', ['status', 'type'])
     .index('by_slug', ['slug'])
@@ -101,8 +113,10 @@ export default defineSchema({
     consumedAt: v.optional(v.number()),
     storageId: v.optional(v.id('_storage')),
     scanId: v.optional(v.id('scans')),
+    // `rejected` is deliberately generic: the guards that can refuse an upload keep growing, and the
+    // precise reason already has a home in `error`.
     outcome: v.optional(
-      literalUnion(['ok', 'missing_storage', 'too_large'] as const),
+      literalUnion(['ok', 'missing_storage', 'too_large', 'rejected'] as const),
     ),
     error: v.optional(v.string()),
   })
