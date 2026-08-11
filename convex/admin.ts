@@ -8,7 +8,7 @@ import { ceilingFor } from './retention'
 import type { PurgeResult } from './retention'
 import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
-import { summarizeAttempts } from '../src/lib/attemptStats'
+import { attemptSummary, summarizeAttempts } from '../src/lib/attemptStats'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const createScanResult = v.union(
@@ -263,22 +263,7 @@ export const ATTEMPTS_SAMPLED = 200
 
 export const attemptStats = query({
   args: { adminToken: v.string() },
-  returns: v.array(
-    v.object({
-      model: v.string(),
-      promptVersion: v.string(),
-      schemaVersion: v.string(),
-      attempts: v.number(),
-      failures: v.number(),
-      failureRate: v.number(),
-      failureKinds: v.array(v.object({ kind: v.string(), count: v.number() })),
-      repairs: v.number(),
-      repairedAttempts: v.number(),
-      totalCostUsd: v.number(),
-      averageCostUsd: v.number(),
-      averageLatencyMs: v.number(),
-    }),
-  ),
+  returns: v.array(attemptSummary),
   handler: async (ctx, { adminToken }) => {
     requireAdmin(adminToken)
     const attempts = await ctx.db

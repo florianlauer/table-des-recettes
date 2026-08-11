@@ -5,6 +5,7 @@ import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
+import { groupKey } from '../lib/attemptStats'
 import { compressImage } from '../lib/compress'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
 import {
@@ -226,10 +227,7 @@ function AdminPage() {
           <p>Aucune tentative journalisée.</p>
         )}
         {attemptStats.data?.map((group) => (
-          <article
-            key={`${group.model} ${group.promptVersion} ${group.schemaVersion}`}
-            className="admin-page__stat"
-          >
+          <article key={groupKey(group)} className="admin-page__stat">
             <h3>
               {group.model} · prompt {group.promptVersion} · schéma{' '}
               {group.schemaVersion}
