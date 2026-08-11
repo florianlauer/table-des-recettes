@@ -2,7 +2,6 @@ import { describe, expect, test } from 'vitest'
 import {
   contentDrift,
   inferredListViolations,
-  normalizeTypography,
   sectionLabelLines,
 } from './compare-v4.js'
 
@@ -89,44 +88,40 @@ describe('content drift against the hand transcription', () => {
         ['sel, poivre et noix muscade'],
         ['sel', 'poivre', 'noix muscade'],
       ),
-    ).toEqual({ missing: [], extra: [] })
+    ).toEqual({ absent: [], deduplicated: [], extra: [] })
   })
 
   test('names what a duration adds to the list', () => {
     // Asserted on the surplus rather than on the exact stems: `stemToken` shaves the trailing x of
     // `doux`, which is the stemmer's business and not this comparison's.
     const drift = contentDrift(['4 œufs'], ['4 œufs', '1 mn sur feu doux'])
-    expect(drift.missing).toEqual([])
+    expect(drift.absent).toEqual([])
     expect(drift.extra).toContain('mn')
     expect(drift.extra).toContain('feu')
   })
 
   test('names what the list lost', () => {
     expect(contentDrift(['4 œufs', '25 cl de lait'], ['4 œufs'])).toEqual({
-      missing: ['25', 'cl', 'lait'],
+      absent: ['25', 'cl', 'lait'],
+      deduplicated: [],
+      extra: [],
+    })
+  })
+
+  test('separates a dropped repeat from a dropped ingredient', () => {
+    expect(contentDrift(['sel', 'sel'], ['sel'])).toEqual({
+      absent: [],
+      deduplicated: ['sel'],
       extra: [],
     })
   })
 
   test('counts a repeated word as many times as it appears', () => {
     expect(contentDrift(['sel'], ['sel', 'sel'])).toEqual({
-      missing: [],
+      absent: [],
+      deduplicated: [],
       extra: ['sel'],
     })
-  })
-})
-
-describe('typographic normalization', () => {
-  test('reads both apostrophes as the same ingredient', () => {
-    expect(normalizeTypography('3 gousses d’ail')).toBe(
-      normalizeTypography("3 gousses d'ail"),
-    )
-  })
-
-  test('leaves a different ingredient different', () => {
-    expect(normalizeTypography("3 gousses d'ail")).not.toBe(
-      normalizeTypography("4 gousses d'ail"),
-    )
   })
 })
 

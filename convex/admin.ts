@@ -8,7 +8,11 @@ import { ceilingFor } from './retention'
 import type { PurgeResult } from './retention'
 import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
-import { attemptSummary, summarizeAttempts } from '../src/lib/attemptStats'
+import {
+  ATTEMPTS_SAMPLED,
+  attemptSummary,
+  summarizeAttempts,
+} from '../src/lib/attemptStats'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const createScanResult = v.union(
@@ -256,10 +260,6 @@ export const purgeScanImages = mutation({
     return ctx.runMutation(internal.retention.purgeOneScan, { scanId })
   },
 })
-
-// Enough attempts to read a trend over a few dozen recipes — the horizon the plan sets for judging
-// whether the cheap model holds — and few enough to stay one indexed read.
-export const ATTEMPTS_SAMPLED = 200
 
 export const attemptStats = query({
   args: { adminToken: v.string() },

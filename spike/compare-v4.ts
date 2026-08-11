@@ -1,14 +1,14 @@
-import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { extractionSchemaV2 } from '../src/lib/recipe-schema.js'
 import { normalizeText, stemToken } from '../src/lib/normalize.js'
 import {
+  diffLines,
   INFERRED_PAGES,
+  normalizeProse,
   PAGE_E_EXPECTED_INGREDIENTS,
-  REPLAY_PAGES,
-} from './compare-v3.js'
-
-export { INFERRED_PAGES, REPLAY_PAGES }
+  normalizeTypography,
+  runComparator,
+} from './compare-runs.js'
+import type { Comparison } from './compare-runs.js'
 
 /**
  * v4 changes exactly one thing against v3: what a reconstituted ingredient list may not contain.
@@ -23,7 +23,7 @@ const TEMPERATURE = /\d\s*°|thermostat|\bth\.?\s*\d/i
 
 // A part of something else. `jus` and `zeste` are here for the same reason as `jaune`: a shopping
 // list that carries both the fruit and its juice buys the fruit twice.
-const PART_WORDS = [
+const PART_WORDS = new Set([
   'jaune',
   'blanc',
   'zeste',
@@ -32,8 +32,8 @@ const PART_WORDS = [
   'peau',
   'moitie',
   'coque',
-]
-const ARTICLES = [
+])
+const ARTICLES = new Set([
   'd',
   'de',
   'du',
@@ -45,10 +45,15 @@ const ARTICLES = [
   'a',
   'au',
   'aux',
-]
+])
 
 function tokens(line: string): string[] {
   return normalizeText(line).split(' ').filter(Boolean).map(stemToken)
+}
+
+/** What a line names, once its grammar and its quantity are dropped. */
+function nouns(words: readonly string[]): string[] {
+  return words.filter((word) => !ARTICLES.has(word) && !/^\d+$/.test(word))
 }
 
 /**
@@ -57,20 +62,18 @@ function tokens(line: string): string[] {
  * citron` from reading as a fraction of the candied slices.
  */
 function nounsOutsideParentheticals(line: string): string[] {
-  return tokens(line.replace(/\([^)]*\)/g, ' ')).filter(
-    (word) => !ARTICLES.includes(word) && !/^\d+$/.test(word),
-  )
+  return nouns(tokens(line.replace(/\([^)]*\)/g, ' ')))
 }
 
 /** The part-word this line hangs on, and the nouns it hangs it on — or null if it names a whole. */
 function partReference(line: string): { part: string; nouns: string[] } | null {
   const words = tokens(line)
-  const index = words.findIndex((word) => PART_WORDS.includes(word))
+  const index = words.findIndex((word) => PART_WORDS.has(word))
   if (index === -1) return null
-  const nouns = words
-    .slice(index + 1)
-    .filter((word) => !ARTICLES.includes(word) && !/^\d+$/.test(word))
-  return nouns.length > 0 ? { part: words[index] ?? '', nouns } : null
+  const hangsOn = nouns(words.slice(index + 1))
+  return hangsOn.length > 0
+    ? { part: words[index] ?? '', nouns: hangsOn }
+    : null
 }
 
 /**
@@ -119,22 +122,29 @@ export function contentTokens(lines: readonly string[]): string[] {
     .sort()
 }
 
-/** Content the reference carries and the candidate lost, and content it invented. */
+/**
+ * What the candidate lost against the reference, and what it invented. A loss is split in two,
+ * because they mean opposite things: the hand transcription carries `sel` twice, because the page
+ * seasons twice, and v4's own rule forbids listing the same ingredient twice — so dropping the
+ * repeat is the rule working and the shopping list still says salt. Dropping the last copy is not.
+ */
 export function contentDrift(
   reference: readonly string[],
   candidate: readonly string[],
-): { missing: string[]; extra: string[] } {
-  const remaining = [...contentTokens(candidate)]
-  const missing: string[] = []
+): { absent: string[]; deduplicated: string[]; extra: string[] } {
+  const candidateTokens = contentTokens(candidate)
+  const present = new Set(candidateTokens)
+  const remaining = [...candidateTokens]
+  const absent: string[] = []
+  const deduplicated: string[] = []
   for (const token of contentTokens(reference)) {
     const found = remaining.indexOf(token)
-    if (found === -1) missing.push(token)
-    else remaining.splice(found, 1)
+    if (found !== -1) remaining.splice(found, 1)
+    else if (present.has(token)) deduplicated.push(token)
+    else absent.push(token)
   }
-  return { missing, extra: remaining }
+  return { absent, deduplicated, extra: remaining }
 }
-
-export type V4Comparison = { fatal: string[]; advisory: string[] }
 
 export function compareV4Extraction({
   baseline,
@@ -144,7 +154,7 @@ export function compareV4Extraction({
   baseline: unknown
   candidate: unknown
   page: string
-}): V4Comparison {
+}): Comparison {
   const before = extractionSchemaV2.parse(baseline)
   const after = extractionSchemaV2.parse(candidate)
   const fatal: string[] = []
@@ -205,18 +215,12 @@ export function compareV4Extraction({
   // Page E is the only page with a hand transcription, and it is what R1 targets, so v4 owes it a
   // match on content rather than a remark.
   if (page === 'e') {
-    const lines =
-      after.recipes[0]?.ingredients.map((ingredient) => ingredient.raw) ?? []
-    const drift = contentDrift(PAGE_E_EXPECTED_INGREDIENTS, lines)
-    // The hand transcription carries `sel` twice, because the page seasons twice. v4's own rule
-    // forbids listing the same ingredient twice, so losing the repeat is the rule working, not an
-    // ingredient lost — the shopping list still says salt. Losing the last copy is not.
-    const present = new Set(contentTokens(lines))
-    const absent = drift.missing.filter((token) => !present.has(token))
-    const deduplicated = drift.missing.filter((token) => present.has(token))
+    const { absent, deduplicated, extra } = contentDrift(
+      PAGE_E_EXPECTED_INGREDIENTS,
+      after.recipes[0]?.ingredients.map((ingredient) => ingredient.raw) ?? [],
+    )
     if (absent.length) fatal.push(`page E lost: ${absent.join(', ')}`)
-    if (drift.extra.length)
-      fatal.push(`page E invented: ${drift.extra.join(', ')}`)
+    if (extra.length) fatal.push(`page E invented: ${extra.join(', ')}`)
     if (deduplicated.length)
       advisory.push(
         `page E lists once what the transcription lists twice: ${deduplicated.join(', ')}`,
@@ -225,98 +229,15 @@ export function compareV4Extraction({
   return { fatal, advisory }
 }
 
-/**
- * Which glyph the model picks for an apostrophe or a quote is transcription style, not content:
- * `d'huile` and `d’huile` name the same oil. Left unnormalized it fails a whole page on typography.
- */
-export function normalizeTypography(text: string): string {
-  return (
-    text
-      .replace(/[’‘‚]/g, "'")
-      .replace(/[“”„]/g, '"')
-      // No-break and narrow no-break space, written escaped: French typography sets them before a
-      // colon or a unit, and the \s+ below does not match them in every engine.
-      .replace(/[\u00a0\u202f]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-  )
-}
-
-/** Joined prose, insensitive to step boundaries and to the space French sets before `!` and `?`. */
-function normalizeProse(steps: readonly string[]): string {
-  return normalizeTypography(steps.join(' ')).replace(/ ([!?;:])/g, '$1')
-}
-
 /** A footnote marker points at a credit line, which the prompt is told to ignore. */
 function withoutFootnoteMarker(title: string): string {
   return title.replace(/[*†‡¹²³]+\s*$/, '').trim()
 }
 
-function diffLines(
-  expected: readonly string[],
-  actual: readonly string[],
-  label: string,
-): string[] {
-  const issues: string[] = []
-  for (let index = 0; index < Math.max(expected.length, actual.length); index++)
-    if (
-      normalizeTypography(expected[index] ?? '') !==
-      normalizeTypography(actual[index] ?? '')
-    )
-      issues.push(
-        `${label}[${index}] v3 "${expected[index] ?? '—'}" ≠ v4 "${actual[index] ?? '—'}"`,
-      )
-  return issues
-}
-
-type ArchivedRun = { status?: string; parsed?: unknown }
-
-async function readRun(path: string): Promise<ArchivedRun> {
-  return JSON.parse(await readFile(path, 'utf8')) as ArchivedRun
-}
-
-async function main(): Promise<void> {
-  const [baselineDirectory, candidateDirectory] = process.argv.slice(2)
-  if (!baselineDirectory || !candidateDirectory)
-    throw new Error('Usage : tsx spike/compare-v4.ts <dossier v3> <dossier v4>')
-  let failures = 0
-  for (const page of REPLAY_PAGES) {
-    const [baseline1, baseline2, candidate1, candidate2] = await Promise.all([
-      readRun(resolve(baselineDirectory, `${page}-1.json`)),
-      readRun(resolve(baselineDirectory, `${page}-2.json`)),
-      readRun(resolve(candidateDirectory, `${page}-1.json`)),
-      readRun(resolve(candidateDirectory, `${page}-2.json`)),
-    ])
-    const label = page.toUpperCase()
-    if (candidate1.status !== 'success' || candidate2.status !== 'success') {
-      console.log(
-        `${label} ÉCHEC transport : ${candidate1.status} / ${candidate2.status}`,
-      )
-      failures += 1
-      continue
-    }
-    const stable =
-      JSON.stringify(candidate1.parsed) === JSON.stringify(candidate2.parsed)
-    // Both baseline passes are tried, so an instability v3 already had is not charged to v4.
-    const readings = [baseline1, baseline2].map((baseline) =>
-      compareV4Extraction({
-        baseline: baseline.parsed,
-        candidate: candidate1.parsed,
-        page,
-      }),
-    )
-    const best = readings.reduce((left, right) =>
-      left.fatal.length <= right.fatal.length ? left : right,
-    )
-    if (best.fatal.length) failures += 1
-    console.log(
-      `${label} ${stable ? 'stable' : 'instable entre les deux passes'} · ${best.fatal.length ? `${best.fatal.length} divergence(s) fatale(s)` : 'conforme'}${best.advisory.length ? ` · ${best.advisory.length} à l’œil` : ''}`,
-    )
-    for (const issue of best.fatal) console.log(`   ✗ ${issue}`)
-    for (const issue of best.advisory) console.log(`   ~ ${issue}`)
-  }
-  if (failures) throw new Error(`${failures} page(s) en échec.`)
-  console.log('Comparaison conforme.')
-}
-
-if (process.argv[1]?.endsWith('compare-v4.ts')) void main()
+if (process.argv[1]?.endsWith('compare-v4.ts'))
+  void runComparator({
+    usage: 'Usage : tsx spike/compare-v4.ts <dossier v3> <dossier v4>',
+    compare: compareV4Extraction,
+    // v3's own two-pass instability is not v4's to answer for: what v4 is judged on is the rules.
+    fails: ({ comparison }) => comparison.fatal.length > 0,
+  })

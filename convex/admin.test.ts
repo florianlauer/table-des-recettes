@@ -1,14 +1,11 @@
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
-import {
-  ATTEMPTS_SAMPLED,
-  DRAFTS_LISTED_PER_SCAN,
-  QUEUE_COUNT_CAP,
-} from './admin'
+import { DRAFTS_LISTED_PER_SCAN, QUEUE_COUNT_CAP } from './admin'
 import { api, internal } from './_generated/api'
 import { rateLimiter } from './rateLimits'
 import schema from './schema'
+import { ATTEMPTS_SAMPLED } from '../src/lib/attemptStats'
 import { LEASE_MS, MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const modules = import.meta.glob('./**/*.ts')

@@ -6,6 +6,10 @@
 import { v } from 'convex/values'
 import type { Infer } from 'convex/values'
 
+// Enough attempts to read a trend over a few dozen recipes — the horizon the plan sets for judging
+// whether the cheap model holds — and few enough to stay one indexed read.
+export const ATTEMPTS_SAMPLED = 200
+
 /** The subset of a journal row this reading needs — the rest is diagnosis, not trend. */
 export type JournalledAttempt = {
   model: string
