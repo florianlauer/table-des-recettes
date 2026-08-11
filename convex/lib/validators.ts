@@ -17,3 +17,20 @@ export function literalUnion<const T extends LiteralTuple>(values: T) {
   ]
   return v.union(...members)
 }
+
+/**
+ * Admin mutations answer with a refusal rather than throwing: the operator has to read *why* a scan
+ * was refused, and an exception only reaches them as a stack trace. Declared once here so the two
+ * mutation modules cannot drift into two shapes.
+ */
+export const okOrError = v.union(
+  v.object({ ok: v.literal(true) }),
+  v.object({ ok: v.literal(false), error: v.string() }),
+)
+
+export const succeeded = { ok: true as const }
+
+// A verb, and not `failed`: `failed` is also a scan status, and the two would shadow each other.
+export const refuse = (error: string) => ({ ok: false as const, error })
+
+export type Refusal = ReturnType<typeof refuse>

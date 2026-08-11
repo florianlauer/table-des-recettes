@@ -5,29 +5,18 @@ import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
-import { RECIPE_TYPES } from '../lib/recipeTypes'
-import type { RecipeType } from '../lib/recipeTypes'
 import { MAX_IMAGES_PER_SCAN } from '../lib/scanLimits'
 import { useAttachImage } from '../lib/useAttachImage'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
+import { RecipeForm } from './-RecipeForm'
+import type { ActionOutcome, Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
   component: ScanCorrectionPage,
 })
 
-type ScanView = NonNullable<
-  (typeof api.admin.getScanForCorrection)['_returnType']
->
-type RecipeView = ScanView['recipes'][number]
-
-const TYPE_LABELS: Record<RecipeType, string> = {
-  entree: 'Entrée',
-  plat: 'Plat',
-  dessert: 'Dessert',
-  apero: 'Apéro',
-  petitDej: 'Petit déjeuner',
-  autre: 'Autre',
-}
+/** A draft, and the revision it answers. */
+type Edit = { revision: number; draft: Draft }
 
 function ScanCorrectionPage() {
   const { id } = Route.useParams()
@@ -35,9 +24,10 @@ function ScanCorrectionPage() {
   const [adminToken, setAdminToken] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
-  // A scan holds a handful of recipes; one dirty flag per recipe is what publication reads to
-  // refuse publishing a value the operator has already replaced on screen.
-  const [dirty, setDirty] = useState<Record<string, boolean>>({})
+  // The only editing state on the page. An entry stops counting the moment the server moves the
+  // recipe underneath it, so publication reads liveness rather than a flag someone has to maintain,
+  // and a deleted recipe takes its entry out of the reckoning by leaving `data.recipes`.
+  const [edits, setEdits] = useState<Record<string, Edit>>({})
 
   const attachImage = useAttachImage(adminToken)
   const detachImage = useMutation(api.admin.detachImage)
@@ -58,11 +48,11 @@ function ScanCorrectionPage() {
     retry: false,
   })
 
-  async function run(action: () => Promise<{ ok: boolean; error?: string }>) {
+  async function run(action: () => Promise<ActionOutcome>) {
     setBusy(true)
     try {
       const result = await action()
-      setMessage(result.ok ? 'Fait.' : (result.error ?? 'Refusé.'))
+      setMessage(result.ok ? (result.message ?? 'Fait.') : result.error)
     } catch (error) {
       setMessage(error instanceof Error ? error.message : String(error))
     } finally {
@@ -71,9 +61,14 @@ function ScanCorrectionPage() {
   }
 
   const data = scan.data
-  const purged = data?.purgedAt !== null && data?.purgedAt !== undefined
+  const purged = data != null && data.purgedAt !== null
   const imagesChanged = Boolean(data?.imagesChangedAt)
-  const anyDirty = Object.values(dirty).some(Boolean)
+  const liveEdit = (recipe: RecipeView): Draft | null => {
+    const edit = edits[recipe.id]
+    return edit?.revision === recipe.revision ? edit.draft : null
+  }
+  const anyDirty =
+    data?.recipes.some((recipe) => liveEdit(recipe) !== null) ?? false
 
   return (
     <main className="page admin-page">
@@ -200,18 +195,7 @@ function ScanCorrectionPage() {
                 void run(async () => {
                   const result = await publishScan({ adminToken, scanId })
                   if (!result.ok) return result
-                  setMessage(
-                    `${result.published} publiée(s).` +
-                      (result.refused.length > 0
-                        ? ` Refusées : ${result.refused
-                            .map(
-                              (row) =>
-                                `${row.title || 'sans titre'} (${row.error})`,
-                            )
-                            .join(' · ')}`
-                        : ''),
-                  )
-                  return { ok: true }
+                  return { ok: true, message: publicationReport(result) }
                 })
               }
             >
@@ -237,11 +221,15 @@ function ScanCorrectionPage() {
               <RecipeForm
                 key={recipe.id}
                 recipe={recipe}
+                edited={liveEdit(recipe)}
                 adminToken={adminToken}
                 busy={busy}
                 publishBlocked={imagesChanged}
-                onDirty={(isDirty) =>
-                  setDirty((current) => ({ ...current, [recipe.id]: isDirty }))
+                onChange={(draft) =>
+                  setEdits((current) => ({
+                    ...current,
+                    [recipe.id]: { revision: recipe.revision, draft },
+                  }))
                 }
                 onRun={run}
               />
@@ -253,268 +241,18 @@ function ScanCorrectionPage() {
   )
 }
 
-type Draft = {
-  title: string
-  type: RecipeType
-  servings: string
-  ingredients: RecipeView['ingredients']
-  ingredientsInferred: boolean
-  steps: string
-}
-
-function toDraft(recipe: RecipeView): Draft {
-  return {
-    title: recipe.title,
-    type: recipe.type,
-    servings: recipe.servings === null ? '' : String(recipe.servings),
-    ingredients: recipe.ingredients,
-    ingredientsInferred: recipe.ingredientsInferred,
-    steps: recipe.steps.join('\n'),
-  }
-}
-
-function RecipeForm({
-  recipe,
-  adminToken,
-  busy,
-  publishBlocked,
-  onDirty,
-  onRun,
+/** Names the drafts that stayed behind: a count alone would not tell the operator what to fix. */
+export function publicationReport({
+  published,
+  refused,
 }: {
-  recipe: RecipeView
-  adminToken: string
-  busy: boolean
-  publishBlocked: boolean
-  onDirty: (dirty: boolean) => void
-  onRun: (
-    action: () => Promise<{ ok: boolean; error?: string }>,
-  ) => Promise<void>
-}) {
-  const saveRecipe = useMutation(api.recipeAdmin.saveRecipe)
-  const deleteRecipe = useMutation(api.recipeAdmin.deleteRecipe)
-  const publishRecipe = useMutation(api.recipeAdmin.publishRecipe)
-  const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
-
-  const [draft, setDraft] = useState<Draft>(() => toDraft(recipe))
-  const [dirty, setDirty] = useState(false)
-
-  // Keyed on the revision alone: every write bumps it, so this is also how a publication pulls the
-  // form back in line with the server. Depending on the whole object would reset the form under the
-  // operator's fingers on any unrelated re-render.
-  const [seenRevision, setSeenRevision] = useState(recipe.revision)
-  if (seenRevision !== recipe.revision) {
-    setSeenRevision(recipe.revision)
-    setDraft(toDraft(recipe))
-    setDirty(false)
-    onDirty(false)
-  }
-
-  function edit(patch: Partial<Draft>) {
-    setDraft((current) => ({ ...current, ...patch }))
-    setDirty(true)
-    onDirty(true)
-  }
-
-  function editIngredient(index: number, patch: Record<string, unknown>) {
-    edit({
-      ingredients: draft.ingredients.map((line, position) =>
-        position === index ? { ...line, ...patch } : line,
-      ),
-    })
-  }
-
-  return (
-    <article className="scan-page__recipe">
-      <h3>{recipe.title || 'Sans titre'}</h3>
-      <p>
-        {recipe.status === 'published' ? 'Publiée' : 'Brouillon'}
-        {recipe.slug && ` · /recette/${recipe.slug}`}
-        {recipe.ingredientsInferred && ' · ingrédients déduits'}
-      </p>
-
-      <label className="admin-page__field">
-        Titre
-        <input
-          value={draft.title}
-          onChange={(event) => edit({ title: event.target.value })}
-        />
-      </label>
-
-      <label className="admin-page__field">
-        Type
-        <select
-          value={draft.type}
-          onChange={(event) => edit({ type: event.target.value as RecipeType })}
-        >
-          {RECIPE_TYPES.map((type) => (
-            <option key={type} value={type}>
-              {TYPE_LABELS[type]}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="admin-page__field">
-        Portions
-        <input
-          inputMode="numeric"
-          value={draft.servings}
-          onChange={(event) => edit({ servings: event.target.value })}
-        />
-      </label>
-
-      <fieldset className="scan-page__ingredients">
-        <legend>Ingrédients</legend>
-        {/* Four fields, not one: the servings selector reads `quantity` and rewrites the number
-            inside `raw`, so a quantity left stale behind an edited line shows a wrong figure on the
-            storefront without any error. */}
-        {draft.ingredients.map((line, index) => (
-          <div key={index} className="scan-page__ingredient">
-            <input
-              aria-label={`Ligne ${index + 1}`}
-              value={line.raw}
-              onChange={(event) =>
-                editIngredient(index, { raw: event.target.value })
-              }
-            />
-            <input
-              aria-label={`Quantité ${index + 1}`}
-              inputMode="decimal"
-              value={line.quantity ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  quantity:
-                    event.target.value === ''
-                      ? undefined
-                      : Number(event.target.value),
-                })
-              }
-            />
-            <input
-              aria-label={`Unité ${index + 1}`}
-              value={line.unit ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  unit: event.target.value || undefined,
-                })
-              }
-            />
-            <input
-              aria-label={`Libellé ${index + 1}`}
-              value={line.label ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  label: event.target.value || undefined,
-                })
-              }
-            />
-            <button
-              type="button"
-              onClick={() =>
-                edit({
-                  ingredients: draft.ingredients.filter(
-                    (_, position) => position !== index,
-                  ),
-                })
-              }
-            >
-              Retirer
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() =>
-            edit({ ingredients: [...draft.ingredients, { raw: '' }] })
-          }
-        >
-          Ajouter une ligne
-        </button>
-      </fieldset>
-
-      <label className="admin-page__field">
-        Étapes (une par ligne)
-        <textarea
-          rows={8}
-          value={draft.steps}
-          onChange={(event) => edit({ steps: event.target.value })}
-        />
-      </label>
-
-      <button
-        type="button"
-        disabled={busy || !dirty}
-        onClick={() =>
-          void onRun(() =>
-            saveRecipe({
-              adminToken,
-              recipeId: recipe.id,
-              expectedRevision: recipe.revision,
-              title: draft.title,
-              type: draft.type,
-              servings:
-                draft.servings.trim() === ''
-                  ? undefined
-                  : Number(draft.servings),
-              ingredients: draft.ingredients,
-              ingredientsInferred: draft.ingredientsInferred,
-              steps: draft.steps
-                .split('\n')
-                .map((step) => step.trim())
-                .filter(Boolean),
-            }),
-          )
-        }
-      >
-        Enregistrer
-      </button>
-
-      {recipe.status === 'review' ? (
-        <button
-          type="button"
-          // Publishing a form the operator has already edited would put the stale server value
-          // online — a wrong page, not a lost keystroke.
-          disabled={busy || dirty || publishBlocked}
-          onClick={() =>
-            void onRun(() => publishRecipe({ adminToken, recipeId: recipe.id }))
-          }
-        >
-          Publier
-        </button>
-      ) : (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() =>
-            void onRun(() =>
-              unpublishRecipe({ adminToken, recipeId: recipe.id }),
-            )
-          }
-        >
-          Dépublier
-        </button>
-      )}
-
-      <button
-        type="button"
-        disabled={busy || recipe.status === 'published'}
-        title={
-          recipe.status === 'published'
-            ? 'Dépublie la recette avant de la supprimer'
-            : undefined
-        }
-        onClick={() => {
-          if (
-            !window.confirm(
-              `Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`,
-            )
-          )
-            return
-          void onRun(() => deleteRecipe({ adminToken, recipeId: recipe.id }))
-        }}
-      >
-        Supprimer
-      </button>
-    </article>
-  )
+  published: number
+  refused: readonly { title: string; error: string }[]
+}): string {
+  const head = `${published} publiée(s).`
+  if (refused.length === 0) return head
+  const detail = refused
+    .map((row) => `${row.title || 'sans titre'} (${row.error})`)
+    .join(' · ')
+  return `${head} Refusées : ${detail}`
 }

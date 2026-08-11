@@ -5,11 +5,13 @@ import { mutation, query } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
+import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
 import { ceilingFor, reconcileRetention } from './retention'
 import type { PurgeResult } from './retention'
 import { attemptRecord, ingredient, recipeType, scanStatus } from './schema'
-import { literalUnion } from './lib/validators'
+import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
+import type { Refusal } from './lib/validators'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 import {
@@ -20,11 +22,6 @@ import {
 
 const createScanResult = v.union(
   v.object({ ok: v.literal(true), scanId: v.id('scans') }),
-  v.object({ ok: v.literal(false), error: v.string() }),
-)
-
-const okOrError = v.union(
-  v.object({ ok: v.literal(true) }),
   v.object({ ok: v.literal(false), error: v.string() }),
 )
 
@@ -53,8 +50,7 @@ export const generateUploadUrl = mutation({
     const limit = await rateLimiter.limit(ctx, 'scanCreation')
     if (!limit.ok) {
       return {
-        ok: false as const,
-        error: 'Trop de scans créés, réessaie plus tard',
+        ...refuse('Trop de scans créés, réessaie plus tard'),
         retryAfter: limit.retryAfter,
       }
     }
@@ -78,16 +74,18 @@ export const generateUploadUrl = mutation({
 async function structuralGuard(
   ctx: MutationCtx,
   scan: Doc<'scans'>,
-): Promise<string | null> {
-  if (scan.purgedAt !== undefined) return 'Les photos de ce scan sont purgées'
-  if (scan.status === 'extracting') return 'Extraction en cours sur ce scan'
+): Promise<Refusal | null> {
+  if (scan.purgedAt !== undefined)
+    return refuse('Les photos de ce scan sont purgées')
+  if (scan.status === 'extracting')
+    return refuse('Extraction en cours sur ce scan')
   const published = await ctx.db
     .query('recipes')
     .withIndex('by_scan', (q) => q.eq('scanId', scan._id))
     .filter((q) => q.eq(q.field('status'), 'published'))
     .take(1)
   return published.length > 0
-    ? 'Une recette de ce scan est publiée : dépublie-la d’abord'
+    ? refuse('Une recette de ce scan est publiée : dépublie-la d’abord')
     : null
 }
 
@@ -119,28 +117,18 @@ export const attachImage = mutation({
   handler: async (ctx, { adminToken, ticketId, storageId, scanId }) => {
     requireAdmin(adminToken)
     const ticket = await ctx.db.get('uploadTickets', ticketId)
-    if (!ticket)
-      return { ok: false as const, error: 'Ticket de téléversement inconnu' }
+    if (!ticket) return refuse('Ticket de téléversement inconnu')
     if (ticket.consumedAt !== undefined) {
       if (ticket.storageId !== storageId)
-        return {
-          ok: false as const,
-          error: 'Ticket déjà utilisé avec une autre image',
-        }
+        return refuse('Ticket déjà utilisé avec une autre image')
       if (ticket.outcome === 'ok' && ticket.scanId) {
         // A replay is only idempotent against the scan that consumed it; asking for another one is
         // a different intent and must not silently return the first scan.
         if (scanId && scanId !== ticket.scanId)
-          return {
-            ok: false as const,
-            error: 'Ce téléversement appartient déjà à un autre scan',
-          }
+          return refuse('Ce téléversement appartient déjà à un autre scan')
         return { ok: true as const, scanId: ticket.scanId }
       }
-      return {
-        ok: false as const,
-        error: ticket.error ?? 'Téléversement refusé',
-      }
+      return refuse(ticket.error ?? 'Téléversement refusé')
     }
 
     const consumedAt = Date.now()
@@ -157,7 +145,7 @@ export const attachImage = mutation({
         outcome,
         error,
       })
-      return { ok: false as const, error }
+      return refuse(error)
     }
 
     const metadata = await ctx.db.system.get('_storage', storageId)
@@ -186,7 +174,7 @@ export const attachImage = mutation({
     const scan = await ctx.db.get('scans', scanId)
     if (!scan) return reject('Scan inconnu', 'rejected')
     const blocked = await structuralGuard(ctx, scan)
-    if (blocked) return reject(blocked, 'rejected')
+    if (blocked) return reject(blocked.error, 'rejected')
     if (scan.imageStorageIds.length >= MAX_IMAGES_PER_SCAN)
       return reject(
         `Un scan porte au plus ${MAX_IMAGES_PER_SCAN} images`,
@@ -236,18 +224,15 @@ export const detachImage = mutation({
   handler: async (ctx, { adminToken, scanId, storageId }) => {
     requireAdmin(adminToken)
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan) return { ok: false as const, error: 'Scan inconnu' }
+    if (!scan) return refuse('Scan inconnu')
     const blocked = await structuralGuard(ctx, scan)
-    if (blocked) return { ok: false as const, error: blocked }
+    if (blocked) return blocked
     if (!scan.imageStorageIds.includes(storageId))
-      return { ok: false as const, error: 'Cette image n’est pas dans ce scan' }
+      return refuse('Cette image n’est pas dans ce scan')
     // Replacing a blurry page means passing through zero, which is fine everywhere except in the
     // queue's reach: reservation would grab the scan in between and fail it under the operator.
     if (scan.status === 'pending' && scan.imageStorageIds.length === 1)
-      return {
-        ok: false as const,
-        error: 'Un scan en attente doit garder au moins une image',
-      }
+      return refuse('Un scan en attente doit garder au moins une image')
 
     const now = Date.now()
     await ctx.db.patch(scanId, {
@@ -255,7 +240,7 @@ export const detachImage = mutation({
       ...markImagesChanged(scan, now),
     })
     await ctx.storage.delete(storageId)
-    return { ok: true as const }
+    return succeeded
   },
 })
 
@@ -269,15 +254,14 @@ export const rescan = mutation({
   handler: async (ctx, { adminToken, scanId }) => {
     requireAdmin(adminToken)
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan) return { ok: false as const, error: 'Scan inconnu' }
+    if (!scan) return refuse('Scan inconnu')
     const blocked = await structuralGuard(ctx, scan)
-    if (blocked) return { ok: false as const, error: blocked }
+    if (blocked) return blocked
     const imageCount = scan.imageStorageIds.length
     if (imageCount === 0 || imageCount > MAX_IMAGES_PER_SCAN)
-      return {
-        ok: false as const,
-        error: `Un scan à relancer doit porter de 1 à ${MAX_IMAGES_PER_SCAN} images`,
-      }
+      return refuse(
+        `Un scan à relancer doit porter de 1 à ${MAX_IMAGES_PER_SCAN} images`,
+      )
 
     const drafts = await ctx.db
       .query('recipes')
@@ -298,7 +282,7 @@ export const rescan = mutation({
       imagesChangedAt: undefined,
     })
     await reconcileRetention(ctx, scanId)
-    return { ok: true as const }
+    return succeeded
   },
 })
 
@@ -569,7 +553,7 @@ export const getScanForCorrection = query({
         steps: recipe.steps,
         status: recipe.status,
         slug: recipe.slug ?? null,
-        revision: recipe.revision ?? 0,
+        revision: revisionOf(recipe),
       })),
       recipesTruncated: recipes.length > DRAFTS_LISTED_PER_SCAN,
     }
