@@ -1,6 +1,6 @@
 # Suivi d'avancement
 
-État du projet au **2026-08-11**, `main` à `1a292f4`. Ce fichier dit **où on en est** ; il ne
+État du projet au **2026-08-11**, `main` à `9ab14ff`. Ce fichier dit **où on en est** ; il ne
 remplace pas le contenu des tâches, qui reste dans
 [`specs/2026-08-08-table-des-recettes-tasks.md`](./superpowers/specs/2026-08-08-table-des-recettes-tasks.md).
 
@@ -24,15 +24,14 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`    |
 | **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                        |
 | **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`    |
-| **T7**  | Rétention `purgeAfter`                   | P2  | ⬜     | —                           | champs et index posés, logique absente            |
+| **T7**  | Rétention `purgeAfter`                   | P2  | ✅     | PR #8                       | `convex/retention.ts`, `convex/retention.test.ts` |
 | **T8**  | Scan multi-images + écran de correction  | P2  | ⬜     | —                           | `imageStorageIds` borné à 1 à l'entrée            |
 | **T9**  | Export automatique versionné dans git    | P2  | ⬜     | —                           | —                                                 |
-| **T10** | Compteurs de file + bouton relancer      | P2  | ⬜     | —                           | bouton nu posé dans `src/routes/admin.tsx`        |
-| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | —                           | journal `extractionAttempts` + prompt v4          |
+| **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`       |
+| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`     |
 | **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre |
 
-**Reste à faire : 5 tâches, ~15 h humaines estimées** (T7 1 h · T8 4 h · T9 4 h · T10 1 h ·
-T14 5 h).
+**Reste à faire : 3 tâches, ~13 h humaines estimées** (T8 4 h · T9 4 h · T14 5 h).
 
 ---
 
@@ -41,14 +40,15 @@ T14 5 h).
 - **Vitrine publique** — index une colonne groupé par lettre, fiche recette, recalcul de portions,
   recherche tolérante. Lit des recettes publiées.
 - **Pipeline d'ingestion** — `/admin` : jeton en `sessionStorage`, sélection de fichier passant par
-  `compress.ts`, création de scan, liste brute des scans, bouton d'extraction nu. Un scan traverse
-  compression → stockage → appel OpenRouter → brouillons en base, avec `lastAttempt` qui raconte
-  l'appel.
+  `compress.ts`, création de scan, compteurs de file, lancement ou relance avec verdict réel et
+  purge manuelle. Un scan traverse compression → stockage → appel OpenRouter → brouillons en base,
+  avec `lastAttempt` qui raconte l'appel ; sa photo suit une échéance de rétention et une purge
+  hebdomadaire.
 - **Journal des tentatives d'extraction** — une ligne par tentative dans `extractionAttempts`,
   estampillée du modèle, du provider servi, de la version de prompt et de schéma, du coût, de la
-  latence et du nombre de réparations. Survit à la purge du scan. `/admin` en rend l'agrégat groupé
-  par modèle et version : taux d'échec, échecs par nature, coût moyen et total, latence moyenne,
-  volume de correction.
+  latence et du nombre de réparations. Survit à la purge du scan. `/admin` en rend l'agrégat sous le
+  bloc de file, groupé par modèle et version : taux d'échec, échecs par nature, coût moyen et total,
+  latence moyenne, volume de correction.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
 - **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
@@ -63,23 +63,19 @@ Ce qui **n'existe pas encore** : la publication d'un brouillon. Aucune écriture
 
 ## Prochain pas
 
-Rien en cours. L'ordre court : **T7 → T10 → T8**. Le reste s'insère où on veut.
+**T8**, maintenant que T7 et T10 rendent la surface d'administration exploitable au quotidien.
 
-### Chemin principal — dans cet ordre, une tâche par PR
+### Chemin principal
 
-1. **T7 · rétention `purgeAfter`** (1 h) — les champs et l'index sont déjà en base, seule la logique
-   manque. En premier parce que chaque upload abandonné laisse environ 600 Ko qui ne partiront
-   jamais tout seuls (reliquat R4) : la dette grossit à chaque scan tant qu'elle n'est pas là.
-2. **T10 · compteurs de file + bouton relancer** (1 h) — le bouton est déjà posé, nu. Sans elle un
-   scan bloqué est invisible depuis `/admin`. Avant T8 et pas après, parce que les deux écrivent
-   dans `src/routes/admin/` et que T8 réécrirait l'écran une seconde fois.
-3. **T8 · scan multi-images + écran de correction** (4 h) — la grosse pièce. **Y rattacher R3, la
+1. **T8 · scan multi-images + écran de correction** (4 h) — la grosse pièce. **Y rattacher R3, la
    publication d'un brouillon** : aucune tâche ne la porte, la vitrine reste vide sans elle, et
-   l'écran de correction est le seul endroit naturel pour le geste « publier ».
+   l'écran de correction est le seul endroit naturel pour le geste « publier ». C'est aussi T8 qui
+   éclatera `src/routes/admin.tsx` en répertoire — T10 a délibérément laissé le fichier plat, le bloc
+   de file étant un composant ordinaire déplaçable où l'écran de correction en aura besoin.
 
 ### En parallèle, à n'importe quel moment
 
-Aucune des trois ne dépend du chemin principal ni des autres.
+Aucune des deux ne dépend du chemin principal ni de l'autre.
 
 - **T14 · photo du plat** (5 h) — débloquée : T4 et T5 sont faits, le prompt et le modèle sont figés
   par T13. Seule contrainte : elle finit dans `src/routes/admin/`, donc **pas en même temps que T8
@@ -87,9 +83,8 @@ Aucune des trois ne dépend du chemin principal ni des autres.
 - **T9 · export versionné dans git** (4 h) — vit dans `convex/export.ts`, ne partage aucun fichier
   avec le reste.
 
-### Les deux pièges d'ordre
+### Le piège d'ordre restant
 
-- **T8 avant T10** : même écran, écrit deux fois.
 - **T8 et T14 en même temps** : collision sur `src/routes/admin/`.
 
 ---
@@ -115,13 +110,29 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   `status: 'published'`, l'ingestion écrit des brouillons, et rien ne fait le pont. À rattacher à
   T8 (écran de correction) au moment de la planifier, sinon la chaîne reste coupée au milieu.
 
-- **R4 · Blobs orphelins.** Environ 600 Ko par upload abandonné s'accumulent jusqu'à T7. Le balayage
-  de `_storage` n'est sûr qu'avec la liste complète des propriétaires
-  (`scans.imageStorageIds`, `recipes.imageStorageId`, `recipes.beautifiedStorageId`).
+- **R4 · Propriété et blobs orphelins.** Deux scans peuvent théoriquement partager un blob : aucun
+  chemin accidentel connu ne le fait, mais une purge ne peut pas prouver l'exclusivité. Un index
+  `by_storage_id` sur les tickets ne suffit pas, car les tickets consommés disparaissent après sept
+  jours ; un registre durable demanderait une table `scanImages`, un backfill pour l'historique et
+  un index distinct pour ne pas affamer le balayage des autres tickets. La suppression du blob d'un
+  ticket `too_large` dépend de la même preuve et reste donc exclue. T14 devra trancher cette propriété
+  quand `recipes.imageStorageId` aura un écrivain de production. Tout balayage de `_storage` reste
+  hors périmètre tant que la liste complète des propriétaires n'est pas garantie.
 
 - **R5 · Repli d'embellissement disponible et chiffré.** `PROMPT_V3` (`spike13/prompt.ts`) supprime
   l'inclinaison partout (7 franchissements sur 8 contre 5) au prix de +23 % de latence. À activer si
   des cadres inclinés apparaissent en usage réel — aucune mesure à refaire.
+
+- **R6 · Pas de remise à zéro d'un scan mort.** Un scan au plafond de tentatives reste terminal ;
+  l'administration rend cette limite visible mais ne permet pas de la contourner.
+
+- **R7 · Câblage de l'administration non testé.** Les règles de dérivation de la file sont testées
+  dans `src/lib/queueStatus.test.ts`, mais aucun test de composant ne couvre le JSX de `/admin` faute
+  d'infrastructure React dédiée.
+
+- **R8 · `npm run build` absent du CI.** Les six contrôles actuels sont tous passés au vert alors que
+  le bundle du navigateur embarquait le module d'extraction serveur, prompt OpenRouter compris : seul
+  le build l'a attrapé. À ajouter avant qu'un import serveur vers client repasse en silence.
 
 ---
 

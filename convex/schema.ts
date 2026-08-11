@@ -45,6 +45,8 @@ export default defineSchema({
     error: v.optional(v.string()),
     lastAttempt: v.optional(attemptRecord),
     purgeAfter: v.optional(v.number()),
+    purgedAt: v.optional(v.number()),
+    nextAttemptAt: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index('by_status', ['status'])

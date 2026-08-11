@@ -19,6 +19,8 @@
     "test:watch": "vitest",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
+    "backup": "tsx scripts/backup.ts",
+    "restore": "tsx scripts/restore.ts",
     "ingest": "tsx spike/ingest.ts",
     "rank": "tsx spike/rank-endpoints.ts",
     "walk": "tsx spike/walk.ts",

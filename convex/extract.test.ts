@@ -8,9 +8,6 @@ import {
   eligibility,
   extractImage,
   interpretResponse,
-  LEASE_MS,
-  MAX_ATTEMPTS,
-  REQUEST_TIMEOUT_MS,
   RESERVE_SCAN_BATCH,
   TICKET_SWEEP_BATCH,
   UNCONSUMED_TICKET_GRACE_MS,
@@ -18,6 +15,11 @@ import {
 import type { Doc, Id } from './_generated/dataModel'
 import { PROMPT_VERSION } from '../src/lib/recipe-prompt'
 import { RECIPE_SCHEMA_VERSION } from '../src/lib/recipe-schema'
+import {
+  LEASE_MS,
+  MAX_ATTEMPTS,
+  REQUEST_TIMEOUT_MS,
+} from '../src/lib/queueContract'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = {
@@ -269,6 +271,20 @@ describe('scan eligibility', () => {
     expect(eligibility(scan({ attempts: MAX_ATTEMPTS }))).toMatchObject({
       eligible: false,
       error: 'Plafond de tentatives atteint',
+    })
+  })
+
+  test('reports a purged photo before its empty image list', () => {
+    expect(
+      eligibility(
+        scan({
+          imageStorageIds: [],
+          purgedAt: 1,
+        }),
+      ),
+    ).toEqual({
+      eligible: false,
+      error: 'Photo purgée : rescanner la page',
     })
   })
 
