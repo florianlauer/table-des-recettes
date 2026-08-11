@@ -1,9 +1,7 @@
 // @vitest-environment node
 import { expect, test } from 'vitest'
-import {
-  compareV3Extraction,
-  PAGE_E_EXPECTED_INGREDIENTS,
-} from './compare-v3.js'
+import { compareV3Extraction } from './compare-v3.js'
+import { PAGE_E_EXPECTED_INGREDIENTS } from './compare-runs.js'
 
 const recipe = {
   title: 'Soup',
@@ -47,7 +45,9 @@ test('an ingredient line rewritten on a printed-list page is fatal', () => {
       },
       page: 'a',
     }).fatal,
-  ).toEqual(['recipe 1 ingredients[0] archive "1 onion" ≠ v3 "1 large onion"'])
+  ).toEqual([
+    'recipe 1 ingredients[0] baseline "1 onion" ≠ candidate "1 large onion"',
+  ])
 })
 
 test('re-chunked steps carrying the same prose stay advisory', () => {
@@ -68,7 +68,7 @@ test('re-chunked steps carrying the same prose stay advisory', () => {
   })
   expect(result.fatal).toEqual([])
   expect(result.advisory).toEqual([
-    'recipe 1 steps re-chunked: archive 2, v3 1, same prose',
+    'recipe 1 steps re-chunked: baseline 2, candidate 1, same prose',
   ])
 })
 
@@ -88,7 +88,7 @@ test('dropped prose is fatal even when the step count matches', () => {
       },
       page: 'a',
     }).fatal,
-  ).toEqual(['recipe 1 steps[1] archive "Cook it." ≠ v3 "Serve it."'])
+  ).toEqual(['recipe 1 steps[1] baseline "Cook it." ≠ candidate "Serve it."'])
 })
 
 test('on a page printing no list, the flag is fatal and the lines are advisory', () => {

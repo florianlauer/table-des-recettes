@@ -103,7 +103,8 @@ img {
   margin-bottom: 2rem;
 }
 .admin-page__header h1,
-.admin-page__scans h2 {
+.admin-page__scans h2,
+.admin-page__stats h2 {
   font-family: var(--serif);
 }
 .admin-page__field {
@@ -126,16 +127,24 @@ img {
   font: inherit;
   padding: 0.5rem 0.8rem;
 }
-.admin-page__scans {
+.admin-page__scans,
+.admin-page__stats {
   margin-top: 2.5rem;
 }
-.admin-page__scan {
+.admin-page__scan,
+.admin-page__stat {
   border-top: 1px solid var(--rule);
   padding: 1rem 0;
 }
 .admin-page__scan h3,
-.admin-page__scan p {
+.admin-page__scan p,
+.admin-page__stat h3,
+.admin-page__stat p {
   margin: 0.3rem 0;
+}
+/* The model and prompt name the row; the figures under it are read against them, not scanned. */
+.admin-page__stat h3 {
+  color: var(--ochre);
 }
 
 /* --- correction screen --- */

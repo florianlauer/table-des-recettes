@@ -23,7 +23,7 @@ export const ingredient = v.object({
 // Nullable rather than optional, throughout: an absent field would force every producer and every
 // reader to spread it conditionally, which is where the five copies of
 // `...(x === undefined ? {} : { x })` came from.
-export const attemptRecord = v.object({
+export const attemptFields = {
   attemptId: v.string(),
   model: v.string(),
   servedProvider: v.union(v.string(), v.null()),
@@ -31,7 +31,9 @@ export const attemptRecord = v.object({
   costUsd: v.number(),
   failureKind: v.union(literalUnion(FAILURE_KINDS), v.null()),
   repairCount: v.number(),
-})
+}
+
+export const attemptRecord = v.object(attemptFields)
 
 export default defineSchema({
   scans: defineTable({
@@ -94,6 +96,17 @@ export default defineSchema({
       searchField: 'searchText',
       filterFields: ['status', 'type'],
     }),
+
+  // The journal `scans.lastAttempt` cannot be: it keeps only the last attempt, and it dies with the
+  // scan. Reading whether the cheap model still holds needs the retries and the purged scans too,
+  // so the rows live on their own and `scanId` is deliberately allowed to dangle.
+  extractionAttempts: defineTable({
+    ...attemptFields,
+    scanId: v.id('scans'),
+    promptVersion: v.string(),
+    schemaVersion: v.string(),
+    createdAt: v.number(),
+  }).index('by_created_at', ['createdAt']),
 
   uploadTickets: defineTable({
     createdAt: v.number(),

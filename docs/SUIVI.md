@@ -1,6 +1,6 @@
 # Suivi d'avancement
 
-État du projet au **2026-08-11**, `main` à `a3d0943`. Ce fichier dit **où on en est** ; il ne
+État du projet au **2026-08-11**, `main` à `e6e435f`. Ce fichier dit **où on en est** ; il ne
 remplace pas le contenu des tâches, qui reste dans
 [`specs/2026-08-08-table-des-recettes-tasks.md`](./superpowers/specs/2026-08-08-table-des-recettes-tasks.md).
 
@@ -28,10 +28,10 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T8**  | Scan multi-images + écran de correction  | P2  | ✅     | PR #11                      | `convex/recipeAdmin.ts`, `src/routes/admin_.scan.$id.tsx` |
 | **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/restore.ts`                  |
 | **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`               |
-| **T11** | Durcissement de l'appel OpenRouter       | P2  | ⬜     | —                           | `lastAttempt` posé sur le scan, conçu pour déménager      |
+| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`             |
 | **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre         |
 
-**Reste à faire : 2 tâches, ~6 h humaines estimées** (T11 1 h · T14 5 h).
+**Reste à faire : 1 tâche, ~5 h humaines estimées** (T14).
 
 ---
 
@@ -44,8 +44,16 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   purge manuelle. Un scan traverse compression → stockage → appel OpenRouter → brouillons en base,
   avec `lastAttempt` qui raconte l'appel ; sa photo suit une échéance de rétention et une purge
   hebdomadaire.
+- **Journal des tentatives d'extraction** — une ligne par tentative dans `extractionAttempts`,
+  estampillée du modèle, du provider servi, de la version de prompt et de schéma, du coût, de la
+  latence et du nombre de réparations. Survit à la purge du scan. `/admin` en rend l'agrégat sous le
+  bloc de file, groupé par modèle et version : taux d'échec, échecs par nature, coût moyen et total,
+  latence moyenne, volume de correction.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
+- **Sauvegarde** — miroir versionné des recettes dans `backup/`, une par fichier JSON, actualisé
+  chaque dimanche à 03 h UTC et commité sur `main`. La restauration a son script et ses tests. Un
+  export vide refuse de tourner, pour ne pas effacer le miroir.
 - **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
   `fleet-bat-50` (région US East). `vercel.json` porte le build ; poser le label `preview` sur une
   PR crée un backend Convex jetable avec une copie de la base de production et publie un frontend
@@ -59,17 +67,15 @@ et arme la rétention. **R3 est clos.**
 
 ## Prochain pas
 
-**T11**, puis **T14**. Les deux sont indépendantes l'une de l'autre.
+**T14**, seule tâche restante, et elle ne dépend plus de rien.
 
-- **T11 · durcissement de l'appel OpenRouter** (1 h) — en cours, PR #10 ouverte. C'est aussi le seul
-  endroit où traiter R2. Attention : cette PR pose `PROMPT_VERSION = 'v4'` pour la liste déduite
-  (R1), tandis que T8 a posé `'v5'` pour l'instruction multi-pages. Le second à fusionner doit
-  garder **les deux** paragraphes et la version la plus haute — le conflit est volontairement
-  explicite plutôt que silencieux. T11 touche aussi `convex/extract.ts`, `convex/admin.ts` et
-  `convex/schema.ts`, que T8 a réécrits en profondeur.
 - **T14 · photo du plat** (5 h) — débloquée : T4 et T5 sont faits, le prompt et le modèle sont figés
   par T13. Elle écrit dans `src/routes/admin_.scan.$id.tsx` (l'illustration se pose depuis l'écran
   de correction) et devra trancher la propriété des blobs décrite en R4.
+
+Le conflit de version de prompt entre T8 et T11 est résolu : `PROMPT_VERSION` vaut **`v5`** et le
+prompt porte les deux instructions — les pages d'une même source lues ensemble (T8) et les
+contraintes sur la liste reconstituée (T11).
 
 ---
 
@@ -77,14 +83,18 @@ et arme la rétention. **R3 est clos.**
 
 Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche à elles.
 
-- **R1 · Prompt v4 à écrire.** La liste d'ingrédients déduite (pages sans liste imprimée) contient
-  des lignes qui n'en sont pas : `1 mn sur feu doux` sur la page E, et les œufs comptés trois fois.
-  v4 doit interdire les durées, les températures et les fractions d'un ingrédient déjà listé. Coût
-  d'un rejeu de contrôle chiffré : **0,071 USD**.
+- **R1 · Prompt v4 — fait en T11 le 2026-08-11.** v4 interdit les durées, les températures et les
+  fractions d'un ingrédient déjà listé dans une liste reconstituée, et impose de n'en omettre aucun.
+  Rejeu de contrôle exécuté : 14 appels, 0,0689 USD, comparaison conforme sur les sept pages. Le
+  rejeu a révélé que v3 **perdait aussi `40 g de farine`** sur la page E, ce qui n'était pas relevé ;
+  v4 la rend. Détail dans `spike/RESULTS.md` § « Rejeu sous prompt v4 ».
 
-- **R2 · Instabilité des étiquettes de section sur la page B.** `Pour la pâte :` entre une passe sur
-  deux dans la ligne d'ingrédient. Sans conséquence sur les comptes. Ouvert pour T11 — la corriger
-  demande une révision de prompt et un rejeu de plus.
+- ~~**R2 · Instabilité des étiquettes de section sur la page B.**~~ **Sans objet.** Cette entrée
+  décrivait la réserve 1 du spike, mesurée sous prompt **v2**. Elle ne s'est jamais reproduite
+  depuis : `Pour la pâte :` est écarté dans les quatre passes v2 archivées, les deux passes v3 et les
+  deux passes v4. Le comparateur v4 en fait désormais une divergence fatale sur **toutes** les pages,
+  donc un retour serait signalé au prochain rejeu plutôt que redécouvert à l'œil. Aucun prompt à
+  réviser, aucun rejeu à payer.
 
 - ~~**R3 · Publication d'un brouillon.**~~ **Clos par T8** : `publishRecipe`, `unpublishRecipe` et
   `publishScan` écrivent `slug`, `publishedAt` et `status`, et le slug n'est jamais recalculé.
@@ -135,11 +145,12 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 
 | Banc                        | Dépensé   | Plafond   |
 | --------------------------- | --------- | --------- |
-| `spike/` — extraction       | 0,403 USD | 5,00 USD  |
+| `spike/` — extraction       | 0,472 USD | 5,00 USD  |
 | `spike13/` — embellissement | 2,292 USD | 10,00 USD |
 
-Coûts unitaires retenus, à reprendre en T11 et T14 : **0,0051 USD / 7,5 s** par extraction
-(prompt v3), **0,03944 USD / 9,1 s** par embellissement.
+Coûts unitaires retenus, à reprendre en T14 : **0,0049 USD / 7,1 s** par extraction (prompt v4,
+mesuré sur 14 appels au rejeu de T11), **0,03944 USD / 9,1 s** par embellissement. Ce sont les
+chiffres que le bloc « Tentatives d'extraction » de `/admin` sert à confronter à l'usage réel.
 
 ---
 

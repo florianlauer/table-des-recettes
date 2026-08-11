@@ -16,4 +16,14 @@ describe('recipe prompt', () => {
     expect(EXTRACTION_PROMPT).toContain('à cheval sur deux')
     expect(EXTRACTION_PROMPT).toContain('rends-la une seule fois')
   })
+
+  // The three things measured wrong on page E under v3, each named in the prompt rather than left to
+  // the model's judgement — a reconstituted list has no printed boundary to fall back on.
+  test('forbids what a reconstituted list may not contain', () => {
+    expect(EXTRACTION_PROMPT).toContain(
+      'une durée, une température ni un thermostat',
+    )
+    expect(EXTRACTION_PROMPT).toContain('deux fois le même ingrédient')
+    expect(EXTRACTION_PROMPT).toContain('aucun ingrédient cité dans les étapes')
+  })
 })

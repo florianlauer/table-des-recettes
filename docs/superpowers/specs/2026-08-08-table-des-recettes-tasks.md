@@ -180,7 +180,8 @@ livrable de T2, hors du socle.
 - [x] **T9 · P2 · sauvegarde** (human ~4h / CC ~40min) — Export automatique versionné dans git
   - **Origine** : Codex #17 — aucune stratégie de sauvegarde ; l'offre gratuite Convex ne garde
     que 7 jours, en manuel. Après purge des photos, les corrections sont la seule copie
-  - **Fichiers** : `convex/export.ts`
+  - **Fichiers** : `convex/export.ts`, `convex/http.ts`, `scripts/backup.ts`, `scripts/restore.ts`,
+    `src/lib/backup-schema.ts`, `.github/workflows/backup.yml`
   - **Vérifier** : export JSON des recettes publiées, commité dans un dépôt ; historique lisible
     recette par recette
 
@@ -191,7 +192,7 @@ livrable de T2, hors du socle.
   - **Vérifier** : un scan bloqué est visible sans action de ta part ; le bouton relance la file et
     annonce le verdict réel
 
-- [ ] **T11 · P2 · extraction** (human ~1h / CC ~10min) — Durcissement de l'appel OpenRouter
+- [x] **T11 · P2 · extraction** (human ~1h / CC ~10min) — Durcissement de l'appel OpenRouter
   - **Origine** : Codex #15 — la sortie structurée garantit la forme, pas la vérité
   - **Fichiers** : `convex/extract.ts`
   - **Vérifier** : `strict: true` et `require_parameters: true` ; modèle et provider figés en
@@ -201,6 +202,27 @@ livrable de T2, hors du socle.
     recettes, si le modèle bon marché retenu au spike tient en usage réel. Si le taux d'échec ou
     le volume de correction dérive, on monte d'un échelon en changeant la variable — les
     fixtures du spike servent de non-régression
+  - **Fait le 2026-08-11.** Le durcissement de l'appel lui-même était déjà en place depuis T2/T3 :
+    `strict`, `require_parameters`, `only: [provider]`, `allow_fallbacks: false`, modèle et provider
+    en variable d'environnement, refus et troncatures traités comme les échecs `refusal` et
+    `truncated`. Ce que T11 ajoute :
+    - **`extractionAttempts`, une ligne par tentative**, estampillée de la version de prompt et de
+      schéma. `scans.lastAttempt` n'écrit que la dernière et meurt avec le scan ; lire une dérive
+      demande les reprises et les scans purgés, donc le journal vit à part et son `scanId` a le droit
+      de pendre. `lastAttempt` reste la ligne d'affichage de l'opérateur, inchangée — pas de migration
+    - **Un seul écrivain** (`journalAttempt`), appelé par `finalize` et `recordFailure`, pour que le
+      succès et l'échec ne puissent pas diverger sur ce qu'une tentative enregistre
+    - **`src/lib/attemptStats.ts`** agrège par modèle × prompt × schéma : taux d'échec, échecs par
+      nature, coût moyen et total, latence moyenne, volume de correction. Fonction pure, testée sans
+      Convex, exposée par `admin.attemptStats` et rendue sous la liste des scans dans `/admin`
+    - **Prompt v4 (reliquat R1)** et son rejeu de contrôle : 14 appels, 0,0689 USD, comparaison
+      conforme. Voir `spike/RESULTS.md` § « Rejeu sous prompt v4 »
+    - **`spike/compare-v4.ts`**, le non-régression que la tâche appelait : il tient les cinq pages à
+      liste imprimée à l'identité stricte contre v3 et juge les deux pages sans liste imprimée sur
+      les règles que v4 ajoute. Écrit et vérifié rouge sur les fixtures v3 avant le moindre appel payant
+    - **R2 est sans objet** : l'instabilité d'étiquette de section datait du prompt v2 et ne s'est
+      reproduite dans aucune des huit passes depuis. Le comparateur en fait une divergence fatale sur
+      toutes les pages, donc un retour serait signalé plutôt que redécouvert
 
 - [ ] **T14 · P2 · illustration** (human ~5h / CC ~1h) — Photo du plat : upload, embellissement, validation
   - **Origine** : ajout de périmètre post-review
