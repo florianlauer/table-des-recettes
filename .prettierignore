@@ -11,3 +11,6 @@ spike/ladder.*.json
 
 # Rejeu du prompt v3 (étape 6) : sortie brute, comparée octet pour octet à l'archive v2.
 spike/runs-v3
+
+# Generated backup: its order and bytes are controlled by the script.
+backup

@@ -221,3 +221,63 @@ Ce que les deux actes ont changé, en dehors de la forme :
 - **Trois pièges d'environnement réel ont été évités avant le premier passage** : `.convex.site` et
   non `.convex.cloud`, `LAST_RUN.json` avalé par son propre miroir, et une modification de `ci.yml`
   qui n'aurait rien protégé puisqu'un push au `GITHUB_TOKEN` ne déclenche aucun workflow.
+
+## Act 3 — Build
+
+Builder : Codex `gpt-5.6-sol`, effort `medium`, codex-cli 0.144.5. Spec gelée :
+`docs/superpowers/plans/2026-08-11-t9-export/PLAN.md`, sections 1 à 8. La section 9
+(provisionnement) est restée hors du diff, par contrat.
+
+### Round 1 — Codex build
+
+Dix fichiers créés, quatre modifiés. Les cinq commandes de preuve passent chez Codex : `typecheck`,
+161 tests sur 26 fichiers, `eslint`, `prettier --check`, `actionlint`. Aucune déviation déclarée.
+
+### Claude's verdict — round 1
+
+Preuves relancées de mon côté, toutes vertes. Trois vérifications indépendantes du rapport :
+
+- `npx convex codegen` reproduit la modification de `convex/_generated/api.d.ts` à l'octet — aucune
+  dérive de fichier généré, ce que le rapport ne pouvait pas prouver seul.
+- La comparaison d'authentification porte bien sur les condensés SHA-256 des deux en-têtes, sur 32
+  octets fixes : un jeton de longueur différente donne un `401`, pas une 500.
+- Le test de déterminisme réordonne les treize clés de la fixture et compare les octets. C'est le bon
+  test, pas une approximation — il prouve au passage que `parse` normalise l'ordre des clés.
+
+Quatre problèmes renvoyés, un mineur en prime :
+
+1. **`restorableProjection` était du code mort** — trois occurrences en tout, sa définition et son
+   propre test. La preuve centrale du plan, la comparaison _après_ restauration par digest canonique,
+   n'avait aucune implémentation : `assertManifestMatches` ne couvrait que fichiers contre manifeste.
+   C'était le seul écart qui touchait la valeur de la tâche, pas sa forme.
+2. **Les tests des scripts étaient rangés dans `src/lib/`** et importaient `../../scripts/backup`,
+   parce que `vitest.config.ts` n'incluait que `src/**` et `convex/**`. Le correctif était la config.
+3. **`git config user.name github-actions[bot]` non quoté** — `[bot]` est un glob bash, cassé le jour
+   où un fichier d'un caractère nommé `b`, `o` ou `t` traîne à la racine.
+4. **La première exécution réelle échouera à coup sûr** et rien ne le disait : la production a zéro
+   recette, donc le garde-fou n° 1 refuse. À documenter, pas à affaiblir.
+5. Mineur : deux comparateurs pour un même ordre d'identifiants, `<`/`>` dans `convex/export.ts` et
+   `localeCompare` dans `scripts/restore.ts`.
+
+### Round 2 — Codex fix
+
+Les cinq points corrigés. La vérification post-import existe maintenant et tourne par défaut :
+relecture de la cible par `convex run export:backupPayload`, validation Zod de la sortie, comparaison
+des comptes au manifeste puis du digest canonique calculé des deux côtés à travers
+`restorableProjection`. Tests déplacés vers `scripts/`, `vitest.config.ts` étendu, quotes posées,
+`backup/README.md` documente la base vide et la vérification, comparateur unifié en
+`compareBackupIds`.
+
+### Claude's verdict — round 2
+
+Preuves relancées : `typecheck` propre, **166 tests sur 26 fichiers**, `eslint` sans rien,
+`prettier --check` conforme, `actionlint` propre. Diff relu intégralement. Le test qui compte est là et
+dit la bonne chose : deux jeux de recettes ne différant que par leurs `storageId` produisent le
+**même** digest — c'est exactement la raison d'être de `restorableProjection`.
+
+Un seul chemin reste non prouvé, et par ma propre contrainte : le branchement CLI de la vérification
+(`convex run` et l'analyse de sa sortie) n'a jamais tourné contre un déploiement réel. Les fonctions
+pures qu'il entoure sont testées ; le tuyau ne l'est pas. Il se validera à la première restauration
+réelle contre `dev`, qui fait partie du provisionnement.
+
+Total : 18 fichiers, +1493 −1. Deux rounds sur deux autorisés, aucune reprise en main nécessaire.

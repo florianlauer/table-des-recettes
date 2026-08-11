@@ -7,6 +7,7 @@ export default defineConfig({
     include: [
       'src/**/*.test.ts',
       'convex/**/*.test.ts',
+      'scripts/**/*.test.ts',
       'spike/replay-fixtures.test.ts',
       'spike/compare-v3.test.ts',
     ],
