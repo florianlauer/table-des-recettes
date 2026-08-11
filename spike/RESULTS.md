@@ -160,3 +160,51 @@ la page ne les tranche :
 
 L'instabilité de la page B relevée en réserve 1 ci-dessus **ne s'est pas reproduite** : `Pour la
 pâte :` est écarté dans les quatre passes archivées comme dans les deux passes v3.
+
+## Rejeu sous prompt v4 / schéma 2 — 2026-08-11 (T11)
+
+Le prompt v4 ne change qu'une chose : ce qu'une liste d'ingrédients **reconstituée** ne peut pas
+contenir — ni durée, ni température, ni thermostat, ni fraction d'un ingrédient déjà listé entier, et
+aucun ingrédient cité dans les étapes ne doit manquer. Les sept pages ont été rejouées deux passes
+chacune : 14 appels, **0,0689 USD** (0,0049 par appel, contre 0,0051 sous v3 — le prompt est plus
+long et coûte pourtant moins), **7,1 s** en moyenne, **14 succès, zéro réparation de schéma, zéro
+nouvelle tentative**. Sortie brute dans `spike/runs-v4/`.
+
+`npx tsx spike/compare-v4.ts spike/runs-v3/<modèle>/<provider> spike/runs-v4/<modèle>/<provider>`
+rend **« Comparaison conforme »** : aucune divergence fatale sur les sept pages. Le comparateur tient
+les cinq pages à liste imprimée à l'identité stricte contre v3, et juge E et G sur les trois règles
+que v4 ajoute plutôt que contre la sortie v3, qui est précisément celle qu'on corrige.
+
+**R1 est corrigé, et l'était moins qu'annoncé.** Sur la page E, v3 rendait `1 mn sur feu doux`,
+`3 jaunes d'œufs` et `blancs d'œufs` — mais **perdait aussi `40 g de farine`**, ce que le journal de
+v3 n'avait pas relevé. v4 rend les huit lignes de la transcription à la main, farine comprise, sans
+durée et sans compter les œufs deux fois.
+
+**R2 est vérifié sur les deux passes v4** : aucune étiquette de section n'entre dans une ligne
+d'ingrédient, sur aucune page. Combiné aux quatre passes v2 et aux deux passes v3, cela fait huit
+passes sans reproduction depuis la réserve 1.
+
+Quatre constats à porter, aucun bloquant :
+
+1. **Le titre `LA VERSION LIGHT DE DAVID ZUDDAS*` perd son astérisque.** Le marqueur renvoie à un
+   crédit, que le prompt dit d'ignorer, donc v4 est cohérent. Classé « à l'œil » et non en échec.
+2. **La page E ne liste plus `sel` qu'une fois** là où la transcription à la main le liste deux fois,
+   la page assaisonnant à deux endroits. C'est la nouvelle règle qui travaille — une liste de courses
+   n'achète pas le sel deux fois — mais v4 va ici légèrement au-delà de R1, qui ne visait que les
+   fractions. Signalé plutôt que corrigé : la liste dit toujours d'acheter du sel.
+3. **Les pages C et F deviennent instables entre leurs deux passes, au seul sous-champ `label`** :
+   `lard` contre `lard (250 g env.)`, `zeste râpé d'une orange` contre `zeste` + `orange`. `raw`,
+   `quantity` et `unit` sont identiques, donc la mise à l'échelle rend le même résultat. C'était
+   stable sous v3 ; le discriminant du spike étant l'égalité stricte du JSON, c'est compté comme une
+   instabilité et non comme rien.
+4. **L'instabilité de la liste déduite de la page G est inchangée.** Une passe éclate le mélange
+   d'épices en six lignes, l'autre le garde en une : 18 lignes contre 14, même contenu. C'est la
+   limite déjà mesurée sous v3 — sans lignes imprimées, il n'y a pas de frontière à recopier — et v4
+   ne prétendait pas la lever.
+
+Le comparateur `compare-v4.ts` a été écrit **avant** le rejeu et vérifié rouge sur les fixtures v3,
+puis rouge à nouveau après trois corrections d'instrument (apostrophe typographique, marqueur de note
+en titre, et un faux positif où `jus de 1 citron vert` était lu comme une fraction de
+`tranches d'agrumes confits (citrons, kumquats)` — une parenthèse énumère la composition d'un
+produit, pas le produit). Sans cette vérification, chacune des trois aurait été prise pour une
+régression de v4.

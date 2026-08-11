@@ -8,6 +8,11 @@ import { ceilingFor } from './retention'
 import type { PurgeResult } from './retention'
 import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
+import {
+  ATTEMPTS_SAMPLED,
+  attemptSummary,
+  summarizeAttempts,
+} from '../src/lib/attemptStats'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const createScanResult = v.union(
@@ -253,6 +258,20 @@ export const purgeScanImages = mutation({
   handler: async (ctx, { adminToken, scanId }): Promise<PurgeResult> => {
     requireAdmin(adminToken)
     return ctx.runMutation(internal.retention.purgeOneScan, { scanId })
+  },
+})
+
+export const attemptStats = query({
+  args: { adminToken: v.string() },
+  returns: v.array(attemptSummary),
+  handler: async (ctx, { adminToken }) => {
+    requireAdmin(adminToken)
+    const attempts = await ctx.db
+      .query('extractionAttempts')
+      .withIndex('by_created_at')
+      .order('desc')
+      .take(ATTEMPTS_SAMPLED)
+    return summarizeAttempts(attempts)
   },
 })
 

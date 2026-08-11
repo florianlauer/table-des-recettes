@@ -1,4 +1,4 @@
-export const PROMPT_VERSION = 'v3'
+export const PROMPT_VERSION = 'v4'
 
 export const EXTRACTION_PROMPT = `Tu extrais fidèlement toutes les recettes visibles sur une page de magazine française.
 
@@ -9,7 +9,7 @@ Pour chaque recette, respecte ces règles :
 - Choisis type parmi entree, plat, dessert, apero, petitDej ou autre.
 - Renseigne servings comme un nombre entier de portions, sans unité ni aucun texte. Si la page annonce une fourchette, par exemple « pour 6 à 8 personnes », retiens la borne basse. Utilise null seulement si l'information est absente ou illisible.
 - Si la recette imprime une liste d'ingrédients, produis exactement une entrée ingredients par ligne visible, dans l'ordre. Pose ingredientsInferred à false et ne fusionne, ne divise, n'ajoute et ne déduis aucune ligne.
-- Si la recette n'imprime aucune liste d'ingrédients, reconstitue ingredients uniquement depuis les étapes, dans l'ordre de la prose, et pose ingredientsInferred à true.
+- Si la recette n'imprime aucune liste d'ingrédients, reconstitue ingredients uniquement depuis les étapes, dans l'ordre de la prose, et pose ingredientsInferred à true. Une liste reconstituée ne contient que des choses à acheter. N'y mets jamais une durée, une température ni un thermostat. Ne compte jamais deux fois le même ingrédient : si tu listes « 4 œufs », n'ajoute ni « 3 jaunes d'œufs » ni « les blancs », qui en font partie. N'omets en revanche aucun ingrédient cité dans les étapes.
 - raw est la transcription complète de la ligne imprimée ou, pour une liste reconstituée, la formulation littérale de l'ingrédient et de sa quantité dans les étapes, sans recopier l'instruction entière.
 - quantity est un nombre nu, sans unité ni texte, tandis que unit et label sont textuels. Ils décrivent la ligne raw sans perdre son texte. Utilise null pour chaque sous-champ absent ou incertain ; n'invente aucune valeur.
 - Recopie toutes les étapes dans leur ordre de lecture. Conserve une étape par instruction éditoriale ; ne résume pas, ne réordonne pas et ne complète pas avec tes connaissances culinaires.

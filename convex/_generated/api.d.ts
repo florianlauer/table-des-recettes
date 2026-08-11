@@ -10,6 +10,7 @@
 
 import type * as admin from "../admin.js";
 import type * as auth from "../auth.js";
+import type * as crons from "../crons.js";
 import type * as devImages from "../devImages.js";
 import type * as export_ from "../export.js";
 import type * as extract from "../extract.js";
@@ -30,6 +31,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   auth: typeof auth;
+  crons: typeof crons;
   devImages: typeof devImages;
   export: typeof export_;
   extract: typeof extract;

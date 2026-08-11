@@ -5,6 +5,7 @@ import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
+import { groupKey } from '../lib/attemptStats'
 import { compressImage } from '../lib/compress'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
 import {
@@ -214,7 +215,55 @@ function AdminPage() {
           </article>
         ))}
       </section>
+
+      <AttemptStatsBlock adminToken={adminToken} />
     </main>
+  )
+}
+
+function formatRate(rate: number): string {
+  return `${(rate * 100).toFixed(rate > 0 && rate < 0.01 ? 1 : 0)} %`
+}
+
+function AttemptStatsBlock({ adminToken }: { adminToken: string }) {
+  const stats = useQuery({
+    ...convexQuery(api.admin.attemptStats, { adminToken }),
+    enabled: adminToken.length > 0,
+    retry: false,
+  })
+
+  return (
+    <section className="admin-page__stats">
+      <h2>Tentatives d’extraction</h2>
+      {stats.isLoading && adminToken && <p>Chargement…</p>}
+      {stats.error && <p role="alert">{stats.error.message}</p>}
+      {stats.data?.length === 0 && <p>Aucune tentative journalisée.</p>}
+      {stats.data?.map((group) => (
+        <article key={groupKey(group)} className="admin-page__stat">
+          <h3>
+            {group.model} · prompt {group.promptVersion} · schéma{' '}
+            {group.schemaVersion}
+          </h3>
+          <p>
+            {group.attempts} tentative(s) · {group.failures} échec(s) (
+            {formatRate(group.failureRate)})
+            {group.failureKinds.length > 0 &&
+              ` · ${group.failureKinds
+                .map(({ kind, count }) => `${kind} ${count}`)
+                .join(', ')}`}
+          </p>
+          <p>
+            {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
+            {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
+            {Math.round(group.averageLatencyMs)} ms en moyenne
+          </p>
+          <p>
+            {group.repairs} réparation(s) de schéma sur {group.repairedAttempts}{' '}
+            tentative(s)
+          </p>
+        </article>
+      ))}
+    </section>
   )
 }
 
