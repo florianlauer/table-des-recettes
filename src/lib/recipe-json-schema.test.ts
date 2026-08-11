@@ -15,4 +15,11 @@ describe('recipe JSON schema', () => {
       'ingredientsInferred',
     )
   })
+
+  test('carries no array bound into the strict structured output', () => {
+    // The recipes cap is enforced when we validate the answer. Sent as `maxItems`, it is a keyword
+    // strict mode does not accept, and every call would come back 400.
+    expect(JSON.stringify(extractionJsonSchema)).not.toContain('maxItems')
+    expect(JSON.stringify(extractionJsonSchema)).not.toContain('minItems')
+  })
 })

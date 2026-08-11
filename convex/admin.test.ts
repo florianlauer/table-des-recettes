@@ -63,8 +63,8 @@ describe('admin boundary', () => {
       ticketId: upload.ticketId,
       storageId,
     }
-    const first = await t.mutation(api.admin.createScan, args)
-    const replay = await t.mutation(api.admin.createScan, args)
+    const first = await t.mutation(api.admin.attachImage, args)
+    const replay = await t.mutation(api.admin.attachImage, args)
     expect(first).toMatchObject({ ok: true })
     expect(replay).toEqual(first)
     const scans = await t.query(api.admin.listScans, {

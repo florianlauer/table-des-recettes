@@ -138,6 +138,88 @@ img {
   margin: 0.3rem 0;
 }
 
+/* --- correction screen --- */
+
+.scan-page__images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.scan-page__images h2,
+.scan-page__recipes h2 {
+  font-family: var(--serif);
+  flex-basis: 100%;
+}
+.scan-page__image {
+  margin: 0;
+  max-width: 22rem;
+}
+.scan-page__image img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--rule);
+}
+.scan-page__image figcaption {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+  color: var(--ink-muted);
+}
+.scan-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+.scan-page__actions p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.scan-page__recipe {
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem 0;
+}
+.scan-page__recipe h3 {
+  font-family: var(--serif);
+  margin: 0 0 0.3rem;
+}
+.scan-page__ingredients {
+  border: none;
+  border-left: 1px solid var(--rule);
+  padding: 0 0 0 0.8rem;
+  margin: 1rem 0;
+}
+.scan-page__ingredients legend {
+  padding: 0;
+  color: var(--ink-muted);
+}
+/* The raw line carries the text; the three parsed fields stay narrow so the eye reads the line
+   first and the parse second. */
+.scan-page__ingredient {
+  display: grid;
+  grid-template-columns: minmax(12rem, 3fr) 5rem 6rem minmax(6rem, 1fr) auto;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.scan-page__recipe input,
+.scan-page__recipe select,
+.scan-page__recipe textarea {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0.4rem;
+}
+@media (max-width: 40rem) {
+  .scan-page__ingredient {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* --- index --- */
 
 .masthead {

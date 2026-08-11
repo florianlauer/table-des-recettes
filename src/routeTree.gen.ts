@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as RecetteSlugRouteImport } from './routes/recette.$slug'
+import { Route as AdminScanIdRouteImport } from './routes/admin_.scan.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const RecetteSlugRoute = RecetteSlugRouteImport.update({
   path: '/recette/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminScanIdRoute = AdminScanIdRouteImport.update({
+  id: '/admin_/scan/$id',
+  path: '/admin/scan/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/recette/$slug': typeof RecetteSlugRoute
+  '/admin/scan/$id': typeof AdminScanIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/recette/$slug': typeof RecetteSlugRoute
+  '/admin/scan/$id': typeof AdminScanIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/recette/$slug': typeof RecetteSlugRoute
+  '/admin_/scan/$id': typeof AdminScanIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/recette/$slug'
+  fullPaths: '/' | '/admin' | '/recette/$slug' | '/admin/scan/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/recette/$slug'
-  id: '__root__' | '/' | '/admin' | '/recette/$slug'
+  to: '/' | '/admin' | '/recette/$slug' | '/admin/scan/$id'
+  id: '__root__' | '/' | '/admin' | '/recette/$slug' | '/admin_/scan/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   RecetteSlugRoute: typeof RecetteSlugRoute
+  AdminScanIdRoute: typeof AdminScanIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecetteSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin_/scan/$id': {
+      id: '/admin_/scan/$id'
+      path: '/admin/scan/$id'
+      fullPath: '/admin/scan/$id'
+      preLoaderRoute: typeof AdminScanIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   RecetteSlugRoute: RecetteSlugRoute,
+  AdminScanIdRoute: AdminScanIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

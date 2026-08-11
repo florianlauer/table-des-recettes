@@ -3,12 +3,14 @@ import { describe, expect, test } from 'vitest'
 import type { recipeType } from '../../convex/schema'
 import { ingredient } from '../../convex/schema'
 import {
+  extractionSchema,
   extractionSchemaV1,
   extractionSchemaV2,
   ingredientSchema,
   normalizeExtraction,
 } from './recipe-schema'
 import type { RecipeType } from './recipeTypes'
+import { MAX_RECIPES_PER_SCAN } from './scanLimits'
 
 type Equal<TLeft, TRight> =
   (<TValue>() => TValue extends TLeft ? 1 : 2) extends <
@@ -72,5 +74,25 @@ describe('recipe schema versions', () => {
       expect(convexFields[key]?.optional).toBe(true)
     }
     expect(recipeTypesStayAligned).toBe(true)
+  })
+})
+
+describe('extraction bounds', () => {
+  test('refuses an answer holding more recipes than a page can carry', () => {
+    const recipe = {
+      title: 'Recette',
+      type: 'autre',
+      servings: null,
+      ingredients: [],
+      ingredientsInferred: false,
+      steps: [],
+    }
+    const fits = { recipes: Array(MAX_RECIPES_PER_SCAN).fill(recipe) }
+    const overflows = { recipes: Array(MAX_RECIPES_PER_SCAN + 1).fill(recipe) }
+
+    expect(extractionSchema.safeParse(fits).success).toBe(true)
+    // Rejected here rather than downstream: past this point `safeParse` fails and the flow already
+    // reports `invalid_schema`, so a second guard in `finalize` would be unreachable.
+    expect(extractionSchema.safeParse(overflows).success).toBe(false)
   })
 })

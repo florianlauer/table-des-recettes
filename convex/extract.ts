@@ -21,6 +21,7 @@ import {
   repairExtraction,
 } from '../src/lib/recipe-schema'
 import { sniffImageHeader } from '../src/lib/imageHeader'
+import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/lib/scanLimits'
 import {
   LEASE_MS,
   MAX_ATTEMPTS,
@@ -109,20 +110,25 @@ export function bytesToBase64(bytes: Uint8Array): string {
 export function requestBody({
   model,
   provider,
-  dataUri,
+  dataUris,
 }: {
   model: string
   provider: string
-  dataUri: string
+  dataUris: readonly string[]
 }): string {
   return JSON.stringify({
     model,
+    // One message carrying every page, in reading order: a recipe that continues overleaf is only
+    // extractable if the model sees both sides at once.
     messages: [
       {
         role: 'user',
         content: [
           { type: 'text', text: EXTRACTION_PROMPT },
-          { type: 'image_url', image_url: { url: dataUri } },
+          ...dataUris.map((url) => ({
+            type: 'image_url' as const,
+            image_url: { url },
+          })),
         ],
       },
     ],
@@ -209,12 +215,12 @@ export function interpretResponse({
   }
 }
 
-export async function extractImage({
-  blob,
+export async function extractImages({
+  blobs,
   environment = process.env,
   fetchImpl = fetch,
 }: {
-  blob: Blob
+  blobs: readonly (Blob | null)[]
   environment?: ExtractionEnvironment
   fetchImpl?: typeof fetch
 }): Promise<ExtractionResult> {
@@ -230,16 +236,49 @@ export async function extractImage({
       startedAt,
     })
   }
-
-  const bytes = new Uint8Array(await blob.arrayBuffer())
-  const header = sniffImageHeader({ bytes, fileSize: blob.size })
-  if (!header.ok) {
+  if (blobs.length === 0) {
     return failure({
       kind: 'invalid_image',
-      error: header.message,
+      error: 'Le scan ne contient aucune image',
       model,
       startedAt,
     })
+  }
+
+  // Every member is checked before a single byte is encoded: one missing or unreadable page must
+  // cost a named failure, not a billed call whose answer covers the other pages only.
+  const dataUris: string[] = []
+  let totalBytes = 0
+  for (const [index, blob] of blobs.entries()) {
+    const position = `image ${index + 1}/${blobs.length}`
+    if (!blob) {
+      return failure({
+        kind: 'invalid_image',
+        error: `Image stockée introuvable (${position})`,
+        model,
+        startedAt,
+      })
+    }
+    const bytes = new Uint8Array(await blob.arrayBuffer())
+    const header = sniffImageHeader({ bytes, fileSize: blob.size })
+    if (!header.ok) {
+      return failure({
+        kind: 'invalid_image',
+        error: `${header.message} (${position})`,
+        model,
+        startedAt,
+      })
+    }
+    totalBytes += blob.size
+    if (totalBytes > MAX_SCAN_BYTES) {
+      return failure({
+        kind: 'invalid_image',
+        error: 'Les images du scan dépassent la taille totale autorisée',
+        model,
+        startedAt,
+      })
+    }
+    dataUris.push(`data:image/${header.format};base64,${bytesToBase64(bytes)}`)
   }
 
   const controller = new AbortController()
@@ -254,11 +293,7 @@ export async function extractImage({
         'Content-Type': 'application/json',
       },
       signal: controller.signal,
-      body: requestBody({
-        model,
-        provider,
-        dataUri: `data:image/${header.format};base64,${bytesToBase64(bytes)}`,
-      }),
+      body: requestBody({ model, provider, dataUris }),
     })
     body = await response.text()
   } catch (error) {
@@ -304,11 +339,11 @@ export async function extractImage({
 }
 
 /**
- * Why a scan can never succeed, or the single image it is made of. Reservation needs both answers
- * at once, so returning them together keeps the caller from re-deriving the image after the check.
+ * Why a scan can never succeed, or the images it is made of. Reservation needs both answers at once,
+ * so returning them together keeps the caller from re-deriving them after the check.
  */
 export type Eligibility =
-  | { eligible: true; storageId: Id<'_storage'> }
+  | { eligible: true; storageIds: Id<'_storage'>[] }
   | { eligible: false; error: string }
 
 export function eligibility(scan: Doc<'scans'>): Eligibility {
@@ -316,13 +351,14 @@ export function eligibility(scan: Doc<'scans'>): Eligibility {
     return { eligible: false, error: PURGED_ERROR }
   if (scan.attempts >= MAX_ATTEMPTS)
     return { eligible: false, error: 'Plafond de tentatives atteint' }
-  const storageId = scan.imageStorageIds.at(0)
-  if (!storageId || scan.imageStorageIds.length !== 1)
+  if (scan.imageStorageIds.length === 0)
+    return { eligible: false, error: 'Le scan ne contient aucune image' }
+  if (scan.imageStorageIds.length > MAX_IMAGES_PER_SCAN)
     return {
       eligible: false,
-      error: 'Le scan doit contenir exactement une image',
+      error: `Le scan dépasse ${MAX_IMAGES_PER_SCAN} images`,
     }
-  return { eligible: true, storageId }
+  return { eligible: true, storageIds: scan.imageStorageIds }
 }
 
 /**
@@ -369,7 +405,7 @@ const reserveResult = v.union(
   v.object({
     status: v.literal('reserved'),
     scanId: v.id('scans'),
-    storageId: v.id('_storage'),
+    storageIds: v.array(v.id('_storage')),
     attemptId: v.string(),
   }),
 )
@@ -382,14 +418,15 @@ export const reserve = internalMutation({
     const { liveLease, candidates } = await readQueueWork(ctx, now)
     if (liveLease) return { status: 'lease_held' as const }
 
-    let selection: { scan: Doc<'scans'>; storageId: Id<'_storage'> } | undefined
+    let selection:
+      { scan: Doc<'scans'>; storageIds: Id<'_storage'>[] } | undefined
     for (const scan of candidates) {
       const verdict = eligibility(scan)
       if (!verdict.eligible) {
         await ctx.db.patch(scan._id, { status: 'failed', error: verdict.error })
         continue
       }
-      selection = { scan, storageId: verdict.storageId }
+      selection = { scan, storageIds: verdict.storageIds }
       break
     }
     // A batch of nothing but disqualified scans is work done, not an empty queue: the next batch
@@ -418,12 +455,15 @@ export const reserve = internalMutation({
       attemptId,
       startedAt: now,
       attempts: scan.attempts + 1,
+      // A scan predating the field adopts the count it already has rather than restarting at zero
+      // and understating what it consumed.
+      totalReservations: (scan.totalReservations ?? scan.attempts) + 1,
       nextAttemptAt: undefined,
     })
     return {
       status: 'reserved' as const,
       scanId: scan._id,
-      storageId: selection.storageId,
+      storageIds: selection.storageIds,
       attemptId,
     }
   },
@@ -456,7 +496,15 @@ export const finalize = internalMutation({
   returns: v.boolean(),
   handler: async (ctx, { scanId, recipes, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan || scan.attemptId !== observation.attemptId) return false
+    // The attempt id alone would not do: it survives the write, so a second identical call would
+    // pass the guard and insert a second set of recipes. Requiring `extracting` and clearing the id
+    // in the same transaction consumes the attempt.
+    if (
+      !scan ||
+      scan.status !== 'extracting' ||
+      scan.attemptId !== observation.attemptId
+    )
+      return false
     for (const recipe of recipes) {
       await ctx.db.insert(
         'recipes',
@@ -466,14 +514,18 @@ export const finalize = internalMutation({
           status: 'review' as const,
           beautifiedAccepted: false,
           beautifyStatus: 'idle' as const,
+          revision: 0,
         }),
       )
     }
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
+      attemptId: undefined,
+      startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: { ...observation, failureKind: null },
+      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
     })
     return true
   },
@@ -489,7 +541,12 @@ export const recordFailure = internalMutation({
   returns: v.boolean(),
   handler: async (ctx, { scanId, failureKind, error, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
-    if (!scan || scan.attemptId !== observation.attemptId) return false
+    if (
+      !scan ||
+      scan.status !== 'extracting' ||
+      scan.attemptId !== observation.attemptId
+    )
+      return false
     const terminal =
       isTerminalFailure(failureKind) || scan.attempts >= MAX_ATTEMPTS
     await ctx.db.patch(scanId, {
@@ -499,6 +556,7 @@ export const recordFailure = internalMutation({
       startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: { ...observation, failureKind },
+      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
     })
     return true
   },
@@ -558,15 +616,10 @@ export const drain = internalAction({
       return null
     }
 
-    const blob = await ctx.storage.get(reservation.storageId)
-    const result = blob
-      ? await extractImage({ blob })
-      : failure({
-          kind: 'invalid_image',
-          error: 'Image stockée introuvable',
-          model: process.env.OPENROUTER_MODEL ?? '',
-          startedAt: performance.now(),
-        })
+    const blobs = await Promise.all(
+      reservation.storageIds.map((storageId) => ctx.storage.get(storageId)),
+    )
+    const result = await extractImages({ blobs })
     const observation = {
       scanId: reservation.scanId,
       attemptId: reservation.attemptId,

@@ -223,10 +223,13 @@ capture → upload (scan pending) → [bouton] worker → extraction → file de
 ```
 
 1. **Capture.** Sur mobile, l'appareil photo, une page à la fois. Sur desktop, plusieurs
-   fichiers d'un coup pour rattraper le stock initial. Les pages du lot sont des feuilles sur
-   lesquelles plusieurs extraits ont été recollés : **un scan peut contenir plusieurs
-   recettes**, et **plusieurs images** (les deux pages d'une recette qui continue au verso sont
-   envoyées ensemble au modèle).
+   fichiers d'un coup pour rattraper le stock initial — et ceux-là forment **un scan par fichier**,
+   parce que ce sont des pages sans rapport les unes avec les autres. Les pages du lot sont des
+   feuilles sur lesquelles plusieurs extraits ont été recollés : **un scan peut contenir plusieurs
+   recettes**. Un scan peut aussi porter **plusieurs images** (jusqu'à quatre) quand elles se lisent
+   ensemble — les deux pages d'une recette qui continue au verso sont envoyées dans un seul appel au
+   modèle. Ce regroupement est un geste explicite depuis l'écran de correction, jamais le défaut
+   d'une sélection multiple.
 2. **Compression côté client** avant l'envoi (~1500 px de large, JPEG), avec un **plafond en
    octets** en plus du plafond en pixels — l'egress Convex se compte en octets, pas en pixels.
    **Garde-fou format :** après décodage, vérifier que l'image a des dimensions non nulles. Un
@@ -274,9 +277,12 @@ capture → upload (scan pending) → [bouton] worker → extraction → file de
    L'écran permet aussi d'**ajouter une recette** que le modèle a manquée sur la page et de
    **supprimer** un faux positif : une page mal segmentée se rattrape au lieu d'imposer de
    supprimer le scan et de refaire la photo.
-10. **Publication.** La recette passe en `published`, son `slug` est figé. Quand plus aucune
-    recette du scan n'est en `review`, `purgeAfter` est posé — les images sont supprimées à
-    l'expiration du délai, ou manuellement depuis l'administration.
+10. **Publication.** La recette passe en `published`, son `slug` est figé — et n'est jamais
+    recalculé ensuite, même si le titre change : c'est l'adresse que la vitrine a distribuée. La
+    dépublication est possible et conserve le slug. Quand plus aucune recette du scan n'est en
+    `review` **et qu'au moins une est publiée**, `purgeAfter` descend à sept jours ; sinon il
+    remonte au plafond. Un scan vidé de ses recettes est un scan raté, pas un scan traité, et sa
+    photo est la seule chose qui permette de le rattraper.
 
 ## Illustration des recettes (optionnel)
 
@@ -347,13 +353,15 @@ stocké, ni affiché. Une recette n'est identifiée que par son titre et son typ
 
 **Administration**
 
-- `/admin` — saisie du secret, mémorisé en `localStorage`.
-- `/admin/capture` — appareil photo (mobile) ou sélection multiple (desktop) ; plusieurs images
-  peuvent être regroupées dans un même scan.
-- `/admin/file` — file de validation, réactive ; compteurs `pending` / `extracting` visibles en
-  permanence, bouton de lancement et de relance, scans en échec relançables.
-- `/admin/recette/$id` — écran de correction : édition des champs, ajout et suppression de
-  recettes du scan, saisie manuelle complète.
+- `/admin` — page unique : saisie du secret, capture, file de validation et liste des scans. La
+  découpe en quatre routes qu'annonçait cette spec n'a pas eu lieu ; elle n'aurait rien débloqué et
+  la page tient. Capture : appareil photo (mobile) ou sélection multiple (desktop), **un scan par
+  fichier**. File réactive, compteurs `pending` / `extracting` visibles en permanence, bouton de
+  lancement et de relance.
+- `/admin/scan/$id` — écran de correction, **clé par scan** et non par recette : le geste central
+  est « cette page a été mal segmentée », qui porte sur la page. Pages d'origine en tête, recettes
+  du scan empilées dessous ; édition des champs, ajout et suppression de recettes, ajout et retrait
+  d'une page, relance de l'extraction, publication.
 
 ## Sécurité
 

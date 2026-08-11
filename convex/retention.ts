@@ -39,25 +39,36 @@ export function ceilingFor({
   return Math.max(createdAt + RETENTION_CEILING_MS, now + PURGE_GRACE_MS)
 }
 
-export async function releaseIfTreated(
+/**
+ * Recomputes the purge deadline in **both** directions. A one-way `Math.min` could only shorten it,
+ * so unpublishing a recipe left its photo on the seven-day path while the recipe was correctable
+ * again — the one state where the photo is needed most.
+ *
+ * A scan emptied of its recipes is a failed scan, not a treated one: only a published recipe proves
+ * the page was actually harvested, and until then the ninety-day ceiling is what eventually
+ * collects it.
+ */
+export async function reconcileRetention(
   ctx: MutationCtx,
-  scanId: Id<'scans'>,
+  scanId: Id<'scans'> | undefined,
 ): Promise<void> {
+  if (!scanId) return
   const scan = await ctx.db.get('scans', scanId)
   if (!scan || scan.purgedAt !== undefined) return
 
-  const reviewRecipes = await ctx.db
+  const recipes = await ctx.db
     .query('recipes')
     .withIndex('by_scan', (q) => q.eq('scanId', scanId))
-    .filter((q) => q.eq(q.field('status'), 'review'))
-    .take(1)
-  if (reviewRecipes.length > 0) return
+    .collect()
+  const treated =
+    recipes.some((recipe) => recipe.status === 'published') &&
+    !recipes.some((recipe) => recipe.status === 'review')
 
+  const now = Date.now()
   await ctx.db.patch(scanId, {
-    purgeAfter: Math.min(
-      scan.purgeAfter ?? Infinity,
-      Date.now() + RETENTION_AFTER_TREATMENT_MS,
-    ),
+    purgeAfter: treated
+      ? now + RETENTION_AFTER_TREATMENT_MS
+      : ceilingFor({ createdAt: scan.createdAt, now }),
   })
 }
 

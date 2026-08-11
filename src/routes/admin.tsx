@@ -1,12 +1,11 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import type { Id } from '../../convex/_generated/dataModel'
-import { compressImage } from '../lib/compress'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
+import { useAttachImage } from '../lib/useAttachImage'
 import {
   deriveQueueState,
   formatAge,
@@ -22,8 +21,7 @@ function AdminPage() {
   const [adminToken, setAdminToken] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
-  const generateUploadUrl = useMutation(api.admin.generateUploadUrl)
-  const createScan = useMutation(api.admin.createScan)
+  const attachImage = useAttachImage(adminToken)
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
   const serverTime = useMutation(api.admin.serverTime)
   const [clockOffset, setClockOffset] = useState(0)
@@ -61,35 +59,26 @@ function AdminPage() {
     else sessionStorage.removeItem(ADMIN_TOKEN_STORAGE_KEY)
   }
 
-  async function upload(file: File) {
+  // One scan per file. Selecting thirty pages at once is how the initial backlog gets in, and those
+  // pages have nothing to do with each other — grouping them would make one huge billed call.
+  // Pages that belong together are grouped from the correction screen instead.
+  async function upload(files: File[]) {
     setBusy(true)
-    setMessage('Compression en cours…')
+    setMessage(
+      files.length > 1 ? `Envoi de ${files.length} pages…` : 'Compression…',
+    )
     try {
-      const compressed = await compressImage(file)
-      if (!compressed.ok) {
-        setMessage(compressed.message)
-        return
+      const failures: string[] = []
+      for (const file of files) {
+        const result = await attachImage(file)
+        if (!result.ok) failures.push(`${file.name} : ${result.error}`)
       }
-      const grant = await generateUploadUrl({ adminToken })
-      if (!grant.ok) {
-        setMessage(`${grant.error} (${Math.ceil(grant.retryAfter / 1000)} s)`)
-        return
-      }
-      const response = await fetch(grant.uploadUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'image/jpeg' },
-        body: compressed.blob,
-      })
-      if (!response.ok)
-        throw new Error(`Téléversement refusé (HTTP ${response.status})`)
-      const uploaded = (await response.json()) as { storageId: string }
-      const result = await createScan({
-        adminToken,
-        ticketId: grant.ticketId,
-        storageId: uploaded.storageId as Id<'_storage'>,
-      })
-      setMessage(result.ok ? 'Scan créé.' : result.error)
-      if (result.ok) await scans.refetch()
+      setMessage(
+        failures.length === 0
+          ? `${files.length} scan(s) créé(s).`
+          : failures.join(' · '),
+      )
+      await scans.refetch()
     } catch (error) {
       setMessage(error instanceof Error ? error.message : String(error))
     } finally {
@@ -117,11 +106,12 @@ function AdminPage() {
         Photographier une page
         <input
           type="file"
+          multiple
           accept="image/jpeg,image/png,image/heic,image/heif,image/webp"
           disabled={!adminToken || busy}
           onChange={(event) => {
-            const file = event.target.files?.[0]
-            if (file) void upload(file)
+            const files = Array.from(event.target.files ?? [])
+            if (files.length > 0) void upload(files)
           }}
         />
       </label>
@@ -142,7 +132,11 @@ function AdminPage() {
         {scans.isLoading && adminToken && <p>Chargement…</p>}
         {scans.data?.map((scan) => (
           <article key={scan.id} className="admin-page__scan">
-            <h3>{scan.status}</h3>
+            <h3>
+              <Link to="/admin/scan/$id" params={{ id: scan.id }}>
+                {scan.status}
+              </Link>
+            </h3>
             <p>
               {scan.imageCount} image · {scan.drafts.length}
               {scan.draftsTruncated ? '+' : ''} brouillon(s)

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { RECIPE_TYPES } from './recipeTypes.js'
+import { MAX_RECIPES_PER_SCAN } from './scanLimits.js'
 
 export const RECIPE_SCHEMA_VERSION = '2'
 
@@ -28,8 +29,11 @@ export const recipeSchema = recipeSchemaV1.extend({
   ingredientsInferred: z.boolean(),
 })
 
+// The bound lives here rather than in a downstream check: past it `safeParse` fails and the flow
+// already reports `invalid_schema` with the raw answer kept for diagnosis, so a second guard in
+// `finalize` would be unreachable.
 export const extractionSchemaV2 = z.strictObject({
-  recipes: z.array(recipeSchema),
+  recipes: z.array(recipeSchema).max(MAX_RECIPES_PER_SCAN),
 })
 
 export const extractionSchema = extractionSchemaV2
