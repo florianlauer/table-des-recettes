@@ -1,8 +1,10 @@
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
-import { DRAFTS_LISTED_PER_SCAN } from './admin'
-import { api } from './_generated/api'
+import { DRAFTS_LISTED_PER_SCAN, QUEUE_COUNT_CAP } from './admin'
+import { api, internal } from './_generated/api'
+import { LEASE_MS, MAX_ATTEMPTS } from './extract'
+import { rateLimiter } from './rateLimits'
 import schema from './schema'
 
 const modules = import.meta.glob('./**/*.ts')
@@ -74,6 +76,9 @@ describe('admin boundary', () => {
       imageCount: 1,
       drafts: [],
     })
+    if (!first.ok) throw new Error(first.error)
+    const stored = await t.run((ctx) => ctx.db.get('scans', first.scanId))
+    expect(stored?.purgeAfter).toBeGreaterThan(stored?.createdAt ?? Infinity)
   })
 
   test('bounds the drafts of one scan and reports the truncation', async () => {
@@ -149,5 +154,192 @@ describe('admin boundary', () => {
     const refused = results.filter((result) => !result.ok)
     expect(refused.length).toBeGreaterThan(0)
     expect(refused.every((result) => result.retryAfter > 0)).toBe(true)
+  })
+})
+
+describe('queue status', () => {
+  test('requires an admin token', async () => {
+    const t = setup()
+    await expect(
+      t.query(api.admin.queueStatus, { adminToken: 'wrong' }),
+    ).rejects.toThrow('Accès administrateur refusé')
+  })
+
+  test('reports bounded counts, queue facts, and blocked attempts', async () => {
+    const t = setup()
+    const now = Date.now()
+    await t.run(async (ctx) => {
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'pending',
+        attempts: 0,
+        nextAttemptAt: now + 10_000,
+        createdAt: 10,
+      })
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'pending',
+        attempts: MAX_ATTEMPTS,
+        createdAt: 20,
+      })
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'extracting',
+        attempts: 2,
+        startedAt: now,
+        createdAt: 30,
+      })
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: MAX_ATTEMPTS,
+        createdAt: 40,
+      })
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'failed',
+        attempts: MAX_ATTEMPTS,
+        createdAt: 50,
+      })
+    })
+
+    await expect(
+      t.query(api.admin.queueStatus, { adminToken: 'test-secret' }),
+    ).resolves.toEqual({
+      counts: { pending: 2, extracting: 1, done: 1, failed: 1 },
+      truncated: false,
+      oldestPendingAt: 10,
+      currentLease: { startedAt: now, attempts: 2 },
+      nextAttemptAt: now + 10_000,
+      attemptsCeiling: 2,
+    })
+  })
+
+  test('takes one row over the count cap to report truncation', async () => {
+    const t = setup()
+    await t.run(async (ctx) => {
+      for (let index = 0; index < QUEUE_COUNT_CAP + 1; index += 1) {
+        await ctx.db.insert('scans', {
+          imageStorageIds: [],
+          status: 'failed',
+          attempts: 1,
+          createdAt: index,
+        })
+      }
+    })
+    const status = await t.query(api.admin.queueStatus, {
+      adminToken: 'test-secret',
+    })
+    expect(status.counts.failed).toBe(QUEUE_COUNT_CAP)
+    expect(status.truncated).toBe(true)
+  })
+})
+
+describe('extraction launch verdict', () => {
+  test('reports no work without scheduling a drain', async () => {
+    const t = setup()
+    await expect(
+      t.mutation(api.admin.startExtraction, { adminToken: 'test-secret' }),
+    ).resolves.toEqual({ status: 'no_work' })
+  })
+
+  test('reports an existing live lease', async () => {
+    const t = setup()
+    await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'extracting',
+        attempts: 1,
+        startedAt: Date.now(),
+        createdAt: 1,
+      }),
+    )
+    await expect(
+      t.mutation(api.admin.startExtraction, { adminToken: 'test-secret' }),
+    ).resolves.toEqual({ status: 'already_running' })
+  })
+
+  test('reports that work was scheduled', async () => {
+    const t = setup()
+    await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'pending',
+        attempts: 0,
+        createdAt: 1,
+      }),
+    )
+    await expect(
+      t.mutation(api.admin.startExtraction, { adminToken: 'test-secret' }),
+    ).resolves.toEqual({ status: 'scheduled' })
+  })
+
+  test('reports an absolute retry deadline when rate limited', async () => {
+    const t = setup()
+    await t.run(async (ctx) => {
+      for (let index = 0; index < 60; index += 1) {
+        const result = await rateLimiter.limit(ctx, 'extraction')
+        expect(result.ok).toBe(true)
+      }
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'pending',
+        attempts: 0,
+        createdAt: 1,
+      })
+    })
+    const before = Date.now()
+    const result = await t.mutation(api.admin.startExtraction, {
+      adminToken: 'test-secret',
+    })
+    expect(result.status).toBe('rate_limited')
+    if (result.status === 'rate_limited')
+      expect(result.retryAt).toBeGreaterThan(before)
+  })
+
+  test('reserve persists the retry scheduled by the drain', async () => {
+    const t = setup()
+    const scanId = await t.run(async (ctx) => {
+      for (let index = 0; index < 60; index += 1) {
+        await rateLimiter.limit(ctx, 'extraction')
+      }
+      return ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'pending',
+        attempts: 0,
+        createdAt: 1,
+      })
+    })
+    const before = Date.now()
+    await expect(t.mutation(internal.extract.reserve, {})).resolves.toEqual({
+      status: 'continue',
+    })
+    const storageId = await t.run((ctx) =>
+      ctx.storage.store(new Blob(['healthy'])),
+    )
+    await t.run((ctx) =>
+      ctx.db.patch(scanId, { imageStorageIds: [storageId], status: 'pending' }),
+    )
+    await expect(
+      t.mutation(internal.extract.reserve, {}),
+    ).resolves.toMatchObject({ status: 'rate_limited' })
+    const scan = await t.run((ctx) => ctx.db.get('scans', scanId))
+    expect(scan?.nextAttemptAt).toBeGreaterThan(before)
+  })
+
+  test('can relaunch an expired lease', async () => {
+    const t = setup()
+    await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'extracting',
+        attempts: 1,
+        startedAt: Date.now() - LEASE_MS - 1,
+        createdAt: 1,
+      }),
+    )
+    await expect(
+      t.mutation(api.admin.startExtraction, { adminToken: 'test-secret' }),
+    ).resolves.toEqual({ status: 'scheduled' })
   })
 })

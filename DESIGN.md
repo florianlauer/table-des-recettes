@@ -436,6 +436,9 @@ Interdits, sans exception :
 Une seule exception d'aplat : la reliure en tête de page, qui borde la fenêtre et ne coiffe
 aucun contenu.
 
+Sur `/admin`, ces interdits restent applicables, contrairement aux obligations de Fraunces,
+d'échelle typographique fluide et d'encres de type.
+
 Les filets, la typographie, le blanc et les photographies réelles portent toute la composition.
 
 ---

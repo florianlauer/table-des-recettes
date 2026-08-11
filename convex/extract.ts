@@ -19,14 +19,19 @@ import {
   repairExtraction,
 } from '../src/lib/recipe-schema'
 import { sniffImageHeader } from '../src/lib/imageHeader'
+import {
+  LEASE_MS,
+  MAX_ATTEMPTS,
+  REQUEST_TIMEOUT_MS,
+} from '../src/lib/queueContract'
+
+export {
+  LEASE_MS,
+  MAX_ATTEMPTS,
+  REQUEST_TIMEOUT_MS,
+} from '../src/lib/queueContract'
 
 export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1'
-export const REQUEST_TIMEOUT_MS = 120_000
-export const MAX_ATTEMPTS = 3
-// One reservation bills at most one HTTP request, so retries live at the queue level where
-// MAX_ATTEMPTS and the rate limiter already account for them. The margin keeps a replacement
-// worker behind the request deadline and the action overhead.
-export const LEASE_MS = REQUEST_TIMEOUT_MS + 30_000
 export const MAX_OUTPUT_TOKENS = 8000
 export const UNCONSUMED_TICKET_GRACE_MS = 60 * 60 * 1000
 export const CONSUMED_TICKET_RETENTION_MS = 7 * 24 * 60 * 60 * 1000
@@ -311,6 +316,8 @@ export type Eligibility =
   | { eligible: false; error: string }
 
 export function eligibility(scan: Doc<'scans'>): Eligibility {
+  if (scan.purgedAt !== undefined)
+    return { eligible: false, error: 'Photo purgée : rescanner la page' }
   if (scan.attempts >= MAX_ATTEMPTS)
     return { eligible: false, error: 'Plafond de tentatives atteint' }
   const storageId = scan.imageStorageIds.at(0)
@@ -382,11 +389,15 @@ export const reserve = internalMutation({
 
     // Quota last, so idle presses of the button cannot exhaust it before any work is confirmed.
     const limit = await rateLimiter.limit(ctx, 'extraction')
-    if (!limit.ok)
+    if (!limit.ok) {
+      await ctx.db.patch(selection.scan._id, {
+        nextAttemptAt: now + limit.retryAfter,
+      })
       return {
         status: 'rate_limited' as const,
         retryAfter: limit.retryAfter,
       }
+    }
     const { scan } = selection
     const attemptId = `${scan._id}:${scan.attempts + 1}:${now}`
     await ctx.db.patch(scan._id, {
@@ -394,6 +405,7 @@ export const reserve = internalMutation({
       attemptId,
       startedAt: now,
       attempts: scan.attempts + 1,
+      nextAttemptAt: undefined,
     })
     return {
       status: 'reserved' as const,
@@ -447,6 +459,7 @@ export const finalize = internalMutation({
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
+      nextAttemptAt: undefined,
       lastAttempt: { ...observation, failureKind: null },
     })
     return true
@@ -471,6 +484,7 @@ export const recordFailure = internalMutation({
       error,
       attemptId: undefined,
       startedAt: undefined,
+      nextAttemptAt: undefined,
       lastAttempt: { ...observation, failureKind },
     })
     return true

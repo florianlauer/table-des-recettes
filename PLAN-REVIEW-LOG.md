@@ -88,7 +88,7 @@ VERDICT: REVISE
 ### Réponse de Claude — 6 acceptés, 3 partiels, 1 rejeté
 
 **nº6 — accepté en entier, et c'est le meilleur constat du lot.** Un scan de plus de 90 jours
-recevait du backfill une échéance *déjà passée* et partait au premier cron, sans grâce. Correctif
+recevait du backfill une échéance _déjà passée_ et partait au premier cron, sans grâce. Correctif
 adopté au-delà de la suggestion : une fonction pure unique `ceilingFor()` avec
 `max(createdAt + plafond, now + PURGE_GRACE_MS)` — 14 jours — par laquelle passent les **deux**
 écrivains, plus le `dryRun` compté et un ordre de déploiement en deux phases écrit dans le plan.
@@ -129,7 +129,7 @@ divergence. Le défaut était un verdict mensonger, il coûtait un mot.
 **nº5 — accepté en partie.** Le garde-fou « bail vivant » est pris côté mutation : supprimer le blob
 sous une action en cours de lecture produit un `'Image stockée introuvable'` incompréhensible.
 Refusé le garde-fou « brouillons encore en `review` » : puisque rien n'écrit `published`, il
-interdirait la purge manuelle de *tout* scan ayant produit des recettes, c'est-à-dire de tous les
+interdirait la purge manuelle de _tout_ scan ayant produit des recettes, c'est-à-dire de tous les
 scans réussis — il viderait la fonctionnalité que la tâche demande. À reconsidérer après R3, noté
 dans le plan.
 
@@ -255,11 +255,12 @@ dérive la limitation jusque-là puis refetche. Généralisé en décision nº9 
 la frontière en échéance, jamais en délai.
 
 **nº8 — rejeté pour la seconde fois, raison consignée.** Position inchangée et assumée : monter jsdom
-+ RTL est une décision explicite du grill (Q18), avec son coût énoncé — dans une tâche d'une heure
-c'est la dérive qui la transforme en quatre. Le plan a resserré la frontière autant qu'il est possible
-(offset d'horloge, expiration de limitation, sélection du libellé, tous en fonctions pures testées),
-de sorte que ce qui reste non couvert est le seul câblage JSX. C'est un désaccord réel, pas un oubli :
-consigné en R8 pour que le prochain qui touche cet écran le prenne en charge.
+
+- RTL est une décision explicite du grill (Q18), avec son coût énoncé — dans une tâche d'une heure
+  c'est la dérive qui la transforme en quatre. Le plan a resserré la frontière autant qu'il est possible
+  (offset d'horloge, expiration de limitation, sélection du libellé, tous en fonctions pures testées),
+  de sorte que ce qui reste non couvert est le seul câblage JSX. C'est un désaccord réel, pas un oubli :
+  consigné en R8 pour que le prochain qui touche cet écran le prenne en charge.
 
 ---
 
@@ -464,3 +465,90 @@ d'une heure. Il est parti en R4 avec ce qui en dépendait.
 **Point à valider par Florian avant implémentation** : la décision nº5 revient sur sa réponse au Q11
 du round 2 du grill — `releaseIfTreated` n'est plus branchée sur `recordFailure`, donc le plafond de
 90 jours est le seul mécanisme de rétention actif dans cette PR.
+
+---
+
+# Act 3 — Build
+
+Rôles inversés : Codex construit avec accès en écriture, Claude relit le diff et exige la preuve.
+Builder : `gpt-5.6-sol` (effort `medium`), codex-cli 0.144.5, `--yolo`.
+Thread Codex : `019fefde-3711-7cf1-9f3b-a56c306c22a5`. `MAX_FIX_ROUNDS=2`, un seul consommé.
+Preuve exigée : `npm run check && npm run lint && npm run typecheck && npm test`.
+
+### Round 1 — build Codex
+
+Les 22 points du plan implémentés d'un trait : `convex/retention.ts`, `convex/crons.ts`,
+`src/lib/queueStatus.ts` et leurs tests créés ; `convex/schema.ts`, `convex/admin.ts`,
+`convex/extract.ts`, `src/routes/admin.tsx`, `DESIGN.md` et les deux documents de suivi modifiés.
+Codex a déclaré zéro déviation et une preuve verte à 152 tests.
+
+### Verdict de Claude — deux défauts, non déclarés par Codex
+
+**Ce qui tenait.** La fidélité au plan est réelle et les cinq garde-fous porteurs sont corrects : le
+`Math.max` de `ceilingFor`, la borne `q.gte('purgeAfter', 0)`, le report sur bail vivant dans
+`purgeOneScan`, la sous-transaction par scan avec report du `purgeAfter` côté appelant sur échec, et
+le `.take(CAP + 1)` sur chaque comptage. `queueStatus` ne lit jamais l'horloge. Les deux tests de
+non-régression imposés par le plan sont **non vacués** : celui du scan sans `purgeAfter` échouerait
+bien si la borne disparaissait, celui du bail vivant échouerait bien si le report disparaissait.
+Codex est même allé au-delà du plan en effaçant `nextAttemptAt` dans `reserve`, `finalize` et
+`recordFailure` — sans quoi une annonce de reprise périmée aurait survécu à la tentative suivante.
+
+**Défaut 1, sérieux — tout le module d'extraction serveur partait dans le navigateur.**
+`src/routes/admin.tsx` importait `{ LEASE_MS, MAX_ATTEMPTS }` depuis `../../convex/extract`, ce qui
+tirait le graphe transitif complet d'un module backend dans le bundle client. Constaté sur le build
+réel, pas déduit : `.output/public/assets/admin-*.js` pesait 52,5 kB et contenait
+`openrouter.ai/api/v1`, le prompt d'extraction v3 inliné, `requestBody`, `interpretResponse` et
+`extractImage` avec sa construction d'en-tête `Authorization: Bearer`, plus le schéma Zod et la
+logique de réparation. Aucune fuite de secret — `environment` vaut `{}` côté navigateur — mais le
+prompt v3 est un actif payé au spike et devenait public, et 52 kB de code serveur inatteignable
+étaient servis à tout visiteur. Cela inversait aussi la direction de dépendance établie du dépôt :
+les constantes partagées vivent dans `src/lib/` et c'est Convex qui les importe, comme
+`MAX_INPUT_BYTES` depuis `src/lib/imageHeader.ts`.
+
+Ce défaut n'a été trouvé que parce que la vérification a lancé `npm run build`, absent du
+`PROOF_CMD` initial. Les quatre contrôles du CI passaient tous au vert avec le bundle pollué.
+
+**Défaut 2 — le compteur de plafond comptait les réussites.** `queueStatus.attemptsCeiling`
+agrégeait `pending + extracting + done + failed`, donc un scan ayant **réussi** à sa troisième
+tentative s'affichait « au plafond de tentatives ». Ce compteur n'existe que pour empêcher
+d'appuyer sur « Relancer » sur un scan qui ne repartira jamais : le gonfler de succès en faisait
+exactement le compteur trompeur que T10 devait supprimer.
+
+### Round de correction 1 — Codex
+
+Les constantes de temporisation de la file sont sorties dans `src/lib/queueContract.ts`, module pur
+sans aucun import de `convex/` ; `convex/extract.ts` les importe et les ré-exporte pour les
+appelants existants ; `src/routes/admin.tsx` et `src/lib/queueStatus.ts` n'atteignent plus que
+`src/lib/`. `attemptsCeiling` exclut désormais `done`, avec un test qui le discrimine.
+
+### Verdict de Claude — accepté
+
+Preuve rejouée indépendamment, pas celle de Codex :
+
+```
+npm run check      All matched files use Prettier code style!
+npm run lint       ESLint: No issues found
+npm run typecheck  tsc --noEmit, aucune sortie
+npm test           23 fichiers, 152 tests, tous verts
+npm run build      vert, après suppression complète de .output
+```
+
+Assertion de bundle, sur un build reconstruit de zéro :
+
+```
+grep -rl "openrouter.ai|EXTRACTION_PROMPT|OPENROUTER_API_KEY" .output/public/   → aucun résultat
+.output/public/assets/admin-*.js                                               → 52,5 kB puis 9,54 kB
+```
+
+Le seul `Bearer` restant dans les assets publics est `Bearer ${this.auth}` du client `convex`
+lui-même, qui authentifie le navigateur auprès du déploiement — légitime et sans rapport.
+
+Le test de `attemptsCeiling` est discriminant : il insère un scan `done`, un `failed` et un
+`pending` tous à `MAX_ATTEMPTS` et attend `2`. Il vaudrait `3` si la correction régressait.
+
+28 tests ajoutés : 12 dans `convex/retention.test.ts`, 6 dans `src/lib/queueStatus.test.ts`, 10 dans
+`convex/admin.test.ts` et `convex/extract.test.ts`. Aucun test existant affaibli ni supprimé.
+
+**Reliquat créé par ce build** : `npm run build` doit entrer dans les contrôles du CI. Sans lui, une
+régression d'import serveur vers client repasse silencieusement les quatre autres portes — c'est
+précisément ce qui vient d'arriver.

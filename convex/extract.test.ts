@@ -270,6 +270,20 @@ describe('scan eligibility', () => {
     })
   })
 
+  test('reports a purged photo before its empty image list', () => {
+    expect(
+      eligibility(
+        scan({
+          imageStorageIds: [],
+          purgedAt: 1,
+        }),
+      ),
+    ).toEqual({
+      eligible: false,
+      error: 'Photo purgée : rescanner la page',
+    })
+  })
+
   test('disqualifies a scan that does not hold exactly one image', () => {
     for (const imageStorageIds of [
       [],

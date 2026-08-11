@@ -2,7 +2,10 @@ import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import { mutation, query } from './_generated/server'
 import { requireAdmin } from './auth'
+import { LEASE_MS, MAX_ATTEMPTS } from './extract'
 import { rateLimiter } from './rateLimits'
+import { ceilingFor } from './retention'
+import type { PurgeResult } from './retention'
 import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
 
@@ -12,6 +15,7 @@ const createScanResult = v.union(
 )
 
 export const SCANS_LISTED = 100
+export const QUEUE_COUNT_CAP = 1000
 // A page yields a handful of recipes — four on the worst page measured during the spike. The cap
 // is therefore far above any sound extraction, and reaching it means the extraction is malformed,
 // which is exactly what `draftsTruncated` has to tell the operator rather than hide.
@@ -105,6 +109,7 @@ export const createScan = mutation({
       imageStorageIds: [storageId],
       status: 'pending',
       attempts: 0,
+      purgeAfter: ceilingFor({ createdAt: consumedAt, now: consumedAt }),
       createdAt: consumedAt,
     })
     await ctx.db.patch(ticketId, {
@@ -119,11 +124,169 @@ export const createScan = mutation({
 
 export const startExtraction = mutation({
   args: { adminToken: v.string() },
-  returns: v.null(),
+  returns: v.union(
+    v.object({ status: v.literal('scheduled') }),
+    v.object({ status: v.literal('already_running') }),
+    v.object({ status: v.literal('no_work') }),
+    v.object({ status: v.literal('rate_limited'), retryAt: v.number() }),
+  ),
   handler: async (ctx, { adminToken }) => {
     requireAdmin(adminToken)
+    const now = Date.now()
+    const liveLease = await ctx.db
+      .query('scans')
+      .withIndex('by_status_started_at', (q) =>
+        q.eq('status', 'extracting').gt('startedAt', now - LEASE_MS),
+      )
+      .take(1)
+    if (liveLease.length > 0) return { status: 'already_running' as const }
+
+    const pending = await ctx.db
+      .query('scans')
+      .withIndex('by_status', (q) => q.eq('status', 'pending'))
+      .take(1)
+    const expiredLease = await ctx.db
+      .query('scans')
+      .withIndex('by_status_started_at', (q) =>
+        q.eq('status', 'extracting').lte('startedAt', now - LEASE_MS),
+      )
+      .take(1)
+    if (pending.length === 0 && expiredLease.length === 0) {
+      return { status: 'no_work' as const }
+    }
+
+    const limit = await rateLimiter.check(ctx, 'extraction')
+    if (!limit.ok) {
+      return {
+        status: 'rate_limited' as const,
+        retryAt: now + limit.retryAfter,
+      }
+    }
     await ctx.scheduler.runAfter(0, internal.extract.drain, {})
-    return null
+    return { status: 'scheduled' as const }
+  },
+})
+
+export const serverTime = mutation({
+  args: { adminToken: v.string() },
+  returns: v.number(),
+  handler: async (_ctx, { adminToken }) => {
+    requireAdmin(adminToken)
+    return Date.now()
+  },
+})
+
+export const queueStatus = query({
+  args: { adminToken: v.string() },
+  returns: v.object({
+    counts: v.object({
+      pending: v.number(),
+      extracting: v.number(),
+      done: v.number(),
+      failed: v.number(),
+    }),
+    truncated: v.boolean(),
+    oldestPendingAt: v.union(v.number(), v.null()),
+    currentLease: v.union(
+      v.object({ startedAt: v.number(), attempts: v.number() }),
+      v.null(),
+    ),
+    nextAttemptAt: v.union(v.number(), v.null()),
+    attemptsCeiling: v.number(),
+  }),
+  handler: async (ctx, { adminToken }) => {
+    requireAdmin(adminToken)
+    const [pendingRows, extractingRows, doneRows, failedRows] =
+      await Promise.all([
+        ctx.db
+          .query('scans')
+          .withIndex('by_status', (q) => q.eq('status', 'pending'))
+          .take(QUEUE_COUNT_CAP + 1),
+        ctx.db
+          .query('scans')
+          .withIndex('by_status', (q) => q.eq('status', 'extracting'))
+          .take(QUEUE_COUNT_CAP + 1),
+        ctx.db
+          .query('scans')
+          .withIndex('by_status', (q) => q.eq('status', 'done'))
+          .take(QUEUE_COUNT_CAP + 1),
+        ctx.db
+          .query('scans')
+          .withIndex('by_status', (q) => q.eq('status', 'failed'))
+          .take(QUEUE_COUNT_CAP + 1),
+      ])
+    const truncated = [pendingRows, extractingRows, doneRows, failedRows].some(
+      (rows) => rows.length > QUEUE_COUNT_CAP,
+    )
+    const pending = pendingRows.slice(0, QUEUE_COUNT_CAP)
+    const extracting = extractingRows.slice(0, QUEUE_COUNT_CAP)
+    const done = doneRows.slice(0, QUEUE_COUNT_CAP)
+    const failed = failedRows.slice(0, QUEUE_COUNT_CAP)
+    const currentLease = extracting.reduce<{
+      startedAt: number
+      attempts: number
+    } | null>((latest, scan) => {
+      if (scan.startedAt === undefined) return latest
+      if (latest !== null && latest.startedAt >= scan.startedAt) return latest
+      return { startedAt: scan.startedAt, attempts: scan.attempts }
+    }, null)
+    const waiting = [...pending, ...extracting]
+    const nextAttemptAt = waiting.reduce<number | null>((nearest, scan) => {
+      if (scan.nextAttemptAt === undefined) return nearest
+      return nearest === null
+        ? scan.nextAttemptAt
+        : Math.min(nearest, scan.nextAttemptAt)
+    }, null)
+    const blockedRows = [...pending, ...extracting, ...failed]
+    return {
+      counts: {
+        pending: pending.length,
+        extracting: extracting.length,
+        done: done.length,
+        failed: failed.length,
+      },
+      truncated,
+      oldestPendingAt:
+        pending.length === 0
+          ? null
+          : Math.min(...pending.map((scan) => scan.createdAt)),
+      currentLease,
+      nextAttemptAt,
+      attemptsCeiling: blockedRows.filter(
+        (scan) => scan.attempts >= MAX_ATTEMPTS,
+      ).length,
+    }
+  },
+})
+
+export const purgeScanImages = mutation({
+  args: { adminToken: v.string(), scanId: v.id('scans') },
+  returns: v.union(
+    v.literal('purged'),
+    v.literal('deferred'),
+    v.literal('already_purged'),
+  ),
+  handler: async (ctx, { adminToken, scanId }): Promise<PurgeResult> => {
+    requireAdmin(adminToken)
+    const scan = await ctx.db.get('scans', scanId)
+    const result: PurgeResult = await ctx.runMutation(
+      internal.retention.purgeOneScan,
+      { scanId },
+    )
+    if (
+      result === 'purged' &&
+      scan &&
+      (scan.status === 'pending' || scan.status === 'extracting')
+    ) {
+      await ctx.db.patch(scanId, {
+        status: 'failed',
+        error: 'Photo purgée',
+        attemptId: undefined,
+        startedAt: undefined,
+        nextAttemptAt: undefined,
+      })
+    }
+    return result
   },
 })
 
@@ -144,6 +307,10 @@ export const listScans = query({
       ),
       draftsTruncated: v.boolean(),
       lastAttempt: v.union(attemptRecord, v.null()),
+      attempts: v.number(),
+      startedAt: v.union(v.number(), v.null()),
+      nextAttemptAt: v.union(v.number(), v.null()),
+      purgedAt: v.union(v.number(), v.null()),
       createdAt: v.number(),
     }),
   ),
@@ -171,6 +338,10 @@ export const listScans = query({
           })),
           draftsTruncated: truncated,
           lastAttempt: scan.lastAttempt ?? null,
+          attempts: scan.attempts,
+          startedAt: scan.startedAt ?? null,
+          nextAttemptAt: scan.nextAttemptAt ?? null,
+          purgedAt: scan.purgedAt ?? null,
           createdAt: scan.createdAt,
         }
       }),

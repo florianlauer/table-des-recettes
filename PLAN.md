@@ -91,7 +91,13 @@ représentable : le cron ne doit pas pouvoir être déployé avant que le backfi
    l'échéance, et les deux écrivains (création, backfill) passent par elle :
 
    ```ts
-   export function ceilingFor({ createdAt, now }: { createdAt: number; now: number }): number {
+   export function ceilingFor({
+     createdAt,
+     now,
+   }: {
+     createdAt: number
+     now: number
+   }): number {
      return Math.max(createdAt + RETENTION_CEILING_MS, now + PURGE_GRACE_MS)
    }
    ```
@@ -126,7 +132,7 @@ représentable : le cron ne doit pas pouvoir être déployé avant que le backfi
    est structurel : la libération abaisse, jamais ne prolonge.**
 
    **Elle n'a aucun appelant dans cette PR** (constat Codex 1.8, retenu contre la décision du round 1
-   du grill). Le brancher sur `recordFailure` aurait fait de l'échec terminal le *seul* déclencheur
+   du grill). Le brancher sur `recordFailure` aurait fait de l'échec terminal le _seul_ déclencheur
    actif, donc aurait raccourci la rétention exactement des photos dont on a le plus besoin pour
    diagnostiquer un `invalid_image` douteux ou rephotographier — l'inverse du but de T7. Le helper
    est écrit et testé, prêt pour T8/R3. **Conséquence assumée : dans cette PR, le plafond est le seul
@@ -212,7 +218,7 @@ représentable : le cron ne doit pas pouvoir être déployé avant que le backfi
     ```
 
     Sans lui, un scan purgé encore en `pending` tomberait sur `'Le scan doit contenir exactement une
-    image'`, message faux qui envoie chercher un bug de cardinalité.
+image'`, message faux qui envoie chercher un bug de cardinalité.
 
 12. **Tests** (`convex/retention.test.ts`, en `convex-test`) : `ceilingFor` en fonction pure, dont
     **le cas d'un scan plus vieux que le plafond, qui doit rendre `now + PURGE_GRACE_MS` et non une
@@ -345,7 +351,7 @@ représentable : le cron ne doit pas pouvoir être déployé avant que le backfi
     `drain` demeure le chemin rapide quand on travaille.
 
     **Ce fichier est seul dans son commit** (constat Codex 2.5) : la procédure de déploiement exige de
-    livrer la rétention *puis* de vérifier le backfill *avant* qu'un cron puisse tourner.
+    livrer la rétention _puis_ de vérifier le backfill _avant_ qu'un cron puisse tourner.
 
 ### Ordre de déploiement, imposé
 
@@ -363,8 +369,8 @@ procédure est les bretelles.
 1. **Le déclencheur de la tâche était inatteignable ; on ajoute un plafond absolu.** **Coût assumé** :
    au plafond, une photo peut partir alors que des brouillons sont encore en `review`. D'où 90 jours.
 2. **Un cron, en contradiction assumée avec « cron de surveillance de la file : non retenu ».** Ce
-   qui a été refusé, c'est un cron qui *surveille la file* — il remplacerait le jugement de
-   l'opérateur. Un cron qui *ramasse les ordures* ne décide de rien, et c'est la seule option qui
+   qui a été refusé, c'est un cron qui _surveille la file_ — il remplacerait le jugement de
+   l'opérateur. Un cron qui _ramasse les ordures_ ne décide de rien, et c'est la seule option qui
    purge même si on n'ouvre plus jamais `/admin`.
 3. **Hebdomadaire, pas quotidien.** Choix de Florian. **La latence du cron s'ajoute à la rétention** :
    libération anticipée effective entre 7 et 14 jours, plafond entre 90 et 97.
