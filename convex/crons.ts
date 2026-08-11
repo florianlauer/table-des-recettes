@@ -4,13 +4,13 @@ import { internal } from './_generated/api'
 const crons = cronJobs()
 
 crons.cron(
-  'purge des photos expirées',
+  'purge expired photos',
   '0 4 * * 1',
   internal.retention.purgeExpired,
   {},
 )
 crons.cron(
-  'balayage des tickets',
+  'sweep extraction tickets',
   '30 4 * * 1',
   internal.extract.sweepTickets,
   {},
