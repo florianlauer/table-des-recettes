@@ -3,9 +3,9 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { DRAFTS_LISTED_PER_SCAN, QUEUE_COUNT_CAP } from './admin'
 import { api, internal } from './_generated/api'
-import { LEASE_MS, MAX_ATTEMPTS } from './extract'
 import { rateLimiter } from './rateLimits'
 import schema from './schema'
+import { LEASE_MS, MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const modules = import.meta.glob('./**/*.ts')
 
@@ -142,6 +142,37 @@ describe('admin boundary', () => {
     })
     expect(scans).toMatchObject([{ draftsTruncated: false }])
     expect(scans.map((scan) => scan.drafts.length)).toEqual([1])
+  })
+
+  test('reports a lease start only while the scan is extracting', async () => {
+    const t = setup()
+    const startedAt = Date.now()
+    await t.run(async (ctx) => {
+      // `finalize` leaves `startedAt` in place, so a scan that just succeeded still carries a recent
+      // one. Exposing it raw would read as a live lease and hide the purge button for a lease's
+      // worth of time.
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: 1,
+        startedAt,
+        createdAt: 2,
+      })
+      await ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'extracting',
+        attempts: 1,
+        startedAt,
+        createdAt: 1,
+      })
+    })
+    const scans = await t.query(api.admin.listScans, {
+      adminToken: 'test-secret',
+    })
+    expect(scans.map((scan) => [scan.status, scan.leaseStartedAt])).toEqual([
+      ['extracting', startedAt],
+      ['done', null],
+    ])
   })
 
   test('limits concurrent upload grants and propagates retryAfter', async () => {

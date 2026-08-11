@@ -8,12 +8,10 @@ import type { Id } from '../../convex/_generated/dataModel'
 import { compressImage } from '../lib/compress'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
 import {
-  applyClockOffset,
+  deriveQueueState,
   formatAge,
   formatRemaining,
   isLeaseLive,
-  isQueueStopped,
-  queueButtonState,
 } from '../lib/queueStatus'
 
 export const ADMIN_TOKEN_STORAGE_KEY = 'table-des-recettes-admin-token'
@@ -55,7 +53,7 @@ function AdminPage() {
       .catch(() => undefined)
   }, [adminToken, serverTime])
 
-  const now = applyClockOffset({ clientNow, offsetMs: clockOffset })
+  const now = clientNow + clockOffset
 
   function updateToken(value: string) {
     setAdminToken(value)
@@ -128,7 +126,13 @@ function AdminPage() {
         />
       </label>
 
-      <QueueBlock adminToken={adminToken} now={now} onMessage={setMessage} />
+      <QueueBlock
+        adminToken={adminToken}
+        now={now}
+        busy={busy}
+        onBusy={setBusy}
+        onMessage={setMessage}
+      />
 
       {message && <p role="status">{message}</p>}
       {scans.error && <p role="alert">{scans.error.message}</p>}
@@ -174,7 +178,7 @@ function AdminPage() {
             )}
             {scan.purgedAt === null &&
               !isLeaseLive({
-                startedAt: scan.startedAt,
+                leaseStartedAt: scan.leaseStartedAt,
                 now,
               }) && (
                 <button
@@ -217,14 +221,16 @@ function AdminPage() {
 function QueueBlock({
   adminToken,
   now,
+  busy,
+  onBusy,
   onMessage,
 }: {
   adminToken: string
   now: number
+  busy: boolean
+  onBusy: (busy: boolean) => void
   onMessage: (message: string) => void
 }) {
-  const [busy, setBusy] = useState(false)
-  const [retryAt, setRetryAt] = useState<number | null>(null)
   const startExtraction = useMutation(api.admin.startExtraction)
   const queue = useQuery({
     ...convexQuery(api.admin.queueStatus, { adminToken }),
@@ -232,21 +238,14 @@ function QueueBlock({
     retry: false,
   })
   const status = queue.data
-  const button = queueButtonState({
-    pendingCount: status?.counts.pending ?? 0,
-    leaseStartedAt: status?.currentLease?.startedAt ?? null,
-    nextAttemptAt: status?.nextAttemptAt ?? null,
-    retryAt,
+  const { leaseLive, stopped, button } = deriveQueueState({
+    facts: {
+      pendingCount: status?.counts.pending ?? 0,
+      leaseStartedAt: status?.currentLease?.startedAt ?? null,
+      nextAttemptAt: status?.nextAttemptAt ?? null,
+    },
     now,
   })
-  const stopped = status
-    ? isQueueStopped({
-        pendingCount: status.counts.pending,
-        leaseStartedAt: status.currentLease?.startedAt ?? null,
-        nextAttemptAt: status.nextAttemptAt,
-        now,
-      })
-    : false
 
   return (
     <section className="admin-page__queue">
@@ -269,14 +268,7 @@ function QueueBlock({
           )}
           {status.currentLease && (
             <p>
-              Bail{' '}
-              {isLeaseLive({
-                startedAt: status.currentLease.startedAt,
-                now,
-              })
-                ? 'actif'
-                : 'périmé'}{' '}
-              depuis{' '}
+              Bail {leaseLive ? 'actif' : 'périmé'} depuis{' '}
               {formatAge({ timestamp: status.currentLease.startedAt, now })} ·
               tentative {status.currentLease.attempts} / {MAX_ATTEMPTS}
             </p>
@@ -294,18 +286,16 @@ function QueueBlock({
         type="button"
         disabled={!adminToken || busy || button.disabled}
         onClick={() => {
-          setBusy(true)
+          onBusy(true)
           startExtraction({ adminToken })
             .then((result) => {
               if (result.status === 'scheduled') {
-                setRetryAt(null)
                 onMessage('Extraction planifiée.')
               } else if (result.status === 'already_running') {
                 onMessage('Une extraction est déjà en cours.')
               } else if (result.status === 'no_work') {
                 onMessage('Rien à extraire.')
               } else {
-                setRetryAt(result.retryAt)
                 onMessage(
                   `Limite atteinte. Reprise possible dans ${formatRemaining({ deadline: result.retryAt, now })}.`,
                 )
@@ -314,7 +304,7 @@ function QueueBlock({
             .catch((error: unknown) =>
               onMessage(error instanceof Error ? error.message : String(error)),
             )
-            .finally(() => setBusy(false))
+            .finally(() => onBusy(false))
         }}
       >
         {button.label}

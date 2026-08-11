@@ -1,73 +1,69 @@
 import { describe, expect, test } from 'vitest'
 import { LEASE_MS } from './queueContract'
-import {
-  applyClockOffset,
-  formatAge,
-  isLeaseLive,
-  isQueueStopped,
-  queueButtonState,
-} from './queueStatus'
+import { deriveQueueState, formatAge, isLeaseLive } from './queueStatus'
+
+const idle = { pendingCount: 0, leaseStartedAt: null, nextAttemptAt: null }
 
 describe('queue status', () => {
-  test('applies the server offset to a skewed client clock', () => {
-    expect(applyClockOffset({ clientNow: 1_000, offsetMs: 4_000 })).toBe(5_000)
-  })
-
   test('expires a lease against the corrected clock', () => {
-    expect(isLeaseLive({ startedAt: 1_000, now: 1_000 + LEASE_MS })).toBe(false)
-    expect(
-      isLeaseLive({
-        startedAt: 1_001,
-        now: 1_000 + LEASE_MS,
-      }),
-    ).toBe(true)
+    expect(isLeaseLive({ leaseStartedAt: 1_000, now: 1_000 + LEASE_MS })).toBe(
+      false,
+    )
+    expect(isLeaseLive({ leaseStartedAt: 1_001, now: 1_000 + LEASE_MS })).toBe(
+      true,
+    )
   })
 
   test('does not call a queue stopped while its retry is scheduled', () => {
     expect(
-      isQueueStopped({
-        pendingCount: 1,
-        leaseStartedAt: null,
-        nextAttemptAt: 20_000,
+      deriveQueueState({
+        facts: { ...idle, pendingCount: 1, nextAttemptAt: 20_000 },
         now: 10_000,
-      }),
+      }).stopped,
     ).toBe(false)
   })
 
   test('calls a queue stopped when the retry deadline passes', () => {
     expect(
-      isQueueStopped({
-        pendingCount: 1,
-        leaseStartedAt: null,
-        nextAttemptAt: 20_000,
+      deriveQueueState({
+        facts: { ...idle, pendingCount: 1, nextAttemptAt: 20_000 },
         now: 20_000,
-      }),
+      }).stopped,
     ).toBe(true)
   })
 
   test('selects truthful launch, relaunch, empty, and waiting labels', () => {
-    const common = {
-      nextAttemptAt: null,
-      retryAt: null,
-      now: 200_000,
-    }
+    const now = 200_000
     expect(
-      queueButtonState({ pendingCount: 1, leaseStartedAt: null, ...common }),
+      deriveQueueState({ facts: { ...idle, pendingCount: 1 }, now }).button,
     ).toEqual({ label: "Démarrer l'extraction", disabled: false })
     expect(
-      queueButtonState({ pendingCount: 0, leaseStartedAt: 1, ...common }),
+      deriveQueueState({ facts: { ...idle, leaseStartedAt: 1 }, now }).button,
     ).toEqual({ label: 'Relancer la file', disabled: false })
+    expect(deriveQueueState({ facts: idle, now }).button).toEqual({
+      label: 'Rien à extraire',
+      disabled: true,
+    })
     expect(
-      queueButtonState({ pendingCount: 0, leaseStartedAt: null, ...common }),
-    ).toEqual({ label: 'Rien à extraire', disabled: true })
-    expect(
-      queueButtonState({
-        pendingCount: 1,
-        leaseStartedAt: null,
-        ...common,
-        nextAttemptAt: 260_000,
-      }),
+      deriveQueueState({
+        facts: { ...idle, pendingCount: 1, nextAttemptAt: 260_000 },
+        now,
+      }).button,
     ).toEqual({ label: 'Reprise dans 1 min', disabled: true })
+  })
+
+  test('reports a live lease and locks the button while it runs', () => {
+    const now = 200_000
+    expect(
+      deriveQueueState({
+        facts: { ...idle, pendingCount: 1, leaseStartedAt: now - 1 },
+        now,
+      }),
+    ).toEqual({
+      leaseLive: true,
+      stopped: false,
+      button: { label: 'Extraction en cours', disabled: true },
+    })
   })
 
   test('formats a bounded age for queue facts', () => {

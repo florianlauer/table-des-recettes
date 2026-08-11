@@ -2,6 +2,8 @@ import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
 import { internalAction, internalMutation } from './_generated/server'
+import type { QueryCtx } from './_generated/server'
+import { PURGED_ERROR } from './retention'
 import { ingredient, recipeType } from './schema'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
@@ -20,12 +22,6 @@ import {
 } from '../src/lib/recipe-schema'
 import { sniffImageHeader } from '../src/lib/imageHeader'
 import {
-  LEASE_MS,
-  MAX_ATTEMPTS,
-  REQUEST_TIMEOUT_MS,
-} from '../src/lib/queueContract'
-
-export {
   LEASE_MS,
   MAX_ATTEMPTS,
   REQUEST_TIMEOUT_MS,
@@ -317,7 +313,7 @@ export type Eligibility =
 
 export function eligibility(scan: Doc<'scans'>): Eligibility {
   if (scan.purgedAt !== undefined)
-    return { eligible: false, error: 'Photo purgée : rescanner la page' }
+    return { eligible: false, error: PURGED_ERROR }
   if (scan.attempts >= MAX_ATTEMPTS)
     return { eligible: false, error: 'Plafond de tentatives atteint' }
   const storageId = scan.imageStorageIds.at(0)
@@ -327,6 +323,42 @@ export function eligibility(scan: Doc<'scans'>): Eligibility {
       error: 'Le scan doit contenir exactement une image',
     }
   return { eligible: true, storageId }
+}
+
+/**
+ * What the queue offers right now: a lease still running, or the batch reservation would consider,
+ * oldest first. Single definition of "is there work", shared by the drain and the admin button so
+ * the verdict shown to the operator cannot drift from what the drain will actually do.
+ */
+export async function readQueueWork(
+  ctx: QueryCtx,
+  now: number,
+): Promise<{ liveLease: Doc<'scans'> | null; candidates: Doc<'scans'>[] }> {
+  const liveLease = await ctx.db
+    .query('scans')
+    .withIndex('by_status_started_at', (q) =>
+      q.eq('status', 'extracting').gt('startedAt', now - LEASE_MS),
+    )
+    .take(1)
+  const held = liveLease.at(0)
+  if (held) return { liveLease: held, candidates: [] }
+
+  const expired = await ctx.db
+    .query('scans')
+    .withIndex('by_status_started_at', (q) =>
+      q.eq('status', 'extracting').lte('startedAt', now - LEASE_MS),
+    )
+    .take(RESERVE_SCAN_BATCH)
+  const pending = await ctx.db
+    .query('scans')
+    .withIndex('by_status', (q) => q.eq('status', 'pending'))
+    .take(RESERVE_SCAN_BATCH)
+  return {
+    liveLease: null,
+    candidates: [...pending, ...expired].sort(
+      (left, right) => left.createdAt - right.createdAt,
+    ),
+  }
 }
 
 const reserveResult = v.union(
@@ -347,27 +379,8 @@ export const reserve = internalMutation({
   returns: reserveResult,
   handler: async (ctx) => {
     const now = Date.now()
-    const liveLease = await ctx.db
-      .query('scans')
-      .withIndex('by_status_started_at', (q) =>
-        q.eq('status', 'extracting').gt('startedAt', now - LEASE_MS),
-      )
-      .take(1)
-    if (liveLease.length > 0) return { status: 'lease_held' as const }
-
-    const expired = await ctx.db
-      .query('scans')
-      .withIndex('by_status_started_at', (q) =>
-        q.eq('status', 'extracting').lte('startedAt', now - LEASE_MS),
-      )
-      .take(RESERVE_SCAN_BATCH)
-    const pending = await ctx.db
-      .query('scans')
-      .withIndex('by_status', (q) => q.eq('status', 'pending'))
-      .take(RESERVE_SCAN_BATCH)
-    const candidates = [...pending, ...expired].sort(
-      (left, right) => left.createdAt - right.createdAt,
-    )
+    const { liveLease, candidates } = await readQueueWork(ctx, now)
+    if (liveLease) return { status: 'lease_held' as const }
 
     let selection: { scan: Doc<'scans'>; storageId: Id<'_storage'> } | undefined
     for (const scan of candidates) {

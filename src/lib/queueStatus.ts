@@ -1,40 +1,13 @@
 import { LEASE_MS } from './queueContract'
 
-export function applyClockOffset({
-  clientNow,
-  offsetMs,
-}: {
-  clientNow: number
-  offsetMs: number
-}): number {
-  return clientNow + offsetMs
-}
-
 export function isLeaseLive({
-  startedAt,
-  now,
-}: {
-  startedAt: number | null
-  now: number
-}): boolean {
-  return startedAt !== null && startedAt > now - LEASE_MS
-}
-
-export function isQueueStopped({
-  pendingCount,
   leaseStartedAt,
-  nextAttemptAt,
   now,
 }: {
-  pendingCount: number
   leaseStartedAt: number | null
-  nextAttemptAt: number | null
   now: number
 }): boolean {
-  const leaseLive = isLeaseLive({ startedAt: leaseStartedAt, now })
-  const hasExpiredLease = leaseStartedAt !== null && !leaseLive
-  const retryScheduled = nextAttemptAt !== null && nextAttemptAt > now
-  return (pendingCount > 0 || hasExpiredLease) && !leaseLive && !retryScheduled
+  return leaseStartedAt !== null && leaseStartedAt > now - LEASE_MS
 }
 
 export function formatAge({
@@ -69,39 +42,69 @@ export function formatRemaining({
   return `${hours} h`
 }
 
+/** The queue facts the server reports, with no clock of their own. */
+export type QueueFacts = {
+  pendingCount: number
+  leaseStartedAt: number | null
+  nextAttemptAt: number | null
+}
+
 export type QueueButtonState = {
   label: string
   disabled: boolean
 }
 
-export function queueButtonState({
+export type QueueState = {
+  leaseLive: boolean
+  stopped: boolean
+  button: QueueButtonState
+}
+
+function buttonFor({
   pendingCount,
-  leaseStartedAt,
-  nextAttemptAt,
+  leaseLive,
+  expiredLease,
   retryAt,
   now,
 }: {
   pendingCount: number
-  leaseStartedAt: number | null
-  nextAttemptAt: number | null
+  leaseLive: boolean
+  expiredLease: boolean
   retryAt: number | null
   now: number
 }): QueueButtonState {
-  const waitUntil = Math.max(nextAttemptAt ?? 0, retryAt ?? 0)
-  if (waitUntil > now) {
+  if (retryAt !== null)
     return {
-      label: `Reprise dans ${formatRemaining({ deadline: waitUntil, now })}`,
+      label: `Reprise dans ${formatRemaining({ deadline: retryAt, now })}`,
       disabled: true,
     }
-  }
-
-  const leaseLive = isLeaseLive({ startedAt: leaseStartedAt, now })
   if (leaseLive) return { label: 'Extraction en cours', disabled: true }
-  if (leaseStartedAt !== null) {
-    return { label: 'Relancer la file', disabled: false }
-  }
-  if (pendingCount > 0) {
+  if (expiredLease) return { label: 'Relancer la file', disabled: false }
+  if (pendingCount > 0)
     return { label: "Démarrer l'extraction", disabled: false }
-  }
   return { label: 'Rien à extraire', disabled: true }
+}
+
+/**
+ * Everything the screen shows about the queue, derived once. The parts overlap — a live lease
+ * decides both the label and whether the queue counts as stopped — so a single derivation is the
+ * only way they cannot disagree.
+ */
+export function deriveQueueState({
+  facts: { pendingCount, leaseStartedAt, nextAttemptAt },
+  now,
+}: {
+  facts: QueueFacts
+  now: number
+}): QueueState {
+  const leaseLive = isLeaseLive({ leaseStartedAt, now })
+  const expiredLease = leaseStartedAt !== null && !leaseLive
+  const retryAt =
+    nextAttemptAt !== null && nextAttemptAt > now ? nextAttemptAt : null
+  return {
+    leaseLive,
+    stopped:
+      (pendingCount > 0 || expiredLease) && !leaseLive && retryAt === null,
+    button: buttonFor({ pendingCount, leaseLive, expiredLease, retryAt, now }),
+  }
 }

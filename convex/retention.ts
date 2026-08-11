@@ -3,8 +3,8 @@ import { internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import { internalMutation } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
-import { LEASE_MS } from './extract'
 import { literalUnion } from './lib/validators'
+import { LEASE_MS } from '../src/lib/queueContract'
 
 export const RETENTION_AFTER_TREATMENT_MS = 7 * 24 * 60 * 60 * 1000
 export const RETENTION_CEILING_MS = 90 * 24 * 60 * 60 * 1000
@@ -17,6 +17,9 @@ export const PURGE_DEFERRAL_MS = 2 * LEASE_MS
 export const PURGE_FAILURE_BACKOFF_MS = 24 * 60 * 60 * 1000
 export const PURGE_BATCH = 100
 export const BACKFILL_AUDIT_CAP = 1000
+// Single wording for a scan whose photo is gone, whether the purge closed it or reservation
+// rejected it later.
+export const PURGED_ERROR = 'Photo purgée : rescanner la page'
 
 const purgeResult = literalUnion([
   'purged',
@@ -138,10 +141,23 @@ export const purgeOneScan = internalMutation({
     for (const storageId of scan.imageStorageIds) {
       await ctx.storage.delete(storageId)
     }
+    // A scan without its photo can never succeed, so the purge closes it here rather than in its
+    // callers: the cron and the operator must leave the same state behind.
+    const closure =
+      scan.status === 'pending' || scan.status === 'extracting'
+        ? {
+            status: 'failed' as const,
+            error: PURGED_ERROR,
+            attemptId: undefined,
+            startedAt: undefined,
+            nextAttemptAt: undefined,
+          }
+        : {}
     await ctx.db.patch(scanId, {
       imageStorageIds: [],
       purgedAt: now,
       purgeAfter: undefined,
+      ...closure,
     })
     return 'purged'
   },
@@ -160,6 +176,7 @@ export const purgeExpired = internalMutation({
       )
       .take(PURGE_BATCH)
     let purged = 0
+    let alreadyPurged = 0
     let deferred = 0
     let failed = 0
 
@@ -168,7 +185,8 @@ export const purgeExpired = internalMutation({
         const result = await ctx.runMutation(internal.retention.purgeOneScan, {
           scanId: scan._id,
         })
-        if (result === 'purged' || result === 'already_purged') purged += 1
+        if (result === 'purged') purged += 1
+        else if (result === 'already_purged') alreadyPurged += 1
         else deferred += 1
       } catch (error) {
         failed += 1
@@ -186,7 +204,7 @@ export const purgeExpired = internalMutation({
       }
     }
 
-    const leftExpiredRange = purged + failed
+    const leftExpiredRange = purged + alreadyPurged + failed
     const rescheduled = expired.length === PURGE_BATCH && leftExpiredRange > 0
     if (rescheduled) {
       await ctx.scheduler.runAfter(0, internal.retention.purgeExpired, {})
@@ -197,6 +215,7 @@ export const purgeExpired = internalMutation({
         batchId,
         examined: expired.length,
         purged,
+        alreadyPurged,
         deferred,
         failed,
         rescheduled,

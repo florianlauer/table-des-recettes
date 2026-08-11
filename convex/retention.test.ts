@@ -9,6 +9,7 @@ import {
   PURGE_DEFERRAL_MS,
   PURGE_FAILURE_BACKOFF_MS,
   PURGE_GRACE_MS,
+  PURGED_ERROR,
   releaseIfTreated,
   RETENTION_AFTER_TREATMENT_MS,
   RETENTION_CEILING_MS,
@@ -352,10 +353,55 @@ describe('manual purge', () => {
     )
     expect(await t.run((ctx) => ctx.db.get('scans', scanId))).toMatchObject({
       status: 'failed',
-      error: 'Photo purgée',
+      error: PURGED_ERROR,
     })
     await expect(t.mutation(api.admin.purgeScanImages, args)).resolves.toBe(
       'already_purged',
     )
+  })
+
+  test('leaves the same state as the cron for the same pending scan', async () => {
+    const t = setup()
+    const scanId = await t.run(async (ctx) => {
+      const storageId = await ctx.storage.store(new Blob(['scan']))
+      return ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'pending',
+        attempts: 1,
+        nextAttemptAt: Date.now() + 60_000,
+        purgeAfter: Date.now() - 1,
+        createdAt: 1,
+      })
+    })
+
+    await t.mutation(internal.retention.purgeExpired, {})
+    const scan = await t.run((ctx) => ctx.db.get('scans', scanId))
+    expect(scan).toMatchObject({
+      status: 'failed',
+      error: PURGED_ERROR,
+      imageStorageIds: [],
+      purgedAt: expect.any(Number),
+    })
+    expect(scan?.nextAttemptAt).toBeUndefined()
+  })
+
+  test('does not reopen a terminal scan it purges', async () => {
+    const t = setup()
+    const scanId = await t.run(async (ctx) => {
+      const storageId = await ctx.storage.store(new Blob(['scan']))
+      return ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'done',
+        attempts: 1,
+        purgeAfter: Date.now() - 1,
+        createdAt: 1,
+      })
+    })
+
+    await t.mutation(internal.retention.purgeExpired, {})
+    expect(await t.run((ctx) => ctx.db.get('scans', scanId))).toMatchObject({
+      status: 'done',
+      purgedAt: expect.any(Number),
+    })
   })
 })

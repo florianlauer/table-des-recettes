@@ -2,12 +2,13 @@ import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import { mutation, query } from './_generated/server'
 import { requireAdmin } from './auth'
-import { LEASE_MS, MAX_ATTEMPTS } from './extract'
+import { readQueueWork } from './extract'
 import { rateLimiter } from './rateLimits'
 import { ceilingFor } from './retention'
 import type { PurgeResult } from './retention'
 import { attemptRecord, scanStatus } from './schema'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
+import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 
 const createScanResult = v.union(
   v.object({ ok: v.literal(true), scanId: v.id('scans') }),
@@ -133,28 +134,11 @@ export const startExtraction = mutation({
   handler: async (ctx, { adminToken }) => {
     requireAdmin(adminToken)
     const now = Date.now()
-    const liveLease = await ctx.db
-      .query('scans')
-      .withIndex('by_status_started_at', (q) =>
-        q.eq('status', 'extracting').gt('startedAt', now - LEASE_MS),
-      )
-      .take(1)
-    if (liveLease.length > 0) return { status: 'already_running' as const }
+    const { liveLease, candidates } = await readQueueWork(ctx, now)
+    if (liveLease) return { status: 'already_running' as const }
+    if (candidates.length === 0) return { status: 'no_work' as const }
 
-    const pending = await ctx.db
-      .query('scans')
-      .withIndex('by_status', (q) => q.eq('status', 'pending'))
-      .take(1)
-    const expiredLease = await ctx.db
-      .query('scans')
-      .withIndex('by_status_started_at', (q) =>
-        q.eq('status', 'extracting').lte('startedAt', now - LEASE_MS),
-      )
-      .take(1)
-    if (pending.length === 0 && expiredLease.length === 0) {
-      return { status: 'no_work' as const }
-    }
-
+    // Non-consuming: an idle press must not spend the quota the drain needs.
     const limit = await rateLimiter.check(ctx, 'extraction')
     if (!limit.ok) {
       return {
@@ -268,25 +252,7 @@ export const purgeScanImages = mutation({
   ),
   handler: async (ctx, { adminToken, scanId }): Promise<PurgeResult> => {
     requireAdmin(adminToken)
-    const scan = await ctx.db.get('scans', scanId)
-    const result: PurgeResult = await ctx.runMutation(
-      internal.retention.purgeOneScan,
-      { scanId },
-    )
-    if (
-      result === 'purged' &&
-      scan &&
-      (scan.status === 'pending' || scan.status === 'extracting')
-    ) {
-      await ctx.db.patch(scanId, {
-        status: 'failed',
-        error: 'Photo purgée',
-        attemptId: undefined,
-        startedAt: undefined,
-        nextAttemptAt: undefined,
-      })
-    }
-    return result
+    return ctx.runMutation(internal.retention.purgeOneScan, { scanId })
   },
 })
 
@@ -308,7 +274,9 @@ export const listScans = query({
       draftsTruncated: v.boolean(),
       lastAttempt: v.union(attemptRecord, v.null()),
       attempts: v.number(),
-      startedAt: v.union(v.number(), v.null()),
+      // Only meaningful while the scan is extracting, so the condition is resolved here rather than
+      // left for every reader to remember.
+      leaseStartedAt: v.union(v.number(), v.null()),
       nextAttemptAt: v.union(v.number(), v.null()),
       purgedAt: v.union(v.number(), v.null()),
       createdAt: v.number(),
@@ -339,7 +307,8 @@ export const listScans = query({
           draftsTruncated: truncated,
           lastAttempt: scan.lastAttempt ?? null,
           attempts: scan.attempts,
-          startedAt: scan.startedAt ?? null,
+          leaseStartedAt:
+            scan.status === 'extracting' ? (scan.startedAt ?? null) : null,
           nextAttemptAt: scan.nextAttemptAt ?? null,
           purgedAt: scan.purgedAt ?? null,
           createdAt: scan.createdAt,
