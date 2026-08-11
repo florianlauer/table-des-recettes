@@ -50,7 +50,7 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   bloc de file, groupé par modèle et version : taux d'échec, échecs par nature, coût moyen et total,
   latence moyenne, volume de correction.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
-- **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
+- **CI** — sept contrôles sur chaque PR, dont le build, aucun ne dépense d'argent.
 - **Sauvegarde** — miroir versionné des recettes dans `backup/`, une par fichier JSON, actualisé
   chaque dimanche à 03 h UTC et commité sur `main`. La restauration a son script et ses tests. Un
   export vide refuse de tourner, pour ne pas effacer le miroir.
@@ -129,9 +129,11 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   dans `src/lib/queueStatus.test.ts`, mais aucun test de composant ne couvre le JSX de `/admin` faute
   d'infrastructure React dédiée.
 
-- **R8 · `npm run build` absent du CI.** Les six contrôles actuels sont tous passés au vert alors que
-  le bundle du navigateur embarquait le module d'extraction serveur, prompt OpenRouter compris : seul
-  le build l'a attrapé. À ajouter avant qu'un import serveur vers client repasse en silence.
+- ~~**R8 · `npm run build` absent du CI.**~~ **Clos.** Le build est le septième contrôle. C'est le
+  seul qui assemble le bundle du navigateur, donc le seul capable d'attraper un module serveur qui
+  passe côté client — les six autres étaient au vert pendant que le bundle embarquait le module
+  d'extraction, prompt OpenRouter compris. Aucun secret à ajouter : `VITE_CONVEX_URL` est lu au
+  moment de servir une requête, pas de bâtir le bundle.
 
 - **R9 · Créer une recette hors de tout scan.** L'écran de correction ne sait ajouter une recette
   qu'à un scan existant, ce qui couvre le faux négatif du modèle. Saisir au clavier une page

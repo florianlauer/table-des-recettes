@@ -34,7 +34,7 @@ jobs:
         id: install
         run: npm ci
 
-      # Every check below runs even when an earlier one fails, so one run reports all six results
+      # Every check below runs even when an earlier one fails, so one run reports all seven results
       # instead of stopping at the first. They are skipped only when the install itself failed —
       # their output would be noise about missing modules, not about the code.
       - name: Format (prettier)
@@ -52,6 +52,14 @@ jobs:
       - name: Tests (application)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm test
+
+      # The only check that assembles the browser bundle, and therefore the only one that can catch
+      # a server module reaching the client: the other six were green while the bundle carried the
+      # extraction module, OpenRouter prompt included. It needs no secret — `VITE_CONVEX_URL` is
+      # read when a request is served, not when the bundle is built.
+      - name: Build (application)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run build
 
       # The two spike benches keep their own tsconfig and vitest config, so they need their own
       # commands. `verify*` are the only bench scripts that touch no network: the `ingest*`, `rank`,
