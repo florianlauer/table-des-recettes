@@ -173,10 +173,11 @@ livrable de T2, hors du socle.
   - **Vérifier** : un scan porte 1 à N images envoyées ensemble au modèle ; l'écran de
     correction permet d'ajouter une recette manquée et de supprimer un faux positif
 
-- [ ] **T9 · P2 · sauvegarde** (human ~4h / CC ~40min) — Export automatique versionné dans git
+- [x] **T9 · P2 · sauvegarde** (human ~4h / CC ~40min) — Export automatique versionné dans git
   - **Origine** : Codex #17 — aucune stratégie de sauvegarde ; l'offre gratuite Convex ne garde
     que 7 jours, en manuel. Après purge des photos, les corrections sont la seule copie
-  - **Fichiers** : `convex/export.ts`
+  - **Fichiers** : `convex/export.ts`, `convex/http.ts`, `scripts/backup.ts`, `scripts/restore.ts`,
+    `src/lib/backup-schema.ts`, `.github/workflows/backup.yml`
   - **Vérifier** : export JSON des recettes publiées, commité dans un dépôt ; historique lisible
     recette par recette
 

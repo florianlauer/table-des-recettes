@@ -26,12 +26,12 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`    |
 | **T7**  | Rétention `purgeAfter`                   | P2  | ✅     | PR #8                       | `convex/retention.ts`, `convex/retention.test.ts` |
 | **T8**  | Scan multi-images + écran de correction  | P2  | ⬜     | —                           | `imageStorageIds` borné à 1 à l'entrée            |
-| **T9**  | Export automatique versionné dans git    | P2  | ⬜     | —                           | —                                                 |
+| **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/backup.ts`           |
 | **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`       |
 | **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`     |
 | **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre |
 
-**Reste à faire : 3 tâches, ~13 h humaines estimées** (T8 4 h · T9 4 h · T14 5 h).
+**Reste à faire : 2 tâches, ~9 h humaines estimées** (T8 4 h · T14 5 h).
 
 ---
 
@@ -51,6 +51,9 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   latence moyenne, volume de correction.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — six contrôles sur chaque PR, aucun ne dépense d'argent.
+- **Sauvegarde** — miroir versionné des recettes dans `backup/`, une par fichier JSON, actualisé
+  chaque dimanche à 03 h UTC et commité sur `main`. La restauration a son script et ses tests. Un
+  export vide refuse de tourner, pour ne pas effacer le miroir.
 - **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
   `fleet-bat-50` (région US East). `vercel.json` porte le build ; poser le label `preview` sur une
   PR crée un backend Convex jetable avec une copie de la base de production et publie un frontend
@@ -75,13 +78,11 @@ Ce qui **n'existe pas encore** : la publication d'un brouillon. Aucune écriture
 
 ### En parallèle, à n'importe quel moment
 
-Aucune des deux ne dépend du chemin principal ni de l'autre.
+T14 ne dépend pas du chemin principal.
 
 - **T14 · photo du plat** (5 h) — débloquée : T4 et T5 sont faits, le prompt et le modèle sont figés
   par T13. Seule contrainte : elle finit dans `src/routes/admin/`, donc **pas en même temps que T8
   par la même personne**.
-- **T9 · export versionné dans git** (4 h) — vit dans `convex/export.ts`, ne partage aucun fichier
-  avec le reste.
 
 ### Le piège d'ordre restant
 
