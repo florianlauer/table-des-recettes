@@ -357,9 +357,29 @@ function IllustrationRow({
 
   // `upload` too, not just the buttons: posting a photo is the longest thing the row does, and it is
   // the one gesture whose control is a file input rather than a button.
-  const busy = [...gestureRows.map(({ action }) => action), 'upload'].some(
+  const rowActions = [...gestureRows.map(({ action }) => action), 'upload']
+  const busy = rowActions.some(
     (action) => gestures.running(rowGesture(row.id, action)) !== null,
   )
+
+  /**
+   * A gesture on this screen usually removes its own control: accepting takes "Accepter" away,
+   * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the button that
+   * held the message is gone, and the result would be lost. Those outcomes are orphaned too, and the
+   * section republishes them.
+   */
+  const offered = new Set([
+    ...gestureRows.filter(({ offered: shown }) => shown).map((g) => g.action),
+    ...(can.replace ? ['upload'] : []),
+  ])
+  useEffect(() => {
+    for (const action of rowActions) {
+      if (offered.has(action)) continue
+      const gesture = rowGesture(row.id, action)
+      if (gestures.outcome(gesture) === null) continue
+      gestures.markOrphaned(gesture)
+    }
+  })
 
   return (
     <article
