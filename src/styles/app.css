@@ -140,6 +140,15 @@ img {
 .admin-page input[type='file']::file-selector-button {
   cursor: pointer;
 }
+/* A native file input is intrinsically wider than a 390 px phone, and the scanning gesture is the
+   one thing the admin does *on* a phone: without `minmax(0, …)` its min-content width pushes the
+   grid column past the page and the whole thing scrolls sideways. */
+.admin-page__field {
+  grid-template-columns: minmax(0, 1fr);
+}
+.admin-page input[type='file'] {
+  max-width: 100%;
+}
 @media (hover: hover) {
   .admin-page a:hover {
     color: var(--ochre-hover);
