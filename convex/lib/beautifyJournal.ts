@@ -15,7 +15,6 @@ export const beautifyObservation = {
   latencyMs: v.number(),
   costUsd: v.number(),
   costReported: v.boolean(),
-  repairCount: v.number(),
 }
 
 export type BeautifyObservation = Infer<

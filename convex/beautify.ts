@@ -58,7 +58,6 @@ type Observation = {
   latencyMs: number
   costUsd: number
   costReported: boolean
-  repairCount: number
 }
 
 export type BeautifyResult =
@@ -178,7 +177,6 @@ export async function beautifyImage({
     servedProvider: null,
     costUsd: 0,
     costReported: false,
-    repairCount: 0,
   }
   const refuse = (
     kind: BeautifyFailureKind,
@@ -269,7 +267,6 @@ export async function beautifyImage({
     latencyMs: performance.now() - startedAt,
     costUsd: costReported ? reportedCost : 0,
     costReported,
-    repairCount: 0,
   }
 
   if (!response.ok) {
@@ -308,7 +305,6 @@ export const render = internalAction({
       latencyMs: result.latencyMs,
       costUsd: result.costUsd,
       costReported: result.costReported,
-      repairCount: result.repairCount,
     }
     if (!result.ok) {
       await ctx.runMutation(internal.beautify.recordBeautifyFailure, {

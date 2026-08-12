@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
 import { internal } from './_generated/api'
-import type { Doc, Id } from './_generated/dataModel'
+import type { Doc } from './_generated/dataModel'
 import { action, internalMutation, mutation, query } from './_generated/server'
 import type { MutationCtx, QueryCtx } from './_generated/server'
 import { requireAdmin } from './auth'
@@ -25,11 +25,26 @@ export const ILLUSTRATION_WORK_LISTED = 50
 const REPLACED_REASON = 'Génération annulée : l’image source a été remplacée'
 const DETACHED_REASON = 'Génération annulée : la photo a été retirée'
 
-async function loadRecipe(
-  ctx: MutationCtx,
-  recipeId: Id<'recipes'>,
-): Promise<Doc<'recipes'> | null> {
-  return ctx.db.get('recipes', recipeId)
+/**
+ * Every gesture on this screen takes the same two arguments, answers the same way, and opens by
+ * proving the same two things. Declared once so a new gesture inherits the guard instead of
+ * rederiving it — and so the refusal on an unknown recipe cannot drift into seven wordings.
+ */
+function recipeMutation(
+  handler: (
+    ctx: MutationCtx,
+    recipe: Doc<'recipes'>,
+  ) => Promise<{ ok: true } | Refusal>,
+) {
+  return mutation({
+    args: { adminToken: v.string(), recipeId: v.id('recipes') },
+    returns: okOrError,
+    handler: async (ctx, { adminToken, recipeId }) => {
+      requireAdmin(adminToken)
+      const recipe = await ctx.db.get('recipes', recipeId)
+      return recipe ? handler(ctx, recipe) : refuse('Recette inconnue')
+    },
+  })
 }
 
 /**
@@ -146,7 +161,7 @@ export const commitIllustration = internalMutation({
 
     const consumedAt = Date.now()
     const reject = async (error: string) => {
-      await ctx.storage.delete(storageId)
+      await deleteStoredBlob(ctx, storageId)
       await ctx.db.patch(ticketId, {
         consumedAt,
         storageId,
@@ -158,7 +173,7 @@ export const commitIllustration = internalMutation({
 
     if ((ticket.purpose ?? 'scan') !== 'illustration')
       return reject('Ce ticket est réservé aux pages de scan')
-    const recipe = await loadRecipe(ctx, recipeId)
+    const recipe = await ctx.db.get('recipes', recipeId)
     if (!recipe) return reject('Recette inconnue')
     if (recipe.beautifiedAccepted)
       return reject(
@@ -183,124 +198,94 @@ export const commitIllustration = internalMutation({
   },
 })
 
-export const detachIllustration = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
-    if (recipe.beautifiedAccepted)
-      return refuse(
-        'Un embellissement est publié sur cette recette : dépublie-le avant de retirer la photo',
-      )
-    if (!recipe.imageStorageId) return refuse('Cette recette n’a pas de photo')
+export const detachIllustration = recipeMutation(async (ctx, recipe) => {
+  if (recipe.beautifiedAccepted)
+    return refuse(
+      'Un embellissement est publié sur cette recette : dépublie-le avant de retirer la photo',
+    )
+  if (!recipe.imageStorageId) return refuse('Cette recette n’a pas de photo')
 
-    await deleteStoredBlob(ctx, recipe.imageStorageId)
-    await dropCandidate(ctx, recipe)
-    await ctx.db.patch(recipeId, {
-      ...withIllustration({ imageStorageId: undefined }),
-      beautifiedStorageId: undefined,
-      ...withoutGeneration(recipe, DETACHED_REASON),
-    })
-    return succeeded
-  },
+  await deleteStoredBlob(ctx, recipe.imageStorageId)
+  await dropCandidate(ctx, recipe)
+  await ctx.db.patch(recipe._id, {
+    ...withIllustration({ imageStorageId: undefined }),
+    beautifiedStorageId: undefined,
+    ...withoutGeneration(recipe, DETACHED_REASON),
+  })
+  return succeeded
 })
 
 /**
  * The transition matrix, applied. Each refusal names the gesture that would unblock it: a button
  * that greys out without a reason is a bug report waiting to happen.
  */
-export const requestBeautify = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
-    const sourceStorageId = recipe.imageStorageId
-    if (!sourceStorageId)
-      return refuse('Pose d’abord une photo sur cette recette')
-    if (recipe.beautifiedAccepted)
-      return refuse(
-        'Dépublie l’embellissement accepté avant d’en générer un autre',
-      )
-    if (recipe.beautifyStatus === 'generating')
-      return refuse('Une génération est déjà en cours sur cette recette')
-    if (recipe.beautifyStatus === 'review')
-      return refuse(
-        'Arbitre le candidat en attente avant d’en générer un autre',
-      )
+export const requestBeautify = recipeMutation(async (ctx, recipe) => {
+  const sourceStorageId = recipe.imageStorageId
+  if (!sourceStorageId)
+    return refuse('Pose d’abord une photo sur cette recette')
+  if (recipe.beautifiedAccepted)
+    return refuse(
+      'Dépublie l’embellissement accepté avant d’en générer un autre',
+    )
+  if (recipe.beautifyStatus === 'generating')
+    return refuse('Une génération est déjà en cours sur cette recette')
+  if (recipe.beautifyStatus === 'review')
+    return refuse('Arbitre le candidat en attente avant d’en générer un autre')
 
-    const limit = await rateLimiter.limit(ctx, 'beautify')
-    if (!limit.ok)
-      return refuse(
-        `Trop de générations lancées : réessaie dans ${Math.ceil(limit.retryAfter / 1000)} s`,
-      )
+  const limit = await rateLimiter.limit(ctx, 'beautify')
+  if (!limit.ok)
+    return refuse(
+      `Trop de générations lancées : réessaie dans ${Math.ceil(limit.retryAfter / 1000)} s`,
+    )
 
-    // No candidate blob survives a new generation. Without this, the one a de-publication kept was
-    // silently overwritten by the next — one orphan per regeneration.
-    await dropCandidate(ctx, recipe)
+  // No candidate blob survives a new generation. Without this, the one a de-publication kept was
+  // silently overwritten by the next — one orphan per regeneration.
+  await dropCandidate(ctx, recipe)
 
-    const now = Date.now()
-    const attemptId = `${recipeId}:${now}`
-    await ctx.db.patch(recipeId, {
-      beautifiedStorageId: undefined,
-      beautifyStatus: 'generating',
-      beautifyAttemptId: attemptId,
-      beautifyStartedAt: now,
-      beautifyError: undefined,
-    })
-    await ctx.scheduler.runAfter(0, internal.beautify.render, {
-      recipeId,
-      attemptId,
-      // Carried rather than re-read: it is the image the render actually saw, and finalisation
-      // compares against it.
-      sourceStorageId,
-    })
-    return succeeded
-  },
+  const now = Date.now()
+  const attemptId = `${recipe._id}:${now}`
+  await ctx.db.patch(recipe._id, {
+    beautifiedStorageId: undefined,
+    beautifyStatus: 'generating',
+    beautifyAttemptId: attemptId,
+    beautifyStartedAt: now,
+    beautifyError: undefined,
+  })
+  await ctx.scheduler.runAfter(0, internal.beautify.render, {
+    recipeId: recipe._id,
+    attemptId,
+    // Carried rather than re-read: it is the image the render actually saw, and finalisation
+    // compares against it.
+    sourceStorageId,
+  })
+  return succeeded
 })
 
-export const acceptBeautified = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
-    const blocked = await arbitrable(ctx, recipe)
-    if (blocked) return blocked
+export const acceptBeautified = recipeMutation(async (ctx, recipe) => {
+  const blocked = await arbitrable(ctx, recipe)
+  if (blocked) return blocked
 
-    await settleAttempt(ctx, recipe.beautifyAttemptId, 'accepted')
-    await ctx.db.patch(recipeId, {
-      beautifiedAccepted: true,
-      beautifyStatus: 'idle',
-      beautifyAttemptId: undefined,
-    })
-    return succeeded
-  },
+  await settleAttempt(ctx, recipe.beautifyAttemptId, 'accepted')
+  await ctx.db.patch(recipe._id, {
+    beautifiedAccepted: true,
+    beautifyStatus: 'idle',
+    beautifyAttemptId: undefined,
+  })
+  return succeeded
 })
 
-export const rejectPendingCandidate = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
-    const blocked = await arbitrable(ctx, recipe)
-    if (blocked) return blocked
+export const rejectPendingCandidate = recipeMutation(async (ctx, recipe) => {
+  const blocked = await arbitrable(ctx, recipe)
+  if (blocked) return blocked
 
-    await settleAttempt(ctx, recipe.beautifyAttemptId, 'rejected')
-    await dropCandidate(ctx, recipe)
-    await ctx.db.patch(recipeId, {
-      beautifiedStorageId: undefined,
-      beautifyStatus: 'idle',
-      beautifyAttemptId: undefined,
-    })
-    return succeeded
-  },
+  await settleAttempt(ctx, recipe.beautifyAttemptId, 'rejected')
+  await dropCandidate(ctx, recipe)
+  await ctx.db.patch(recipe._id, {
+    beautifiedStorageId: undefined,
+    beautifyStatus: 'idle',
+    beautifyAttemptId: undefined,
+  })
+  return succeeded
 })
 
 /**
@@ -327,68 +312,49 @@ async function arbitrable(
 }
 
 /** The blob survives: the storefront falls back to the original without losing a paid render. */
-export const unpublishAcceptedCandidate = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
+export const unpublishAcceptedCandidate = recipeMutation(
+  async (ctx, recipe) => {
     if (!recipe.beautifiedAccepted)
       return refuse('Aucun embellissement publié sur cette recette')
     // The attempt's outcome is untouched: it records what the human thought of the render, not what
     // is on the storefront today.
-    await ctx.db.patch(recipeId, { beautifiedAccepted: false })
+    await ctx.db.patch(recipe._id, { beautifiedAccepted: false })
     return succeeded
   },
-})
+)
 
 /** Housekeeping, not arbitration — which is why it is a fifth gesture and not a fourth. */
-export const deleteUnpublishedCandidate = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
+export const deleteUnpublishedCandidate = recipeMutation(
+  async (ctx, recipe) => {
     if (recipe.beautifiedAccepted)
       return refuse('Dépublie l’embellissement avant de le supprimer')
     if (recipe.beautifyStatus !== 'idle' || !recipe.beautifiedStorageId)
       return refuse('Aucun candidat conservé à supprimer')
 
     await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
-    await ctx.db.patch(recipeId, { beautifiedStorageId: undefined })
+    await ctx.db.patch(recipe._id, { beautifiedStorageId: undefined })
     return succeeded
   },
-})
+)
 
 /**
  * An action killed before its failure mutation leaves the recipe `generating` for ever. Manual, and
  * not a cron: the project refuses automatic surveillance, and `beautifyStartedAt` is what makes the
  * abandonment visible enough to be pressed.
  */
-export const abandonBeautify = mutation({
-  args: { adminToken: v.string(), recipeId: v.id('recipes') },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, recipeId }) => {
-    requireAdmin(adminToken)
-    const recipe = await loadRecipe(ctx, recipeId)
-    if (!recipe) return refuse('Recette inconnue')
-    if (recipe.beautifyStatus !== 'generating')
-      return refuse('Aucune génération en cours sur cette recette')
-    if (Date.now() - (recipe.beautifyStartedAt ?? 0) < BEAUTIFY_LEASE_MS)
-      return refuse(
-        'Cette génération vient d’être lancée : laisse-lui le temps',
-      )
+export const abandonBeautify = recipeMutation(async (ctx, recipe) => {
+  if (recipe.beautifyStatus !== 'generating')
+    return refuse('Aucune génération en cours sur cette recette')
+  if (Date.now() - (recipe.beautifyStartedAt ?? 0) < BEAUTIFY_LEASE_MS)
+    return refuse('Cette génération vient d’être lancée : laisse-lui le temps')
 
-    await ctx.db.patch(recipeId, {
-      beautifyStatus: 'failed',
-      beautifyError: 'Génération abandonnée à la main',
-      beautifyAttemptId: undefined,
-      beautifyStartedAt: undefined,
-    })
-    return succeeded
-  },
+  await ctx.db.patch(recipe._id, {
+    beautifyStatus: 'failed',
+    beautifyError: 'Génération abandonnée à la main',
+    beautifyAttemptId: undefined,
+    beautifyStartedAt: undefined,
+  })
+  return succeeded
 })
 
 const illustrationRow = v.object({

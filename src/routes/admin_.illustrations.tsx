@@ -4,7 +4,6 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import type { Id } from '../../convex/_generated/dataModel'
 import { beautifyGroupKey } from '../lib/beautifyStats'
 import { BEAUTIFY_LEASE_MS, illustrationActions } from '../lib/illustrationWork'
 import { useAttachIllustration } from '../lib/useAttachIllustration'
@@ -14,7 +13,14 @@ export const Route = createFileRoute('/admin_/illustrations')({
   component: IllustrationsPage,
 })
 
-type Outcome = { ok: true } | { ok: false; error: string }
+/**
+ * Read off the server rather than retyped: the wire shape is declared once, as a validator, and
+ * every shape on this screen is inferred from it. A hand-kept copy is unguarded — it typechecks
+ * clean while being wrong, and it drifts weaker than the contract without saying so.
+ */
+type Work = (typeof api.illustrations.listIllustrationWork)['_returnType']
+type Row = Work['active'][number]
+type Outcome = (typeof api.illustrations.acceptBeautified)['_returnType']
 
 /**
  * The most counter-intuitive result of the T13 bench, and the screen is the only place where it can
@@ -173,7 +179,7 @@ function MigrationBanner({
   onRun,
 }: {
   adminToken: string
-  migration: { started: boolean; done: boolean; migrated: number }
+  migration: Work['migration']
   busy: boolean
   onRun: (action: () => Promise<Outcome>) => Promise<void>
 }) {
@@ -193,21 +199,6 @@ function MigrationBanner({
       </button>
     </p>
   )
-}
-
-type Row = {
-  id: Id<'recipes'>
-  title: string
-  type: string
-  status: 'review' | 'published'
-  hasOriginal: boolean
-  hasCandidate: boolean
-  originalUrl: string | null
-  candidateUrl: string | null
-  beautifyStatus: 'idle' | 'generating' | 'review' | 'failed'
-  beautifiedAccepted: boolean
-  beautifyError: string | null
-  beautifyStartedAt: number | null
 }
 
 function IllustrationRow({
@@ -238,6 +229,52 @@ function IllustrationRow({
 
   const can = illustrationActions(row, { now, leaseMs: BEAUTIFY_LEASE_MS })
   const args = { adminToken, recipeId: row.id }
+
+  // Order is the reading order of the screen, and it is data rather than seven near-identical JSX
+  // blocks: what distinguishes a gesture is its label and its mutation, nothing else.
+  const gestures: {
+    offered: boolean
+    label: string
+    confirm?: string
+    run: () => Promise<Outcome>
+  }[] = [
+    {
+      offered: can.accept,
+      label: 'Accepter l’embellissement',
+      run: () => acceptBeautified(args),
+    },
+    {
+      offered: can.reject,
+      label: 'Rejeter le candidat',
+      run: () => rejectPending(args),
+    },
+    {
+      offered: can.generate,
+      label: row.hasCandidate ? 'Régénérer' : 'Embellir',
+      run: () => requestBeautify(args),
+    },
+    {
+      offered: can.unpublish,
+      label: 'Dépublier l’embellissement',
+      run: () => unpublishAccepted(args),
+    },
+    {
+      offered: can.deleteCandidate,
+      label: 'Supprimer le candidat conservé',
+      run: () => deleteCandidate(args),
+    },
+    {
+      offered: can.abandon,
+      label: 'Abandonner cette génération',
+      run: () => abandonBeautify(args),
+    },
+    {
+      offered: can.detach,
+      label: 'Retirer la photo',
+      confirm: `Retirer la photo de « ${row.title} » ?`,
+      run: () => detachIllustration(args),
+    },
+  ]
 
   return (
     <article className="illustrations__recipe">
@@ -284,73 +321,21 @@ function IllustrationRow({
         </label>
       )}
 
-      {can.accept && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => acceptBeautified(args))}
-        >
-          Accepter l'embellissement
-        </button>
-      )}
-      {can.reject && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => rejectPending(args))}
-        >
-          Rejeter le candidat
-        </button>
-      )}
-      {can.generate && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => requestBeautify(args))}
-        >
-          {row.hasCandidate ? 'Régénérer' : 'Embellir'}
-        </button>
-      )}
-      {can.unpublish && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => unpublishAccepted(args))}
-        >
-          Dépublier l'embellissement
-        </button>
-      )}
-      {can.deleteCandidate && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => deleteCandidate(args))}
-        >
-          Supprimer le candidat conservé
-        </button>
-      )}
-      {can.abandon && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void onRun(() => abandonBeautify(args))}
-        >
-          Abandonner cette génération
-        </button>
-      )}
-      {can.detach && (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => {
-            if (!window.confirm(`Retirer la photo de « ${row.title} » ?`))
-              return
-            void onRun(() => detachIllustration(args))
-          }}
-        >
-          Retirer la photo
-        </button>
-      )}
+      {gestures
+        .filter((gesture) => gesture.offered)
+        .map((gesture) => (
+          <button
+            key={gesture.label}
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              if (gesture.confirm && !window.confirm(gesture.confirm)) return
+              void onRun(gesture.run)
+            }}
+          >
+            {gesture.label}
+          </button>
+        ))}
     </article>
   )
 }

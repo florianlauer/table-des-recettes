@@ -5,6 +5,7 @@ import { mutation, query } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
+import { deleteStoredBlob } from './lib/blobs'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
 import { ceilingFor, reconcileRetention } from './retention'
@@ -163,7 +164,9 @@ export const attachImage = mutation({
       error: string,
       outcome: 'missing_storage' | 'too_large' | 'rejected',
     ) => {
-      if (outcome !== 'missing_storage') await ctx.storage.delete(storageId)
+      // No `outcome !== 'missing_storage'` guard: the helper looks before it destroys, which answers
+      // the same question by observation rather than by inferring it from the label.
+      await deleteStoredBlob(ctx, storageId)
       await ctx.db.patch(ticketId, {
         consumedAt,
         storageId,

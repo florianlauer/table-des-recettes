@@ -3,10 +3,19 @@
  * that one keys on a `schemaVersion` no image has, and it has no notion of what a human decided of
  * the result — which is the whole question here. A model that never fails technically and gets
  * rejected nine times out of ten is failing.
+ *
+ * Only the *shape* is separate: the grouping, the failure tally and the averages come from
+ * `journalStats`, shared with the extraction journal.
  */
 import { v } from 'convex/values'
 import type { Infer } from 'convex/values'
 import { costLooksExcessive } from './beautifyPrompt'
+import {
+  costAndLatency,
+  countFailureKinds,
+  groupByIdentity,
+} from './journalStats'
+import type { NonEmpty } from './journalStats'
 
 export const BEAUTIFY_ATTEMPTS_SAMPLED = 200
 
@@ -57,36 +66,18 @@ export function beautifyGroupKey({
   return `${model} ${promptVersion}`
 }
 
-/** Attempts must arrive newest first: group order is preserved, so the combination in force reads
- * above the ones it replaced. */
 export function summarizeBeautifyAttempts(
   attempts: JournalledBeautifyAttempt[],
 ): BeautifySummary[] {
-  const groups = new Map<
-    string,
-    [JournalledBeautifyAttempt, ...JournalledBeautifyAttempt[]]
-  >()
-  for (const attempt of attempts) {
-    const group = groups.get(beautifyGroupKey(attempt))
-    if (group) group.push(attempt)
-    else groups.set(beautifyGroupKey(attempt), [attempt])
-  }
-  return [...groups.values()].map(summarizeGroup)
+  return groupByIdentity(attempts, beautifyGroupKey).map(summarizeGroup)
 }
 
 function summarizeGroup(
-  rows: readonly [JournalledBeautifyAttempt, ...JournalledBeautifyAttempt[]],
+  rows: NonEmpty<JournalledBeautifyAttempt>,
 ): BeautifySummary {
   const { model, promptVersion } = rows[0]
   const count = (keep: (row: JournalledBeautifyAttempt) => boolean) =>
     rows.filter(keep).length
-  const sum = (pick: (row: JournalledBeautifyAttempt) => number) =>
-    rows.reduce((total, row) => total + pick(row), 0)
-
-  const kinds = new Map<string, number>()
-  for (const row of rows)
-    if (row.failureKind !== null)
-      kinds.set(row.failureKind, (kinds.get(row.failureKind) ?? 0) + 1)
   // A technical failure is a `failureKind`, not a `discarded`: a call whose finalisation merely
   // arrived too late succeeded, it just found nothing left to attach to.
   const technicalFailures = count((row) => row.failureKind !== null)
@@ -101,15 +92,8 @@ function summarizeGroup(
     discarded: count((row) => row.outcome === 'discarded'),
     technicalFailures,
     failureRate: technicalFailures / rows.length,
-    failureKinds: [...kinds]
-      .map(([kind, count_]) => ({ kind, count: count_ }))
-      .sort(
-        (left, right) =>
-          right.count - left.count || (left.kind < right.kind ? -1 : 1),
-      ),
-    totalCostUsd: sum((row) => row.costUsd),
-    averageCostUsd: sum((row) => row.costUsd) / rows.length,
-    averageLatencyMs: sum((row) => row.latencyMs) / rows.length,
+    failureKinds: countFailureKinds(rows),
+    ...costAndLatency(rows),
     unreportedCostCalls: count((row) => !row.costReported),
     excessiveCostCalls: count(
       (row) => row.costReported && costLooksExcessive(row.costUsd),

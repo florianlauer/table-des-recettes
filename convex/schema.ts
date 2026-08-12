@@ -151,7 +151,6 @@ export default defineSchema({
     // A response without `usage.cost` is journalled at zero; without this flag the aggregate would
     // read a missing price as a free call.
     costReported: v.boolean(),
-    repairCount: v.number(),
     // Explicitly nullable, with the invariant tested: `pending | accepted | rejected` carry no
     // failure, a *technical* `discarded` always does, and a `discarded` that merely arrived too
     // late carries none either — there, `outcome` alone tells the story.

@@ -399,7 +399,6 @@ async function toReview(t: Ctx, recipeId: Id<'recipes'>) {
       latencyMs: 9100,
       costUsd: 0.03944,
       costReported: true,
-      repairCount: 0,
       failureKind: null,
       sourceStorageId: recipe!.imageStorageId!,
       outcome: 'pending',

@@ -77,7 +77,6 @@ const observation = {
   latencyMs: 9100,
   costUsd: 0.03944,
   costReported: true,
-  repairCount: 0,
 }
 
 describe('model output decoding', () => {
