@@ -355,8 +355,10 @@ function IllustrationRow({
     },
   ]
 
-  const busy = gestureRows.some(
-    ({ action }) => gestures.running(rowGesture(row.id, action)) !== null,
+  // `upload` too, not just the buttons: posting a photo is the longest thing the row does, and it is
+  // the one gesture whose control is a file input rather than a button.
+  const busy = [...gestureRows.map(({ action }) => action), 'upload'].some(
+    (action) => gestures.running(rowGesture(row.id, action)) !== null,
   )
 
   return (
