@@ -1,6 +1,6 @@
 # Suivi d'avancement
 
-État du projet au **2026-08-11**, `main` à `e6e435f`. Ce fichier dit **où on en est** ; il ne
+État du projet au **2026-08-12**, `main` à `d4c7a1f`. Ce fichier dit **où on en est** ; il ne
 remplace pas le contenu des tâches, qui reste dans
 [`specs/2026-08-08-table-des-recettes-tasks.md`](./superpowers/specs/2026-08-08-table-des-recettes-tasks.md).
 
@@ -12,26 +12,26 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 
 ## Vue d'ensemble
 
-| #       | Titre                                    | P   | Statut | Livré par                   | Preuve                                                    |
-| ------- | ---------------------------------------- | --- | ------ | --------------------------- | --------------------------------------------------------- |
-| **T1**  | Spike extraction vision multi-recettes   | P1  | ✅     | PR #1 + rejeu v3 dans PR #5 | `spike/RESULTS.md`                                        |
-| **T13** | Spike embellissement d'image             | P1  | ✅     | PR #3                       | `spike13/RESULTS.md`                                      |
-| —       | Socle et vitrine publique                | P1  | ✅     | PR #2                       | `src/routes/index.tsx`, `recette.$slug.tsx`               |
-| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/lib/recipe-schema.ts`, `convex/schema.ts`            |
-| **T3**  | Finalisation atomique avec `attemptId`   | P1  | ✅     | PR #5                       | `convex/extract.ts`, `convex/extract.test.ts`             |
-| **T4**  | `requireAdmin` mutations/actions/queries | P1  | ✅     | PR #5                       | `convex/auth.ts`, `convex/rateLimits.ts`                  |
-| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`           |
-| **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`            |
-| **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                                |
-| **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`            |
-| **T7**  | Rétention `purgeAfter`                   | P2  | ✅     | PR #8                       | `convex/retention.ts`, `convex/retention.test.ts`         |
-| **T8**  | Scan multi-images + écran de correction  | P2  | ✅     | PR #11                      | `convex/recipeAdmin.ts`, `src/routes/admin_.scan.$id.tsx` |
-| **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/restore.ts`                  |
-| **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`               |
-| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`             |
-| **T14** | Photo du plat : upload, embellissement   | P2  | ⬜     | —                           | prompt et modèle figés par T13, prêts à reprendre         |
+| #       | Titre                                    | P   | Statut | Livré par                   | Preuve                                                           |
+| ------- | ---------------------------------------- | --- | ------ | --------------------------- | ---------------------------------------------------------------- |
+| **T1**  | Spike extraction vision multi-recettes   | P1  | ✅     | PR #1 + rejeu v3 dans PR #5 | `spike/RESULTS.md`                                               |
+| **T13** | Spike embellissement d'image             | P1  | ✅     | PR #3                       | `spike13/RESULTS.md`                                             |
+| —       | Socle et vitrine publique                | P1  | ✅     | PR #2                       | `src/routes/index.tsx`, `recette.$slug.tsx`                      |
+| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/lib/recipe-schema.ts`, `convex/schema.ts`                   |
+| **T3**  | Finalisation atomique avec `attemptId`   | P1  | ✅     | PR #5                       | `convex/extract.ts`, `convex/extract.test.ts`                    |
+| **T4**  | `requireAdmin` mutations/actions/queries | P1  | ✅     | PR #5                       | `convex/auth.ts`, `convex/rateLimits.ts`                         |
+| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`                  |
+| **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`                   |
+| **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                                       |
+| **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`                   |
+| **T7**  | Rétention `purgeAfter`                   | P2  | ✅     | PR #8                       | `convex/retention.ts`, `convex/retention.test.ts`                |
+| **T8**  | Scan multi-images + écran de correction  | P2  | ✅     | PR #11                      | `convex/recipeAdmin.ts`, `src/routes/admin_.scan.$id.tsx`        |
+| **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/restore.ts`                         |
+| **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`                      |
+| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`                    |
+| **T14** | Photo du plat : upload, embellissement   | P2  | ✅     | branche `worktree-t14`      | `convex/illustrations.ts`, `src/routes/admin_.illustrations.tsx` |
 
-**Reste à faire : 1 tâche, ~5 h humaines estimées** (T14).
+**Aucune tâche restante.** Les quinze tâches du plan sont livrées.
 
 ---
 
@@ -49,6 +49,18 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   latence et du nombre de réparations. Survit à la purge du scan. `/admin` en rend l'agrégat sous le
   bloc de file, groupé par modèle et version : taux d'échec, échecs par nature, coût moyen et total,
   latence moyenne, volume de correction.
+- **Photos de plat** — `/admin/illustrations`, liste de travail pensée pour le mobile : poser une
+  photo sur une recette **longtemps après** son ingestion, sans repasser par le scan dont elle vient.
+  Trois blocs bornés — ce qui attend un arbitrage, ce qui n'a pas de photo, et sur bascule ce qui en
+  a déjà une. L'écran dit le cadrage au moment de la prise, parce que c'est la conclusion la plus
+  contre-intuitive de T13 : plan large avec le texte imprimé autour, **4 franchissements sur 4**,
+  contre 1 sur 4 pour un gros plan détouré.
+- **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
+  paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine
+  largeur, puis s'accepte, se rejette ou se régénère. Un embellissement publié se dépublie sans
+  perdre le rendu payé. Journal `beautifyAttempts` : une ligne par appel terminé, son coût, sa
+  latence, sa nature d'échec **et ce que l'humain en a décidé** — c'est la seule métrique qui dise si
+  le modèle sert à quelque chose. L'agrégat est sous la liste de travail.
 - **Deux bancs de spike** — `spike/` (extraction) et `spike13/` (embellissement), hors réseau en CI.
 - **CI** — sept contrôles sur chaque PR, dont le build, aucun ne dépense d'argent.
 - **Sauvegarde** — miroir versionné des recettes dans `backup/`, une par fichier JSON, actualisé
@@ -60,18 +72,21 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   derrière la protection de déploiement Vercel.
 
 La chaîne est complète de bout en bout : un scan porte une à quatre pages lues ensemble, l'écran de
-correction `/admin/scan/$id` répare ce que le modèle a mal segmenté, et la publication fige le slug
-et arme la rétention. **R3 est clos.**
+correction `/admin/scan/$id` répare ce que le modèle a mal segmenté, la publication fige le slug et
+arme la rétention, et la photo du plat se pose plus tard depuis le téléphone. **R3 est clos.**
 
 ---
 
 ## Prochain pas
 
-**T14**, seule tâche restante, et elle ne dépend plus de rien.
+**Aucune tâche restante.** Ce qui vient ensuite ne sort plus du plan mais de l'usage : les reliquats
+ci-dessous, et ce que le premier vrai lot de recettes fera apparaître.
 
-- **T14 · photo du plat** (5 h) — débloquée : T4 et T5 sont faits, le prompt et le modèle sont figés
-  par T13. Elle écrit dans `src/routes/admin_.scan.$id.tsx` (l'illustration se pose depuis l'écran
-  de correction) et devra trancher la propriété des blobs décrite en R4.
+Deux chiffres sont à confronter au réel dès les premières dizaines de photos, et l'administration
+est faite pour ça : le **taux d'acceptation** des embellissements, sous la liste de travail, et le
+**coût par appel**, à comparer aux 0,03944 USD mesurés par T13. T13 a mesuré qu'une photo sur quatre
+rend un verdict différent d'une passe à l'autre : un taux de rejet élevé ne condamne donc pas le
+modèle, c'est ce qui justifie le bouton « régénérer ».
 
 Le conflit de version de prompt entre T8 et T11 est résolu : `PROMPT_VERSION` vaut **`v5`** et le
 prompt porte les deux instructions — les pages d'une même source lues ensemble (T8) et les
@@ -114,7 +129,18 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   d'accumuler des orphelins. Produire ce partage exige qu'un porteur du jeton réutilise
   délibérément un `storageId` avec un ticket neuf.
 
-  T14 devra trancher cette propriété quand `recipes.imageStorageId` aura un écrivain de production.
+  **Amendé par T14**, qui a donné à `recipes.imageStorageId` son écrivain de production et tranché
+  dans le même sens : un remplacement supprime l'ancienne originale, un détachement supprime
+  l'originale et son candidat, et un candidat non adopté meurt dans la transaction qui refuse de
+  l'adopter. Trois règles ont été ajoutées pour que ce nettoyage ne se retourne pas contre lui-même.
+  **Un remplacement est refusé tant qu'un embellissement est publié** — sans quoi la vitrine
+  afficherait le rendu d'une image qui n'existe plus. **L'idempotence précède la destruction** :
+  le ticket porte le couple `(recipeId, storageId)` qu'il a consommé et `finalizeBeautify` reconnaît
+  son propre rejeu, faute de quoi une seconde exécution supprimerait ce que la première venait
+  d'attacher. Et `deleteStoredBlob` vérifie l'existence avant d'effacer, pour que tout rejeu reste
+  sans effet plutôt que fatal.
+
+  Ce qui reste ouvert est le partage théorique lui-même : rien ne prouve l'exclusivité d'un blob.
   Tout balayage de `_storage` reste hors périmètre tant que la liste complète des propriétaires n'est
   pas garantie.
 
@@ -126,8 +152,11 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   l'administration rend cette limite visible mais ne permet pas de la contourner.
 
 - **R7 · Câblage de l'administration non testé.** Les règles de dérivation de la file sont testées
-  dans `src/lib/queueStatus.test.ts`, mais aucun test de composant ne couvre le JSX de `/admin` faute
-  d'infrastructure React dédiée.
+  dans `src/lib/queueStatus.test.ts`, la matrice de transitions telle que l'écran la lit dans
+  `src/lib/illustrationWork.test.ts`, et le rapport de publication dans
+  `src/routes/-scanCorrection.test.ts` — mais aucun test de composant ne couvre le JSX de `/admin`
+  faute d'infrastructure React dédiée. C'est ce qui oblige toute logique arbitrable à sortir en
+  fonction pure : c'est le seul endroit où elle est vérifiée.
 
 - ~~**R8 · `npm run build` absent du CI.**~~ **Clos.** Le build est le septième contrôle. C'est le
   seul qui assemble le bundle du navigateur, donc le seul capable d'attraper un module serveur qui
@@ -150,9 +179,17 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 | `spike/` — extraction       | 0,472 USD | 5,00 USD  |
 | `spike13/` — embellissement | 2,292 USD | 10,00 USD |
 
-Coûts unitaires retenus, à reprendre en T14 : **0,0049 USD / 7,1 s** par extraction (prompt v4,
-mesuré sur 14 appels au rejeu de T11), **0,03944 USD / 9,1 s** par embellissement. Ce sont les
-chiffres que le bloc « Tentatives d'extraction » de `/admin` sert à confronter à l'usage réel.
+Coûts unitaires retenus : **0,0049 USD / 7,1 s** par extraction (prompt v4, mesuré sur 14 appels au
+rejeu de T11), **0,03944 USD / 9,1 s** par embellissement — soit **7,7×** une extraction. Ce sont les
+chiffres que les deux blocs d'agrégat de l'administration servent à confronter à l'usage réel :
+« Tentatives d'extraction » sur `/admin`, « Générations d'images » sur `/admin/illustrations`.
+
+Rien ne borne la dépense **en amont**, et T14 ne prétend pas le contraire : le seau `beautify`
+(40 générations par heure) borne les **appels**, jamais les dollars, puisque le prix d'une réponse
+n'est connu qu'une fois facturée. Un appel facturé bien au-dessus de la mesure est signalé dans
+l'agrégat, et un appel dont le prix n'est pas rapporté y est compté à part — sans quoi le total se
+lirait comme exact alors qu'il n'est qu'un plancher. Un budget durable à réservation transactionnelle
+serait le seul vrai garde-fou : non construit, faute d'un incident qui en fixe le seuil.
 
 ---
 

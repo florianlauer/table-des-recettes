@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminIllustrationsRouteImport } from './routes/admin_.illustrations'
 import { Route as RecetteSlugRouteImport } from './routes/recette.$slug'
 import { Route as AdminScanIdRouteImport } from './routes/admin_.scan.$id'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIllustrationsRoute = AdminIllustrationsRouteImport.update({
+  id: '/admin_/illustrations',
+  path: '/admin/illustrations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecetteSlugRoute = RecetteSlugRouteImport.update({
@@ -38,12 +44,14 @@ const AdminScanIdRoute = AdminScanIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin/illustrations': typeof AdminIllustrationsRoute
   '/recette/$slug': typeof RecetteSlugRoute
   '/admin/scan/$id': typeof AdminScanIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin/illustrations': typeof AdminIllustrationsRoute
   '/recette/$slug': typeof RecetteSlugRoute
   '/admin/scan/$id': typeof AdminScanIdRoute
 }
@@ -51,20 +59,38 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin_/illustrations': typeof AdminIllustrationsRoute
   '/recette/$slug': typeof RecetteSlugRoute
   '/admin_/scan/$id': typeof AdminScanIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/recette/$slug' | '/admin/scan/$id'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin/illustrations'
+    | '/recette/$slug'
+    | '/admin/scan/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/recette/$slug' | '/admin/scan/$id'
-  id: '__root__' | '/' | '/admin' | '/recette/$slug' | '/admin_/scan/$id'
+  to:
+    | '/'
+    | '/admin'
+    | '/admin/illustrations'
+    | '/recette/$slug'
+    | '/admin/scan/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin_/illustrations'
+    | '/recette/$slug'
+    | '/admin_/scan/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AdminIllustrationsRoute: typeof AdminIllustrationsRoute
   RecetteSlugRoute: typeof RecetteSlugRoute
   AdminScanIdRoute: typeof AdminScanIdRoute
 }
@@ -83,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/illustrations': {
+      id: '/admin_/illustrations'
+      path: '/admin/illustrations'
+      fullPath: '/admin/illustrations'
+      preLoaderRoute: typeof AdminIllustrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recette/$slug': {
@@ -105,6 +138,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AdminIllustrationsRoute: AdminIllustrationsRoute,
   RecetteSlugRoute: RecetteSlugRoute,
   AdminScanIdRoute: AdminScanIdRoute,
 }

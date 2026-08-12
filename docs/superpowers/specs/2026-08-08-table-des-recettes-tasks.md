@@ -224,10 +224,13 @@ livrable de T2, hors du socle.
       reproduite dans aucune des huit passes depuis. Le comparateur en fait une divergence fatale sur
       toutes les pages, donc un retour serait signalé plutôt que redécouvert
 
-- [ ] **T14 · P2 · illustration** (human ~5h / CC ~1h) — Photo du plat : upload, embellissement, validation
+- [x] **T14 · P2 · illustration** (human ~5h / CC ~1h) — Photo du plat : upload, embellissement, validation
   - **Origine** : ajout de périmètre post-review
-  - **Fichiers** : `convex/schema.ts`, `convex/beautify.ts`, `src/routes/admin/recette/$id`,
-    `src/routes/recette/$slug`
+  - **Fichiers réels** : `convex/illustrations.ts`, `convex/beautify.ts`, `convex/migrations.ts`,
+    `src/routes/admin_.illustrations.tsx`. La vitrine n'a pas été touchée : `pickDisplayImage`
+    tranchait déjà les trois cas. Et la photo ne se pose **pas** depuis l'écran de correction —
+    le geste réel est de scanner en lot sur l'ordinateur puis de repasser sur mobile, souvent
+    après la purge du scan, d'où une liste de travail indexée par recette et non par scan.
   - **Dépend de** : T13 (verdict du spike), T5 (garde-fou de format, réutilisé tel quel),
     T4 (`requireAdmin` et rate limit)
   - **Vérifier** :

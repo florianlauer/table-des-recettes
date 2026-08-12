@@ -1,5 +1,6 @@
 import { v } from 'convex/values'
 import { internalMutation } from './_generated/server'
+import { withIllustration } from './lib/recipeWrites'
 
 /**
  * `attach` replaces and then deletes an image. Being internal protects nothing here: the CLI
@@ -40,7 +41,7 @@ export const attach = internalMutation({
     }
     // Re-running the script would swap the pointer and leave the old file behind.
     if (doc.imageStorageId) await ctx.storage.delete(doc.imageStorageId)
-    await ctx.db.patch(doc._id, { imageStorageId: storageId })
+    await ctx.db.patch(doc._id, withIllustration({ imageStorageId: storageId }))
     return null
   },
 })

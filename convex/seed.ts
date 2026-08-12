@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
 import { internalMutation } from './_generated/server'
-import { withSearchText } from './lib/recipeWrites'
+import { withIllustration, withSearchText } from './lib/recipeWrites'
 import { resolveSlugCollision, slugify } from '../src/lib/slug'
 
 const RECIPES = [
@@ -277,15 +277,19 @@ export const run = internalMutation({
     for (const recipe of RECIPES) {
       const slug = resolveSlugCollision(slugify(recipe.title), slugs)
       slugs.push(slug)
-      await ctx.db.insert('recipes', {
-        ...withSearchText(recipe),
-        ingredientsInferred: false,
-        slug,
-        status: 'published',
-        publishedAt: Date.now(),
-        beautifiedAccepted: false,
-        beautifyStatus: 'idle',
-      })
+      await ctx.db.insert(
+        'recipes',
+        withIllustration({
+          ...withSearchText(recipe),
+          ingredientsInferred: false,
+          slug,
+          status: 'published' as const,
+          publishedAt: Date.now(),
+          imageStorageId: undefined,
+          beautifiedAccepted: false,
+          beautifyStatus: 'idle' as const,
+        }),
+      )
     }
     return null
   },

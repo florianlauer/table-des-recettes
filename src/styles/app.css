@@ -147,6 +147,49 @@ img {
   color: var(--ochre);
 }
 
+/* --- illustration work list --- */
+
+.illustrations__section {
+  margin-top: 2.5rem;
+}
+.illustrations__section h2 {
+  font-family: var(--serif);
+}
+.illustrations__recipe {
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.illustrations__recipe h3 {
+  font-family: var(--serif);
+  margin: 0;
+}
+.illustrations__recipe h3,
+.illustrations__recipe p,
+.illustrations__recipe > label {
+  flex-basis: 100%;
+  margin: 0;
+}
+/* Stacked and full width, never side by side: the thing being judged is the print screen, and two
+   columns on a phone make it unreadable. */
+.illustrations__shot {
+  flex-basis: 100%;
+  margin: 0.5rem 0;
+  max-width: 34rem;
+}
+.illustrations__shot img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--rule);
+}
+.illustrations__shot figcaption {
+  padding-top: 0.4rem;
+  color: var(--ink-muted);
+}
+
 /* --- correction screen --- */
 
 .scan-page__images {

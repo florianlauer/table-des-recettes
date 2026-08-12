@@ -1,0 +1,800 @@
+import rateLimiterTest from '@convex-dev/rate-limiter/test'
+import { convexTest } from 'convex-test'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { api, internal } from './_generated/api'
+import type { Id } from './_generated/dataModel'
+import { BACKFILL_BATCH } from './migrations'
+import schema from './schema'
+import { bytesToBase64 } from '../src/lib/base64'
+
+const modules = import.meta.glob('./**/*.ts')
+const adminToken = 'test-secret'
+
+function setup() {
+  const t = convexTest(schema, modules)
+  rateLimiterTest.register(t)
+  return t
+}
+
+function jpegBytes(): Uint8Array<ArrayBuffer> {
+  const bytes = new Uint8Array(21)
+  bytes.set([0xff, 0xd8, 0xff, 0xc0, 0, 17, 8, 0, 16, 0, 16])
+  return bytes
+}
+
+function jpeg(): Blob {
+  return new Blob([jpegBytes()], { type: 'image/jpeg' })
+}
+
+type Ctx = ReturnType<typeof setup>
+
+async function newRecipe(t: Ctx, over: Record<string, unknown> = {}) {
+  return t.run((ctx) =>
+    ctx.db.insert('recipes', {
+      title: 'Clafoutis',
+      type: 'dessert' as const,
+      ingredients: [],
+      ingredientsInferred: false,
+      steps: [],
+      searchText: 'clafoutis',
+      status: 'review' as const,
+      hasIllustration: false,
+      beautifiedAccepted: false,
+      beautifyStatus: 'idle' as const,
+      ...over,
+    }),
+  )
+}
+
+async function ticket(
+  t: Ctx,
+  purpose: 'scan' | 'illustration' = 'illustration',
+) {
+  const grant = await t.mutation(api.admin.generateUploadUrl, {
+    adminToken,
+    purpose,
+  })
+  if (!grant.ok) throw new Error(grant.error)
+  return grant.ticketId
+}
+
+async function stored(t: Ctx, storageId: Id<'_storage'>) {
+  return t.run((ctx) => ctx.db.system.get('_storage', storageId))
+}
+
+/** Posts a photo the way the screen does: a ticket, an upload, then the action. */
+async function attach(t: Ctx, recipeId: Id<'recipes'>) {
+  const ticketId = await ticket(t)
+  const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+  const result = await t.action(api.illustrations.attachIllustration, {
+    adminToken,
+    ticketId,
+    storageId,
+    recipeId,
+  })
+  return { ticketId, storageId, result }
+}
+
+beforeEach(() => {
+  process.env.ADMIN_TOKEN = adminToken
+})
+
+afterEach(() => {
+  delete process.env.ADMIN_TOKEN
+})
+
+describe('posting a photo', () => {
+  test('attaches it and lights the index in the same write', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { storageId, result } = await attach(t, recipeId)
+    expect(result).toEqual({ ok: true })
+
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe).toMatchObject({
+      imageStorageId: storageId,
+      hasIllustration: true,
+    })
+  })
+
+  test('refuses a ticket drawn on the scanning quota, and destroys the blob', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const ticketId = await ticket(t, 'scan')
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+
+    await expect(
+      t.action(api.illustrations.attachIllustration, {
+        adminToken,
+        ticketId,
+        storageId,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+    // The ticket was still virgin, so the blob belonged to nobody: destroying it took nothing.
+    expect(await stored(t, storageId)).toBeNull()
+  })
+
+  test('refuses an illustration ticket on the scan endpoint', async () => {
+    const t = setup()
+    const ticketId = await ticket(t, 'illustration')
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await expect(
+      t.mutation(api.admin.attachImage, { adminToken, ticketId, storageId }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+
+  test('refuses bytes that are not a readable image, before consuming the ticket', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const ticketId = await ticket(t)
+    const storageId = await t.run((ctx) =>
+      ctx.storage.store(new Blob([new Uint8Array([1, 2, 3, 4])])),
+    )
+    await expect(
+      t.action(api.illustrations.attachIllustration, {
+        adminToken,
+        ticketId,
+        storageId,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+    const ticketRow = await t.run((ctx) =>
+      ctx.db.get('uploadTickets', ticketId),
+    )
+    expect(ticketRow?.consumedAt).toBeUndefined()
+  })
+
+  test('replayed identically, succeeds without destroying the photo it attached', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { ticketId, storageId } = await attach(t, recipeId)
+
+    await expect(
+      t.action(api.illustrations.attachIllustration, {
+        adminToken,
+        ticketId,
+        storageId,
+        recipeId,
+      }),
+    ).resolves.toEqual({ ok: true })
+    expect(await stored(t, storageId)).not.toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.imageStorageId).toBe(storageId)
+  })
+
+  test('replayed with a different recipe, refuses without destroying anything', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const otherId = await newRecipe(t, { title: 'Tarte' })
+    const { ticketId, storageId } = await attach(t, recipeId)
+
+    await expect(
+      t.action(api.illustrations.attachIllustration, {
+        adminToken,
+        ticketId,
+        storageId,
+        recipeId: otherId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+    // The blob it points at is not its own. Refusing must not take it from the first recipe.
+    expect(await stored(t, storageId)).not.toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.imageStorageId).toBe(storageId)
+  })
+
+  test('replacing deletes the old original and cancels a running generation', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { storageId: first } = await attach(t, recipeId)
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, {
+        beautifyStatus: 'generating',
+        beautifyAttemptId: 'attempt-1',
+        beautifyStartedAt: Date.now(),
+      }),
+    )
+
+    const { storageId: second } = await attach(t, recipeId)
+    expect(await stored(t, first)).toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe).toMatchObject({
+      imageStorageId: second,
+      // Not left `generating`: that would block the recipe until a lease expired, with nothing on
+      // screen explaining it.
+      beautifyStatus: 'failed',
+    })
+    expect(recipe?.beautifyAttemptId).toBeUndefined()
+    expect(recipe?.beautifyError).toContain('remplacée')
+  })
+
+  test('refuses to replace or detach while a beautification is published', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, {
+        beautifiedStorageId: candidate,
+        beautifiedAccepted: true,
+      }),
+    )
+
+    const ticketId = await ticket(t)
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await expect(
+      t.action(api.illustrations.attachIllustration, {
+        adminToken,
+        ticketId,
+        storageId,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+    await expect(
+      t.mutation(api.illustrations.detachIllustration, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+
+  test('detaching takes the original, the candidate and the index flag', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { storageId } = await attach(t, recipeId)
+    const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, {
+        beautifiedStorageId: candidate,
+        beautifyStatus: 'review',
+      }),
+    )
+
+    await expect(
+      t.mutation(api.illustrations.detachIllustration, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toEqual({ ok: true })
+    expect(await stored(t, storageId)).toBeNull()
+    expect(await stored(t, candidate)).toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.hasIllustration).toBe(false)
+    expect(recipe?.imageStorageId).toBeUndefined()
+  })
+})
+
+describe('retention', () => {
+  test('purging the scan takes its pages, never the dish photo', async () => {
+    const t = setup()
+    const page = await t.run((ctx) => ctx.storage.store(jpeg()))
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [page],
+        status: 'done' as const,
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    const recipeId = await newRecipe(t, { scanId })
+    const { storageId } = await attach(t, recipeId)
+
+    await t.mutation(internal.retention.purgeOneScan, { scanId })
+
+    expect(await stored(t, page)).toBeNull()
+    // The dish photo has no retention deadline and never had one: it is the recipe's, not the
+    // scan's, and it outlives every page it was posted alongside.
+    expect(await stored(t, storageId)).not.toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.imageStorageId).toBe(storageId)
+  })
+})
+
+describe('transition matrix', () => {
+  test('refuses a generation without a photo', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await expect(
+      t.mutation(api.illustrations.requestBeautify, { adminToken, recipeId }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+
+  test('refuses a generation while one is running, or while a candidate awaits arbitration', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    for (const status of ['generating', 'review'] as const) {
+      await t.run((ctx) => ctx.db.patch(recipeId, { beautifyStatus: status }))
+      await expect(
+        t.mutation(api.illustrations.requestBeautify, { adminToken, recipeId }),
+      ).resolves.toMatchObject({ ok: false })
+    }
+  })
+
+  test('refuses a generation while a beautification is published', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await t.run((ctx) => ctx.db.patch(recipeId, { beautifiedAccepted: true }))
+    await expect(
+      t.mutation(api.illustrations.requestBeautify, { adminToken, recipeId }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+
+  test('allows a generation after a failure, and schedules the render', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, {
+        beautifyStatus: 'failed',
+        beautifyError: 'Réponse en texte',
+      }),
+    )
+    await expect(
+      t.mutation(api.illustrations.requestBeautify, { adminToken, recipeId }),
+    ).resolves.toEqual({ ok: true })
+
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.beautifyStatus).toBe('generating')
+    expect(recipe?.beautifyStartedAt).toBeGreaterThan(0)
+    expect(recipe?.beautifyError).toBeUndefined()
+  })
+
+  test('deletes the kept candidate before starting a new generation', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, { beautifiedStorageId: candidate }),
+    )
+
+    await t.mutation(api.illustrations.requestBeautify, {
+      adminToken,
+      recipeId,
+    })
+    // Without this, the candidate a de-publication kept is silently overwritten by the next render.
+    expect(await stored(t, candidate)).toBeNull()
+  })
+
+  test('refuses to arbitrate outside review', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, { beautifiedStorageId: candidate }),
+    )
+    for (const call of [
+      api.illustrations.acceptBeautified,
+      api.illustrations.rejectPendingCandidate,
+    ]) {
+      await expect(
+        t.mutation(call, { adminToken, recipeId }),
+      ).resolves.toMatchObject({ ok: false })
+    }
+    // The blob survives a refused arbitration.
+    expect(await stored(t, candidate)).not.toBeNull()
+  })
+})
+
+/** Brings a recipe to `review` with a journalled attempt, the way a render does. */
+async function toReview(t: Ctx, recipeId: Id<'recipes'>) {
+  const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+  const attemptId = `${recipeId}:1`
+  const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+  await t.run(async (ctx) => {
+    await ctx.db.patch(recipeId, {
+      beautifiedStorageId: candidate,
+      beautifyStatus: 'review',
+      beautifyAttemptId: attemptId,
+    })
+    await ctx.db.insert('beautifyAttempts', {
+      attemptId,
+      recipeId,
+      model: 'google/gemini-2.5-flash-image',
+      promptVersion: 'v2',
+      servedProvider: null,
+      latencyMs: 9100,
+      costUsd: 0.03944,
+      costReported: true,
+      repairCount: 0,
+      failureKind: null,
+      sourceStorageId: recipe!.imageStorageId!,
+      outcome: 'pending',
+      createdAt: Date.now(),
+    })
+  })
+  return { attemptId, candidate }
+}
+
+describe('arbitration', () => {
+  test('accepting publishes the candidate and settles its attempt', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const { attemptId, candidate } = await toReview(t, recipeId)
+
+    await expect(
+      t.mutation(api.illustrations.acceptBeautified, { adminToken, recipeId }),
+    ).resolves.toEqual({ ok: true })
+    const [recipe, attempts] = await t.run(async (ctx) => [
+      await ctx.db.get('recipes', recipeId),
+      await ctx.db.query('beautifyAttempts').collect(),
+    ])
+    expect(recipe).toMatchObject({
+      beautifiedAccepted: true,
+      beautifyStatus: 'idle',
+      beautifiedStorageId: candidate,
+    })
+    expect(attempts[0]).toMatchObject({ attemptId, outcome: 'accepted' })
+  })
+
+  test('rejecting destroys the candidate and leaves the original alone', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { storageId } = await attach(t, recipeId)
+    const { candidate } = await toReview(t, recipeId)
+
+    await t.mutation(api.illustrations.rejectPendingCandidate, {
+      adminToken,
+      recipeId,
+    })
+    expect(await stored(t, candidate)).toBeNull()
+    expect(await stored(t, storageId)).not.toBeNull()
+    const attempts = await t.run((ctx) =>
+      ctx.db.query('beautifyAttempts').collect(),
+    )
+    expect(attempts[0]?.outcome).toBe('rejected')
+  })
+
+  test('refuses a second arbitration on the same render', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await toReview(t, recipeId)
+
+    await t.mutation(api.illustrations.acceptBeautified, {
+      adminToken,
+      recipeId,
+    })
+    // Back to `review` by hand — a state nothing produces. Arbitration must still refuse: the
+    // verdict is already in the journal, and a second one would rewrite it.
+    await t.run((ctx) => ctx.db.patch(recipeId, { beautifyStatus: 'review' }))
+    await expect(
+      t.mutation(api.illustrations.rejectPendingCandidate, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+
+  test('unpublishing keeps the blob and the outcome, then deletion clears only the blob', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const { candidate } = await toReview(t, recipeId)
+    await t.mutation(api.illustrations.acceptBeautified, {
+      adminToken,
+      recipeId,
+    })
+
+    await expect(
+      t.mutation(api.illustrations.unpublishAcceptedCandidate, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toEqual({ ok: true })
+    // The render was paid for and judged good: the storefront falls back without losing it.
+    expect(await stored(t, candidate)).not.toBeNull()
+
+    await expect(
+      t.mutation(api.illustrations.deleteUnpublishedCandidate, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toEqual({ ok: true })
+    expect(await stored(t, candidate)).toBeNull()
+    const attempts = await t.run((ctx) =>
+      ctx.db.query('beautifyAttempts').collect(),
+    )
+    // Housekeeping, not arbitration: the journal still says a human adopted this render once.
+    expect(attempts[0]?.outcome).toBe('accepted')
+  })
+
+  test('refuses to delete a candidate that is still published', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await toReview(t, recipeId)
+    await t.mutation(api.illustrations.acceptBeautified, {
+      adminToken,
+      recipeId,
+    })
+    await expect(
+      t.mutation(api.illustrations.deleteUnpublishedCandidate, {
+        adminToken,
+        recipeId,
+      }),
+    ).resolves.toMatchObject({ ok: false })
+  })
+})
+
+describe('abandoning a stalled generation', () => {
+  test('refuses while the lease is fresh, allows once it has run out', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await t.mutation(api.illustrations.requestBeautify, {
+      adminToken,
+      recipeId,
+    })
+
+    await expect(
+      t.mutation(api.illustrations.abandonBeautify, { adminToken, recipeId }),
+    ).resolves.toMatchObject({ ok: false })
+
+    await t.run((ctx) => ctx.db.patch(recipeId, { beautifyStartedAt: 0 }))
+    await expect(
+      t.mutation(api.illustrations.abandonBeautify, { adminToken, recipeId }),
+    ).resolves.toEqual({ ok: true })
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.beautifyStatus).toBe('failed')
+    expect(recipe?.beautifyAttemptId).toBeUndefined()
+  })
+})
+
+describe('the work list', () => {
+  test('bounds each block and reports its truncation', async () => {
+    const t = setup()
+    await Promise.all(
+      Array.from({ length: 3 }, (_unused, index) =>
+        newRecipe(t, { title: `Sans photo ${index}` }),
+      ),
+    )
+    const work = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      includeIllustrated: false,
+    })
+    expect(work.withoutIllustration).toHaveLength(3)
+    expect(work.withoutIllustrationTruncated).toBe(false)
+    // Nothing claims the index is exhaustive until the backfill says so.
+    expect(work.migration).toEqual({ started: false, done: false, migrated: 0 })
+  })
+
+  test('hides the illustrated ones unless asked', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+
+    const hidden = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      includeIllustrated: false,
+    })
+    expect(hidden.illustrated).toHaveLength(0)
+    expect(hidden.withoutIllustration).toHaveLength(0)
+
+    const shown = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      includeIllustrated: true,
+    })
+    expect(shown.illustrated).toHaveLength(1)
+    expect(shown.illustrated[0]).toMatchObject({
+      hasOriginal: true,
+      hasCandidate: false,
+    })
+  })
+
+  test('puts what is waiting for arbitration ahead of what is still running', async () => {
+    const t = setup()
+    const waiting = await newRecipe(t, { title: 'À arbitrer' })
+    await attach(t, waiting)
+    await toReview(t, waiting)
+    const running = await newRecipe(t, { title: 'En cours' })
+    await attach(t, running)
+    await t.run((ctx) =>
+      ctx.db.patch(running, { beautifyStatus: 'generating' }),
+    )
+
+    const work = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      includeIllustrated: false,
+    })
+    expect(work.active.map((row) => row.title)).toEqual([
+      'À arbitrer',
+      'En cours',
+    ])
+  })
+})
+
+describe('the nominal path, end to end', () => {
+  const imageAnswer = () => ({
+    provider: 'google-vertex',
+    choices: [
+      {
+        finish_reason: 'stop',
+        message: {
+          images: [
+            {
+              image_url: {
+                url: `data:image/jpeg;base64,${bytesToBase64(jpegBytes())}`,
+              },
+            },
+          ],
+        },
+      },
+    ],
+    usage: { cost: 0.03944 },
+  })
+
+  async function renderOnce(t: Ctx, recipeId: Id<'recipes'>) {
+    await t.mutation(api.illustrations.requestBeautify, {
+      adminToken,
+      recipeId,
+    })
+    // The render is scheduled, not awaited: without draining the queue the recipe would still read
+    // `generating` and the test would be asserting nothing.
+    vi.useFakeTimers()
+    await t.finishAllScheduledFunctions(vi.runAllTimers)
+    vi.useRealTimers()
+  }
+
+  beforeEach(() => {
+    process.env.OPENROUTER_API_KEY = 'key'
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify(imageAnswer()))),
+    )
+  })
+
+  afterEach(() => {
+    delete process.env.OPENROUTER_API_KEY
+    vi.unstubAllGlobals()
+  })
+
+  test('photo, generation, acceptance', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await renderOnce(t, recipeId)
+
+    const waiting = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(waiting?.beautifyStatus).toBe('review')
+    expect(waiting?.beautifiedStorageId).toBeDefined()
+
+    await expect(
+      t.mutation(api.illustrations.acceptBeautified, { adminToken, recipeId }),
+    ).resolves.toEqual({ ok: true })
+    const accepted = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(accepted).toMatchObject({
+      beautifiedAccepted: true,
+      beautifyStatus: 'idle',
+    })
+    const attempts = await t.run((ctx) =>
+      ctx.db.query('beautifyAttempts').collect(),
+    )
+    expect(attempts).toMatchObject([
+      { outcome: 'accepted', failureKind: null, costReported: true },
+    ])
+  })
+
+  test('photo, generation, rejection', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const { storageId } = await attach(t, recipeId)
+    await renderOnce(t, recipeId)
+    const candidate = await t.run(
+      async (ctx) =>
+        (await ctx.db.get('recipes', recipeId))?.beautifiedStorageId,
+    )
+
+    await t.mutation(api.illustrations.rejectPendingCandidate, {
+      adminToken,
+      recipeId,
+    })
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.beautifiedStorageId).toBeUndefined()
+    expect(recipe?.beautifyStatus).toBe('idle')
+    expect(await stored(t, candidate!)).toBeNull()
+    // The original never moves: rejecting a render is not losing the photo it was made from.
+    expect(await stored(t, storageId)).not.toBeNull()
+
+    const attempts = await t.run((ctx) =>
+      ctx.db.query('beautifyAttempts').collect(),
+    )
+    expect(attempts).toMatchObject([{ outcome: 'rejected' }])
+  })
+})
+
+describe('the hasIllustration backfill', () => {
+  test('indexes the corpus in batches and survives an interruption', async () => {
+    const t = setup()
+    // Rows written straight to the table, without the flag: exactly what the existing corpus
+    // looks like before the migration runs.
+    const total = BACKFILL_BATCH + 5
+    await t.run(async (ctx) => {
+      const storageId = await ctx.storage.store(jpeg())
+      for (let index = 0; index < total; index += 1) {
+        await ctx.db.insert('recipes', {
+          title: `Ancienne ${index}`,
+          type: 'autre' as const,
+          ingredients: [],
+          ingredientsInferred: false,
+          steps: [],
+          searchText: `ancienne ${index}`,
+          status: 'review' as const,
+          beautifiedAccepted: false,
+          beautifyStatus: 'idle' as const,
+          ...(index === 0 ? { imageStorageId: storageId } : {}),
+        })
+      }
+    })
+
+    // One page, then the interruption: the scheduled continuation is not run here.
+    const first = await t.mutation(
+      internal.migrations.backfillIllustrations,
+      {},
+    )
+    expect(first).toBe(BACKFILL_BATCH)
+    const midway = await t.run((ctx) =>
+      ctx.db
+        .query('migrations')
+        .withIndex('by_name', (q) => q.eq('name', 'hasIllustration'))
+        .first(),
+    )
+    expect(midway).toMatchObject({ done: false, migrated: BACKFILL_BATCH })
+
+    // Resumed from the stored cursor: it finishes the corpus without rewriting what it already did.
+    const second = await t.mutation(
+      internal.migrations.backfillIllustrations,
+      {},
+    )
+    expect(second).toBe(5)
+    const third = await t.mutation(
+      internal.migrations.backfillIllustrations,
+      {},
+    )
+    expect(third).toBe(0)
+
+    const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
+    expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
+    expect(rows.filter((row) => row.hasIllustration).length).toBe(1)
+
+    const work = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      includeIllustrated: false,
+    })
+    expect(work.migration.done).toBe(true)
+  })
+
+  test('keeps the flag consistent with the photo after every write', async () => {
+    const t = setup()
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done' as const,
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    const added = await t.mutation(api.recipeAdmin.addRecipe, {
+      adminToken,
+      scanId,
+    })
+    if (!added.ok) throw new Error(added.error)
+
+    const check = async () => {
+      const recipe = await t.run((ctx) => ctx.db.get('recipes', added.recipeId))
+      expect(recipe?.hasIllustration).toBe(recipe?.imageStorageId !== undefined)
+    }
+    await check()
+    await attach(t, added.recipeId)
+    await check()
+    await t.mutation(api.illustrations.detachIllustration, {
+      adminToken,
+      recipeId: added.recipeId,
+    })
+    await check()
+  })
+})

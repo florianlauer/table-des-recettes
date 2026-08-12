@@ -3,8 +3,8 @@ import { convexTest } from 'convex-test'
 import { describe, expect, test, vi } from 'vitest'
 import { internal } from './_generated/api'
 import schema from './schema'
+import { bytesToBase64 } from '../src/lib/base64'
 import {
-  bytesToBase64,
   eligibility,
   extractImages,
   interpretResponse,
