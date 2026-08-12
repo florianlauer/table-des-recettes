@@ -177,11 +177,20 @@ img {
   visibility: hidden;
 }
 
-/* The gesture and everything it owes: the bar, the phase, the result, the reason it is inert. */
+/* The gesture and everything it owes: the bar, the phase, the result, the reason it is inert.
+   `inline-grid`, not `grid`: a block-level box would stretch the button to the width of the page
+   wherever the section is plain block flow, and the bar spans the control rather than the column. */
 .gesture-control {
-  display: grid;
+  display: inline-grid;
+  vertical-align: top;
   gap: 0.3rem;
   align-content: start;
+  max-width: 100%;
+}
+/* The message sizes the control, so an unbounded sentence would drag the bar across the page. */
+.gesture-control .gesture__note,
+.gesture-control .admin-page__blocked {
+  max-width: 34rem;
 }
 .gesture__bar {
   height: 2px;
