@@ -3,7 +3,11 @@ import type { Doc, Id } from './_generated/dataModel'
 import { mutation } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
-import { revisionOf, withSearchText } from './lib/recipeWrites'
+import {
+  revisionOf,
+  withIllustration,
+  withSearchText,
+} from './lib/recipeWrites'
 import { okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { reconcileRetention } from './retention'
@@ -137,18 +141,21 @@ export const addRecipe = mutation({
 
     const recipeId = await ctx.db.insert(
       'recipes',
-      withSearchText({
-        scanId,
-        title: '',
-        type: 'autre' as const,
-        ingredients: [],
-        ingredientsInferred: false,
-        steps: [],
-        status: 'review' as const,
-        beautifiedAccepted: false,
-        beautifyStatus: 'idle' as const,
-        revision: 0,
-      }),
+      withIllustration(
+        withSearchText({
+          scanId,
+          title: '',
+          type: 'autre' as const,
+          ingredients: [],
+          ingredientsInferred: false,
+          steps: [],
+          status: 'review' as const,
+          imageStorageId: undefined,
+          beautifiedAccepted: false,
+          beautifyStatus: 'idle' as const,
+          revision: 0,
+        }),
+      ),
     )
     await reconcileRetention(ctx, scanId)
     return { ok: true as const, recipeId }

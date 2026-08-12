@@ -91,6 +91,9 @@ function AdminPage() {
     <main className="page admin-page">
       <header className="admin-page__header">
         <h1>Administration</h1>
+        <p>
+          <Link to="/admin/illustrations">Photos des plats</Link>
+        </p>
       </header>
 
       <label className="admin-page__field">

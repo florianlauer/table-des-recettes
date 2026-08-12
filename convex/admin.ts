@@ -5,11 +5,18 @@ import { mutation, query } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
+import { deleteStoredBlob } from './lib/blobs'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
 import { ceilingFor, reconcileRetention } from './retention'
 import type { PurgeResult } from './retention'
-import { attemptRecord, ingredient, recipeType, scanStatus } from './schema'
+import {
+  attemptRecord,
+  ingredient,
+  recipeType,
+  scanStatus,
+  uploadPurpose,
+} from './schema'
 import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
@@ -36,8 +43,13 @@ export const QUEUE_COUNT_CAP = 1000
 // which is exactly what `draftsTruncated` has to tell the operator rather than hide.
 export const DRAFTS_LISTED_PER_SCAN = MAX_RECIPES_PER_SCAN
 
+/**
+ * `purpose` chooses the bucket **and** marks the ticket. Both halves matter: separate buckets with
+ * unmarked tickets would only be decoration, since one drawn on the scanning quota could then be
+ * spent on an illustration.
+ */
 export const generateUploadUrl = mutation({
-  args: { adminToken: v.string() },
+  args: { adminToken: v.string(), purpose: v.optional(uploadPurpose) },
   returns: v.union(
     v.object({
       ok: v.literal(true),
@@ -50,17 +62,26 @@ export const generateUploadUrl = mutation({
       retryAfter: v.number(),
     }),
   ),
-  handler: async (ctx, { adminToken }) => {
+  handler: async (ctx, { adminToken, purpose = 'scan' }) => {
     requireAdmin(adminToken)
-    const limit = await rateLimiter.limit(ctx, 'scanCreation')
+    const illustration = purpose === 'illustration'
+    const limit = await rateLimiter.limit(
+      ctx,
+      illustration ? 'illustrationUpload' : 'scanCreation',
+    )
     if (!limit.ok) {
       return {
-        ...refuse('Trop de scans créés, réessaie plus tard'),
+        ...refuse(
+          illustration
+            ? 'Trop de photos envoyées, réessaie plus tard'
+            : 'Trop de scans créés, réessaie plus tard',
+        ),
         retryAfter: limit.retryAfter,
       }
     }
     const ticketId = await ctx.db.insert('uploadTickets', {
       createdAt: Date.now(),
+      purpose,
     })
     return {
       ok: true as const,
@@ -143,7 +164,9 @@ export const attachImage = mutation({
       error: string,
       outcome: 'missing_storage' | 'too_large' | 'rejected',
     ) => {
-      if (outcome !== 'missing_storage') await ctx.storage.delete(storageId)
+      // No `outcome !== 'missing_storage'` guard: the helper looks before it destroys, which answers
+      // the same question by observation rather than by inferring it from the label.
+      await deleteStoredBlob(ctx, storageId)
       await ctx.db.patch(ticketId, {
         consumedAt,
         storageId,
@@ -152,6 +175,11 @@ export const attachImage = mutation({
       })
       return refuse(error)
     }
+
+    // Before anything else on a virgin ticket: a ticket drawn on the illustration quota must not
+    // buy a scan page, or the two buckets bound nothing.
+    if ((ticket.purpose ?? 'scan') !== 'scan')
+      return reject('Ce ticket est réservé aux photos de plat', 'rejected')
 
     const metadata = await ctx.db.system.get('_storage', storageId)
     if (!metadata)

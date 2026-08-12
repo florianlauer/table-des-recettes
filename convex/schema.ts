@@ -1,10 +1,33 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
+import { BEAUTIFY_FAILURE_KINDS } from '../src/lib/beautifyFailureKinds'
 import { FAILURE_KINDS } from '../src/lib/failureKinds'
 import { RECIPE_TYPES } from '../src/lib/recipeTypes'
 import { literalUnion } from './lib/validators'
 
 export const recipeType = literalUnion(RECIPE_TYPES)
+
+export const uploadPurpose = literalUnion(['scan', 'illustration'] as const)
+
+export const beautifyStatus = literalUnion([
+  'idle',
+  'generating',
+  'review',
+  'failed',
+] as const)
+
+/**
+ * Not a nullable boolean. A finalisation that arrives too late was still billed, so it has to be
+ * journalled — but no arbitration is possible on it, which is neither "waiting" nor "judged":
+ * `discarded`. A boolean would have forced a choice between understating the spend and inflating
+ * the review queue.
+ */
+export const beautifyOutcome = literalUnion([
+  'pending',
+  'accepted',
+  'rejected',
+  'discarded',
+] as const)
 
 export const scanStatus = literalUnion([
   'pending',
@@ -77,14 +100,16 @@ export default defineSchema({
     imageStorageId: v.optional(v.id('_storage')),
     beautifiedStorageId: v.optional(v.id('_storage')),
     beautifiedAccepted: v.boolean(),
-    beautifyStatus: literalUnion([
-      'idle',
-      'generating',
-      'review',
-      'failed',
-    ] as const),
+    beautifyStatus,
     beautifyAttemptId: v.optional(v.string()),
     beautifyError: v.optional(v.string()),
+    // When the current generation was started. Without it an action killed before its failure
+    // mutation leaves the recipe `generating` forever, with nothing on screen saying so.
+    beautifyStartedAt: v.optional(v.number()),
+    // Denormalised so "which recipes still have no photo" is an indexed read. Optional because a
+    // required boolean would reject every existing recipe; `migrations` carries the backfill, and
+    // `withIllustration` is the only thing allowed to write it.
+    hasIllustration: v.optional(v.boolean()),
     // Compare-and-set token for the correction form. An integer, not a timestamp: two writes in the
     // same millisecond would mint the same token and let the stale one through.
     revision: v.optional(v.number()),
@@ -92,6 +117,8 @@ export default defineSchema({
     .index('by_status_type', ['status', 'type'])
     .index('by_slug', ['slug'])
     .index('by_scan', ['scanId'])
+    .index('by_illustration', ['hasIllustration'])
+    .index('by_beautify_status', ['beautifyStatus'])
     .searchIndex('search_recipes', {
       searchField: 'searchText',
       filterFields: ['status', 'type'],
@@ -108,11 +135,58 @@ export default defineSchema({
     createdAt: v.number(),
   }).index('by_created_at', ['createdAt']),
 
+  /**
+   * The extraction journal cannot be reused: its `failureKind` is typed on the extraction taxonomy
+   * and its `scanId` is mandatory, while an illustration belongs to a recipe and may outlive every
+   * scan. `outcome` is what makes this a journal of *arbitrations* and not only of calls.
+   */
+  beautifyAttempts: defineTable({
+    attemptId: v.string(),
+    recipeId: v.id('recipes'),
+    model: v.string(),
+    promptVersion: v.string(),
+    servedProvider: v.union(v.string(), v.null()),
+    latencyMs: v.number(),
+    costUsd: v.number(),
+    // A response without `usage.cost` is journalled at zero; without this flag the aggregate would
+    // read a missing price as a free call.
+    costReported: v.boolean(),
+    // Explicitly nullable, with the invariant tested: `pending | accepted | rejected` carry no
+    // failure, a *technical* `discarded` always does, and a `discarded` that merely arrived too
+    // late carries none either — there, `outcome` alone tells the story.
+    failureKind: v.union(literalUnion(BEAUTIFY_FAILURE_KINDS), v.null()),
+    // The original the candidate was rendered from. Finalisation compares it against the recipe:
+    // an image replaced meanwhile must not inherit a candidate made from the previous one.
+    sourceStorageId: v.id('_storage'),
+    outcome: beautifyOutcome,
+    createdAt: v.number(),
+  })
+    .index('by_created_at', ['createdAt'])
+    // Not a unique constraint — Convex has none. It is what lets every journalling mutation read
+    // before it inserts, which is how a replayed finalisation stops counting its cost twice.
+    .index('by_attempt_id', ['attemptId']),
+
+  /** Durable progress of the batched backfills. One row per migration, keyed by name. */
+  migrations: defineTable({
+    name: v.string(),
+    cursor: v.union(v.string(), v.null()),
+    done: v.boolean(),
+    migrated: v.number(),
+    updatedAt: v.number(),
+  }).index('by_name', ['name']),
+
   uploadTickets: defineTable({
     createdAt: v.number(),
     consumedAt: v.optional(v.number()),
     storageId: v.optional(v.id('_storage')),
     scanId: v.optional(v.id('scans')),
+    // Written when the ticket is issued. Without it the two rate-limit buckets are decoration: a
+    // ticket drawn on the scan quota would serve to illustrate. Tickets predating the field are
+    // read as `scan`.
+    purpose: v.optional(uploadPurpose),
+    // Written when an illustration ticket is consumed, and it is what makes a replay decidable:
+    // the same pair is a success, a different one is a refusal that destroys nothing.
+    recipeId: v.optional(v.id('recipes')),
     // `rejected` is deliberately generic: the guards that can refuse an upload keep growing, and the
     // precise reason already has a home in `error`.
     outcome: v.optional(

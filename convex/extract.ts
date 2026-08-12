@@ -9,7 +9,7 @@ import type { attemptRecord } from './schema'
 import { ingredient, recipeType } from './schema'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
-import { withSearchText } from './lib/recipeWrites'
+import { withIllustration, withSearchText } from './lib/recipeWrites'
 import { FAILURE_KINDS, isTerminalFailure } from '../src/lib/failureKinds'
 import type { FailureKind } from '../src/lib/failureKinds'
 import {
@@ -23,6 +23,7 @@ import {
   RECIPE_SCHEMA_VERSION,
   repairExtraction,
 } from '../src/lib/recipe-schema'
+import { bytesToBase64 } from '../src/lib/base64'
 import { sniffImageHeader } from '../src/lib/imageHeader'
 import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/lib/scanLimits'
 import {
@@ -100,14 +101,6 @@ function failure({
     costUsd: 0,
     repairCount: 0,
   }
-}
-
-export function bytesToBase64(bytes: Uint8Array): string {
-  const chunks: string[] = []
-  for (let offset = 0; offset < bytes.length; offset += 0x8000) {
-    chunks.push(String.fromCharCode(...bytes.subarray(offset, offset + 0x8000)))
-  }
-  return btoa(chunks.join(''))
 }
 
 export function requestBody({
@@ -532,14 +525,17 @@ export const finalize = internalMutation({
     for (const recipe of recipes) {
       await ctx.db.insert(
         'recipes',
-        withSearchText({
-          ...recipe,
-          scanId,
-          status: 'review' as const,
-          beautifiedAccepted: false,
-          beautifyStatus: 'idle' as const,
-          revision: 0,
-        }),
+        withIllustration(
+          withSearchText({
+            ...recipe,
+            scanId,
+            status: 'review' as const,
+            imageStorageId: undefined,
+            beautifiedAccepted: false,
+            beautifyStatus: 'idle' as const,
+            revision: 0,
+          }),
+        ),
       )
     }
     const attempt = { ...observation, failureKind: null }

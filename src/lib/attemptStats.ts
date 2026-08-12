@@ -5,6 +5,12 @@
  */
 import { v } from 'convex/values'
 import type { Infer } from 'convex/values'
+import {
+  costAndLatency,
+  countFailureKinds,
+  groupByIdentity,
+} from './journalStats'
+import type { NonEmpty } from './journalStats'
 
 // Enough attempts to read a trend over a few dozen recipes — the horizon the plan sets for judging
 // whether the cheap model holds — and few enough to stay one indexed read.
@@ -59,35 +65,16 @@ export function groupKey({
   return `${model} ${promptVersion} ${schemaVersion}`
 }
 
-/**
- * Attempts must arrive newest first: the insertion order of the groups is preserved so the
- * combination in force reads above the ones it replaced.
- */
 export function summarizeAttempts(
   attempts: JournalledAttempt[],
 ): AttemptSummary[] {
-  // A non-empty tuple, so each group's identity can be read off its first row without a cast.
-  const groups = new Map<string, [JournalledAttempt, ...JournalledAttempt[]]>()
-  for (const attempt of attempts) {
-    const group = groups.get(groupKey(attempt))
-    if (group) group.push(attempt)
-    else groups.set(groupKey(attempt), [attempt])
-  }
-  return [...groups.values()].map(summarizeGroup)
+  return groupByIdentity(attempts, groupKey).map(summarizeGroup)
 }
 
-function summarizeGroup(
-  rows: readonly [JournalledAttempt, ...JournalledAttempt[]],
-): AttemptSummary {
+function summarizeGroup(rows: NonEmpty<JournalledAttempt>): AttemptSummary {
   const { model, promptVersion, schemaVersion } = rows[0]
-  // Billed even when rejected, so a failing attempt still counts towards the cost.
   const sum = (pick: (row: JournalledAttempt) => number) =>
     rows.reduce((total, row) => total + pick(row), 0)
-
-  const kinds = new Map<string, number>()
-  for (const row of rows)
-    if (row.failureKind !== null)
-      kinds.set(row.failureKind, (kinds.get(row.failureKind) ?? 0) + 1)
   const failures = sum((row) => (row.failureKind === null ? 0 : 1))
 
   return {
@@ -97,16 +84,9 @@ function summarizeGroup(
     attempts: rows.length,
     failures,
     failureRate: failures / rows.length,
-    failureKinds: [...kinds]
-      .map(([kind, count]) => ({ kind, count }))
-      .sort(
-        (left, right) =>
-          right.count - left.count || (left.kind < right.kind ? -1 : 1),
-      ),
+    failureKinds: countFailureKinds(rows),
     repairs: sum((row) => row.repairCount),
     repairedAttempts: sum((row) => (row.repairCount > 0 ? 1 : 0)),
-    totalCostUsd: sum((row) => row.costUsd),
-    averageCostUsd: sum((row) => row.costUsd) / rows.length,
-    averageLatencyMs: sum((row) => row.latencyMs) / rows.length,
+    ...costAndLatency(rows),
   }
 }
