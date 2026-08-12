@@ -156,14 +156,26 @@ export function awaitObservation(
   return patch(state, gesture, { ...run, settlingSince: at })
 }
 
-/** The row left the data while its gesture was still running. */
+/**
+ * The row left the data. The run *and* the outcome both have to be marked: the gesture that removes
+ * its own row usually settles first — the mutation answers, then the query refreshes — so by the time
+ * the screen notices the row is gone there is nothing running any more, only a message with nowhere
+ * left to be printed.
+ */
 export function markOrphaned(
   state: RegistryState,
   gesture: Gesture,
 ): RegistryState {
-  const run = state.runs[gestureId(gesture)]
-  if (!run || run.orphaned) return state
-  return patch(state, gesture, { ...run, orphaned: true })
+  const key = gestureId(gesture)
+  const run = state.runs[key]
+  if (run && !run.orphaned)
+    return patch(state, gesture, { ...run, orphaned: true })
+  const outcome = state.outcomes[key]
+  if (!outcome || outcome.orphaned) return state
+  return {
+    ...state,
+    outcomes: { ...state.outcomes, [key]: { ...outcome, orphaned: true } },
+  }
 }
 
 /**

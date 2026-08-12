@@ -48,7 +48,10 @@ export type Gestures = {
   blocked: (gesture: Gesture) => boolean
   /** Outcomes whose row is gone: the section shows them instead. */
   orphanedOutcomes: () => Outcome[]
-  /** Everything in flight, so a screen can notice that a working row left the data. */
+  /**
+   * Everything in flight *and* everything that has answered but not yet been read, so a screen can
+   * notice that either kind belongs to a row which left the data.
+   */
   liveGestures: () => Gesture[]
   /** The reactive data now shows what the gesture was waiting for — or a terminal state. */
   confirm: (gesture: Gesture) => void
@@ -153,7 +156,12 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
     blocked: (gesture) => isGestureBlocked(state, gesture),
     orphanedOutcomes: () =>
       Object.values(state.outcomes).filter((outcome) => outcome.orphaned),
-    liveGestures: () => Object.values(state.runs).map((live) => live.gesture),
+    liveGestures: () => [
+      ...Object.values(state.runs).map((live) => live.gesture),
+      ...Object.values(state.outcomes)
+        .filter((outcome) => !outcome.orphaned)
+        .map((outcome) => outcome.gesture),
+    ],
     markOrphaned: (gesture) =>
       commit(markOrphanedIn(stateRef.current, gesture)),
     clearOutcomes: (gesture) =>

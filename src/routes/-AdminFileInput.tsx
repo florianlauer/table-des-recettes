@@ -69,7 +69,9 @@ export function AdminFileInput({
         />
       )}
 
-      {outcome && (
+      {/* Not an orphaned one: posting a photo takes the recipe out of "Sans photo", and the section
+          republishes the message the unmounted row could not. */}
+      {outcome && !outcome.orphaned && (
         <p className="gesture__note" role="status" key={outcome.token}>
           {outcome.result.text}
         </p>
