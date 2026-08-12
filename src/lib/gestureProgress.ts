@@ -97,7 +97,7 @@ export function progressView({
       nextFloor: base,
     }
 
-  const estimate = estimateMs as number
+  const estimate = estimateMs
   if (elapsedMs > estimate) {
     const fraction = Math.max(base, PROGRESS_CEILING)
     return {
@@ -127,7 +127,8 @@ function note(text: string, delayed: boolean): string {
   return delayed ? `${text} · confirmation retardée` : text
 }
 
-function isUsableEstimate(estimateMs: number | null): boolean {
+/** A predicate, so the branch below narrows on its own instead of asserting the type back. */
+function isUsableEstimate(estimateMs: number | null): estimateMs is number {
   return estimateMs !== null && Number.isFinite(estimateMs) && estimateMs > 0
 }
 

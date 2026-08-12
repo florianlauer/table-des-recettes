@@ -1,8 +1,7 @@
 import { useId } from 'react'
-import type { Gesture } from '../lib/gestures'
-import type { GestureResult } from '../lib/gestureRegistry'
+import type { Gesture, GestureResult } from '../lib/gestures'
 import type { Gestures, ReportProgress } from '../lib/useGestures'
-import { GestureProgress } from './-GestureProgress'
+import { GestureFeedback } from './-GestureFeedback'
 
 export const IMAGE_ACCEPT =
   'image/jpeg,image/png,image/heic,image/heif,image/webp'
@@ -23,7 +22,6 @@ export function AdminFileInput({
   onFiles,
   multiple = false,
   disabled = false,
-  offset = 0,
 }: {
   gestures: Gestures
   gesture: Gesture
@@ -32,7 +30,6 @@ export function AdminFileInput({
   onFiles: (files: File[], report: ReportProgress) => Promise<GestureResult>
   multiple?: boolean
   disabled?: boolean
-  offset?: number
 }) {
   const id = useId()
   const labelId = `${id}-label`
@@ -58,24 +55,11 @@ export function AdminFileInput({
         }}
       />
 
-      {running && (
-        <GestureProgress
-          startedAt={running.startedAt}
-          estimateMs={running.estimateMs}
-          progress={running.progress}
-          token={running.token}
-          offset={offset}
-          labelledBy={labelId}
-        />
-      )}
-
-      {/* Not an orphaned one: posting a photo takes the recipe out of "Sans photo", and the section
-          republishes the message the unmounted row could not. */}
-      {outcome && !outcome.orphaned && (
-        <p className="gesture__note" role="status" key={outcome.token}>
-          {outcome.result.text}
-        </p>
-      )}
+      <GestureFeedback
+        running={running}
+        outcome={outcome}
+        labelledBy={labelId}
+      />
     </label>
   )
 }

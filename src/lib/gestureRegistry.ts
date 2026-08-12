@@ -7,10 +7,8 @@
  * ref is the authority; the state is the picture.
  */
 import { conflicts, gestureId, isBlocked } from './gestures'
-import type { Gesture } from './gestures'
+import type { Gesture, GestureResult } from './gestures'
 import type { MeasuredProgress } from './gestureProgress'
-
-export type GestureResult = { ok: boolean; text: string }
 
 export type Run = {
   gesture: Gesture
@@ -25,6 +23,8 @@ export type Run = {
   settlingSince: number | null
   /** Set when the row left the data: the outcome is republished at section level. */
   orphaned: boolean
+  /** The row that left held the focus, so the republished outcome has to take it. */
+  stealsFocus: boolean
 }
 
 export type Outcome = {
@@ -33,6 +33,12 @@ export type Outcome = {
   result: GestureResult
   /** Republished at section level because the row it belonged to is gone. */
   orphaned: boolean
+  /**
+   * Carried by the outcome rather than by the screen: the flag names *which* message must take the
+   * focus. A boolean held next to the list can only say "one of them", which is how a `ref` shared by
+   * N nodes ends up focusing the last one.
+   */
+  stealsFocus: boolean
 }
 
 export type RegistryState = {
@@ -44,6 +50,11 @@ export type RegistryState = {
 
 export function emptyRegistry(epoch: string): RegistryState {
   return { epoch, nextToken: 1, runs: {}, outcomes: {} }
+}
+
+/** Identity of one published outcome: its gesture, and the execution that produced it. */
+export function outcomeKey({ gesture, token }: Outcome): string {
+  return `${gestureId(gesture)}:${token}`
 }
 
 export function liveGestures(state: RegistryState): Gesture[] {
@@ -94,6 +105,7 @@ export function claim(
     progress: null,
     settlingSince: null,
     orphaned: false,
+    stealsFocus: false,
   }
   return {
     claimed: true,
@@ -161,20 +173,41 @@ export function awaitObservation(
  * its own row usually settles first — the mutation answers, then the query refreshes — so by the time
  * the screen notices the row is gone there is nothing running any more, only a message with nowhere
  * left to be printed.
+ *
+ * Idempotent by design: the screen re-observes on every render, and a second pass must not revive a
+ * focus claim the republished message has already honoured.
  */
 export function markOrphaned(
   state: RegistryState,
   gesture: Gesture,
+  { stealsFocus = false }: { stealsFocus?: boolean } = {},
 ): RegistryState {
   const key = gestureId(gesture)
   const run = state.runs[key]
   if (run && !run.orphaned)
-    return patch(state, gesture, { ...run, orphaned: true })
+    return patch(state, gesture, { ...run, orphaned: true, stealsFocus })
   const outcome = state.outcomes[key]
   if (!outcome || outcome.orphaned) return state
   return {
     ...state,
-    outcomes: { ...state.outcomes, [key]: { ...outcome, orphaned: true } },
+    outcomes: {
+      ...state.outcomes,
+      [key]: { ...outcome, orphaned: true, stealsFocus },
+    },
+  }
+}
+
+/** The republished message has taken the focus; the claim must not fire again. */
+export function releaseFocusClaim(
+  state: RegistryState,
+  gesture: Gesture,
+): RegistryState {
+  const key = gestureId(gesture)
+  const outcome = state.outcomes[key]
+  if (!outcome || !outcome.stealsFocus) return state
+  return {
+    ...state,
+    outcomes: { ...state.outcomes, [key]: { ...outcome, stealsFocus: false } },
   }
 }
 
@@ -199,7 +232,13 @@ export function settle(
     runs,
     outcomes: {
       ...state.outcomes,
-      [key]: { gesture, token, result, orphaned: run.orphaned },
+      [key]: {
+        gesture,
+        token,
+        result,
+        orphaned: run.orphaned,
+        stealsFocus: run.stealsFocus,
+      },
     },
   }
 }

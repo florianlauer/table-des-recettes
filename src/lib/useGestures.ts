@@ -4,7 +4,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { gestureId } from './gestures'
-import type { Gesture } from './gestures'
+import type { Gesture, GestureResult } from './gestures'
 import { thrownMessage } from './gestureMessages'
 import type { MeasuredProgress } from './gestureProgress'
 import {
@@ -15,15 +15,11 @@ import {
   isGestureBlocked,
   markOrphaned as markOrphanedIn,
   awaitObservation,
+  releaseFocusClaim as releaseFocusClaimIn,
   setProgress as setProgressIn,
   settle as settleIn,
 } from './gestureRegistry'
-import type {
-  GestureResult,
-  Outcome,
-  RegistryState,
-  Run,
-} from './gestureRegistry'
+import type { Outcome, RegistryState, Run } from './gestureRegistry'
 
 export type ReportProgress = (progress: MeasuredProgress) => void
 
@@ -55,7 +51,9 @@ export type Gestures = {
   liveGestures: () => Gesture[]
   /** The reactive data now shows what the gesture was waiting for — or a terminal state. */
   confirm: (gesture: Gesture) => void
-  markOrphaned: (gesture: Gesture) => void
+  markOrphaned: (gesture: Gesture, options?: { stealsFocus?: boolean }) => void
+  /** The republished message has taken the focus the vanished row was holding. */
+  releaseFocusClaim: (gesture: Gesture) => void
   clearOutcomes: (gesture: Gesture) => void
   /** Whether the focus still sits in this row, so a disappearance does not steal it from elsewhere. */
   holdsFocus: (rowId: string) => boolean
@@ -162,10 +160,40 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
         .filter((outcome) => !outcome.orphaned)
         .map((outcome) => outcome.gesture),
     ],
-    markOrphaned: (gesture) =>
-      commit(markOrphanedIn(stateRef.current, gesture)),
+    markOrphaned: (gesture, options) =>
+      commit(markOrphanedIn(stateRef.current, gesture, options)),
+    releaseFocusClaim: (gesture) =>
+      commit(releaseFocusClaimIn(stateRef.current, gesture)),
     clearOutcomes: (gesture) =>
       commit(clearOutcomesIn(stateRef.current, gesture)),
     holdsFocus: (rowId) => lastFocusedRowId.current === rowId,
   }
+}
+
+/**
+ * Marks every row gesture whose row has left the data — in flight or already answered — so its message
+ * resurfaces at section level instead of being unmounted with the row.
+ *
+ * No dependency array, on purpose: the departure is visible in reactive data, not in a value this hook
+ * is handed, so the comparison has to be redone on every render. `markOrphaned` is idempotent, so the
+ * repetition costs a lookup and settles.
+ */
+export function useOrphanedRows({
+  gestures,
+  liveRowIds,
+}: {
+  gestures: Gestures
+  /** `null` while the query has not answered: nothing has left yet, nothing to conclude. */
+  liveRowIds: ReadonlySet<string> | null
+}): void {
+  useEffect(() => {
+    if (liveRowIds === null) return
+    for (const gesture of gestures.liveGestures()) {
+      if (gesture.scope.kind !== 'row') continue
+      if (liveRowIds.has(gesture.scope.rowId)) continue
+      gestures.markOrphaned(gesture, {
+        stealsFocus: gestures.holdsFocus(gesture.scope.rowId),
+      })
+    }
+  })
 }

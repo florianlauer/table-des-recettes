@@ -26,6 +26,7 @@ function fakeGestures({
     orphanedOutcomes: () => [],
     liveGestures: () => [],
     markOrphaned: () => {},
+    releaseFocusClaim: () => {},
     clearOutcomes: () => {},
     holdsFocus: () => false,
   }
@@ -42,6 +43,7 @@ function runningSince(elapsedMs: number, estimateMs: number | null): Run {
     progress: null,
     settlingSince: null,
     orphaned: false,
+    stealsFocus: false,
   }
 }
 
@@ -142,6 +144,7 @@ describe('AdminButton', () => {
             token: 3,
             result: { ok: true, text: 'Embellissement lancé.' },
             orphaned: false,
+            stealsFocus: false,
           },
         })}
         gesture={gesture}
@@ -163,6 +166,7 @@ describe('AdminButton', () => {
             token: 3,
             result: { ok: true, text: 'Recette supprimée.' },
             orphaned: true,
+            stealsFocus: false,
           },
         })}
         gesture={gesture}

@@ -59,7 +59,6 @@ export function RecipeForm({
   gestures,
   publishBlocked,
   onChange,
-  offset = 0,
 }: {
   recipe: RecipeView
   edited: Draft | null
@@ -67,7 +66,6 @@ export function RecipeForm({
   gestures: Gestures
   publishBlocked: boolean
   onChange: (draft: Draft) => void
-  offset?: number
 }) {
   const saveRecipe = useMutation(api.recipeAdmin.saveRecipe)
   const deleteRecipe = useMutation(api.recipeAdmin.deleteRecipe)
@@ -232,7 +230,6 @@ export function RecipeForm({
         disabled={!dirty}
         blockedReason="Rien à enregistrer : le formulaire est celui du serveur."
         titleId={titleId}
-        offset={offset}
         run={async () =>
           outcomeMessage(
             await saveRecipe({
@@ -271,7 +268,6 @@ export function RecipeForm({
               : 'Les images ont changé : relis la recette avant de publier.'
           }
           titleId={titleId}
-          offset={offset}
           run={async () =>
             outcomeMessage(
               await publishRecipe({ adminToken, recipeId: recipe.id }),
@@ -285,7 +281,6 @@ export function RecipeForm({
           label="Dépublier"
           pendingLabel="Dépublication…"
           titleId={titleId}
-          offset={offset}
           run={async () =>
             outcomeMessage(
               await unpublishRecipe({ adminToken, recipeId: recipe.id }),
@@ -303,7 +298,6 @@ export function RecipeForm({
         disabled={recipe.status === 'published'}
         blockedReason="Dépublie la recette avant de la supprimer."
         titleId={titleId}
-        offset={offset}
         run={async () =>
           outcomeMessage(
             await deleteRecipe({ adminToken, recipeId: recipe.id }),

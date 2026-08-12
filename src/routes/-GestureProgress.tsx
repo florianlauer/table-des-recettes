@@ -9,14 +9,14 @@ import type { MeasuredProgress } from '../lib/gestureProgress'
  *
  * It is the only thing on the page beating at 250 ms. The tick comes from a shared store rather than
  * page state, so a running bar re-renders itself and nothing else; forty rows do not rebuild four
- * times a second.
+ * times a second. `getClock` is already corrected against the server, which is what `startedAt`
+ * usually comes from.
  */
 export function GestureProgress({
   startedAt,
   estimateMs,
   progress = null,
   settlingSince = null,
-  offset = 0,
   labelledBy,
   token,
 }: {
@@ -25,15 +25,13 @@ export function GestureProgress({
   estimateMs: number | null
   progress?: MeasuredProgress | null
   settlingSince?: number | null
-  /** Server clock correction, since `startedAt` is often a server timestamp. */
-  offset?: number
   /** Ids naming what progresses — the gesture and its row. Never an anonymous bar. */
   labelledBy?: string
   /** Resets the monotonic floor: a new execution starts from zero, not from the last maximum. */
   token?: number
 }) {
   useSyncExternalStore(subscribeToTick, getTick, getServerTick)
-  const now = getClock() + offset
+  const now = getClock()
 
   // Component-local, written in an effect and never during render: the floor belongs to what is
   // displayed, not to the shared registry.

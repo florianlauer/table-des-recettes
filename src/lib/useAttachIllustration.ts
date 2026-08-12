@@ -21,8 +21,11 @@ export function useAttachIllustration(adminToken: string) {
   return useCallback(
     async (
       file: File,
-      recipeId: Id<'recipes'>,
-      onPhase?: (phase: UploadPhase) => void,
+      // Named, like `useAttachImage`: the two upload surfaces read the same at their call sites.
+      {
+        recipeId,
+        onPhase,
+      }: { recipeId: Id<'recipes'>; onPhase?: (phase: UploadPhase) => void },
     ): Promise<AttachIllustrationResult> => {
       const uploaded = await uploadCompressed(file, {
         adminToken,

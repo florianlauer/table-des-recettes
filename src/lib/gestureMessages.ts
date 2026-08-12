@@ -4,9 +4,8 @@
  * adaptation happens here rather than inside an `onClick`, which is also how these sentences became
  * testable.
  */
+import type { GestureResult } from './gestures'
 import { formatRemaining } from './queueStatus'
-
-export type GestureResult = { ok: boolean; text: string }
 
 export type PurgeResult = 'purged' | 'deferred' | 'already_purged'
 

@@ -18,6 +18,13 @@ export type GestureScope =
 
 export type Gesture = { scope: GestureScope; action: string }
 
+/**
+ * What a gesture answers, whatever it did. Declared here, with the vocabulary, rather than in the
+ * registry that stores it or the adapters that build it: two structurally identical copies typecheck
+ * clean right up to the day one of them gains a field.
+ */
+export type GestureResult = { ok: boolean; text: string }
+
 export function pageGesture(action: string): Gesture {
   return { scope: { kind: 'page' }, action }
 }

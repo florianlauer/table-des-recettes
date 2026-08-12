@@ -19,7 +19,7 @@ import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
-import { uploadFraction, uploadNote } from '../lib/uploadProgress'
+import { uploadProgress } from '../lib/uploadProgress'
 import {
   deriveQueueState,
   formatAge,
@@ -39,7 +39,7 @@ function AdminPage() {
   const attachImage = useAttachImage(adminToken)
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
-  const { now, offset } = useServerClock(adminToken)
+  const { now } = useServerClock(adminToken)
 
   const scans = useQuery({
     ...convexQuery(api.admin.listScans, adminToken ? { adminToken } : 'skip'),
@@ -100,16 +100,12 @@ function AdminPage() {
         onFiles={async (files, report) => {
           const failures: string[] = []
           for (const [index, file] of files.entries()) {
-            const result = await attachImage(file, undefined, (phase) =>
-              report({
-                fraction: uploadFraction({
-                  done: index,
-                  total: files.length,
-                  phase,
-                }),
-                text: uploadNote({ done: index, total: files.length, phase }),
-              }),
-            )
+            const result = await attachImage(file, {
+              onPhase: (phase) =>
+                report(
+                  uploadProgress({ done: index, total: files.length, phase }),
+                ),
+            })
             if (!result.ok) failures.push(`${file.name} : ${result.error}`)
           }
           await scans.refetch()
@@ -120,7 +116,6 @@ function AdminPage() {
       <QueueBlock
         adminToken={adminToken}
         now={now}
-        offset={offset}
         gestures={gestures}
         estimateMs={extractionEstimateMs}
       />
@@ -167,7 +162,6 @@ function AdminPage() {
                 <GestureProgress
                   startedAt={scan.leaseStartedAt}
                   estimateMs={extractionEstimateMs}
-                  offset={offset}
                   token={scan.leaseStartedAt}
                 />
               )}
@@ -204,7 +198,6 @@ function AdminPage() {
                   label="Purger la photo"
                   pendingLabel="Purge…"
                   confirm="Purger définitivement cette photo ?"
-                  offset={offset}
                   run={async () =>
                     purgeMessage(
                       await purgeScanImages({ adminToken, scanId: scan.id }),
@@ -278,13 +271,11 @@ function AttemptStatsBlock({
 function QueueBlock({
   adminToken,
   now,
-  offset,
   gestures,
   estimateMs,
 }: {
   adminToken: string
   now: number
-  offset: number
   gestures: Gestures
   estimateMs: number | null
 }) {
@@ -334,7 +325,6 @@ function QueueBlock({
             <GestureProgress
               startedAt={status.currentLease.startedAt}
               estimateMs={estimateMs}
-              offset={offset}
               token={status.currentLease.startedAt}
             />
           )}
@@ -353,7 +343,6 @@ function QueueBlock({
         label={button.label}
         pendingLabel="Relance…"
         disabled={!adminToken || button.disabled}
-        offset={offset}
         run={async () =>
           extractionMessage(await startExtraction({ adminToken }), { now })
         }

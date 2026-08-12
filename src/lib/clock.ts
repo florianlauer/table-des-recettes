@@ -12,6 +12,7 @@ const listeners = new Set<Listener>()
 let interval: ReturnType<typeof setInterval> | null = null
 let tick = 0
 let clockMs = 0
+let offsetMs = 0
 
 export const TICK_MS = 250
 
@@ -26,9 +27,23 @@ export function getTick(): number {
 /**
  * The clock read once per tick, so every bar on one render agrees on "now". Falls back to a live
  * reading before the first subscription, so a bar's first frame is not computed against zero.
+ *
+ * Corrected here, and therefore correct everywhere. Almost every `startedAt` these bars measure is a
+ * *server* timestamp — a lease, a scan's start — so the correction is not decoration. Passed as a prop
+ * it was threaded through four component layers with a `= 0` default at each: a forgotten prop showed
+ * a wrong elapsed time without failing anywhere.
  */
 export function getClock(): number {
-  return clockMs === 0 ? Date.now() : clockMs
+  return (clockMs === 0 ? Date.now() : clockMs) + offsetMs
+}
+
+/**
+ * How far this client sits from the server, measured by `useServerClock`. One value for the whole
+ * document because there is one skew: two admin screens are two routes, never mounted at once, and
+ * they would measure the same drift against the same backend.
+ */
+export function setClockOffset(ms: number): void {
+  offsetMs = Number.isFinite(ms) ? ms : 0
 }
 
 /** Constant on the server: TanStack Start renders there, and a moving value would fight hydration. */
@@ -62,6 +77,7 @@ export function resetClockForTests(): void {
   interval = null
   tick = 0
   clockMs = 0
+  offsetMs = 0
 }
 
 export function isTicking(): boolean {

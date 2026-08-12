@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { gestureId } from '../lib/gestures'
+import { outcomeKey } from '../lib/gestureRegistry'
 import type { Gestures } from '../lib/useGestures'
 
 /**
@@ -9,40 +9,44 @@ import type { Gestures } from '../lib/useGestures'
  * The focus moves here only if it was still inside the row that vanished: when a focused element is
  * removed, no `focusin` fires, so `lastFocusedRowId` still names it — whereas an operator who moved
  * on to another row, or to the token field, has already overwritten it and keeps their cursor.
+ *
+ * Which message takes the focus is read off the outcomes themselves, so the node is named rather than
+ * guessed. Honouring the claim clears it, which is also what lets a second disappearance be honoured.
  */
-export function OrphanedOutcomes({
-  gestures,
-  claimFocus,
-}: {
-  gestures: Gestures
-  /** True when a row that held the focus disappeared while working. */
-  claimFocus: boolean
-}) {
+export function OrphanedOutcomes({ gestures }: { gestures: Gestures }) {
   const outcomes = gestures.orphanedOutcomes()
-  const heading = useRef<HTMLParagraphElement | null>(null)
-  const claimed = useRef(false)
+  const nodes = useRef(new Map<string, HTMLParagraphElement>())
+  const claiming = outcomes.find((outcome) => outcome.stealsFocus) ?? null
+  const claimingKey = claiming === null ? null : outcomeKey(claiming)
 
   useEffect(() => {
-    if (!claimFocus || outcomes.length === 0 || claimed.current) return
-    claimed.current = true
-    heading.current?.focus()
-  }, [claimFocus, outcomes.length])
+    if (claiming === null || claimingKey === null) return
+    nodes.current.get(claimingKey)?.focus()
+    gestures.releaseFocusClaim(claiming.gesture)
+    // Keyed by the outcome, not by the array: the effect fires for the message that asked, once.
+  }, [claimingKey])
 
   if (outcomes.length === 0) return null
 
   return (
     <>
-      {outcomes.map((outcome) => (
-        <p
-          className="gesture__note"
-          role="status"
-          tabIndex={-1}
-          ref={heading}
-          key={`${gestureId(outcome.gesture)}:${outcome.token}`}
-        >
-          {outcome.result.text}
-        </p>
-      ))}
+      {outcomes.map((outcome) => {
+        const key = outcomeKey(outcome)
+        return (
+          <p
+            className="gesture__note"
+            role="status"
+            tabIndex={-1}
+            key={key}
+            ref={(node) => {
+              if (node === null) nodes.current.delete(key)
+              else nodes.current.set(key, node)
+            }}
+          >
+            {outcome.result.text}
+          </p>
+        )
+      })}
     </>
   )
 }

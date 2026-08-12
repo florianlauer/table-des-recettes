@@ -11,9 +11,9 @@ import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../lib/scanLimits'
 import { useAttachImage } from '../lib/useAttachImage'
-import { useGestures } from '../lib/useGestures'
+import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
-import { uploadFraction, uploadNote } from '../lib/uploadProgress'
+import { uploadProgress } from '../lib/uploadProgress'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
 import { AdminFileInput } from './-AdminFileInput'
@@ -37,12 +37,12 @@ function ScanCorrectionPage() {
   // recipe underneath it, so publication reads liveness rather than a flag someone has to maintain,
   // and a deleted recipe takes its entry out of the reckoning by leaving `data.recipes`.
   const [edits, setEdits] = useState<Record<string, Edit>>({})
-  const [focusClaimed, setFocusClaimed] = useState(false)
 
   // The scan is part of the epoch: navigating to another scan must not leave a run of this one
   // locking the controls of the next.
   const gestures = useGestures({ epoch: `scan:${scanId}:${adminToken}` })
-  const { offset } = useServerClock(adminToken)
+  // Read for its correction of the shared clock, which every bar on this page hangs on.
+  useServerClock(adminToken)
 
   const attachImage = useAttachImage(adminToken)
   const detachImage = useMutation(api.admin.detachImage)
@@ -87,16 +87,10 @@ function ScanCorrectionPage() {
 
   // A deletion takes the form out of the list while its own gesture is still running: the run is
   // kept until it resolves and its message resurfaces below, rather than vanishing with the row.
-  const liveRecipeIds = new Set(data?.recipes.map((recipe) => recipe.id) ?? [])
-  useEffect(() => {
-    if (!data) return
-    for (const gesture of gestures.liveGestures()) {
-      if (gesture.scope.kind !== 'row') continue
-      if (liveRecipeIds.has(gesture.scope.rowId as RecipeView['id'])) continue
-      if (gestures.holdsFocus(gesture.scope.rowId)) setFocusClaimed(true)
-      gestures.markOrphaned(gesture)
-    }
-  })
+  const liveRecipeIds = data
+    ? new Set<string>(data.recipes.map((recipe) => recipe.id))
+    : null
+  useOrphanedRows({ gestures, liveRowIds: liveRecipeIds })
 
   const publishBlockedReason = imagesChanged
     ? 'Les images ont changé : relis les recettes avant de publier.'
@@ -118,7 +112,7 @@ function ScanCorrectionPage() {
       {scan.isLoading && adminToken && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
 
-      <OrphanedOutcomes gestures={gestures} claimFocus={focusClaimed} />
+      <OrphanedOutcomes gestures={gestures} />
 
       {data && (
         <>
@@ -147,7 +141,6 @@ function ScanCorrectionPage() {
                         label="Retirer"
                         pendingLabel="Retrait…"
                         confirm={`Retirer la page ${index + 1} ?`}
-                        offset={offset}
                         run={async () =>
                           outcomeMessage(
                             await detachImage({
@@ -167,21 +160,17 @@ function ScanCorrectionPage() {
                     gesture={pageGesture('upload')}
                     label="Ajouter une page à ce scan"
                     pendingLabel="Envoi…"
-                    offset={offset}
                     onFiles={async (files, report) => {
                       const file = files[0]
                       if (!file) return { ok: false, text: 'Aucun fichier.' }
                       return outcomeMessage(
-                        await attachImage(file, scanId, (phase) =>
-                          report({
-                            fraction: uploadFraction({
-                              done: 0,
-                              total: 1,
-                              phase,
-                            }),
-                            text: uploadNote({ done: 0, total: 1, phase }),
-                          }),
-                        ),
+                        await attachImage(file, {
+                          scanId,
+                          onPhase: (phase) =>
+                            report(
+                              uploadProgress({ done: 0, total: 1, phase }),
+                            ),
+                        }),
                       )
                     }}
                   />
@@ -203,7 +192,6 @@ function ScanCorrectionPage() {
                 gesture={pageGesture('acknowledge')}
                 label="Les corrections sont à jour"
                 pendingLabel="Enregistrement…"
-                offset={offset}
                 run={async () =>
                   outcomeMessage(
                     await acknowledgeImageChange({ adminToken, scanId }),
@@ -226,7 +214,6 @@ function ScanCorrectionPage() {
               <GestureProgress
                 startedAt={data.startedAt}
                 estimateMs={estimateMs}
-                offset={offset}
                 token={data.startedAt}
               />
             )}
@@ -242,7 +229,6 @@ function ScanCorrectionPage() {
                   ? 'Les photos de ce scan sont purgées.'
                   : 'Ce scan ne porte aucune image.'
               }
-              offset={offset}
               run={async () =>
                 outcomeMessage(await rescan({ adminToken, scanId }))
               }
@@ -252,7 +238,6 @@ function ScanCorrectionPage() {
               gesture={pageGesture('addRecipe')}
               label="Ajouter une recette"
               pendingLabel="Ajout…"
-              offset={offset}
               run={async () =>
                 outcomeMessage(await addRecipe({ adminToken, scanId }))
               }
@@ -264,7 +249,6 @@ function ScanCorrectionPage() {
               pendingLabel="Publication…"
               disabled={anyDirty || imagesChanged}
               blockedReason={publishBlockedReason}
-              offset={offset}
               run={async () => {
                 const result = await publishScan({ adminToken, scanId })
                 if (!result.ok) return { ok: false, text: result.error }
@@ -295,7 +279,6 @@ function ScanCorrectionPage() {
                 adminToken={adminToken}
                 gestures={gestures}
                 publishBlocked={imagesChanged}
-                offset={offset}
                 onChange={(draft) =>
                   setEdits((current) => ({
                     ...current,

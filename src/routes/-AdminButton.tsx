@@ -1,8 +1,7 @@
 import { useId } from 'react'
-import type { Gesture } from '../lib/gestures'
-import type { GestureResult } from '../lib/gestureRegistry'
+import type { Gesture, GestureResult } from '../lib/gestures'
 import type { Gestures, ReportProgress } from '../lib/useGestures'
-import { GestureProgress } from './-GestureProgress'
+import { GestureFeedback } from './-GestureFeedback'
 
 /**
  * One control, one gesture, and everything the gesture owes the operator: what it is doing, how long
@@ -24,7 +23,6 @@ export function AdminButton({
   estimateMs = null,
   settle = false,
   titleId,
-  offset = 0,
 }: {
   gestures: Gestures
   gesture: Gesture
@@ -40,7 +38,6 @@ export function AdminButton({
   settle?: boolean
   /** The row's title, so the bar says what progresses rather than progressing anonymously. */
   titleId?: string
-  offset?: number
 }) {
   const id = useId()
   const labelId = `${id}-label`
@@ -87,25 +84,11 @@ export function AdminButton({
         </p>
       )}
 
-      {running && (
-        <GestureProgress
-          startedAt={running.startedAt}
-          estimateMs={running.estimateMs}
-          progress={running.progress}
-          settlingSince={running.settlingSince}
-          token={running.token}
-          offset={offset}
-          labelledBy={titleId ? `${labelId} ${titleId}` : labelId}
-        />
-      )}
-
-      {/* Keyed by token so two identical messages in a row are two nodes, and the second one is
-          announced instead of being swallowed as unchanged text. */}
-      {outcome && !outcome.orphaned && (
-        <p className="gesture__note" role="status" key={outcome.token}>
-          {outcome.result.text}
-        </p>
-      )}
+      <GestureFeedback
+        running={running}
+        outcome={outcome}
+        labelledBy={titleId ? `${labelId} ${titleId}` : labelId}
+      />
     </div>
   )
 }

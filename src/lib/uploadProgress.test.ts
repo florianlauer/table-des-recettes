@@ -1,47 +1,60 @@
 import { describe, expect, it } from 'vitest'
-import { uploadFraction, uploadNote } from './uploadProgress'
+import { uploadProgress } from './uploadProgress'
 
-describe('uploadFraction', () => {
+describe('uploadProgress fraction', () => {
   it('gives the compression most of one file', () => {
-    expect(uploadFraction({ done: 0, total: 1, phase: 'ticket' })).toBe(0.6)
+    expect(
+      uploadProgress({ done: 0, total: 1, phase: 'ticket' }).fraction,
+    ).toBe(0.6)
   })
 
   it('advances file by file', () => {
-    expect(uploadFraction({ done: 3, total: 12, phase: 'compression' })).toBe(
-      0.25,
-    )
+    expect(
+      uploadProgress({ done: 3, total: 12, phase: 'compression' }).fraction,
+    ).toBe(0.25)
   })
 
   it('never reports more than a finished batch', () => {
-    expect(uploadFraction({ done: 12, total: 12, phase: 'upload' })).toBe(1)
+    expect(
+      uploadProgress({ done: 12, total: 12, phase: 'upload' }).fraction,
+    ).toBe(1)
   })
 
   it('answers zero rather than dividing by nothing', () => {
-    expect(uploadFraction({ done: 0, total: 0, phase: 'upload' })).toBe(0)
+    expect(
+      uploadProgress({ done: 0, total: 0, phase: 'upload' }).fraction,
+    ).toBe(0)
   })
 
   it('rises within one file as the phases pass', () => {
-    const phases = (['compression', 'ticket', 'upload'] as const).map((phase) =>
-      uploadFraction({ done: 1, total: 4, phase }),
+    const phases = (['compression', 'ticket', 'upload'] as const).map(
+      (phase) => uploadProgress({ done: 1, total: 4, phase }).fraction,
     )
     expect(phases).toEqual([...phases].sort((a, b) => a - b))
   })
 })
 
-describe('uploadNote', () => {
+describe('uploadProgress text', () => {
   it('counts the pages of a batch', () => {
-    expect(uploadNote({ done: 2, total: 12, phase: 'compression' })).toBe(
-      'Compression 3 / 12 pages…',
-    )
+    expect(
+      uploadProgress({ done: 2, total: 12, phase: 'compression' }).text,
+    ).toBe('Compression 3 / 12 pages…')
   })
 
   it('says the phase alone for a single file', () => {
-    expect(uploadNote({ done: 0, total: 1, phase: 'upload' })).toBe('Envoi…')
+    expect(uploadProgress({ done: 0, total: 1, phase: 'upload' }).text).toBe(
+      'Envoi…',
+    )
   })
 
   it('never counts past the batch', () => {
-    expect(uploadNote({ done: 12, total: 12, phase: 'upload' })).toBe(
+    expect(uploadProgress({ done: 12, total: 12, phase: 'upload' }).text).toBe(
       'Envoi 12 / 12 pages…',
     )
+  })
+
+  it('reads both halves off the same counters', () => {
+    const view = uploadProgress({ done: 3, total: 12, phase: 'compression' })
+    expect(view).toEqual({ fraction: 0.25, text: 'Compression 4 / 12 pages…' })
   })
 })

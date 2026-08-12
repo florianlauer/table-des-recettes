@@ -8,6 +8,7 @@ import {
   emptyRegistry,
   isGestureBlocked,
   markOrphaned,
+  releaseFocusClaim,
   setProgress,
   settle,
 } from './gestureRegistry'
@@ -172,6 +173,58 @@ describe('orphaned rows', () => {
       text: 'Fait.',
     })
     expect(markOrphaned(done, rowB)).toBe(done)
+  })
+})
+
+describe('focus claim', () => {
+  it('carries the claim of a running gesture onto the outcome that replaces it', () => {
+    const first = start(emptyRegistry('e'))
+    const gone = markOrphaned(first.state, rowA, { stealsFocus: true })
+    expect(gone.runs['["row","a","save"]']?.stealsFocus).toBe(true)
+
+    const done = settle(gone, rowA, first.token, { ok: true, text: 'Publiée.' })
+    expect(done.outcomes['["row","a","save"]']?.stealsFocus).toBe(true)
+  })
+
+  it('claims nothing when the focus had already moved elsewhere', () => {
+    const first = start(emptyRegistry('e'))
+    const gone = markOrphaned(first.state, rowA, { stealsFocus: false })
+    expect(gone.runs['["row","a","save"]']?.stealsFocus).toBe(false)
+  })
+
+  it('names one outcome rather than the whole list', () => {
+    const a = start(emptyRegistry('e'), rowA)
+    const b = start(a.state, rowB)
+    const settledA = settle(b.state, rowA, a.token, { ok: true, text: 'A' })
+    const settledB = settle(settledA, rowB, b.token, { ok: true, text: 'B' })
+
+    const gone = markOrphaned(
+      markOrphaned(settledB, rowA, { stealsFocus: false }),
+      rowB,
+      { stealsFocus: true },
+    )
+    const claiming = Object.values(gone.outcomes).filter(
+      (outcome) => outcome.stealsFocus,
+    )
+    expect(claiming.map((outcome) => outcome.result.text)).toEqual(['B'])
+  })
+
+  // The screen re-observes on every render, so releasing has to be final: a claim revived after the
+  // message took the focus would drag the cursor back at every tick.
+  it('does not revive a claim the republished message has already honoured', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, { ok: true, text: 'A' })
+    const gone = markOrphaned(done, rowA, { stealsFocus: true })
+
+    const released = releaseFocusClaim(gone, rowA)
+    expect(released.outcomes['["row","a","save"]']?.stealsFocus).toBe(false)
+    expect(markOrphaned(released, rowA, { stealsFocus: true })).toBe(released)
+  })
+
+  it('ignores a release for a gesture that never claimed anything', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, { ok: true, text: 'A' })
+    expect(releaseFocusClaim(done, rowA)).toBe(done)
   })
 })
 
