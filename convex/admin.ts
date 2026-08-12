@@ -25,6 +25,10 @@ import {
   attemptSummary,
   summarizeAttempts,
 } from '../src/lib/attemptStats'
+import {
+  configuredExtractionIdentity,
+  isCurrentAttemptGroup,
+} from '../src/lib/currentIdentity'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 import {
   MAX_IMAGES_PER_SCAN,
@@ -462,7 +466,14 @@ export const attemptStats = query({
       .withIndex('by_created_at')
       .order('desc')
       .take(ATTEMPTS_SAMPLED)
-    return summarizeAttempts(attempts)
+    // Marked here and nowhere else: the browser cannot know which model and provider are configured,
+    // and an estimate read off a retired configuration would be wrong precisely on the day someone
+    // changes it.
+    const identity = configuredExtractionIdentity(process.env)
+    return summarizeAttempts(attempts).map((group) => ({
+      ...group,
+      isCurrent: isCurrentAttemptGroup(group, identity),
+    }))
   },
 })
 
@@ -551,6 +562,9 @@ export const getScanForCorrection = query({
       imagesChangedAt: v.union(v.number(), v.null()),
       totalCostUsd: v.union(v.number(), v.null()),
       createdAt: v.number(),
+      // Only while extracting, as in `listScans`: the screen used to say "État : extracting" without
+      // saying since when, so a running extraction was indistinguishable from a stuck one.
+      startedAt: v.union(v.number(), v.null()),
       recipes: v.array(
         v.object({
           id: v.id('recipes'),
@@ -590,6 +604,7 @@ export const getScanForCorrection = query({
       imagesChangedAt: scan.imagesChangedAt ?? null,
       totalCostUsd: scan.totalCostUsd ?? null,
       createdAt: scan.createdAt,
+      startedAt: scan.status === 'extracting' ? (scan.startedAt ?? null) : null,
       recipes: recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map((recipe) => ({
         id: recipe._id,
         title: recipe.title,

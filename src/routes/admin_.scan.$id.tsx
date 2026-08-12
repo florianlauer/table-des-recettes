@@ -5,11 +5,22 @@ import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
+import { estimateFrom } from '../lib/estimate'
+import { outcomeMessage } from '../lib/gestureMessages'
+import { pageGesture } from '../lib/gestures'
+import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../lib/scanLimits'
 import { useAttachImage } from '../lib/useAttachImage'
+import { useGestures } from '../lib/useGestures'
+import { useServerClock } from '../lib/useServerClock'
+import { uploadFraction, uploadNote } from '../lib/uploadProgress'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
+import { AdminButton } from './-AdminButton'
+import { AdminFileInput } from './-AdminFileInput'
+import { GestureProgress } from './-GestureProgress'
+import { OrphanedOutcomes } from './-OrphanedOutcomes'
 import { RecipeForm } from './-RecipeForm'
-import type { ActionOutcome, Draft, RecipeView } from './-RecipeForm'
+import type { Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
   component: ScanCorrectionPage,
@@ -22,12 +33,16 @@ function ScanCorrectionPage() {
   const { id } = Route.useParams()
   const scanId = id as Id<'scans'>
   const [adminToken, setAdminToken] = useState('')
-  const [message, setMessage] = useState('')
-  const [busy, setBusy] = useState(false)
   // The only editing state on the page. An entry stops counting the moment the server moves the
   // recipe underneath it, so publication reads liveness rather than a flag someone has to maintain,
   // and a deleted recipe takes its entry out of the reckoning by leaving `data.recipes`.
   const [edits, setEdits] = useState<Record<string, Edit>>({})
+  const [focusClaimed, setFocusClaimed] = useState(false)
+
+  // The scan is part of the epoch: navigating to another scan must not leave a run of this one
+  // locking the controls of the next.
+  const gestures = useGestures({ epoch: `scan:${scanId}:${adminToken}` })
+  const { offset } = useServerClock(adminToken)
 
   const attachImage = useAttachImage(adminToken)
   const detachImage = useMutation(api.admin.detachImage)
@@ -49,18 +64,16 @@ function ScanCorrectionPage() {
     ),
     retry: false,
   })
-
-  async function run(action: () => Promise<ActionOutcome>) {
-    setBusy(true)
-    try {
-      const result = await action()
-      setMessage(result.ok ? (result.message ?? 'Fait.') : result.error)
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : String(error))
-    } finally {
-      setBusy(false)
-    }
-  }
+  // The extraction relaunched from here is the same work the queue journals, so the same journal
+  // says how long it usually takes.
+  const stats = useQuery({
+    ...convexQuery(
+      api.admin.attemptStats,
+      adminToken ? { adminToken } : 'skip',
+    ),
+    retry: false,
+  })
+  const estimateMs = estimateFrom(stats.data ?? [])
 
   const data = scan.data
   const purged = data != null && data.purgedAt !== null
@@ -71,6 +84,25 @@ function ScanCorrectionPage() {
   }
   const anyDirty =
     data?.recipes.some((recipe) => liveEdit(recipe) !== null) ?? false
+
+  // A deletion takes the form out of the list while its own gesture is still running: the run is
+  // kept until it resolves and its message resurfaces below, rather than vanishing with the row.
+  const liveRecipeIds = new Set(data?.recipes.map((recipe) => recipe.id) ?? [])
+  useEffect(() => {
+    if (!data) return
+    for (const gesture of gestures.liveGestures()) {
+      if (gesture.scope.kind !== 'row') continue
+      if (liveRecipeIds.has(gesture.scope.rowId as RecipeView['id'])) continue
+      if (gestures.holdsFocus(gesture.scope.rowId)) setFocusClaimed(true)
+      gestures.markOrphaned(gesture)
+    }
+  })
+
+  const publishBlockedReason = imagesChanged
+    ? 'Les images ont changé : relis les recettes avant de publier.'
+    : anyDirty
+      ? 'Des corrections ne sont pas enregistrées.'
+      : undefined
 
   return (
     <main className="page admin-page">
@@ -85,7 +117,8 @@ function ScanCorrectionPage() {
       {scan.error && <p role="alert">{scan.error.message}</p>}
       {scan.isLoading && adminToken && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
-      {message && <p role="status">{message}</p>}
+
+      <OrphanedOutcomes gestures={gestures} claimFocus={focusClaimed} />
 
       {data && (
         <>
@@ -106,103 +139,138 @@ function ScanCorrectionPage() {
                     )}
                     <figcaption>
                       Page {index + 1} / {data.images.length}
-                      <button
-                        type="button"
-                        disabled={busy}
-                        onClick={() => {
-                          if (!window.confirm(`Retirer la page ${index + 1} ?`))
-                            return
-                          void run(() =>
-                            detachImage({
+                      {/* Page scope, one action per page: removing an image rewrites the scan and
+                          stamps `imagesChangedAt`, which blocks every recipe's publication. */}
+                      <AdminButton
+                        gestures={gestures}
+                        gesture={pageGesture(`detach:${image.storageId}`)}
+                        label="Retirer"
+                        pendingLabel="Retrait…"
+                        confirm={`Retirer la page ${index + 1} ?`}
+                        offset={offset}
+                        run={async () =>
+                          outcomeMessage(
+                            await detachImage({
                               adminToken,
                               scanId,
                               storageId: image.storageId,
                             }),
                           )
-                        }}
-                      >
-                        Retirer
-                      </button>
+                        }
+                      />
                     </figcaption>
                   </figure>
                 ))}
                 {data.images.length < MAX_IMAGES_PER_SCAN && (
-                  <label className="admin-page__field">
-                    Ajouter une page à ce scan
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/heic,image/heif,image/webp"
-                      disabled={busy}
-                      onChange={(event) => {
-                        const file = event.target.files?.[0]
-                        if (file) void run(() => attachImage(file, scanId))
-                      }}
-                    />
-                  </label>
+                  <AdminFileInput
+                    gestures={gestures}
+                    gesture={pageGesture('upload')}
+                    label="Ajouter une page à ce scan"
+                    pendingLabel="Envoi…"
+                    offset={offset}
+                    onFiles={async (files, report) => {
+                      const file = files[0]
+                      if (!file) return { ok: false, text: 'Aucun fichier.' }
+                      return outcomeMessage(
+                        await attachImage(file, scanId, (phase) =>
+                          report({
+                            fraction: uploadFraction({
+                              done: 0,
+                              total: 1,
+                              phase,
+                            }),
+                            text: uploadNote({ done: 0, total: 1, phase }),
+                          }),
+                        ),
+                      )
+                    }}
+                  />
                 )}
               </>
             )}
           </section>
 
+          {/* A div, not a `<p role="alert">`: the control inside now carries a result and a bar,
+              which are blocks. The alert stays on the sentence. */}
           {imagesChanged && (
-            <p role="alert">
-              Les images ont changé depuis l'extraction. La publication est
-              bloquée tant que les recettes n'ont pas été relues.{' '}
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() =>
-                  void run(() => acknowledgeImageChange({ adminToken, scanId }))
+            <div className="admin-page__banner">
+              <p role="alert">
+                Les images ont changé depuis l'extraction. La publication est
+                bloquée tant que les recettes n'ont pas été relues.
+              </p>
+              <AdminButton
+                gestures={gestures}
+                gesture={pageGesture('acknowledge')}
+                label="Les corrections sont à jour"
+                pendingLabel="Enregistrement…"
+                offset={offset}
+                run={async () =>
+                  outcomeMessage(
+                    await acknowledgeImageChange({ adminToken, scanId }),
+                  )
                 }
-              >
-                Les corrections sont à jour
-              </button>
-            </p>
+              />
+            </div>
           )}
 
           <section className="scan-page__actions">
             <p>
-              État : {data.status}
+              État : {scanStatusLabel(data.status)}
               {data.error && ` · ${data.error}`}
               {data.totalCostUsd !== null &&
                 ` · ${data.totalCostUsd.toFixed(4)} USD consommés`}
             </p>
-            <button
-              type="button"
-              disabled={busy || purged || data.images.length === 0}
-              title={purged ? 'Les photos de ce scan sont purgées' : undefined}
-              onClick={() => {
-                if (
-                  !window.confirm(
-                    'Relancer supprime les brouillons de ce scan. Continuer ?',
-                  )
-                )
-                  return
-                void run(() => rescan({ adminToken, scanId }))
-              }}
-            >
-              Relancer l'extraction
-            </button>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => void run(() => addRecipe({ adminToken, scanId }))}
-            >
-              Ajouter une recette
-            </button>
-            <button
-              type="button"
-              disabled={busy || anyDirty || imagesChanged}
-              onClick={() =>
-                void run(async () => {
-                  const result = await publishScan({ adminToken, scanId })
-                  if (!result.ok) return result
-                  return { ok: true, message: publicationReport(result) }
-                })
+            {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
+                own `startedAt`, so it is there after a reload too. */}
+            {data.startedAt !== null && (
+              <GestureProgress
+                startedAt={data.startedAt}
+                estimateMs={estimateMs}
+                offset={offset}
+                token={data.startedAt}
+              />
+            )}
+            <AdminButton
+              gestures={gestures}
+              gesture={pageGesture('rescan')}
+              label="Relancer l'extraction"
+              pendingLabel="Relance…"
+              confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
+              disabled={purged || data.images.length === 0}
+              blockedReason={
+                purged
+                  ? 'Les photos de ce scan sont purgées.'
+                  : 'Ce scan ne porte aucune image.'
               }
-            >
-              Tout publier
-            </button>
+              offset={offset}
+              run={async () =>
+                outcomeMessage(await rescan({ adminToken, scanId }))
+              }
+            />
+            <AdminButton
+              gestures={gestures}
+              gesture={pageGesture('addRecipe')}
+              label="Ajouter une recette"
+              pendingLabel="Ajout…"
+              offset={offset}
+              run={async () =>
+                outcomeMessage(await addRecipe({ adminToken, scanId }))
+              }
+            />
+            <AdminButton
+              gestures={gestures}
+              gesture={pageGesture('publishScan')}
+              label="Tout publier"
+              pendingLabel="Publication…"
+              disabled={anyDirty || imagesChanged}
+              blockedReason={publishBlockedReason}
+              offset={offset}
+              run={async () => {
+                const result = await publishScan({ adminToken, scanId })
+                if (!result.ok) return { ok: false, text: result.error }
+                return { ok: true, text: publicationReport(result) }
+              }}
+            />
           </section>
 
           {data.recipesTruncated && (
@@ -225,15 +293,15 @@ function ScanCorrectionPage() {
                 recipe={recipe}
                 edited={liveEdit(recipe)}
                 adminToken={adminToken}
-                busy={busy}
+                gestures={gestures}
                 publishBlocked={imagesChanged}
+                offset={offset}
                 onChange={(draft) =>
                   setEdits((current) => ({
                     ...current,
                     [recipe.id]: { revision: recipe.revision, draft },
                   }))
                 }
-                onRun={run}
               />
             ))}
           </section>

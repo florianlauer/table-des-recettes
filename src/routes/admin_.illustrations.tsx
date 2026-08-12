@@ -2,12 +2,24 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { beautifyGroupKey } from '../lib/beautifyStats'
+import type { WireBeautifySummary } from '../lib/beautifyStats'
+import { estimateFrom } from '../lib/estimate'
+import { outcomeMessage } from '../lib/gestureMessages'
+import { pageGesture, rowGesture } from '../lib/gestures'
 import { BEAUTIFY_LEASE_MS, illustrationActions } from '../lib/illustrationWork'
 import { useAttachIllustration } from '../lib/useAttachIllustration'
+import { useGestures } from '../lib/useGestures'
+import type { Gestures } from '../lib/useGestures'
+import { useServerClock } from '../lib/useServerClock'
+import { uploadFraction, uploadNote } from '../lib/uploadProgress'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
+import { AdminButton } from './-AdminButton'
+import { AdminFileInput } from './-AdminFileInput'
+import { GestureProgress } from './-GestureProgress'
+import { OrphanedOutcomes } from './-OrphanedOutcomes'
 
 export const Route = createFileRoute('/admin_/illustrations')({
   component: IllustrationsPage,
@@ -32,19 +44,13 @@ const FRAMING_ADVICE =
 
 function IllustrationsPage() {
   const [adminToken, setAdminToken] = useState('')
-  const [message, setMessage] = useState('')
-  const [busy, setBusy] = useState(false)
   const [includeIllustrated, setIncludeIllustrated] = useState(false)
-  const [now, setNow] = useState(() => Date.now())
+  const gestures = useGestures({ epoch: `illustrations:${adminToken}` })
+  const { now, offset } = useServerClock(adminToken)
+  const [focusClaimed, setFocusClaimed] = useState(false)
 
   useEffect(() => {
     setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
-
-  // The abandon button appears when a lease runs out, so the page has to notice time passing.
-  useEffect(() => {
-    const interval = window.setInterval(() => setNow(Date.now()), 15_000)
-    return () => window.clearInterval(interval)
   }, [])
 
   const work = useQuery({
@@ -54,20 +60,40 @@ function IllustrationsPage() {
     ),
     retry: false,
   })
-
-  async function run(action: () => Promise<Outcome>) {
-    setBusy(true)
-    try {
-      const result = await action()
-      setMessage(result.ok ? 'Fait.' : result.error)
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : String(error))
-    } finally {
-      setBusy(false)
-    }
-  }
+  // Hoisted out of the statistics block: the journal that reports what a generation costs is also
+  // what says how long one usually takes, and every row's bar reads it.
+  const stats = useQuery({
+    ...convexQuery(
+      api.illustrations.beautifyStats,
+      adminToken ? { adminToken } : 'skip',
+    ),
+    retry: false,
+  })
+  const estimateMs = estimateFrom(stats.data ?? [])
 
   const data = work.data
+
+  /**
+   * A working row can leave the data under its own gesture — a photo attached moves the recipe out of
+   * "Sans photo". Its run is kept until it resolves and its message resurfaces at section level;
+   * dropping it here would discard the completion instead.
+   */
+  const liveRowIds = new Set(
+    data
+      ? [...data.active, ...data.withoutIllustration, ...data.illustrated].map(
+          (row) => row.id,
+        )
+      : [],
+  )
+  useEffect(() => {
+    if (!data) return
+    for (const gesture of gestures.liveGestures()) {
+      if (gesture.scope.kind !== 'row') continue
+      if (liveRowIds.has(gesture.scope.rowId as Row['id'])) continue
+      if (gestures.holdsFocus(gesture.scope.rowId)) setFocusClaimed(true)
+      gestures.markOrphaned(gesture)
+    }
+  })
 
   return (
     <main className="page admin-page">
@@ -82,15 +108,16 @@ function IllustrationsPage() {
       {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
       {work.error && <p role="alert">{work.error.message}</p>}
       {work.isLoading && adminToken && <p>Chargement…</p>}
-      {message && <p role="status">{message}</p>}
+
+      <OrphanedOutcomes gestures={gestures} claimFocus={focusClaimed} />
 
       {data && (
         <>
           <MigrationBanner
             adminToken={adminToken}
             migration={data.migration}
-            busy={busy}
-            onRun={run}
+            gestures={gestures}
+            offset={offset}
           />
 
           <section className="illustrations__section">
@@ -107,9 +134,10 @@ function IllustrationsPage() {
                 key={row.id}
                 row={row}
                 adminToken={adminToken}
-                busy={busy}
+                gestures={gestures}
                 now={now}
-                onRun={run}
+                offset={offset}
+                estimateMs={estimateMs}
               />
             ))}
           </section>
@@ -129,9 +157,10 @@ function IllustrationsPage() {
                 key={row.id}
                 row={row}
                 adminToken={adminToken}
-                busy={busy}
+                gestures={gestures}
                 now={now}
-                onRun={run}
+                offset={offset}
+                estimateMs={estimateMs}
               />
             ))}
           </section>
@@ -157,14 +186,19 @@ function IllustrationsPage() {
                   key={row.id}
                   row={row}
                   adminToken={adminToken}
-                  busy={busy}
+                  gestures={gestures}
                   now={now}
-                  onRun={run}
+                  offset={offset}
+                  estimateMs={estimateMs}
                 />
               ))}
           </section>
 
-          <BeautifyStatsBlock adminToken={adminToken} />
+          <BeautifyStatsBlock
+            groups={stats.data}
+            error={stats.error}
+            estimateMs={estimateMs}
+          />
         </>
       )}
     </main>
@@ -174,44 +208,57 @@ function IllustrationsPage() {
 function MigrationBanner({
   adminToken,
   migration,
-  busy,
-  onRun,
+  gestures,
+  offset,
 }: {
   adminToken: string
   migration: Work['migration']
-  busy: boolean
-  onRun: (action: () => Promise<Outcome>) => Promise<void>
+  gestures: Gestures
+  offset: number
 }) {
   const startBackfill = useMutation(api.migrations.startIllustrationBackfill)
   if (migration.done) return null
+  // A div, not a `<p role="alert">`: a bar, a result and a blocked reason are blocks, and the count
+  // below changes as the backfill advances — announced assertively at every tick it would be noise.
   return (
-    <p role="alert">
-      {migration.started
-        ? `Migration en cours : ${migration.migrated} recette(s) indexée(s). La liste « sans photo » n'est pas encore exhaustive.`
-        : "Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n'est pas exhaustive."}{' '}
-      <button
-        type="button"
-        disabled={!adminToken || busy}
-        onClick={() => void onRun(() => startBackfill({ adminToken }))}
-      >
-        {migration.started ? 'Relancer la migration' : 'Lancer la migration'}
-      </button>
-    </p>
+    <div className="admin-page__banner">
+      <p>
+        {migration.started
+          ? `Migration en cours : ${migration.migrated} recette(s) indexée(s). La liste « sans photo » n'est pas encore exhaustive.`
+          : "Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n'est pas exhaustive."}
+      </p>
+      {/* No bar: `listIllustrationWork` reports how many recipes are indexed and no total — one
+          document read, which is exactly what the batched backfill exists to preserve. A fraction
+          would need a denominator nobody can produce without scanning the table. */}
+      <AdminButton
+        gestures={gestures}
+        gesture={pageGesture('migrate')}
+        label={
+          migration.started ? 'Relancer la migration' : 'Lancer la migration'
+        }
+        pendingLabel="Migration…"
+        disabled={!adminToken}
+        offset={offset}
+        run={async () => outcomeMessage(await startBackfill({ adminToken }))}
+      />
+    </div>
   )
 }
 
 function IllustrationRow({
   row,
   adminToken,
-  busy,
+  gestures,
   now,
-  onRun,
+  offset,
+  estimateMs,
 }: {
   row: Row
   adminToken: string
-  busy: boolean
+  gestures: Gestures
   now: number
-  onRun: (action: () => Promise<Outcome>) => Promise<void>
+  offset: number
+  estimateMs: number | null
 }) {
   const attachIllustration = useAttachIllustration(adminToken)
   const detachIllustration = useMutation(api.illustrations.detachIllustration)
@@ -228,61 +275,118 @@ function IllustrationRow({
 
   const can = illustrationActions(row, { now, leaseMs: BEAUTIFY_LEASE_MS })
   const args = { adminToken, recipeId: row.id }
+  const titleId = useId()
+  const generate = rowGesture(row.id, 'generate')
+
+  /**
+   * `requestBeautify` schedules and returns; the work then lives in `beautifyStatus`. The gesture is
+   * released only once the data shows the transition — and the signal is `beautifyStartedAt`, which
+   * the mutation always bumps, rather than a status that may read the same before and after.
+   */
+  const startedAtAtClick = useRef<number | null>(null)
+  const waiting = gestures.running(generate) !== null
+  useEffect(() => {
+    if (!waiting) return
+    if (row.beautifyStartedAt !== startedAtAtClick.current)
+      gestures.confirm(generate)
+  })
 
   // Order is the reading order of the screen, and it is data rather than seven near-identical JSX
   // blocks: what distinguishes a gesture is its label and its mutation, nothing else.
-  const gestures: {
+  const gestureRows: {
     offered: boolean
+    action: string
     label: string
+    pendingLabel: string
     confirm?: string
+    settle?: boolean
     run: () => Promise<Outcome>
   }[] = [
     {
       offered: can.accept,
+      action: 'accept',
       label: 'Accepter l’embellissement',
+      pendingLabel: 'Acceptation…',
       run: () => acceptBeautified(args),
     },
     {
       offered: can.reject,
+      action: 'reject',
       label: 'Rejeter le candidat',
+      pendingLabel: 'Rejet…',
       run: () => rejectPending(args),
     },
     {
       offered: can.generate,
+      action: 'generate',
       label: row.hasCandidate ? 'Régénérer' : 'Embellir',
+      pendingLabel: 'Embellissement…',
+      settle: true,
       run: () => requestBeautify(args),
     },
     {
       offered: can.unpublish,
+      action: 'unpublish',
       label: 'Dépublier l’embellissement',
+      pendingLabel: 'Dépublication…',
       run: () => unpublishAccepted(args),
     },
     {
       offered: can.deleteCandidate,
+      action: 'deleteCandidate',
       label: 'Supprimer le candidat conservé',
+      pendingLabel: 'Suppression…',
       run: () => deleteCandidate(args),
     },
     {
       offered: can.abandon,
+      action: 'abandon',
       label: 'Abandonner cette génération',
+      pendingLabel: 'Abandon…',
       run: () => abandonBeautify(args),
     },
     {
       offered: can.detach,
+      action: 'detach',
       label: 'Retirer la photo',
+      pendingLabel: 'Retrait…',
       confirm: `Retirer la photo de « ${row.title} » ?`,
       run: () => detachIllustration(args),
     },
   ]
 
+  const busy = gestureRows.some(
+    ({ action }) => gestures.running(rowGesture(row.id, action)) !== null,
+  )
+
   return (
-    <article className="illustrations__recipe">
-      <h3>{row.title || 'Sans titre'}</h3>
+    <article
+      className="illustrations__recipe"
+      data-row-id={row.id}
+      aria-busy={busy}
+    >
+      <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
       <p>
         {row.type} · {row.status}
         {row.beautifiedAccepted && ' · embellissement publié'}
       </p>
-      {row.beautifyStatus === 'generating' && <p>Génération en cours…</p>}
+      {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}
+      {row.beautifyStatus === 'generating' && (
+        <div className="illustrations__waiting">
+          <p>Génération en cours…</p>
+          {row.beautifyStartedAt !== null && (
+            <GestureProgress
+              startedAt={row.beautifyStartedAt}
+              estimateMs={estimateMs}
+              offset={offset}
+              labelledBy={titleId}
+              // A new generation is a new execution: the monotonic floor must not inherit the
+              // maximum of the one before it.
+              token={row.beautifyStartedAt}
+            />
+          )}
+        </div>
+      )}
       {row.beautifyStatus === 'failed' && row.beautifyError && (
         <p role="alert">Échec : {row.beautifyError}</p>
       )}
@@ -306,57 +410,78 @@ function IllustrationRow({
       )}
 
       {can.replace && (
-        <label className="admin-page__field">
-          {row.hasOriginal ? 'Remplacer la photo' : 'Ajouter une photo'}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/heic,image/heif,image/webp"
-            disabled={busy}
-            onChange={(event) => {
-              const file = event.target.files?.[0]
-              if (file) void onRun(() => attachIllustration(file, row.id))
-            }}
-          />
-        </label>
+        <AdminFileInput
+          gestures={gestures}
+          gesture={rowGesture(row.id, 'upload')}
+          label={row.hasOriginal ? 'Remplacer la photo' : 'Ajouter une photo'}
+          pendingLabel="Envoi…"
+          offset={offset}
+          onFiles={async (files, report) => {
+            const file = files[0]
+            if (!file) return { ok: false, text: 'Aucun fichier.' }
+            return outcomeMessage(
+              await attachIllustration(file, row.id, (phase) =>
+                report({
+                  fraction: uploadFraction({ done: 0, total: 1, phase }),
+                  text: uploadNote({ done: 0, total: 1, phase }),
+                }),
+              ),
+            )
+          }}
+        />
       )}
 
-      {gestures
+      {gestureRows
         .filter((gesture) => gesture.offered)
         .map((gesture) => (
-          <button
-            key={gesture.label}
-            type="button"
-            disabled={busy}
-            onClick={() => {
-              if (gesture.confirm && !window.confirm(gesture.confirm)) return
-              void onRun(gesture.run)
+          <AdminButton
+            key={gesture.action}
+            gestures={gestures}
+            gesture={rowGesture(row.id, gesture.action)}
+            label={gesture.label}
+            pendingLabel={gesture.pendingLabel}
+            confirm={gesture.confirm}
+            settle={gesture.settle}
+            estimateMs={gesture.settle ? estimateMs : null}
+            titleId={titleId}
+            offset={offset}
+            run={async () => {
+              if (gesture.action === 'generate')
+                startedAtAtClick.current = row.beautifyStartedAt
+              return outcomeMessage(await gesture.run())
             }}
-          >
-            {gesture.label}
-          </button>
+          />
         ))}
     </article>
   )
 }
 
-function BeautifyStatsBlock({ adminToken }: { adminToken: string }) {
-  const stats = useQuery({
-    ...convexQuery(
-      api.illustrations.beautifyStats,
-      adminToken ? { adminToken } : 'skip',
-    ),
-    retry: false,
-  })
-
+function BeautifyStatsBlock({
+  groups,
+  error,
+  estimateMs,
+}: {
+  groups: WireBeautifySummary[] | undefined
+  error: Error | null
+  estimateMs: number | null
+}) {
   return (
     <section className="admin-page__stats">
       <h2>Générations d'images</h2>
-      {stats.error && <p role="alert">{stats.error.message}</p>}
-      {stats.data?.length === 0 && <p>Aucune génération journalisée.</p>}
-      {stats.data?.map((group) => (
+      {error && <p role="alert">{error.message}</p>}
+      {groups?.length === 0 && <p>Aucune génération journalisée.</p>}
+      {estimateMs === null && groups !== undefined && groups.length > 0 && (
+        <p>
+          Pas encore assez d'appels sur la configuration en service pour estimer
+          une durée.
+        </p>
+      )}
+      {groups?.map((group) => (
         <article key={beautifyGroupKey(group)} className="admin-page__stat">
           <h3>
-            {group.model} · prompt {group.promptVersion}
+            {group.model} · {group.servedProvider ?? 'provider inconnu'} ·
+            prompt {group.promptVersion}
+            {group.isCurrent && ' · en service'}
           </h3>
           <p>
             {group.attempts} appel(s) · {group.accepted} accepté(s) ·{' '}

@@ -6,7 +6,10 @@ import type { Id } from './_generated/dataModel'
 import { BACKFILL_BATCH } from './migrations'
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
-import { BEAUTIFY_PROMPT_VERSION } from '../src/lib/beautifyPrompt'
+import {
+  BEAUTIFY_MODEL,
+  BEAUTIFY_PROMPT_VERSION,
+} from '../src/lib/beautifyPrompt'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
@@ -796,5 +799,78 @@ describe('the hasIllustration backfill', () => {
       recipeId: added.recipeId,
     })
     await check()
+  })
+})
+
+describe('beautification journal', () => {
+  test('marks the groups of the model in service, whatever provider served them', async () => {
+    // Beautification pins its model in code and pins no provider, so a routing change splits the
+    // journal into several groups that are all in service — and the estimate averages them.
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const sourceStorageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run(async (ctx) => {
+      for (const [index, attempt] of [
+        { model: BEAUTIFY_MODEL, servedProvider: 'Google AI Studio' },
+        { model: BEAUTIFY_MODEL, servedProvider: 'Vertex' },
+        { model: 'google/gemini-2.0-flash-image', servedProvider: 'Vertex' },
+      ].entries()) {
+        await ctx.db.insert('beautifyAttempts', {
+          attemptId: `attempt-${index}`,
+          recipeId,
+          model: attempt.model,
+          promptVersion: BEAUTIFY_PROMPT_VERSION,
+          servedProvider: attempt.servedProvider,
+          latencyMs: 9100,
+          costUsd: 0.039,
+          costReported: true,
+          failureKind: null,
+          sourceStorageId,
+          outcome: 'pending' as const,
+          createdAt: index,
+        })
+      }
+    })
+
+    const groups = await t.query(api.illustrations.beautifyStats, {
+      adminToken,
+    })
+    expect(
+      groups.map((group) => [
+        group.model,
+        group.servedProvider,
+        group.isCurrent,
+      ]),
+    ).toEqual([
+      ['google/gemini-2.0-flash-image', 'Vertex', false],
+      [BEAUTIFY_MODEL, 'Vertex', true],
+      [BEAUTIFY_MODEL, 'Google AI Studio', true],
+    ])
+  })
+
+  test('marks nothing from a superseded prompt version', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const sourceStorageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.insert('beautifyAttempts', {
+        attemptId: 'attempt-old',
+        recipeId,
+        model: BEAUTIFY_MODEL,
+        promptVersion: `${BEAUTIFY_PROMPT_VERSION}-previous`,
+        servedProvider: 'Google AI Studio',
+        latencyMs: 9100,
+        costUsd: 0.039,
+        costReported: true,
+        failureKind: null,
+        sourceStorageId,
+        outcome: 'accepted' as const,
+        createdAt: 0,
+      }),
+    )
+    const groups = await t.query(api.illustrations.beautifyStats, {
+      adminToken,
+    })
+    expect(groups.map((group) => group.isCurrent)).toEqual([false])
   })
 })

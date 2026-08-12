@@ -12,6 +12,7 @@ function row(
   return {
     model: 'google/gemini-2.5-flash-image',
     promptVersion: 'v2',
+    servedProvider: 'Google AI Studio',
     outcome: 'pending',
     failureKind: null,
     costUsd: BEAUTIFY_EXPECTED_COST_USD,

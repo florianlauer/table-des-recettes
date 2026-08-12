@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { uploadCompressed } from './uploadCompressed'
+import type { UploadPhase } from './uploadProgress'
 
 export type AttachResult =
   { ok: true; scanId: Id<'scans'> } | { ok: false; error: string }
@@ -16,11 +17,16 @@ export function useAttachImage(adminToken: string) {
   const attachImage = useMutation(api.admin.attachImage)
 
   return useCallback(
-    async (file: File, scanId?: Id<'scans'>): Promise<AttachResult> => {
+    async (
+      file: File,
+      scanId?: Id<'scans'>,
+      onPhase?: (phase: UploadPhase) => void,
+    ): Promise<AttachResult> => {
       const uploaded = await uploadCompressed(file, {
         adminToken,
         purpose: 'scan',
         generateUploadUrl,
+        onPhase,
       })
       if (!uploaded.ok) return uploaded
 

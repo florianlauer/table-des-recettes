@@ -9,6 +9,7 @@ function attempt(
     model: 'google/gemini-3-flash-preview',
     promptVersion: 'v4',
     schemaVersion: '2',
+    servedProvider: 'Google AI Studio',
     failureKind: null,
     costUsd: 0.005,
     latencyMs: 7000,
