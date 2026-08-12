@@ -1,3 +1,5 @@
+import { ConvexError } from 'convex/values'
+
 type AdminEnvironment = { ADMIN_TOKEN?: string }
 
 export function constantTimeEqual(left: string, right: string): boolean {
@@ -15,6 +17,7 @@ export function requireAdmin(
 ): void {
   const expected = environment.ADMIN_TOKEN
   if (!expected || !constantTimeEqual(adminToken, expected)) {
-    throw new Error('Accès administrateur refusé')
+    // ConvexError, otherwise production masks the message as "Server Error".
+    throw new ConvexError('Accès administrateur refusé')
   }
 }

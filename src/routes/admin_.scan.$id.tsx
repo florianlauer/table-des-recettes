@@ -43,8 +43,10 @@ function ScanCorrectionPage() {
   }, [])
 
   const scan = useQuery({
-    ...convexQuery(api.admin.getScanForCorrection, { adminToken, scanId }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(
+      api.admin.getScanForCorrection,
+      adminToken ? { adminToken, scanId } : 'skip',
+    ),
     retry: false,
   })
 

@@ -48,11 +48,10 @@ function IllustrationsPage() {
   }, [])
 
   const work = useQuery({
-    ...convexQuery(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated,
-    }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(
+      api.illustrations.listIllustrationWork,
+      adminToken ? { adminToken, includeIllustrated } : 'skip',
+    ),
     retry: false,
   })
 
@@ -342,8 +341,10 @@ function IllustrationRow({
 
 function BeautifyStatsBlock({ adminToken }: { adminToken: string }) {
   const stats = useQuery({
-    ...convexQuery(api.illustrations.beautifyStats, { adminToken }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(
+      api.illustrations.beautifyStats,
+      adminToken ? { adminToken } : 'skip',
+    ),
     retry: false,
   })
 
