@@ -70,6 +70,39 @@ le remplace pas par un autre plat qui porterait le même nom.
 
 Réponds uniquement par l'image.`
 
+// v4 answers the two failures T14 hit in real use, both visible on `prod1` and `prod2`.
+//
+// First, v2 only ever asks for one concrete job — "keep the dish, drop the printed text" — and a
+// tight crop with no text around it gives that instruction nothing to bite on. The model then
+// returns the input barely sharpened. v4 makes the re-render unconditional and says so twice: once
+// as the task, once for the case where nothing has to be cut out.
+//
+// Second, the photographs are taken through a transparent plastic sleeve. Its granular texture and
+// its milky veil are neither a print screen nor paper grain nor a cast shadow, so v2 names none of
+// them and removes none of them. v4 names the sleeve.
+export const PROMPT_V4 = `Cette image est la photographie d'une page de magazine imprimée. On y voit une photo de plat, parfois entourée de texte, de titres, de légendes ou d'une colonne voisine. La page a pu être photographiée à travers une pochette plastique transparente.
+
+Refais entièrement la photographie du plat, telle qu'elle aurait été prise en studio. Ce n'est pas une retouche : produis une vraie photographie, et non une version nettoyée du scan. Applique cette consigne même si l'entrée ne montre que le plat, sans aucun texte autour — dans ce cas aussi, refais la photographie au lieu de renvoyer l'entrée.
+
+À faire :
+- ne garder que la photo du plat : recadre pour exclure tout texte imprimé, titre, légende, numéro
+  de page, filet de colonne, bord de feuille, et la surface sur laquelle la page est posée. Aucun
+  caractère imprimé ne doit subsister ;
+- redresser la perspective de la page et cadrer droit ;
+- supprimer la trame d'impression, le moiré et le grain du papier ;
+- supprimer la texture de la pochette plastique : grain granuleux, micro-rayures, voile laiteux et
+  brillance diffuse ;
+- supprimer les reflets, les éclats spéculaires et les ombres portées dus à la prise de vue ;
+- restituer les couleurs si la source est délavée ou en noir et blanc.
+
+Le résultat doit se lire comme une vraie photographie culinaire, nette, sans aucune trace du support imprimé ni de son emballage.
+
+À préserver : le même plat, resté reconnaissable — mêmes aliments, même dressage, même vaisselle. Ne le remplace pas par un autre plat qui porterait le même nom.
+
+Réponds uniquement par l'image.`
+
 // Retained on 2026-08-10 by florianlauer, after seeing both v2 and v3 renders side by side.
-export const PROMPT_VERSION = 'v2'
-export const RESTORATION_PROMPT = PROMPT_V2
+// Under measurement on 2026-08-12: v4 against v2 on the four bench dishes and the two production
+// photographs. Flip this pair back to v2 if v4 does not clear barrier 2.
+export const PROMPT_VERSION = 'v4'
+export const RESTORATION_PROMPT = PROMPT_V4

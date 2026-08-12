@@ -62,3 +62,7 @@ skills-lock.json
 # Spike T13 — 32 rendus pèsent des dizaines de Mo ; seuls ceux du modèle retenu seront commités à la main.
 spike13/fixtures/renders/
 spike13/review.html
+
+# Personal photographs ingested for an ad-hoc bench campaign. The four committed dishes are
+# the reproducible grid; anything else is a page of a copyrighted magazine and this repo is public.
+spike13/fixtures/dishes/prod*.jpg

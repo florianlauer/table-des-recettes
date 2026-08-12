@@ -175,3 +175,64 @@ de mesure à refaire.
 Réserve de validité à porter dans T14 : `v3` était une troisième itération réglée sur quatre photos,
 donc précisément ce que la règle de réécriture unique voulait empêcher. Ne pas le retenir rend cette
 réserve sans objet pour le prompt actif, `v2` étant la seule réécriture autorisée.
+
+---
+
+## Campagne `v4` — 2026-08-12, après les deux premières recettes en production
+
+`v2` a raté les deux premières photos réelles. Elles cumulaient deux défauts que le banc d'origine ne
+pouvait pas voir, parce qu'aucune de ses quatre entrées ne les portait.
+
+**1. Le re-rendu était conditionnel sans le dire.** `v2` ne donne au modèle qu'une tâche concrète,
+détourer le texte imprimé. Sur un gros plan sans texte autour, l'instruction ne mord sur rien et le
+modèle renvoie l'entrée à peine affûtée. C'est déjà ce que disait la ligne `recadre2` de la barrière
+1 — 0 sur 2 — mais le constat était lu comme « le gros plan marche moins bien », pas comme « il n'y a
+plus d'instruction active ».
+
+**2. La pochette plastique n'était nommée nulle part.** Les pages sont photographiées à travers une
+pochette transparente. Son grain granuleux et son voile laiteux ne sont ni une trame d'impression, ni
+un grain de papier, ni une ombre portée — les trois seules choses que `v2` nomme. Rien ne les
+supprimait.
+
+`v4` corrige les deux : re-rendu inconditionnel, énoncé une seconde fois pour le cas sans texte, et
+la pochette nommée avec ses éclats spéculaires.
+
+### Mesure
+
+16 cellules sur le modèle retenu : `v2` sur les deux photos de production (contrôle), `v4` sur les
+quatre plats du banc plus les deux photos de production. **Dépensé 0,90 USD**, cumul du banc à
+**3,5094 USD sur 10**.
+
+|                            | `v2`              | `v4`                         |
+| -------------------------- | ----------------- | ---------------------------- |
+| Coût par appel             | 0,03932 – 0,03956 | 0,03936 – 0,03959            |
+| Latence                    | 8,0 – 9,3 s       | 9,4 – 26,4 s                 |
+| Grain de pochette supprimé | non               | oui, sur les deux photos     |
+| Barrière 2                 | tenue             | tenue — aucun plat ne dérive |
+
+Le coût par appel ne bouge pas ; **la latence, oui**, jusqu'à trois fois le tarif de `v2` sur les
+entrées les plus chargées.
+
+Deux appels ont dérapé bien au-delà du tarif, dans les deux versions : `prod2` passe 1 sous `v2` à
+**0,23284 USD pour 37,6 s** (5,9× l'attendu) et `prod1` sous `v4` à 0,07807 (2×). Le seuil d'alerte
+de production — facteur 3 sur 0,03944 — aurait signalé le premier. `excessiveCostCalls` n'était pas
+une précaution contre une hypothèse.
+
+**Retenu par florianlauer** le 2026-08-12, sur les rendus des six entrées, barrière 2 vérifiée plat
+par plat.
+
+### Reproduire
+
+Les deux photos de production sont ingérées sous `prod1` et `prod2` et **ne sont pas commitées** :
+ce sont des pages de magazine sous droits, et le dépôt est public. `.gitignore` interdit
+`spike13/fixtures/dishes/prod*.jpg` pour que l'accident ne soit pas possible.
+
+Rejouer la campagne demande donc ses propres photos :
+
+```
+npm run ingest13 -- prod1 <ta-photo>
+npm run ingest13 -- prod2 <ton-autre-photo>
+```
+
+puis d'ajouter `prod1` et `prod2` à `DISHES` dans `spike13/run.ts` — la grille livrée reste les
+quatre plats du banc, pour qu'un clone frais puisse la rejouer entière.

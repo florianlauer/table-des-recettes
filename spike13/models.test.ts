@@ -85,6 +85,20 @@ describe('RESTORATION_PROMPT', () => {
   it('asks for a straight frame, the defect that later earned the v3 fallback', () => {
     expect(RESTORATION_PROMPT).toMatch(/cadrer droit|parfaitement droit/i)
   })
+
+  // The two defects real use exposed and the original bench could not: its own inputs were never
+  // shot through a sleeve, and every one of them had printed text to cut out.
+  it('names the transparent sleeve, which is neither a print screen nor paper grain', () => {
+    expect(RESTORATION_PROMPT).toMatch(/pochette plastique/i)
+  })
+
+  it('orders the re-render even when there is no printed text to cut out', () => {
+    expect(RESTORATION_PROMPT).toMatch(/sans aucun texte autour/i)
+  })
+
+  it('is the version production files its calls under', () => {
+    expect(PROMPT_VERSION).toBe('v4')
+  })
 })
 
 // v3 is measured but not active. It is kept so T14 has a priced alternative to switch to if tilted
@@ -97,6 +111,5 @@ describe('PROMPT_V3, the documented fallback', () => {
 
   it('is not the active prompt', () => {
     expect(RESTORATION_PROMPT).not.toBe(PROMPT_V3)
-    expect(PROMPT_VERSION).toBe('v2')
   })
 })
