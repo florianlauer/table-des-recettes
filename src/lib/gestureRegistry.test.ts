@@ -145,6 +145,34 @@ describe('orphaned rows', () => {
       result: { text: 'Publiée.' },
     })
   })
+
+  // Regression: ISSUE-002 — a photo posted from /admin/illustrations took its row out of "Sans
+  // photo" *after* the gesture had settled, so nothing was left running to mark and the message was
+  // rendered nowhere at all. Found by /qa on 2026-08-12.
+  // Report: .gstack/qa-reports/qa-report-localhost-3000-2026-08-12.md
+  it('marks an outcome that has already settled when its row leaves afterwards', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, {
+      ok: true,
+      text: 'Fait.',
+    })
+    expect(done.outcomes['["row","a","save"]']?.orphaned).toBe(false)
+
+    const gone = markOrphaned(done, rowA)
+    expect(gone.outcomes['["row","a","save"]']).toMatchObject({
+      orphaned: true,
+      result: { text: 'Fait.' },
+    })
+  })
+
+  it('leaves the outcome of a row that is still there alone', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, {
+      ok: true,
+      text: 'Fait.',
+    })
+    expect(markOrphaned(done, rowB)).toBe(done)
+  })
 })
 
 describe('outcome expiry', () => {
