@@ -7,6 +7,8 @@ import { rateLimiter } from './rateLimits'
 import schema from './schema'
 import { ATTEMPTS_SAMPLED } from '../src/lib/attemptStats'
 import { LEASE_MS, MAX_ATTEMPTS } from '../src/lib/queueContract'
+import { PROMPT_VERSION } from '../src/lib/recipe-prompt'
+import { RECIPE_SCHEMA_VERSION } from '../src/lib/recipe-schema'
 
 const modules = import.meta.glob('./**/*.ts')
 
@@ -22,6 +24,10 @@ beforeEach(() => {
 
 afterEach(() => {
   delete process.env.ADMIN_TOKEN
+  // The configured identity is read off the environment, so a test that sets it must not leak it
+  // into the next one — `isCurrent` would then be marked where the test never asked for it.
+  delete process.env.OPENROUTER_MODEL
+  delete process.env.OPENROUTER_PROVIDER
 })
 
 describe('admin boundary', () => {
@@ -182,6 +188,114 @@ describe('admin boundary', () => {
       { promptVersion: 'v4', attempts: 1, failures: 0 },
       { promptVersion: 'v3', attempts: 2, failures: 1 },
     ])
+  })
+
+  test('marks the group in service, and only it, from the server environment', async () => {
+    // Convex does not check a handler's return against its `returns` validator at compile time, so
+    // this test is the only thing standing between a forgotten `isCurrent` and a bar that quietly
+    // never appears.
+    const t = setup()
+    process.env.OPENROUTER_MODEL = 'google/gemini-2.5-flash'
+    process.env.OPENROUTER_PROVIDER = 'google-ai-studio'
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    await t.run(async (ctx) => {
+      for (const [index, attempt] of [
+        // The pinned slug and the name OpenRouter serves back are two namespaces for one provider.
+        {
+          model: 'google/gemini-2.5-flash',
+          servedProvider: 'Google AI Studio',
+        },
+        { model: 'google/gemini-2.5-flash', servedProvider: 'Vertex' },
+        {
+          model: 'google/gemini-2.0-flash',
+          servedProvider: 'Google AI Studio',
+        },
+      ].entries()) {
+        await ctx.db.insert('extractionAttempts', {
+          scanId,
+          attemptId: `attempt-${index}`,
+          model: attempt.model,
+          servedProvider: attempt.servedProvider,
+          latencyMs: 7000,
+          costUsd: 0.005,
+          failureKind: null,
+          repairCount: 0,
+          promptVersion: PROMPT_VERSION,
+          schemaVersion: RECIPE_SCHEMA_VERSION,
+          createdAt: index,
+        })
+      }
+    })
+
+    const groups = await t.query(api.admin.attemptStats, {
+      adminToken: 'test-secret',
+    })
+    expect(
+      groups.map((group) => [
+        group.model,
+        group.servedProvider,
+        group.isCurrent,
+      ]),
+    ).toEqual([
+      ['google/gemini-2.0-flash', 'Google AI Studio', false],
+      ['google/gemini-2.5-flash', 'Vertex', false],
+      ['google/gemini-2.5-flash', 'Google AI Studio', true],
+    ])
+  })
+
+  test('marks nothing after a change of model, of provider, or of prompt', async () => {
+    const t = setup()
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [],
+        status: 'done',
+        attempts: 1,
+        createdAt: 1,
+      }),
+    )
+    await t.run((ctx) =>
+      ctx.db.insert('extractionAttempts', {
+        scanId,
+        attemptId: 'attempt-0',
+        model: 'google/gemini-2.5-flash',
+        servedProvider: 'Google AI Studio',
+        latencyMs: 7000,
+        costUsd: 0.005,
+        failureKind: null,
+        repairCount: 0,
+        promptVersion: PROMPT_VERSION,
+        schemaVersion: RECIPE_SCHEMA_VERSION,
+        createdAt: 0,
+      }),
+    )
+    const marked = async () => {
+      const groups = await t.query(api.admin.attemptStats, {
+        adminToken: 'test-secret',
+      })
+      return groups.filter((group) => group.isCurrent).length
+    }
+
+    process.env.OPENROUTER_MODEL = 'google/gemini-2.5-flash'
+    process.env.OPENROUTER_PROVIDER = 'google-ai-studio'
+    expect(await marked()).toBe(1)
+
+    process.env.OPENROUTER_MODEL = 'google/gemini-3-flash'
+    expect(await marked()).toBe(0)
+
+    process.env.OPENROUTER_MODEL = 'google/gemini-2.5-flash'
+    process.env.OPENROUTER_PROVIDER = 'vertex'
+    expect(await marked()).toBe(0)
+
+    // Half-configured: extraction would refuse to run, so nothing is in service.
+    delete process.env.OPENROUTER_PROVIDER
+    expect(await marked()).toBe(0)
   })
 
   test('caps the journal read at the sampled window', async () => {

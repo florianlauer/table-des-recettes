@@ -25,6 +25,9 @@ export type BeautifyOutcome = 'pending' | 'accepted' | 'rejected' | 'discarded'
 export type JournalledBeautifyAttempt = {
   model: string
   promptVersion: string
+  // Part of the identity, not of the diagnosis: beautification pins no provider, so a routing change
+  // would otherwise average two different speeds into one meaningless figure.
+  servedProvider: string | null
   outcome: BeautifyOutcome
   failureKind: string | null
   costUsd: number
@@ -32,9 +35,10 @@ export type JournalledBeautifyAttempt = {
   latencyMs: number
 }
 
-export const beautifySummary = v.object({
+const beautifySummaryFields = {
   model: v.string(),
   promptVersion: v.string(),
+  servedProvider: v.union(v.string(), v.null()),
   attempts: v.number(),
   pending: v.number(),
   accepted: v.number(),
@@ -50,20 +54,31 @@ export const beautifySummary = v.object({
   // price is journalled at zero, which is indistinguishable from a free call.
   unreportedCostCalls: v.number(),
   excessiveCostCalls: v.number(),
+}
+
+/** What the pure summariser produces — see the note on `attemptSummaryBase`. */
+export const beautifySummaryBase = v.object(beautifySummaryFields)
+
+/** What the query answers: the same, plus which groups describe the configuration in service. */
+export const beautifySummary = v.object({
+  ...beautifySummaryFields,
+  isCurrent: v.boolean(),
 })
 
-export type BeautifySummary = Infer<typeof beautifySummary>
+export type BeautifySummary = Infer<typeof beautifySummaryBase>
+export type WireBeautifySummary = Infer<typeof beautifySummary>
 
 export type BeautifyIdentity = Pick<
   JournalledBeautifyAttempt,
-  'model' | 'promptVersion'
+  'model' | 'promptVersion' | 'servedProvider'
 >
 
 export function beautifyGroupKey({
   model,
   promptVersion,
+  servedProvider,
 }: BeautifyIdentity): string {
-  return `${model} ${promptVersion}`
+  return `${model} ${promptVersion} ${servedProvider ?? '—'}`
 }
 
 export function summarizeBeautifyAttempts(
@@ -75,7 +90,7 @@ export function summarizeBeautifyAttempts(
 function summarizeGroup(
   rows: NonEmpty<JournalledBeautifyAttempt>,
 ): BeautifySummary {
-  const { model, promptVersion } = rows[0]
+  const { model, promptVersion, servedProvider } = rows[0]
   const count = (keep: (row: JournalledBeautifyAttempt) => boolean) =>
     rows.filter(keep).length
   // A technical failure is a `failureKind`, not a `discarded`: a call whose finalisation merely
@@ -85,6 +100,7 @@ function summarizeGroup(
   return {
     model,
     promptVersion,
+    servedProvider,
     attempts: rows.length,
     pending: count((row) => row.outcome === 'pending'),
     accepted: count((row) => row.outcome === 'accepted'),

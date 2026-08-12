@@ -1,17 +1,18 @@
 import { useMutation } from 'convex/react'
+import { useId } from 'react'
 import { api } from '../../convex/_generated/api'
+import { outcomeMessage } from '../lib/gestureMessages'
+import { rowGesture } from '../lib/gestures'
 import { RECIPE_TYPES } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
+import type { Gestures } from '../lib/useGestures'
+import { AdminButton } from './-AdminButton'
 
 type ScanView = NonNullable<
   (typeof api.admin.getScanForCorrection)['_returnType']
 >
 export type RecipeView = ScanView['recipes'][number]
 type IngredientLine = RecipeView['ingredients'][number]
-
-/** What an admin mutation answers, plus the success message the caller may want to phrase itself. */
-export type ActionOutcome =
-  { ok: true; message?: string } | { ok: false; error: string }
 
 /**
  * The form's shape rather than the recipe's: portions and steps are edited as text and only become
@@ -55,28 +56,39 @@ export function RecipeForm({
   recipe,
   edited,
   adminToken,
-  busy,
+  gestures,
   publishBlocked,
   onChange,
-  onRun,
 }: {
   recipe: RecipeView
   edited: Draft | null
   adminToken: string
-  busy: boolean
+  gestures: Gestures
   publishBlocked: boolean
   onChange: (draft: Draft) => void
-  onRun: (action: () => Promise<ActionOutcome>) => Promise<void>
 }) {
   const saveRecipe = useMutation(api.recipeAdmin.saveRecipe)
   const deleteRecipe = useMutation(api.recipeAdmin.deleteRecipe)
   const publishRecipe = useMutation(api.recipeAdmin.publishRecipe)
   const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
 
+  const titleId = useId()
   const draft = edited ?? toDraft(recipe)
   const dirty = edited !== null
+  const save = rowGesture(recipe.id, 'save')
+  const publish = rowGesture(recipe.id, 'publish')
+  const unpublish = rowGesture(recipe.id, 'unpublish')
+  const remove = rowGesture(recipe.id, 'delete')
+  const rowGestures = [save, publish, unpublish, remove]
+  const busy = rowGestures.some((gesture) => gestures.running(gesture) !== null)
+  const settled = rowGestures.some(
+    (gesture) => gestures.outcome(gesture) !== null,
+  )
 
   function edit(patch: Partial<Draft>) {
+    // « Fait. » next to a field that has changed since describes a value nobody can see any more.
+    // Guarded, so a keystroke does not rewrite the registry for nothing.
+    if (settled) gestures.clearOutcomes(save)
     onChange({ ...draft, ...patch })
   }
 
@@ -89,8 +101,12 @@ export function RecipeForm({
   }
 
   return (
-    <article className="scan-page__recipe">
-      <h3>{recipe.title || 'Sans titre'}</h3>
+    <article
+      className="scan-page__recipe"
+      data-row-id={recipe.id}
+      aria-busy={busy}
+    >
+      <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
       <p>
         {recipe.status === 'published' ? 'Publiée' : 'Brouillon'}
         {recipe.slug && ` · /recette/${recipe.slug}`}
@@ -206,12 +222,17 @@ export function RecipeForm({
         />
       </label>
 
-      <button
-        type="button"
-        disabled={busy || !dirty}
-        onClick={() =>
-          void onRun(() =>
-            saveRecipe({
+      <AdminButton
+        gestures={gestures}
+        gesture={save}
+        label="Enregistrer"
+        pendingLabel="Enregistrement…"
+        disabled={!dirty}
+        blockedReason="Rien à enregistrer : le formulaire est celui du serveur."
+        titleId={titleId}
+        run={async () =>
+          outcomeMessage(
+            await saveRecipe({
               adminToken,
               recipeId: recipe.id,
               expectedRevision: recipe.revision,
@@ -230,56 +251,59 @@ export function RecipeForm({
             }),
           )
         }
-      >
-        Enregistrer
-      </button>
+      />
 
       {recipe.status === 'review' ? (
-        <button
-          type="button"
+        <AdminButton
+          gestures={gestures}
+          gesture={publish}
+          label="Publier"
+          pendingLabel="Publication…"
           // Publishing a form the operator has already edited would put the stale server value
           // online — a wrong page, not a lost keystroke.
-          disabled={busy || dirty || publishBlocked}
-          onClick={() =>
-            void onRun(() => publishRecipe({ adminToken, recipeId: recipe.id }))
+          disabled={dirty || publishBlocked}
+          blockedReason={
+            dirty
+              ? 'Enregistre tes corrections avant de publier.'
+              : 'Les images ont changé : relis la recette avant de publier.'
           }
-        >
-          Publier
-        </button>
-      ) : (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() =>
-            void onRun(() =>
-              unpublishRecipe({ adminToken, recipeId: recipe.id }),
+          titleId={titleId}
+          run={async () =>
+            outcomeMessage(
+              await publishRecipe({ adminToken, recipeId: recipe.id }),
             )
           }
-        >
-          Dépublier
-        </button>
+        />
+      ) : (
+        <AdminButton
+          gestures={gestures}
+          gesture={unpublish}
+          label="Dépublier"
+          pendingLabel="Dépublication…"
+          titleId={titleId}
+          run={async () =>
+            outcomeMessage(
+              await unpublishRecipe({ adminToken, recipeId: recipe.id }),
+            )
+          }
+        />
       )}
 
-      <button
-        type="button"
-        disabled={busy || recipe.status === 'published'}
-        title={
-          recipe.status === 'published'
-            ? 'Dépublie la recette avant de la supprimer'
-            : undefined
-        }
-        onClick={() => {
-          if (
-            !window.confirm(
-              `Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`,
-            )
+      <AdminButton
+        gestures={gestures}
+        gesture={remove}
+        label="Supprimer"
+        pendingLabel="Suppression…"
+        confirm={`Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`}
+        disabled={recipe.status === 'published'}
+        blockedReason="Dépublie la recette avant de la supprimer."
+        titleId={titleId}
+        run={async () =>
+          outcomeMessage(
+            await deleteRecipe({ adminToken, recipeId: recipe.id }),
           )
-            return
-          void onRun(() => deleteRecipe({ adminToken, recipeId: recipe.id }))
-        }}
-      >
-        Supprimer
-      </button>
+        }
+      />
     </article>
   )
 }

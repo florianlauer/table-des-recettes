@@ -2,6 +2,7 @@ import type { ReactMutation } from 'convex/react'
 import type { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { compressImage } from './compress'
+import type { UploadPhase } from './uploadProgress'
 
 export type UploadPurpose = 'scan' | 'illustration'
 
@@ -23,15 +24,20 @@ export async function uploadCompressed(
     adminToken,
     purpose,
     generateUploadUrl,
+    onPhase,
   }: {
     adminToken: string
     purpose: UploadPurpose
     generateUploadUrl: ReactMutation<typeof api.admin.generateUploadUrl>
+    /** Announced as each phase begins, so the screen can draw a fraction it actually knows. */
+    onPhase?: (phase: UploadPhase) => void
   },
 ): Promise<UploadedFile> {
+  onPhase?.('compression')
   const compressed = await compressImage(file)
   if (!compressed.ok) return { ok: false, error: compressed.message }
 
+  onPhase?.('ticket')
   const grant = await generateUploadUrl({ adminToken, purpose })
   if (!grant.ok) {
     return {
@@ -40,6 +46,7 @@ export async function uploadCompressed(
     }
   }
 
+  onPhase?.('upload')
   const response = await fetch(grant.uploadUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'image/jpeg' },

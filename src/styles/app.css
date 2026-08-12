@@ -127,6 +127,103 @@ img {
   font: inherit;
   padding: 0.5rem 0.8rem;
 }
+
+/* The admin is a tool, not a shop window: its links carry their rule at rest. The public surfaces
+   keep their own rule — bare at rest, ruled on hover. */
+.admin-page a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.18em;
+}
+.admin-page button,
+.admin-page input[type='file']::file-selector-button {
+  cursor: pointer;
+}
+/* A native file input is intrinsically wider than a 390 px phone, and the scanning gesture is the
+   one thing the admin does *on* a phone: without `minmax(0, …)` its min-content width pushes the
+   grid column past the page and the whole thing scrolls sideways. */
+.admin-page__field {
+  grid-template-columns: minmax(0, 1fr);
+}
+.admin-page input[type='file'] {
+  max-width: 100%;
+}
+@media (hover: hover) {
+  .admin-page a:hover {
+    color: var(--ochre-hover);
+    text-decoration-color: var(--ochre);
+  }
+  .admin-page button:not(:disabled):hover,
+  .admin-page input[type='file']:not(:disabled):hover::file-selector-button {
+    color: var(--ochre-hover);
+    border-color: var(--ochre-hover);
+  }
+}
+/* Touch has no hover: this is the only confirmation a greasy finger registered. */
+.admin-page a:active,
+.admin-page button:not(:disabled):active,
+.admin-page input[type='file']:not(:disabled):active::file-selector-button {
+  color: var(--ochre-hover);
+}
+/* A dead control says so — the precedent is `−` in the servings selector. */
+.admin-page button:disabled,
+.admin-page input[type='file']:disabled::file-selector-button {
+  color: var(--rule-strong);
+  border-color: var(--rule);
+  cursor: default;
+}
+
+/* Both labels live in the same grid cell, the inactive one hidden: the button keeps the width of
+   the longer of the two and nothing moves when "Embellir" becomes "Embellissement…". */
+.btn__labels {
+  display: grid;
+}
+.btn__label {
+  grid-area: 1 / 1;
+}
+.btn__label--ghost {
+  visibility: hidden;
+}
+
+/* The gesture and everything it owes: the bar, the phase, the result, the reason it is inert.
+   `inline-grid`, not `grid`: a block-level box would stretch the button to the width of the page
+   wherever the section is plain block flow, and the bar spans the control rather than the column. */
+.gesture-control {
+  display: inline-grid;
+  vertical-align: top;
+  gap: 0.3rem;
+  align-content: start;
+  max-width: 100%;
+}
+/* The message sizes the control, so an unbounded sentence would drag the bar across the page. */
+.gesture-control .gesture__note,
+.gesture-control .admin-page__blocked {
+  max-width: 34rem;
+}
+.gesture__bar {
+  height: 2px;
+  background: var(--rule);
+}
+.gesture__fill {
+  height: 100%;
+  background: var(--ochre);
+}
+.gesture__note,
+.admin-page__blocked {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  margin: 0.3rem 0 0;
+}
+.admin-page__banner {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.8rem 0;
+  margin: 1.5rem 0;
+}
+.admin-page__banner p {
+  margin: 0 0 0.6rem;
+}
 .admin-page__scans,
 .admin-page__stats {
   margin-top: 2.5rem;
@@ -145,6 +242,10 @@ img {
 /* The model and prompt name the row; the figures under it are read against them, not scanned. */
 .admin-page__stat h3 {
   color: var(--ochre);
+}
+/* The drafts name what the scan produced; the link above names the scan. */
+.admin-page__drafts {
+  color: var(--ink-muted);
 }
 
 /* --- illustration work list --- */
@@ -169,8 +270,12 @@ img {
 }
 .illustrations__recipe h3,
 .illustrations__recipe p,
-.illustrations__recipe > label {
+.illustrations__recipe > label,
+.illustrations__waiting {
   flex-basis: 100%;
+  margin: 0;
+}
+.illustrations__waiting p {
   margin: 0;
 }
 /* Stacked and full width, never side by side: the thing being judged is the print screen, and two

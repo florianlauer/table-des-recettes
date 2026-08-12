@@ -6,6 +6,7 @@ export default defineConfig({
     server: { deps: { inline: ['convex-test'] } },
     include: [
       'src/**/*.test.ts',
+      'src/**/*.test.tsx',
       'convex/**/*.test.ts',
       'scripts/**/*.test.ts',
       'spike/replay-fixtures.test.ts',

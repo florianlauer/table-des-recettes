@@ -17,6 +17,10 @@ import {
   beautifySummary,
   summarizeBeautifyAttempts,
 } from '../src/lib/beautifyStats'
+import {
+  configuredBeautifyIdentity,
+  isCurrentBeautifyGroup,
+} from '../src/lib/currentIdentity'
 import { BEAUTIFY_LEASE_MS } from '../src/lib/illustrationWork'
 import { IMAGE_HEADER_BYTES, sniffImageHeader } from '../src/lib/imageHeader'
 
@@ -479,6 +483,12 @@ export const beautifyStats = query({
       .withIndex('by_created_at')
       .order('desc')
       .take(BEAUTIFY_ATTEMPTS_SAMPLED)
-    return summarizeBeautifyAttempts(attempts)
+    // Beautification pins no provider, so several served providers of the current model may be
+    // marked; the screen averages them by call count.
+    const identity = configuredBeautifyIdentity()
+    return summarizeBeautifyAttempts(attempts).map((group) => ({
+      ...group,
+      isCurrent: isCurrentBeautifyGroup(group, identity),
+    }))
   },
 })

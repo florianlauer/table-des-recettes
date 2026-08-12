@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { uploadCompressed } from './uploadCompressed'
+import type { UploadPhase } from './uploadProgress'
 
 export type AttachIllustrationResult =
   { ok: true } | { ok: false; error: string }
@@ -20,12 +21,17 @@ export function useAttachIllustration(adminToken: string) {
   return useCallback(
     async (
       file: File,
-      recipeId: Id<'recipes'>,
+      // Named, like `useAttachImage`: the two upload surfaces read the same at their call sites.
+      {
+        recipeId,
+        onPhase,
+      }: { recipeId: Id<'recipes'>; onPhase?: (phase: UploadPhase) => void },
     ): Promise<AttachIllustrationResult> => {
       const uploaded = await uploadCompressed(file, {
         adminToken,
         purpose: 'illustration',
         generateUploadUrl,
+        onPhase,
       })
       if (!uploaded.ok) return uploaded
 
