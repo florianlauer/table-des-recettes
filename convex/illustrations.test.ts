@@ -6,6 +6,7 @@ import type { Id } from './_generated/dataModel'
 import { BACKFILL_BATCH } from './migrations'
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
+import { BEAUTIFY_PROMPT_VERSION } from '../src/lib/beautifyPrompt'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
@@ -394,7 +395,7 @@ async function toReview(t: Ctx, recipeId: Id<'recipes'>) {
       attemptId,
       recipeId,
       model: 'google/gemini-2.5-flash-image',
-      promptVersion: 'v2',
+      promptVersion: BEAUTIFY_PROMPT_VERSION,
       servedProvider: null,
       latencyMs: 9100,
       costUsd: 0.03944,

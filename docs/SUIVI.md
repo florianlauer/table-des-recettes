@@ -29,7 +29,7 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/restore.ts`                         |
 | **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`                      |
 | **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`                    |
-| **T14** | Photo du plat : upload, embellissement   | P2  | ✅     | branche `worktree-t14`      | `convex/illustrations.ts`, `src/routes/admin_.illustrations.tsx` |
+| **T14** | Photo du plat : upload, embellissement   | P2  | ✅     | PR #13                      | `convex/illustrations.ts`, `src/routes/admin_.illustrations.tsx` |
 
 **Aucune tâche restante.** Les quinze tâches du plan sont livrées.
 
@@ -81,6 +81,13 @@ arme la rétention, et la photo du plat se pose plus tard depuis le téléphone.
 
 **Aucune tâche restante.** Ce qui vient ensuite ne sort plus du plan mais de l'usage : les reliquats
 ci-dessous, et ce que le premier vrai lot de recettes fera apparaître.
+
+Les deux premières recettes réelles ont d'ailleurs déjà fait apparaître quelque chose, et le prompt
+d'embellissement est passé à **`v4`** : les photos sont prises à travers une pochette plastique dont
+`v2` ne parlait pas, et un gros plan sans texte imprimé ne laissait à `v2` aucune instruction active,
+donc plus de raison de refaire la photographie. Mesuré sur 16 cellules — voir la campagne du
+2026-08-12 dans `spike13/RESULTS.md`. **Le cadrage large reste le levier principal** : c'est encore
+lui que la liste de travail conseille au moment de photographier.
 
 Deux chiffres sont à confronter au réel dès les premières dizaines de photos, et l'administration
 est faite pour ça : le **taux d'acceptation** des embellissements, sous la liste de travail, et le
@@ -146,7 +153,8 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 
 - **R5 · Repli d'embellissement disponible et chiffré.** `PROMPT_V3` (`spike13/prompt.ts`) supprime
   l'inclinaison partout (7 franchissements sur 8 contre 5) au prix de +23 % de latence. À activer si
-  des cadres inclinés apparaissent en usage réel — aucune mesure à refaire.
+  des cadres inclinés apparaissent en usage réel — aucune mesure à refaire. Il n'a pas été rejoué
+  contre `v4`, qui n'existait pas quand il a été mesuré : son compromis reste chiffré contre `v2`.
 
 - **R6 · Pas de remise à zéro d'un scan mort.** Un scan au plafond de tentatives reste terminal ;
   l'administration rend cette limite visible mais ne permet pas de la contourner.
@@ -177,10 +185,12 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 | Banc                        | Dépensé   | Plafond   |
 | --------------------------- | --------- | --------- |
 | `spike/` — extraction       | 0,472 USD | 5,00 USD  |
-| `spike13/` — embellissement | 2,292 USD | 10,00 USD |
+| `spike13/` — embellissement | 3,509 USD | 10,00 USD |
 
 Coûts unitaires retenus : **0,0049 USD / 7,1 s** par extraction (prompt v4, mesuré sur 14 appels au
-rejeu de T11), **0,03944 USD / 9,1 s** par embellissement — soit **7,7×** une extraction. Ce sont les
+rejeu de T11), **0,03944 USD** par embellissement — soit **7,7×** une extraction. La latence, elle, a
+changé avec le prompt : 9,1 s sous `v2`, **9,4 à 26,4 s sous `v4`**, qui demande un re-rendu au lieu
+d'une retouche. Ce sont les
 chiffres que les deux blocs d'agrégat de l'administration servent à confronter à l'usage réel :
 « Tentatives d'extraction » sur `/admin`, « Générations d'images » sur `/admin/illustrations`.
 
