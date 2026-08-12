@@ -144,6 +144,33 @@ page mesure LCP 444 ms, CLS 0,0007, TTFB médian 100 ms — il n'y a pas de prob
 à échanger contre la voix d'affichage, et `display=swap` fait que les polices ne bloquent pas le
 premier rendu.
 
+### La marque — un `T` Fraunces sur son filet
+
+Le site n'a pas de logo : il a une lettre. La marque est le `T` capitale de Fraunces posé sur un
+filet ocre, en encre sur papier — le masthead réduit à son plus petit état lisible. Aucun
+pictogramme, aucune casserole, aucun aplat en dehors du filet.
+
+Elle vit dans `public/favicon.svg`, contour vectoriel figé, **pas** un `<text>` : à 16 px la
+marque ne peut pas dépendre d'une police que le client n'a pas encore chargée.
+
+Deux contraintes sont sorties du dessin à petite taille, et elles se contredisent avec le reste
+du document :
+
+**L'`opsz` de la marque est 9, pas 144.** Le réglage d'affichage qui fait la voix du masthead
+détruit la lettre en dessous de 32 px : les déliés de la barre du `T` tombent sous le pixel et
+disparaissent, il ne reste qu'une hampe — la marque lit « I ». C'est le même axe que la section
+précédente défend, appliqué à l'autre bout de son domaine. Graisse 600.
+
+**Tout tombe sur des coordonnées paires de la `viewBox` 32.** À 16 px une unité vaut un demi
+pixel : un filet posé sur une coordonnée impaire s'étale sur deux rangées à demi-opacité et
+l'ocre vire au rose pâle. Le filet fait donc 20 × 2 unités en `x=6 y=28`, la capitale 24 unités.
+Toute reprise du dessin garde cette règle, sinon elle rend la couleur sale sans rien changer
+d'autre.
+
+`favicon.ico` (16 et 32) et `apple-touch-icon.png` (180) sont rendus **depuis** ce SVG, jamais
+redessinés à la main : ils existent parce qu'iOS ignore le SVG et que les vieux clients ignorent
+le `type="image/svg+xml"`.
+
 ### Une seule échelle, fluide
 
 Pas de paliers d'appareil. La lecture se fait à une distance qui varie continûment — 35 cm avec
