@@ -28,8 +28,7 @@ function AdminPage() {
   const [clockOffset, setClockOffset] = useState(0)
   const [clientNow, setClientNow] = useState(() => Date.now())
   const scans = useQuery({
-    ...convexQuery(api.admin.listScans, { adminToken }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(api.admin.listScans, adminToken ? { adminToken } : 'skip'),
     retry: false,
   })
 
@@ -224,8 +223,10 @@ function formatRate(rate: number): string {
 
 function AttemptStatsBlock({ adminToken }: { adminToken: string }) {
   const stats = useQuery({
-    ...convexQuery(api.admin.attemptStats, { adminToken }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(
+      api.admin.attemptStats,
+      adminToken ? { adminToken } : 'skip',
+    ),
     retry: false,
   })
 
@@ -279,8 +280,7 @@ function QueueBlock({
 }) {
   const startExtraction = useMutation(api.admin.startExtraction)
   const queue = useQuery({
-    ...convexQuery(api.admin.queueStatus, { adminToken }),
-    enabled: adminToken.length > 0,
+    ...convexQuery(api.admin.queueStatus, adminToken ? { adminToken } : 'skip'),
     retry: false,
   })
   const status = queue.data
