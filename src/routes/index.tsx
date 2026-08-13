@@ -1,7 +1,6 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
@@ -14,6 +13,7 @@ import {
   TYPE_LABELS,
 } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
+import { useSearchDraft } from '../lib/useSearchDraft'
 
 /**
  * How many rows load their photo eagerly. Four is what fits above the fold on the tallest phone we
@@ -75,23 +75,16 @@ function IndexPage() {
     (next: RecipeType | undefined) =>
     (prev: { q?: string; type?: RecipeType }) => ({ ...prev, type: next })
 
-  // The field is driven locally, the URL follows 250 ms behind. Typing "courgette" must not
-  // stack nine history entries nor nine Convex subscriptions — but replacing everything would
-  // also erase the empty index, and the back button would leave the site instead of returning
-  // to it. So only entering the search is pushed; subsequent keystrokes replace.
-  const [draft, setDraft] = useState(q ?? '')
-  useEffect(() => setDraft(q ?? ''), [q])
-  useEffect(() => {
-    const current = q ?? ''
-    if (draft === current) return
-    const id = setTimeout(() => {
+  // The field is driven locally and the URL follows a debounce behind; `useSearchDraft` owns that
+  // lag, which is trickier than it looks — see `searchDraft.ts`.
+  const [draft, setDraft] = useSearchDraft({
+    q,
+    commit: ({ q: next, replace: replaceEntry }) =>
       navigate({
-        search: (prev) => ({ ...prev, q: draft || undefined }),
-        replace: current !== '',
-      })
-    }, 250)
-    return () => clearTimeout(id)
-  }, [draft, q, navigate])
+        search: (prev) => ({ ...prev, q: next }),
+        replace: replaceEntry,
+      }),
+  })
 
   const shelf = useSuspenseQuery(countsOptions()).data
   const counts = useSuspenseQuery(countsOptions(q)).data
