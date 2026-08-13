@@ -271,13 +271,13 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
               body: [
-                `Preview déployée pour \`${process.env.DEPLOYED_SHA}\` :`,
+                `Preview deployed for \`${process.env.DEPLOYED_SHA}\`:`,
                 ``,
                 process.env.PREVIEW_URL,
                 ``,
-                `L'URL demande une session Vercel — c'est la protection de déploiement, pas une panne.`,
+                `The URL asks for a Vercel session — that is Deployment Protection, not a failure.`,
                 reseeded
-                  ? `Le backend vient d'être recréé avec une copie de la base de production, et expire au bout de 5 jours.`
-                  : `Seul le code a été redéployé, le backend n'a pas été resemé. Retire et remets le label \`preview\` pour repartir d'une copie fraîche de la production.`,
+                  ? `The backend was just recreated with a copy of the production database, and expires after 5 days.`
+                  : `Only the code was redeployed, the backend was not reseeded. Remove and re-add the \`preview\` label to start again from a fresh copy of production.`,
               ].join('\n'),
             })
