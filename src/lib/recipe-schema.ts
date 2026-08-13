@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { trimIngredientLine } from './ingredientLine.js'
 import { RECIPE_TYPES } from './recipeTypes.js'
 import { MAX_RECIPES_PER_SCAN } from './scanLimits.js'
 
@@ -135,10 +136,10 @@ export function normalizeExtraction(extraction: Extraction): DomainExtraction {
         type,
         servings: servings ?? undefined,
         ingredients: ingredients.map(({ raw, quantity, unit, label }) => ({
-          raw,
+          raw: trimIngredientLine(raw),
           quantity: quantity ?? undefined,
           unit: unit ?? undefined,
-          label: label ?? undefined,
+          label: label ? trimIngredientLine(label) || undefined : undefined,
         })),
         ingredientsInferred,
         steps,
