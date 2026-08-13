@@ -221,12 +221,27 @@ img {
 .admin-page__file:has(input:not(:disabled)):active .admin-page__file-button {
   color: var(--ochre-hover);
 }
-/* A dead control says so — the precedent is `−` in the servings selector. */
+/* A dead control says so — the precedent is `−` in the servings selector. `not-allowed` rather than
+   `default`: the pointer is the only channel that can report the refusal before the click. */
 .admin-page button:disabled,
 .admin-page__file:has(input:disabled) .admin-page__file-button {
   color: var(--rule-strong);
   border-color: var(--rule);
-  cursor: default;
+  cursor: not-allowed;
+}
+/* The token, and the only way to check what was typed on a phone. Both bottoms sit on the container's
+   edge, so the button lines up with the field rather than with its label. */
+.admin-page__token {
+  display: flex;
+  align-items: end;
+  gap: 0.6rem;
+  margin: 1rem 0;
+  max-width: 42rem;
+}
+.admin-page__token .admin-page__field {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
 }
 
 /* Both labels live in the same grid cell, the inactive one hidden: the button keeps the width of
@@ -770,7 +785,7 @@ img {
 .servings__btn:disabled {
   color: var(--rule-strong);
   border-color: var(--rule);
-  cursor: default;
+  cursor: not-allowed;
 }
 .servings__value {
   font-size: var(--type-control);

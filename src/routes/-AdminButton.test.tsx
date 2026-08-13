@@ -117,6 +117,24 @@ describe('AdminButton', () => {
     expect(markup).not.toContain('Dépublie la recette')
   })
 
+  test('says why it is dead when another gesture holds the row', () => {
+    // The lock greys out every sibling control in the band; without this it explained nothing.
+    const markup = renderToStaticMarkup(
+      <AdminButton
+        gestures={fakeGestures({ blocked: true })}
+        gesture={gesture}
+        label="Embellir"
+        pendingLabel="Embellissement…"
+        run={async () => ({ ok: true, text: 'Fait.' })}
+      />,
+    )
+    const described = markup.match(/aria-describedby="([^"]+)"/)
+    expect(described).not.toBeNull()
+    expect(markup).toContain(
+      `id="${described?.[1]}">Une autre action est en cours.`,
+    )
+  })
+
   test('names the bar by the gesture and by its row, never anonymously', () => {
     const markup = renderToStaticMarkup(
       <AdminButton

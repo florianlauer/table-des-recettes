@@ -44,7 +44,15 @@ export function AdminButton({
   const reasonId = `${id}-reason`
   const running = gestures.running(gesture)
   const outcome = gestures.outcome(gesture)
-  const inert = disabled || running !== null || gestures.blocked(gesture)
+  // Three reasons to be dead, and only one of them used to say so. A row's other gesture locks every
+  // sibling control (`conflicts`), which greyed out the whole action band and explained nothing.
+  const locked = running === null && gestures.blocked(gesture)
+  const inert = disabled || running !== null || locked
+  const reason = disabled
+    ? blockedReason
+    : locked
+      ? 'Une autre action est en cours.'
+      : undefined
 
   // One box around the four nodes: the surrounding sections are flex rows, and without it the bar
   // and the result would line up *beside* the control instead of under it.
@@ -53,7 +61,7 @@ export function AdminButton({
       <button
         type="button"
         disabled={inert}
-        aria-describedby={disabled && blockedReason ? reasonId : undefined}
+        aria-describedby={reason ? reasonId : undefined}
         onClick={() => {
           if (confirm && !window.confirm(confirm)) return
           void gestures.run(
@@ -78,9 +86,9 @@ export function AdminButton({
         </span>
       </button>
 
-      {disabled && blockedReason && (
+      {reason && (
         <p className="admin-page__blocked" id={reasonId}>
-          {blockedReason}
+          {reason}
         </p>
       )}
 

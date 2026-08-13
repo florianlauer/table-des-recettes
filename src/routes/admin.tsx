@@ -2,6 +2,7 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { groupKey } from '../lib/attemptStats'
@@ -36,6 +37,7 @@ export const Route = createFileRoute('/admin')({ component: AdminPage })
 
 function AdminPage() {
   const { token, save: updateToken } = useAdminToken()
+  const [revealToken, setRevealToken] = useState(false)
   const tokenAbsent = adminTokenState(token) === 'absent'
   const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
@@ -75,15 +77,25 @@ function AdminPage() {
         </p>
       </header>
 
-      <label className="admin-page__field">
-        Jeton administrateur
-        <input
-          type="password"
-          value={adminToken}
-          autoComplete="off"
-          onChange={(event) => updateToken(event.target.value)}
-        />
-      </label>
+      {/* Sixty characters typed on a phone, masked, with a refusal as the only feedback: the reveal
+          is what lets the operator check the token instead of retyping it. */}
+      <div className="admin-page__token">
+        <label className="admin-page__field">
+          Jeton administrateur
+          <input
+            type={revealToken ? 'text' : 'password'}
+            value={adminToken}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            onChange={(event) => updateToken(event.target.value)}
+          />
+        </label>
+        <button type="button" onClick={() => setRevealToken(!revealToken)}>
+          {revealToken ? 'Masquer' : 'Afficher'}
+        </button>
+      </div>
 
       <AdminFileInput
         gestures={gestures}
