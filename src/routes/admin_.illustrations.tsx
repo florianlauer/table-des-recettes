@@ -12,6 +12,7 @@ import { pageGesture } from '../lib/gestures'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
+import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { BeautifyStats } from './-BeautifyStats'
@@ -20,6 +21,7 @@ import { OrphanedOutcomes } from './-OrphanedOutcomes'
 
 export const Route = createFileRoute('/admin_/illustrations')({
   component: IllustrationsPage,
+  head: adminHead,
 })
 
 /**

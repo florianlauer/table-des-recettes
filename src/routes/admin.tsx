@@ -30,12 +30,16 @@ import {
   formatRemaining,
   isLeaseLive,
 } from '../lib/queueStatus'
+import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 
-export const Route = createFileRoute('/admin')({ component: AdminPage })
+export const Route = createFileRoute('/admin')({
+  component: AdminPage,
+  head: adminHead,
+})
 
 function AdminPage() {
   const { token, save: updateToken } = useAdminToken()
