@@ -123,7 +123,7 @@ img {
   color: var(--ink);
   font: inherit;
   padding: 0.6rem;
-  min-height: 48px;
+  min-height: 3rem;
 }
 
 /* An inline control, not a stacked one: the box sits before its sentence and the whole line is the
@@ -133,25 +133,27 @@ img {
   align-items: center;
   gap: 0.6rem;
   margin: 1rem 0;
-  min-height: 48px;
+  min-height: 3rem;
   cursor: pointer;
 }
 .admin-page__check input[type='checkbox'] {
-  inline-size: 22px;
-  block-size: 22px;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
   flex: none;
   margin: 0;
 }
-/* 48px is the floor DESIGN.md sets for a control, and § Anti-slop exempts the admin from Fraunces,
-   from the fluid scale and from the type inks — not from the touch floor. Padding alone left these
-   at 44px, on the surface the code itself calls the one thing the admin does *on* a phone. */
+/* 3rem is the 48px floor DESIGN.md sets for a control, expressed so that it follows the text: a
+   floor in px stops being a floor the moment someone enlarges the type. § Anti-slop exempts the
+   admin from Fraunces, from the fluid scale and from the type inks — not from the touch floor.
+   Padding alone left these at 44px, on the surface the code itself calls the one thing the admin
+   does *on* a phone. */
 .admin-page button {
   border: 1px solid var(--ochre);
   background: transparent;
   color: var(--ink);
   font: inherit;
   padding: 0.5rem 0.8rem;
-  min-height: 48px;
+  min-height: 3rem;
 }
 
 /* The admin is a tool, not a shop window: its links carry their rule at rest. The public surfaces
@@ -189,7 +191,7 @@ img {
   justify-self: start;
   border: 1px solid var(--ochre);
   padding: 0.5rem 0.8rem;
-  min-height: 48px;
+  min-height: 3rem;
   cursor: pointer;
 }
 /* The ring belongs on what is visible: the input keeps the focus, the label shows it. */
@@ -458,7 +460,7 @@ img {
   color: var(--ink);
   font: inherit;
   padding: 0.4rem;
-  min-height: 44px;
+  min-height: 2.75rem;
 }
 @media (max-width: 40rem) {
   .scan-page__ingredient {
@@ -511,7 +513,8 @@ img {
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1.5rem;
+  /* A row gap, so that wrapped filters keep their targets apart instead of stacking edge to edge. */
+  gap: 0.4rem 1.5rem;
   padding: 0.25rem 0;
 }
 .filters__item {
@@ -580,7 +583,7 @@ img {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0 1rem;
   padding: 0.75rem 0 0.75rem 1.5rem;
-  min-height: 48px;
+  min-height: 3rem;
   align-content: center;
 }
 .row__title {
@@ -730,9 +733,11 @@ img {
   gap: 1rem;
   margin-top: 1.5rem;
 }
+/* rem, not px: at 200% text the glyph grew inside a box that could not, and `−` pressed against
+   the circle. Still 48px at the default size — the floor DESIGN.md sets. */
 .servings__btn {
-  width: 48px;
-  height: 48px;
+  inline-size: 3rem;
+  block-size: 3rem;
   border: 1px solid var(--rule-strong);
   border-radius: 50%;
   background: var(--surface);
