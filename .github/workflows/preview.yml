@@ -6,18 +6,29 @@ name: Preview
 # definition from the default branch. The price is that the pull request's code is never checked
 # out unless a job asks for it explicitly, and exactly one job does.
 #
-# `labeled` only, without `synchronize`: the label is the approval, and it approves one SHA. With
-# `synchronize`, a commit pushed after the label would redeploy on its own and reuse an approval it
-# never received. Relaunching after a new commit means removing and re-adding the label.
+# Two events, two different deployments, and the difference is what the label means.
+#
+# `labeled` is the approval, and it approves a state of the world: the backend is deleted and
+# recreated, then seeded with a copy of production. `synchronize` is not an approval — it only
+# refreshes what an approval already granted, so it runs *solely* when the label is already on the
+# pull request, and it reuses the backend the label built instead of reseeding it. That is the whole
+# saving: the copy of production is the expensive half, and a new commit rarely needs a new one.
+#
+# What a push therefore cannot do: put a preview online on a pull request nobody has labelled, or
+# replace the data under one. Removing and re-adding the label is still how a full reseed is asked
+# for — and what to do when a commit changes the Convex schema in a way the seeded data no longer
+# satisfies, since pushing to the existing backend then fails on purpose.
 on:
   pull_request_target:
-    types: [labeled]
+    types: [labeled, synchronize]
 
 permissions:
   contents: read
 
 # Serialised, not cancelled: `--preview-create` deletes and recreates the backend, so two
 # overlapping runs on the same pull request could destroy one while the other imports into it.
+# Cancelling is not the answer either — a cancelled job does not stop at once, and the next one would
+# start deleting while it is still importing. A burst of commits therefore queues.
 concurrency:
   group: preview-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: false
@@ -31,8 +42,13 @@ jobs:
   # The only job that runs the pull request's code. It holds the preview deploy key and nothing
   # else — no Vercel token, no production credential.
   build:
+    # On `labeled`, the label being added is the one that approves — adding any other label to a
+    # labelled pull request must not redeploy anything. On `synchronize`, there is no label in the
+    # event, so the approval is read off the pull request itself.
     if: >-
-      github.event.label.name == 'preview' &&
+      ((github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+      (github.event.action == 'synchronize' &&
+      contains(github.event.pull_request.labels.*.name, 'preview'))) &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -55,15 +71,22 @@ jobs:
       - name: Install
         run: npm ci
 
-      # One command creates the preview backend, pushes the functions to it, and builds the
-      # frontend against that backend's URL. `NITRO_PRESET` is an environment variable rather than
-      # a pin in vite.config.ts, so the local build stays host-agnostic.
-      - name: Create the preview backend and build the frontend
+      # One command deploys the preview backend, pushes the functions to it, and builds the frontend
+      # against that backend's URL. `NITRO_PRESET` is an environment variable rather than a pin in
+      # vite.config.ts, so the local build stays host-agnostic.
+      #
+      # The flag is the whole difference between the two events: `--preview-create` deletes and
+      # recreates, `--preview-name` reuses. Held in `env` rather than interpolated into the command —
+      # nothing this workflow writes into a shell comes from the event's free text, and the rule is
+      # worth keeping even for a value GitHub picks from a closed set.
+      - name: Deploy the preview backend and build the frontend
         env:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
           NITRO_PRESET: vercel
+          PREVIEW_FLAG: >-
+            ${{ github.event.action == 'labeled' && '--preview-create' || '--preview-name' }}
         run: >-
-          npx convex deploy --preview-create "$PREVIEW_NAME"
+          npx convex deploy "$PREVIEW_FLAG" "$PREVIEW_NAME"
           --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -77,10 +100,14 @@ jobs:
 
   # Trusted: checks out already-merged code, never the branch. Holds the production backup key, so
   # it is deliberately the job that does not run anything the pull request wrote.
+  #
+  # `labeled` only. This is the expensive job — a full export of production with its file storage,
+  # then a `--replace-all` import — and the one whose cost grows with the corpus. A push refreshes the
+  # code over the data the label seeded; it does not get to replace that data, and does not pay for it.
   data:
     needs: build
     if: >-
-      github.event.label.name == 'preview' &&
+      github.event.action == 'labeled' && github.event.label.name == 'preview' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -135,10 +162,19 @@ jobs:
   # Trusted: no checkout at all, and the sole holder of the Vercel token — `VERCEL_PROJECT_ID` does
   # not restrict what that token can do, it is valid for the whole team. Waiting on `data` as well
   # as `build` keeps a failed import from leaving a public preview online over an unknown state.
+  #
+  # The results are spelled out rather than left to `needs`: a skipped dependency skips its dependents
+  # by default, and `data` is skipped on every push. `!cancelled()` is what makes this condition run at
+  # all in that case, so each result then has to be stated — `skipped` is fine for `data`, `failure`
+  # never is, which is exactly the guarantee the plain `needs` gave before.
   publish:
     needs: [build, data]
     if: >-
-      github.event.label.name == 'preview' &&
+      !cancelled() && needs.build.result == 'success' &&
+      (needs.data.result == 'success' || needs.data.result == 'skipped') &&
+      ((github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+      (github.event.action == 'synchronize' &&
+      contains(github.event.pull_request.labels.*.name, 'preview'))) &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -173,7 +209,9 @@ jobs:
   comment:
     needs: publish
     if: >-
-      github.event.label.name == 'preview' &&
+      ((github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+      (github.event.action == 'synchronize' &&
+      contains(github.event.pull_request.labels.*.name, 'preview'))) &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -185,10 +223,16 @@ jobs:
         env:
           PREVIEW_URL: ${{ needs.publish.outputs.url }}
           DEPLOYED_SHA: ${{ github.event.pull_request.head.sha }}
+          RESEEDED: ${{ github.event.action == 'labeled' }}
         with:
           script: |
             // The SHA is part of the message on purpose: runs are queued rather than cancelled, so
             // a preview can briefly correspond to an earlier commit, and only the SHA shows it.
+            //
+            // What the data is worth saying too: after a push the backend still holds whatever the
+            // label seeded, plus anything done to it while testing. Reading a stale figure as a fresh
+            // copy of production is the kind of mistake this line exists to prevent.
+            const reseeded = process.env.RESEEDED === 'true'
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -199,6 +243,8 @@ jobs:
                 process.env.PREVIEW_URL,
                 ``,
                 `L'URL demande une session Vercel — c'est la protection de déploiement, pas une panne.`,
-                `Le backend porte une copie de la base de production et expire au bout de 5 jours.`,
+                reseeded
+                  ? `Le backend vient d'être recréé avec une copie de la base de production, et expire au bout de 5 jours.`
+                  : `Seul le code a été redéployé : le backend garde les données semées au moment du label. Retire et remets le label \`preview\` pour repartir d'une copie fraîche de la production.`,
               ].join('\n'),
             })
