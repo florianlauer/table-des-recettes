@@ -542,7 +542,7 @@ pour ce qui est lu à voix haute :
 
 ---
 
-## Mouvement
+## Mouvement et objets graphiques
 
 > **Section ajoutée le 2026-08-13.** Le document n'en avait aucune, et le CSS ne contenait ni
 > `transition` ni `@keyframes` : la thèse de l'imprimé interdisait le mouvement par défaut, sans le
@@ -575,6 +575,25 @@ prochaine animation ajoutée ne peut pas oublier sa garde.
 
 Interdits, comme le reste de l'_Anti-slop_ : apparition au défilement, décalage, échelle, rotation,
 squelette pulsant, roue qui tourne, survol animé, transition sur un changement de page.
+
+### La piste de progression — un objet, pas un filet
+
+Le seul objet graphique du système : la barre qui montre l'avancement d'une extraction sur `/admin`.
+Elle n'est pas un filet et ne suit pas leur échelle, parce qu'elle **porte un état** — c'est le seul
+retour continu pendant une extraction facturée à l'appel.
+
+Donc elle tient 3:1 des deux côtés, ce qu'aucun filet n'a à faire : **piste `--rule-strong` (3,53:1
+sur le papier), remplissage `--ink` (3,75:1 sur la piste), 3 px de haut.**
+
+**L'ocre quitte cette barre**, et ce n'est pas un renoncement d'accent : la palette a été mesurée, et
+aucune piste ne peut tenir 3:1 **à la fois** contre le papier et contre l'ocre. Le meilleur cas de
+l'ocre — 2,90:1 sur `--rule` — échoue de l'autre côté, à 1,67:1 sur le papier. La règle « toute
+couleur porte une information » tranche le reste : ici l'information est portée par la **position**
+du remplissage, donc l'ocre n'y portait rien.
+
+Un remplissage reste un remplissage : pas de rayures, pas d'animation de va-et-vient, pas de
+pourcentage en pastille. Quand l'avancement est inconnu, on écrit le fait en `--type-meta` plutôt que
+d'inventer une barre qui bouge sans savoir.
 
 ---
 

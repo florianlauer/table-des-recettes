@@ -277,13 +277,18 @@ img {
 .gesture-control .admin-page__blocked {
   max-width: 34rem;
 }
+/* Not a rule: an object that carries a state, so it answers to 1.4.11 where the rules do not. The
+   only pair in the palette where both halves pass — the track against the paper (3.53:1) and the
+   fill against the track (3.75:1). Ochre fails here whatever the track: its best case is 2.90:1 on
+   `--rule`, and that track is itself 1.67:1 on the paper. See DESIGN.md § Mouvement et objets
+   graphiques. */
 .gesture__bar {
-  height: 2px;
-  background: var(--rule);
+  height: 3px;
+  background: var(--rule-strong);
 }
 .gesture__fill {
   height: 100%;
-  background: var(--ochre);
+  background: var(--ink);
 }
 .gesture__note,
 .admin-page__blocked {
