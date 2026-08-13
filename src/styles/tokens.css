@@ -11,8 +11,11 @@
   --ochre-hover: #7c4720;
   --on-ochre: #ffffff;
 
-  --rule: #c6bdb4;
-  --rule-strong: #8a7f74;
+  /* Two rules and no third. The ladder is what makes the alphabetical grouping exist for the eye:
+     `--rule` separates two lines, `--rule-strong` opens a group, and 1.6x between them is the whole
+     hierarchy. Raising `--rule` to 3:1 would flatten it — see DESIGN.md § Filets. */
+  --rule: #ada59a; /* 2.20:1 sur --paper */
+  --rule-strong: #8a7f74; /* 3.53:1 sur --paper */
   --focus: #9a5b2b;
 
   /* One ink per dish type. Colour here is scanning information, not decoration: it is only

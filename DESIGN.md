@@ -58,11 +58,34 @@ parchemin jauni, toujours pas de faux grain.
   --ochre-hover: #7c4720;
   --on-ochre: #ffffff;
 
-  --rule: #c6bdb4;
-  --rule-strong: #8a7f74;
+  --rule: #ada59a; /* 2,20:1 sur --paper */
+  --rule-strong: #8a7f74; /* 3,53:1 sur --paper */
   --focus: #9a5b2b;
 }
 ```
+
+### L'échelle des filets
+
+> **Amendement du 2026-08-13** — remplace `--rule: #c6bdb4` (1,67:1).
+
+**Deux valeurs, et pas de troisième.** `--rule` sépare deux lignes, `--rule-strong` ouvre un groupe,
+et l'écart entre les deux _est_ la hiérarchie : c'est lui qui fait exister le classement alphabétique
+à l'œil, sur un index qui n'a pas d'autre ordre.
+
+À 1,67:1, le filet de ligne n'existait pratiquement pas — jugé côte à côte, sur le vrai markup, à
+trois échelles candidates. Il passe à **2,20:1**, où il se voit, et l'ouverture de groupe reste
+1,6× plus forte.
+
+**Écart assumé, à ne pas relire comme un oubli** : 2,20:1 est sous le seuil de 3:1 de la 1.4.11.
+C'est un choix, et il tient parce que ces filets ne portent aucune information : ils séparent, ils ne
+disent rien qu'on perde en ne les voyant pas. Le titre, le type et la cible d'une ligne d'index sont
+tous lisibles filet éteint. Ce qui **doit** tenir 3:1 est ce qui porte un état — la piste de
+progression, traitée à part, § _Mouvement et objets graphiques_ — et les bordures de champ de saisie,
+déjà en `--rule-strong`.
+
+Une troisième valeur intermédiaire a été essayée puis écartée : elle réglait le cas des contrôles
+mais obligeait chaque futur filet à choisir entre trois jetons, arbitrage que le document devrait
+rendre surface par surface.
 
 ### Une encre par type de plat
 
