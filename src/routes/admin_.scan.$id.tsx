@@ -135,7 +135,12 @@ function ScanCorrectionPage() {
                 {data.images.map((image, index) => (
                   <figure key={image.storageId} className="scan-page__image">
                     {image.url && (
-                      <img src={image.url} alt={`Page ${index + 1}`} />
+                      <img
+                        src={image.url}
+                        alt={`Page ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     )}
                     <figcaption>
                       Page {index + 1} / {data.images.length}

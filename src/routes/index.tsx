@@ -193,6 +193,7 @@ function RecipeRow({
             src={recipe.imageUrl}
             alt=""
             loading="lazy"
+            decoding="async"
           />
         ) : null}
       </div>

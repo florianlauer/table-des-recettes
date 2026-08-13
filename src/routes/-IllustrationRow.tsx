@@ -208,13 +208,25 @@ export function IllustrationRow({
           thing being judged — unreadable. */}
       {row.originalUrl && (
         <figure className="illustrations__shot">
-          <img src={row.originalUrl} alt={`Photo de ${row.title}`} />
+          {/* Lazy, and it matters here more than anywhere: the queue lists dozens of rows, each
+              carrying a page photographed at full resolution. */}
+          <img
+            src={row.originalUrl}
+            alt={`Photo de ${title}`}
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>Photo d'origine</figcaption>
         </figure>
       )}
       {row.candidateUrl && (
         <figure className="illustrations__shot">
-          <img src={row.candidateUrl} alt={`Embellissement de ${row.title}`} />
+          <img
+            src={row.candidateUrl}
+            alt={`Embellissement de ${title}`}
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>
             Candidat embelli
             {row.beautifiedAccepted ? ' (publié)' : ''}
