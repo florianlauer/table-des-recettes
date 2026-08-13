@@ -46,7 +46,11 @@
   --band: 10px;
 }
 
-@media (max-width: 640px) {
+/* The narrow width, written like every other query in the sheet: 40rem, which is 640px at the
+   default text size — the figure DESIGN.md § Reliure names. In rem it also follows the text, so the
+   margin and the band narrow when someone enlarges the type rather than holding a desktop margin on
+   a column of forty characters. */
+@media (width <= 40rem) {
   :root {
     --margin-w: 44px;
     --band: 7px;

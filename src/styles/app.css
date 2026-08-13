@@ -1,5 +1,10 @@
 @import './tokens.css';
 
+/* Two widths, and no third: 40rem, where a phone can no longer hold a row of fields side by side,
+   and 56.25rem, where the recipe becomes a spread. Written as media ranges so the pair at 56.25rem
+   meets exactly — `899.98px` / `900px` was a hack against fractional viewport widths that left a
+   sliver belonging to neither, and `640px` was 40rem spelled differently. */
+
 *,
 *::before,
 *::after {
@@ -472,7 +477,7 @@ img {
   padding: 0.4rem;
   min-height: 2.75rem;
 }
-@media (max-width: 40rem) {
+@media (width <= 40rem) {
   .scan-page__ingredient {
     grid-template-columns: 1fr 1fr;
   }
@@ -643,7 +648,7 @@ img {
   margin-top: 0.75rem;
   border: 1px solid var(--rule-strong);
 }
-@media (max-width: 640px) {
+@media (width <= 40rem) {
   .row__photo {
     height: 160px;
   }
@@ -820,7 +825,7 @@ img {
  * nothing. `align-self` is what keeps the back link and the image at their own width: a column
  * flex container stretches its items across, which would blow the photo up to the full page.
  */
-@media (max-width: 899.98px) {
+@media (width < 56.25rem) {
   .recipe {
     display: flex;
     flex-direction: column;
@@ -847,7 +852,7 @@ img {
  * reorders nothing: it only assigns the blocks to cells. Below 900 px the wrappers become
  * plain blocks and the page falls back to that same linear flow.
  */
-@media (min-width: 900px) {
+@media (width >= 56.25rem) {
   .recipe {
     display: grid;
     grid-template-columns: 1fr 1fr;
