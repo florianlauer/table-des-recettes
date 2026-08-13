@@ -47,5 +47,17 @@ export function useSearchDraft({
     return () => clearTimeout(id)
   }, [draft])
 
-  return [draft, setDraft] as const
+  // The clear control is not a keystroke: it commits at once rather than through the debounce, which
+  // for a deliberate press would read as a quarter second of nothing. `draftChange` still decides,
+  // so the history rule stays in one place — and the debounce that fires afterwards finds the draft
+  // and `pushed` already equal, so it does nothing.
+  const clear = () => {
+    setDraft('')
+    const change = draftChange({ draft: '', pushed: pushed.current })
+    if (!change.navigate) return
+    pushed.current = ''
+    latestCommit.current(change)
+  }
+
+  return [draft, setDraft, clear] as const
 }

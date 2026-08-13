@@ -627,6 +627,10 @@ img {
   margin: 0.5rem 0 0;
 }
 
+/* The field carries its own way out, so it needs to be a positioning context. */
+.search-field {
+  position: relative;
+}
 .search {
   width: 100%;
   border: 0;
@@ -635,15 +639,48 @@ img {
   font: inherit;
   font-size: var(--type-body);
   color: var(--ink);
-  padding: 1.5rem 0 0.5rem;
+  /* The room for the × is reserved whether it is there or not: typing the first letter would
+     otherwise reflow the text under the caret. */
+  padding: 1.5rem 3rem 0.5rem 0;
   border-radius: 0;
   -webkit-appearance: none;
 }
-.search::-webkit-search-cancel-button {
-  display: none;
-}
 .search::placeholder {
   color: var(--ink-muted);
+}
+/* A typographic control, in the family of `−` and `+`: a sign that carries an action, not an icon.
+   Bottom-aligned on the field's own rule, 3rem square so it is a target before it is a glyph. */
+.search__clear {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--type-lead);
+  line-height: 1;
+  color: var(--ochre);
+  cursor: pointer;
+}
+.search__clear:hover,
+.search__clear:active {
+  color: var(--ochre-hover);
+}
+
+/* The restriction the index is under, and its count. Empty when nothing restricts it — an empty
+   block draws no line box, so it costs no height, and staying in the DOM is what lets the live
+   region announce the next change. */
+.status {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  margin: 0.6rem 0 0;
+}
+.status:empty {
+  margin: 0;
 }
 
 /* The vertical padding lives on the items, not on the row: it is what carries the 48px touch

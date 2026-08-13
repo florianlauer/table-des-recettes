@@ -508,6 +508,32 @@ Les photos servent la flânerie, jamais la recherche.
 **Sans résultat** : une ligne factuelle, pas une illustration, pas une suggestion, pas un
 encouragement.
 
+### Sortir du régime de recherche
+
+> **Amendement du 2026-08-13.** Le document décrivait l'entrée dans ce régime et rien d'autre. À
+> l'usage, on y entrait sans savoir qu'on y était, et on n'en sortait qu'en vidant le champ soi-même.
+
+Deux ajouts, et pas un de plus.
+
+**Une ligne d'état, lue par tout le monde.** Sous les filtres : `2 résultats pour « courgette »`, en
+`--type-meta`, dans le registre de la ligne factuelle. Elle nomme aussi un filtre seul
+(`94 résultats dans « Plats »`) et se tait quand rien ne restreint l'index — le masthead dit déjà
+combien de recettes existent. C'est **la** région live de l'index : elle était `visually-hidden`, donc
+le lecteur voyant avait une liste qui changeait de régime sans phrase pour le dire.
+
+**Un `×` à la fin du champ**, présent dès que le champ n'est pas vide. `Échap` fait la même chose pour
+qui a un clavier.
+
+Pourquoi pas la croix native de `type="search"` : elle n'apparaît qu'au focus, et Firefox ne la
+dessine pas — la seule issue était donc invisible sur la surface principale, le téléphone posé sur le
+plan de travail. Le champ est un `type="text"` pour cette raison.
+
+Ce `×` **n'est pas un pictogramme** : c'est un signe typographique porteur d'une action, de la même
+famille que le `−` et le `+` du sélecteur de portions et que la dague. Il est masqué aux technologies
+d'assistance, son nom accessible est écrit en toutes lettres — « Effacer la recherche » — et sa cible
+fait 3 rem de côté, donc c'est une cible avant d'être un glyphe. Effacer laisse le focus dans le
+champ : on efface pour taper autre chose, pas pour partir.
+
 ---
 
 ## Résistance
@@ -643,6 +669,12 @@ Interdits, sans exception :
 - coins arrondis, sauf éventuellement les boutons `−` et `+` du sélecteur de portions ;
 - cartes, et a fortiori carte dans une carte ;
 - pictogrammes décoratifs, tuiles d'icône, loupe dans le champ de recherche ;
+  > **Précision du 2026-08-13.** L'interdit porte sur le **pictogramme**, pas sur le signe. La loupe
+  > reste bannie : elle redit ce que le texte du champ dit déjà. Un signe typographique qui **porte
+  > une action** est admis — `−`, `+`, et désormais le `×` qui efface la recherche — à trois
+  > conditions : masqué aux technologies d'assistance, nom accessible écrit en toutes lettres, cible
+  > au plancher habituel. Aucune icône dessinée, aucun jeu de symboles, aucun SVG décoratif : le jour
+  > où il faut un dessin, c'est que le contrôle manque de mot.
 - centrage général de la page ;
 - label en capitales répété au-dessus de chaque section ;
 - Inter, Roboto, Arial, Helvetica, `system-ui`, Open Sans, Lato, Montserrat, Poppins ;
