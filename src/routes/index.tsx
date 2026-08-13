@@ -1,7 +1,7 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
@@ -80,11 +80,20 @@ function IndexPage() {
   // also erase the empty index, and the back button would leave the site instead of returning
   // to it. So only entering the search is pushed; subsequent keystrokes replace.
   const [draft, setDraft] = useState(q ?? '')
-  useEffect(() => setDraft(q ?? ''), [q])
+  // The URL echoes that navigation back late — the loader awaits Convex before it commits. Syncing
+  // the field on that echo overwrote whatever was typed in flight, so a fast typist watched letters
+  // vanish. Only a change we did not push — Back, a shared link — reaches the field.
+  const pushed = useRef(q)
+  useEffect(() => {
+    if (q === pushed.current) return
+    pushed.current = q
+    setDraft(q ?? '')
+  }, [q])
   useEffect(() => {
     const current = q ?? ''
     if (draft === current) return
     const id = setTimeout(() => {
+      pushed.current = draft || undefined
       navigate({
         search: (prev) => ({ ...prev, q: draft || undefined }),
         replace: current !== '',
