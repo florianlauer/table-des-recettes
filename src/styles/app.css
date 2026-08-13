@@ -335,7 +335,9 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  align-items: center;
+  /* Not `center`: a control carrying a message is taller than its neighbours, and centring made two
+     buttons on the same line sit at two different heights. They share a top edge. */
+  align-items: flex-start;
 }
 .illustrations__recipe h3 {
   font-family: var(--serif);
@@ -354,13 +356,17 @@ img {
 /* Stacked and full width, never side by side: the thing being judged is the print screen, and two
    columns on a phone make it unreadable. */
 .illustrations__shot {
+  /* `width`, not only `flex-basis`: capped at 34rem the figure stopped filling its line, and past
+     that width the next button — "Dépublier l'embellissement" — climbed up beside the photo and
+     floated in the middle of it. The cap belongs to the image, which is what it was for. */
   flex-basis: 100%;
+  width: 100%;
   margin: 0.5rem 0;
-  max-width: 34rem;
 }
 .illustrations__shot img {
   display: block;
   width: 100%;
+  max-width: 34rem;
   border: 1px solid var(--rule);
 }
 .illustrations__shot figcaption {
@@ -402,7 +408,9 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  align-items: center;
+  /* Same reason as `.illustrations__recipe`: "Relancer l'extraction" carries a blocked reason under
+     it, and centring dropped the button beside it half a line lower. */
+  align-items: flex-start;
   margin: 1.5rem 0;
 }
 .scan-page__actions p {
