@@ -91,7 +91,7 @@ export function summarizeAttempts(
   return groupByIdentity(attempts, groupKey).map(summarizeGroup)
 }
 
-/** The totals of the journal table, or `null` when there is nothing to total. */
+/** The totals of the journal table. */
 export type AttemptTotals = {
   attempts: number
   failures: number
@@ -106,9 +106,12 @@ export type AttemptTotals = {
  * The bottom line of the journal table. Rates and averages are weighted by the number of attempts in
  * each group, never averaged across groups: a model tried four times must not weigh as much in the
  * failure rate as one tried two hundred times.
+ *
+ * `NonEmpty` rather than a nullable return: there is no bottom line under nothing, and stating that in
+ * the parameter costs the caller one check it already had to make — where it decides whether to draw a
+ * table at all — instead of four expressions of the same doubt spread over the call site.
  */
-export function attemptTotals(groups: AttemptSummary[]): AttemptTotals | null {
-  if (groups.length === 0) return null
+export function attemptTotals(groups: NonEmpty<AttemptSummary>): AttemptTotals {
   const sum = (pick: (group: AttemptSummary) => number) =>
     groups.reduce((total, group) => total + pick(group), 0)
 
