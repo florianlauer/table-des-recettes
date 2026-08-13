@@ -828,6 +828,11 @@ img {
   padding: 0.4rem 0;
   border-bottom: 1px solid var(--rule);
 }
+/* "Filet horizontal entre chaque ligne" — between, not after the last one. The closing rule also
+   made the dagger note read as an eighth row of the list. */
+.ingredients__item:last-child {
+  border-bottom: 0;
+}
 .ingredients__fixed {
   color: var(--ochre);
 }
