@@ -91,6 +91,12 @@ img {
   display: block;
 }
 
+/* The bound edge is `position: fixed`: anything an anchor or the focus brings to the top of the
+   viewport arrives underneath it. */
+[id] {
+  scroll-margin-top: calc(var(--band) + 0.5rem);
+}
+
 .page {
   max-width: var(--page-max);
   margin: 0 auto;

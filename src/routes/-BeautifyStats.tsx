@@ -1,6 +1,7 @@
 import { beautifyGroupKey } from '../lib/beautifyStats'
 import type { WireBeautifySummary } from '../lib/beautifyStats'
 import { formatCount } from '../lib/formatCount'
+import { formatMs, formatUsd } from '../lib/formatNumber'
 
 /**
  * What the image generations have cost and how they have landed, one block per configuration. Split
@@ -52,9 +53,9 @@ export function BeautifyStats({
                 .join(', ')}`}
           </p>
           <p>
-            {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
-            {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
-            {Math.round(group.averageLatencyMs)} ms en moyenne
+            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
+            {formatUsd(group.totalCostUsd)} au total ·{' '}
+            {formatMs(group.averageLatencyMs)} en moyenne
           </p>
           {group.unreportedCostCalls > 0 && (
             <p>

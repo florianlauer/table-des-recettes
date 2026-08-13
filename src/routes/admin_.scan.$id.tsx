@@ -8,6 +8,7 @@ import type { Id } from '../../convex/_generated/dataModel'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
+import { formatUsd } from '../lib/formatNumber'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
@@ -217,7 +218,7 @@ function ScanCorrectionPage() {
               État : {scanStatusLabel(data.status)}
               {data.error && ` · ${data.error}`}
               {data.totalCostUsd !== null &&
-                ` · ${data.totalCostUsd.toFixed(4)} USD consommés`}
+                ` · ${formatUsd(data.totalCostUsd)} consommés`}
             </p>
             {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
                 own `startedAt`, so it is there after a reload too. */}

@@ -9,6 +9,7 @@ import { groupKey } from '../lib/attemptStats'
 import type { WireAttemptSummary } from '../lib/attemptStats'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
+import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
 import {
   extractionMessage,
   purgeMessage,
@@ -207,8 +208,8 @@ function AdminPage() {
                 <p>
                   {scan.lastAttempt.model} ·{' '}
                   {scan.lastAttempt.servedProvider ?? 'provider inconnu'} ·{' '}
-                  {Math.round(scan.lastAttempt.latencyMs)} ms ·{' '}
-                  {scan.lastAttempt.costUsd.toFixed(4)} USD ·{' '}
+                  {formatMs(scan.lastAttempt.latencyMs)} ·{' '}
+                  {formatUsd(scan.lastAttempt.costUsd)} ·{' '}
                   {scan.lastAttempt.failureKind ?? 'succès'} ·{' '}
                   {formatCount(scan.lastAttempt.repairCount, 'réparation')}
                 </p>
@@ -241,10 +242,6 @@ function AdminPage() {
       />
     </main>
   )
-}
-
-function formatRate(rate: number): string {
-  return `${(rate * 100).toFixed(rate > 0 && rate < 0.01 ? 1 : 0)} %`
 }
 
 function AttemptStatsBlock({
@@ -292,9 +289,9 @@ function AttemptStatsBlock({
                 .join(', ')}`}
           </p>
           <p>
-            {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
-            {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
-            {Math.round(group.averageLatencyMs)} ms en moyenne
+            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
+            {formatUsd(group.totalCostUsd)} au total ·{' '}
+            {formatMs(group.averageLatencyMs)} en moyenne
           </p>
           <p>
             {formatCount(group.repairs, 'réparation')} de schéma sur{' '}
