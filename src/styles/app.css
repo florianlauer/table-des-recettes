@@ -215,6 +215,22 @@ img {
   color: var(--ink-muted);
   margin: 0.3rem 0 0;
 }
+/* The admin's failure line. Same register as the storefront's `.failure`: the fact in body ink,
+   the one recourse next to it, no icon and no panel. */
+.admin-page__failure {
+  margin: 1rem 0;
+}
+.admin-page__retry {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ochre);
+  border-bottom: 1px solid var(--ochre);
+  padding: 0;
+}
+
 .admin-page__banner {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);

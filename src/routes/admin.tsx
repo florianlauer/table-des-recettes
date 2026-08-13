@@ -27,6 +27,7 @@ import {
   isLeaseLive,
 } from '../lib/queueStatus'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 
@@ -120,11 +121,23 @@ function AdminPage() {
         estimateMs={extractionEstimateMs}
       />
 
-      {scans.error && <p role="alert">{scans.error.message}</p>}
-
       <section className="admin-page__scans">
         <h2>Scans</h2>
+        {/* Three states, not one silence. An operator with no token and an operator with an empty
+            queue used to see exactly the same page: a heading above nothing. */}
+        {!adminToken && (
+          <p className="empty">
+            Saisis le jeton administrateur pour afficher les scans.
+          </p>
+        )}
         {scans.isLoading && adminToken && <p>Chargement…</p>}
+        {scans.error && (
+          <AdminFailure
+            error={scans.error}
+            retry={() => void scans.refetch()}
+          />
+        )}
+        {scans.data?.length === 0 && <p className="empty">Aucun scan.</p>}
         {scans.data?.map((scan) => {
           const purge = rowGesture(scan.id, 'purge')
           const leaseLive = isLeaseLive({
@@ -212,8 +225,10 @@ function AdminPage() {
 
       <AttemptStatsBlock
         groups={stats.data}
+        hasToken={adminToken.length > 0}
         loading={stats.isLoading && adminToken.length > 0}
         error={stats.error}
+        retry={() => void stats.refetch()}
       />
     </main>
   )
@@ -225,19 +240,32 @@ function formatRate(rate: number): string {
 
 function AttemptStatsBlock({
   groups,
+  hasToken,
   loading,
   error,
+  retry,
 }: {
   groups: WireAttemptSummary[] | undefined
+  hasToken: boolean
   loading: boolean
   error: Error | null
+  retry: () => void
 }) {
   return (
     <section className="admin-page__stats">
       <h2>Tentatives d’extraction</h2>
+      {/* `=== 0` alone never fired: a failed query leaves `groups` undefined, not empty, so the
+          heading floated above nothing on the very state that needed explaining. */}
+      {!hasToken && (
+        <p className="empty">
+          Saisis le jeton administrateur pour afficher le journal.
+        </p>
+      )}
       {loading && <p>Chargement…</p>}
-      {error && <p role="alert">{error.message}</p>}
-      {groups?.length === 0 && <p>Aucune tentative journalisée.</p>}
+      {error && <AdminFailure error={error} retry={retry} />}
+      {groups?.length === 0 && (
+        <p className="empty">Aucune tentative journalisée.</p>
+      )}
       {groups?.map((group) => (
         <article key={groupKey(group)} className="admin-page__stat">
           <h3>
@@ -297,8 +325,15 @@ function QueueBlock({
   return (
     <section className="admin-page__queue">
       <h2>File d'extraction</h2>
+      {!adminToken && (
+        <p className="empty">
+          Saisis le jeton administrateur pour piloter la file.
+        </p>
+      )}
       {queue.isLoading && adminToken && <p>Chargement…</p>}
-      {queue.error && <p role="alert">{queue.error.message}</p>}
+      {queue.error && (
+        <AdminFailure error={queue.error} retry={() => void queue.refetch()} />
+      )}
       {status && (
         <>
           <p>En attente : {status.counts.pending}</p>

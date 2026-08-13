@@ -12,6 +12,7 @@ import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { BeautifyStats } from './-BeautifyStats'
 import { IllustrationRow } from './-IllustrationRow'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
@@ -90,7 +91,9 @@ function IllustrationsPage() {
       </header>
 
       {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
-      {work.error && <p role="alert">{work.error.message}</p>}
+      {work.error && (
+        <AdminFailure error={work.error} retry={() => void work.refetch()} />
+      )}
       {work.isLoading && adminToken && <p>Chargement…</p>}
 
       <OrphanedOutcomes gestures={gestures} />

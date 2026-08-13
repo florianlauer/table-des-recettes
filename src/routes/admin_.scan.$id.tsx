@@ -16,6 +16,7 @@ import { useServerClock } from '../lib/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
 import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
@@ -108,7 +109,9 @@ function ScanCorrectionPage() {
       </header>
 
       {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
-      {scan.error && <p role="alert">{scan.error.message}</p>}
+      {scan.error && (
+        <AdminFailure error={scan.error} retry={() => void scan.refetch()} />
+      )}
       {scan.isLoading && adminToken && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
 
