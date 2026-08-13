@@ -232,18 +232,12 @@
 .admin-page__banner p {
   margin: 0 0 0.6rem;
 }
-.admin-page__scans,
 /* All three, not just the last one: the queue and the scans butted against what came before them,
    so the page read as one long column of controls with a single visible break at the end. */
 .admin-page__stats,
 .admin-page__scans,
 .admin-page__queue {
   margin-top: 2.5rem;
-}
-.admin-page__scan,
-.admin-page__stat {
-  border-top: 1px solid var(--rule);
-  padding: 1rem 0;
 }
 
 /* --- the sorting register: /admin reads its own figures in columns --- */
@@ -260,8 +254,10 @@
   /* Figures under figures: a column of costs cannot be compared if the digits do not line up. */
   font-variant-numeric: tabular-nums;
 }
-.admin-table th {
+.admin-table th:not(.admin-table__n) {
   text-align: left;
+}
+.admin-table th {
   font-weight: 600;
 }
 .admin-table thead th {
@@ -284,10 +280,6 @@
 .admin-table__n {
   text-align: right;
   white-space: nowrap;
-}
-/* Right-aligned figures need the header above them, not against the next column. */
-.admin-table thead .admin-table__n {
-  text-align: right;
 }
 .admin-table__detail td {
   padding-top: 0;
@@ -321,20 +313,6 @@
 .admin-page__counts b {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
-}
-.admin-page__scan h3,
-.admin-page__scan p,
-.admin-page__stat h3,
-.admin-page__stat p {
-  margin: 0.3rem 0;
-}
-/* The model and prompt name the row; the figures under it are read against them, not scanned. */
-.admin-page__stat h3 {
-  color: var(--ochre);
-}
-/* The drafts name what the scan produced; the link above names the scan. */
-.admin-page__drafts {
-  color: var(--ink-muted);
 }
 
 /* --- illustration work list --- */

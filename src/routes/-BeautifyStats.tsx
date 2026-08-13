@@ -1,80 +1,111 @@
-import { beautifyGroupKey } from '../lib/beautifyStats'
-import type { WireBeautifySummary } from '../lib/beautifyStats'
+import { beautifyGroupKey, beautifyTotals } from '../lib/beautifyStats'
 import { formatCount } from '../lib/formatCount'
-import { formatMs, formatUsd } from '../lib/formatNumber'
+import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
+import type { WireBeautifySummary } from '../lib/beautifyStats'
+import type { NonEmpty } from '../lib/journalStats'
+import { AdminTable, AdminTableDetail } from './-AdminTable'
+
+const COLUMNS = [
+  { label: 'Modèle' },
+  { label: 'Appels', numeric: true },
+  { label: 'Acceptés', numeric: true },
+  { label: 'Rejetés', numeric: true },
+  { label: 'En attente', numeric: true },
+  { label: 'Abandonnés', numeric: true },
+  { label: 'Échecs', numeric: true },
+  { label: 'Coût moyen', numeric: true },
+  { label: 'Coût total', numeric: true },
+  { label: 'Durée moyenne', numeric: true },
+] as const
 
 /**
- * What the image generations have cost and how they have landed, one block per configuration. Split
- * by model, prompt and served provider, because averaging across a routing change describes nothing.
+ * What the image generations have cost and how they have landed, split by model, prompt and served
+ * provider — averaging across a routing change describes nothing.
+ *
+ * In columns, like the extraction journal and for the same reason: the question is « is this
+ * configuration still worth its price », which is a comparison. It read as stacked paragraphs until
+ * the register was written down, and a pile of paragraphs answers one configuration at a time.
  */
 export function BeautifyStats({
-  groups,
-  error,
-  estimateMs,
+  rows,
 }: {
-  groups: WireBeautifySummary[] | undefined
-  error: Error | null
-  estimateMs: number | null
+  rows: NonEmpty<WireBeautifySummary>
 }) {
+  const totals = beautifyTotals(rows)
+
   return (
-    <section className="admin-page__stats">
-      <h2>Générations d’images</h2>
-      {error && <p role="alert">{error.message}</p>}
-      {groups?.length === 0 && <p>Aucune génération journalisée.</p>}
-      {estimateMs === null && groups !== undefined && groups.length > 0 && (
-        <p>
-          Pas encore assez d’appels sur la configuration en service pour estimer
-          une durée.
-        </p>
-      )}
-      {groups?.map((group) => (
-        <article key={beautifyGroupKey(group)} className="admin-page__stat">
-          <h3>
-            {group.model} · {group.servedProvider ?? 'provider inconnu'} ·
-            prompt {group.promptVersion}
-            {group.isCurrent && ' · en service'}
-          </h3>
-          <p>
-            {formatCount(group.attempts, 'appel')} ·{' '}
-            {formatCount(group.accepted, 'accepté', 'acceptés')} ·{' '}
-            {formatCount(group.rejected, 'rejeté', 'rejetés')} · {group.pending}{' '}
-            en attente ·{' '}
-            {formatCount(group.discarded, 'abandonné', 'abandonnés')}
-          </p>
-          <p>
-            {formatCount(
-              group.technicalFailures,
-              'échec technique',
-              'échecs techniques',
-            )}
-            {group.failureKinds.length > 0 &&
-              ` · ${group.failureKinds
-                .map(({ kind, count }) => `${kind} ${count}`)
-                .join(', ')}`}
-          </p>
-          <p>
-            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
-            {formatUsd(group.totalCostUsd)} au total ·{' '}
-            {formatMs(group.averageLatencyMs)} en moyenne
-          </p>
-          {group.unreportedCostCalls > 0 && (
+    <AdminTable columns={COLUMNS}>
+      {rows.map((group) => (
+        <tbody key={beautifyGroupKey(group)}>
+          <tr>
+            <th scope="row">
+              {group.model}
+              {group.isCurrent && (
+                <span className="admin-table__flag"> en service</span>
+              )}
+            </th>
+            <td className="admin-table__n">{group.attempts}</td>
+            <td className="admin-table__n">{group.accepted}</td>
+            <td className="admin-table__n">{group.rejected}</td>
+            <td className="admin-table__n">{group.pending}</td>
+            <td className="admin-table__n">{group.discarded}</td>
+            <td className="admin-table__n">
+              {group.technicalFailures} ({formatRate(group.failureRate)})
+            </td>
+            <td className="admin-table__n">
+              {formatUsd(group.averageCostUsd)}
+            </td>
+            <td className="admin-table__n">{formatUsd(group.totalCostUsd)}</td>
+            <td className="admin-table__n">
+              {formatMs(group.averageLatencyMs)}
+            </td>
+          </tr>
+          <AdminTableDetail>
             <p>
-              {formatCount(group.unreportedCostCalls, 'appel')} sans coût
-              rapporté : le total est un plancher, pas un montant exact.
+              {group.servedProvider ?? 'provider inconnu'} · prompt{' '}
+              {group.promptVersion}
+              {group.failureKinds.length > 0 &&
+                ` · ${group.failureKinds
+                  .map(({ kind, count }) => `${kind} ${count}`)
+                  .join(', ')}`}
             </p>
-          )}
-          {group.excessiveCostCalls > 0 && (
-            <p role="alert">
-              {formatCount(
-                group.excessiveCostCalls,
-                'appel facturé',
-                'appels facturés',
-              )}{' '}
-              bien au-dessus du coût mesuré.
-            </p>
-          )}
-        </article>
+            {group.unreportedCostCalls > 0 && (
+              <p>
+                {formatCount(group.unreportedCostCalls, 'appel')} sans coût
+                rapporté : le total est un plancher, pas un montant exact.
+              </p>
+            )}
+            {group.excessiveCostCalls > 0 && (
+              <p role="alert">
+                {formatCount(
+                  group.excessiveCostCalls,
+                  'appel facturé',
+                  'appels facturés',
+                )}{' '}
+                bien au-dessus du coût mesuré.
+              </p>
+            )}
+          </AdminTableDetail>
+        </tbody>
       ))}
-    </section>
+      <tfoot>
+        <tr>
+          <th scope="row">{formatCount(rows.length, 'configuration')}</th>
+          <td className="admin-table__n">{totals.attempts}</td>
+          <td className="admin-table__n">{totals.accepted}</td>
+          <td className="admin-table__n">{totals.rejected}</td>
+          <td className="admin-table__n">{totals.pending}</td>
+          <td className="admin-table__n">{totals.discarded}</td>
+          <td className="admin-table__n">
+            {totals.technicalFailures} ({formatRate(totals.failureRate)})
+          </td>
+          <td className="admin-table__n">{formatUsd(totals.averageCostUsd)}</td>
+          <td className="admin-table__n">{formatUsd(totals.totalCostUsd)}</td>
+          <td className="admin-table__n">
+            {formatMs(totals.averageLatencyMs)}
+          </td>
+        </tr>
+      </tfoot>
+    </AdminTable>
   )
 }
