@@ -519,6 +519,42 @@ pour ce qui est lu à voix haute :
 
 ---
 
+## Mouvement
+
+> **Section ajoutée le 2026-08-13.** Le document n'en avait aucune, et le CSS ne contenait ni
+> `transition` ni `@keyframes` : la thèse de l'imprimé interdisait le mouvement par défaut, sans le
+> dire. Elle l'autorise maintenant dans un seul cas, et l'écrit.
+
+Le mouvement ne sert qu'à une chose : **marquer une substitution que le lecteur n'a pas faite de sa
+main.** Trois surfaces sont concernées, et seulement elles :
+
+- l'index reconstruit 250 ms après une frappe ;
+- l'index reconstruit par un filtre, qui est un bouton posé ailleurs sur la page ;
+- la liste d'ingrédients réécrite par `−` / `+`.
+
+Dans ces trois cas, le contenu change sans que rien ne bouge à l'endroit où l'on regarde. La
+substitution est autrement muette : c'est la même raison qui impose déjà une région live à ces trois
+endroits. Le mouvement en est la moitié visible, pas un supplément d'agrément.
+
+**Ce que le mouvement peut être, et rien d'autre :**
+
+| Contrainte  | Valeur                   | Pourquoi                                                                                            |
+| ----------- | ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Propriété   | `opacity` seule          | Un déplacement fait bouger une cible sous le doigt et déclenche un recalcul de mise en page.        |
+| Durée       | 120 ms                   | Perceptible, jamais attendue. Au-delà, le résultat de la recherche arrive après la frappe suivante. |
+| Courbe      | `ease-out`               | Ce qui arrive s'installe ; rien ne rebondit.                                                        |
+| Déclencheur | une substitution de bloc | Pas le survol, pas le focus, pas l'apparition au défilement, pas le chargement d'une image.         |
+
+**`prefers-reduced-motion` n'est pas une option.** Toute règle d'animation est écrite **à
+l'intérieur** de `@media (prefers-reduced-motion: no-preference)`, jamais annulée après coup dans un
+`reduce`. La différence compte : avec la préférence réglée, aucune règle n'est émise du tout, donc la
+prochaine animation ajoutée ne peut pas oublier sa garde.
+
+Interdits, comme le reste de l'_Anti-slop_ : apparition au défilement, décalage, échelle, rotation,
+squelette pulsant, roue qui tourne, survol animé, transition sur un changement de page.
+
+---
+
 ## Anti-slop
 
 Interdits, sans exception :

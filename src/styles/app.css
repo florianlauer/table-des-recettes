@@ -720,6 +720,28 @@ img {
   white-space: nowrap;
 }
 
+/* --- motion --- */
+
+/*
+ * The only movement in the system, and it has one job: mark a block the reader did not replace by
+ * hand — the index after a debounced keystroke or a filter, the ingredient list after −/+. Opacity
+ * only, 120 ms, never a displacement (see DESIGN.md § Mouvement).
+ *
+ * Declared inside `no-preference` rather than undone inside `reduce`: with the preference set, no
+ * animation rule is emitted at all, so the guard cannot be forgotten on the next one added.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .swap {
+    animation: swap-in 120ms ease-out;
+  }
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* --- failure --- */
 
 .failure {
