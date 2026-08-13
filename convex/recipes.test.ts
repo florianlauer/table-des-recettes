@@ -83,6 +83,25 @@ test('countsByType counts only published recipes and covers every type', async (
   expect(counts.byType.petitDej).toBe(0)
 })
 
+test('countsByType counts the matches when a query is given', async () => {
+  const t = await withRecipes()
+  // What the filter row promises has to be what clicking it produces: unscoped, this said "1 dessert"
+  // beside a search that no dessert answers.
+  const counts = await t.query(api.recipes.countsByType, {
+    query: 'courgettes',
+  })
+  expect(counts.total).toBe(1)
+  expect(counts.byType.plat).toBe(1)
+  expect(counts.byType.dessert).toBe(0)
+})
+
+test('countsByType treats a blank query as no query at all', async () => {
+  const t = await withRecipes()
+  expect(await t.query(api.recipes.countsByType, { query: '   ' })).toEqual(
+    await t.query(api.recipes.countsByType, {}),
+  )
+})
+
 test('getBySlug returns the published recipe', async () => {
   const t = await withRecipes()
   const recipe = await t.query(api.recipes.getBySlug, { slug: 'riz-au-lait' })

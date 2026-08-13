@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
+import { formatCount } from '../lib/formatCount'
 import { groupByLetter } from '../lib/groupByLetter'
 import {
   RECIPE_TYPES,
@@ -25,14 +26,24 @@ export const Route = createFileRoute('/')({
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
     await Promise.all([
-      context.queryClient.ensureQueryData(
-        convexQuery(api.recipes.countsByType, {}),
-      ),
+      context.queryClient.ensureQueryData(countsOptions()),
+      context.queryClient.ensureQueryData(countsOptions(deps.q)),
       context.queryClient.ensureQueryData(browseOptions(deps)),
     ])
   },
   component: IndexPage,
 })
+
+/**
+ * Two scopes of the same count. Without an argument it is the shelf — what the masthead says and
+ * what tells "nothing published" apart from "nothing matches". With the search it is the matches,
+ * which is what the filter row must promise. The args are built here rather than inline so that an
+ * empty search produces the same key as no search at all: one subscription, not two.
+ */
+function countsOptions(rawQuery?: string) {
+  const query = rawQuery?.trim()
+  return convexQuery(api.recipes.countsByType, query ? { query } : {})
+}
 
 /** A single query for the index: the list ↔ search switch lives in Convex. */
 function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
@@ -65,16 +76,15 @@ function IndexPage() {
     return () => clearTimeout(id)
   }, [draft, q, navigate])
 
-  const counts = useSuspenseQuery(
-    convexQuery(api.recipes.countsByType, {}),
-  ).data
+  const shelf = useSuspenseQuery(countsOptions()).data
+  const counts = useSuspenseQuery(countsOptions(q)).data
   const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
   return (
     <main className="page">
       <header className="masthead">
         <h1 className="masthead__title">La table des recettes</h1>
-        <p className="masthead__count">{counts.total} recettes</p>
+        <p className="masthead__count">{formatCount(shelf.total, 'recette')}</p>
       </header>
 
       <input
@@ -117,14 +127,12 @@ function IndexPage() {
         for the search is visual — a screen reader announces nothing at all while typing.
       */}
       <p className="visually-hidden" role="status">
-        {searching
-          ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}`
-          : ''}
+        {searching ? formatCount(listed.length, 'résultat') : ''}
       </p>
 
       {listed.length === 0 ? (
         <p className="empty">
-          {counts.total === 0
+          {shelf.total === 0
             ? 'Aucune recette publiée.'
             : 'Aucune recette ne correspond.'}
         </p>
