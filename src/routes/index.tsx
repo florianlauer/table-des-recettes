@@ -154,41 +154,49 @@ function IndexPage() {
         {restricted ? formatCount(listed.length, 'résultat') : ''}
       </p>
 
-      {listed.length === 0 ? (
-        <p className="empty">
-          {shelf.total === 0
-            ? 'Aucune recette publiée.'
-            : emptyIndexLine({ query: q, type })}
-        </p>
-      ) : searching ? (
-        <ol className="index index--flat" aria-label="Résultats">
-          {listed.map((recipe) => (
-            <RecipeRow key={recipe.id} recipe={recipe} showImage={false} />
-          ))}
-        </ol>
-      ) : (
-        groups.map((group) => (
-          <section
-            className="group"
-            key={group.letter}
-            aria-labelledby={`groupe-${group.letter}`}
-          >
-            <h2 className="group__letter" id={`groupe-${group.letter}`}>
-              {group.letter}
-            </h2>
-            <ol className="index">
-              {group.items.map((recipe) => (
-                <RecipeRow
-                  key={recipe.id}
-                  recipe={recipe}
-                  showImage
-                  eager={eager.has(recipe.id)}
-                />
-              ))}
-            </ol>
-          </section>
-        ))
-      )}
+      {/*
+        The key is the restriction, and it is what makes the fade fire: a debounce and a button both
+        substitute this whole block, so React has to be told it is a new one rather than the same one
+        with other children. The animation itself is `.swap` in the stylesheet, opacity only and only
+        without `prefers-reduced-motion`.
+      */}
+      <div className="swap" key={`${q?.trim() ?? ''}|${type ?? ''}`}>
+        {listed.length === 0 ? (
+          <p className="empty">
+            {shelf.total === 0
+              ? 'Aucune recette publiée.'
+              : emptyIndexLine({ query: q, type })}
+          </p>
+        ) : searching ? (
+          <ol className="index index--flat" aria-label="Résultats">
+            {listed.map((recipe) => (
+              <RecipeRow key={recipe.id} recipe={recipe} showImage={false} />
+            ))}
+          </ol>
+        ) : (
+          groups.map((group) => (
+            <section
+              className="group"
+              key={group.letter}
+              aria-labelledby={`groupe-${group.letter}`}
+            >
+              <h2 className="group__letter" id={`groupe-${group.letter}`}>
+                {group.letter}
+              </h2>
+              <ol className="index">
+                {group.items.map((recipe) => (
+                  <RecipeRow
+                    key={recipe.id}
+                    recipe={recipe}
+                    showImage
+                    eager={eager.has(recipe.id)}
+                  />
+                ))}
+              </ol>
+            </section>
+          ))
+        )}
+      </div>
     </main>
   )
 }

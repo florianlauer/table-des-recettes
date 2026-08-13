@@ -677,9 +677,12 @@ img {
   color: var(--ink-muted);
   margin: 0.25rem 0 0;
 }
+/* Measured, not chosen: at 390×844 with every visible row illustrated, the fourth title clears the
+   fold up to 100px of photo and no further. 96 keeps the floor of the density rule with a margin.
+   Desktop is the same decision one step up. See DESIGN.md § Amendement du 2026-08-13. */
 .row__photo {
   grid-column: 1 / -1;
-  height: 200px;
+  height: 112px;
   width: auto;
   max-width: 100%;
   margin-top: 0.75rem;
@@ -687,7 +690,7 @@ img {
 }
 @media (width <= 40rem) {
   .row__photo {
-    height: 160px;
+    height: 96px;
   }
   .row__body {
     padding-left: 1rem;
@@ -715,6 +718,28 @@ img {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* --- motion --- */
+
+/*
+ * The only movement in the system, and it has one job: mark a block the reader did not replace by
+ * hand — the index after a debounced keystroke or a filter, the ingredient list after −/+. Opacity
+ * only, 120 ms, never a displacement (see DESIGN.md § Mouvement).
+ *
+ * Declared inside `no-preference` rather than undone inside `reduce`: with the preference set, no
+ * animation rule is emitted at all, so the guard cannot be forgotten on the next one added.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .swap {
+    animation: swap-in 120ms ease-out;
+  }
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /* --- failure --- */
@@ -825,6 +850,11 @@ img {
   padding: 0.4rem 0;
   border-bottom: 1px solid var(--rule);
 }
+/* "Filet horizontal entre chaque ligne" — between, not after the last one. The closing rule also
+   made the dagger note read as an eighth row of the list. */
+.ingredients__item:last-child {
+  border-bottom: 0;
+}
 .ingredients__fixed {
   color: var(--ochre);
 }
@@ -834,10 +864,18 @@ img {
   margin-top: 1rem;
 }
 
+/* The reading surface, not the directory: the photo takes the whole of its column and its height
+   follows the ratio. `auto 4 / 3` is the CLS guard — an image whose intrinsic dimensions are known
+   uses them, and one served from an underived source (no width/height attribute) reserves a plate
+   instead of collapsing to nothing until it loads. */
 .recipe__photo {
-  height: 200px;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  /* On a replaced element `max-content` is the file's own width: the photo opens up to its column
+     and stops at its own pixels. Without it, a 292px-wide portrait rendition was blown up to 494 —
+     an opened photo that is softer than the small one it replaced is not an improvement. */
+  max-width: max-content;
+  height: auto;
+  aspect-ratio: auto 4 / 3;
   margin-top: 2rem;
   border: 1px solid var(--rule-strong);
 }

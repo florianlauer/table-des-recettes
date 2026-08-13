@@ -203,17 +203,28 @@ Chaque palier interpole entre sa valeur à 390 px de large et sa valeur à 1100 
 
 Les interlignes, eux, sont fixes : ils dépendent du rôle, pas de la taille.
 
-| Rôle                                       | Palier            | Famille / graisse                         | Interligne |
-| ------------------------------------------ | ----------------- | ----------------------------------------- | ---------- |
-| Titre du site                              | `--type-masthead` | Fraunces 600                              | `1.0`      |
-| Titre de recette, fiche                    | `--type-title`    | Fraunces 600, `letter-spacing: -0.02em`   | `1.02`     |
-| Titre de section                           | `--type-section`  | Fraunces 600                              | `1.1`      |
-| Lettre de groupe, index                    | `--type-letter`   | Fraunces 600                              | `1.0`      |
-| Titre de recette, index                    | `--type-lead`     | Fraunces 500                              | `1.15`     |
-| Étapes                                     | `--type-lead`     | Atkinson 400, `max-width: 68ch`           | `1.6`      |
-| Ingrédients                                | `--type-body`     | Atkinson 400                              | `1.5`      |
-| Contrôles                                  | `--type-control`  | Atkinson 600, cible tactile 48 px minimum | `1.25`     |
-| Recherche, filtres, type de plat, légendes | `--type-meta`     | Atkinson 400                              | `1.45`     |
+| Rôle                            | Palier            | Famille / graisse                         | Interligne |
+| ------------------------------- | ----------------- | ----------------------------------------- | ---------- |
+| Titre du site                   | `--type-masthead` | Fraunces 600                              | `1.0`      |
+| Titre de recette, fiche         | `--type-title`    | Fraunces 600, `letter-spacing: -0.02em`   | `1.02`     |
+| Titre de section                | `--type-section`  | Fraunces 600                              | `1.1`      |
+| Lettre de groupe, index         | `--type-letter`   | Fraunces 600                              | `1.0`      |
+| Titre de recette, index         | `--type-lead`     | Fraunces 500                              | `1.15`     |
+| Étapes                          | `--type-lead`     | Atkinson 400, `max-width: 68ch`           | `1.6`      |
+| Ingrédients                     | `--type-body`     | Atkinson 400                              | `1.5`      |
+| Contrôles                       | `--type-control`  | Atkinson 600, cible tactile 48 px minimum | `1.25`     |
+| Champ de recherche              | `--type-body`     | Atkinson 400                              | `1.5`      |
+| Filtres, type de plat, légendes | `--type-meta`     | Atkinson 400                              | `1.45`     |
+
+> **Amendement du 2026-08-13** — la ligne « Recherche, filtres, type de plat, légendes » se scinde.
+>
+> Le champ de recherche était rangé avec les légendes, et le CSS l'a toujours posé en
+> `--type-body`. C'est le CSS qui a raison : on **écrit** dans ce champ, ce n'est pas une légende
+> mais une saisie, et la taille de ce qu'on tape n'obéit pas à la taille de ce qu'on lit en marge.
+> Sous 16 px, iOS zoome de lui-même à la mise au point et l'écran change d'échelle sous les doigts.
+>
+> Les filtres restent en `--type-meta` : l'écart de 5 px avec le champ est désormais voulu et
+> écrit, et non le résultat d'une ligne de tableau que personne n'a appliquée.
 
 ---
 
@@ -231,6 +242,9 @@ Le masthead reste purement typographique :
 5. Filtres sur une seule ligne typographique : `Toutes 203  Entrées 31  Plats 94  Desserts 52
 Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
    actif reste en ocre. **Aucune pastille, aucun bouton.**
+6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
+   desktop, quatre titres au minimum sur mobile — voir l'amendement du 2026-08-13, qui mesure
+   ce que cette règle vaut selon que les lignes portent une photo ou non.
 
 ### La reliure
 
@@ -240,10 +254,23 @@ Un aplat ocre plein, pleine largeur, **collé au bord haut du viewport** : la tr
 d'un livre relié. `position: fixed`, 10 px en desktop, 7 px sous 640 px. Il encadre l'objet à
 n'importe quelle profondeur de défilement.
 
-C'est **le seul aplat de couleur du système**, et il ne touche aucun contenu : il borde la
-fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait interdit —
-ce serait un en-tête de site, pas la tranche d'un livre. 6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
-desktop, quatre titres au minimum sur mobile.
+C'est **le seul aplat de couleur du système**, et il ne coiffe aucun contenu **au repos** : il
+borde la fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait
+interdit — ce serait un en-tête de site, pas la tranche d'un livre.
+
+> **Amendement du 2026-08-13** — remplace « et il ne touche aucun contenu ».
+>
+> `position: fixed` et « encadrer l'objet à n'importe quelle profondeur de défilement » sont la
+> même phrase : au défilement, la bande passe **devant** le contenu et recouvre 10 px de ce qui
+> passe dessous. C'est le prix de la métaphore de la tranche, et c'est le moins cher des trois —
+> une bande en `sticky` disparaîtrait sous le premier bloc, une bande en flux ferait un en-tête de
+> site. L'interdit qui reste entier : rien n'est **posé** derrière le masthead.
+>
+> Le cas où le recouvrement serait une perte d'information est déjà réglé : une cible d'ancre
+> réserve la hauteur de la bande (`[id] { scroll-margin-top: calc(var(--band) + 0.5rem) }`).
+>
+> Cette entrée corrige aussi une rupture de formatage : l'item 6 de « Premier écran de `/` » avait
+> glissé dans ce paragraphe. Il est revenu dans sa liste, texte inchangé.
 
 ### Premier écran de `/recette/$slug`
 
@@ -261,7 +288,8 @@ largeur, **hors des deux colonnes** — placé dans l'une d'elles, son espacemen
 colonne vers le bas et l'autre démarrait plus haut :
 
 - à gauche : titre, type de plat, puis tout « Préparation » ;
-- à droite : portions, ingrédients, puis la photo éventuelle ;
+- à droite : portions, ingrédients, puis la photo éventuelle, à la largeur de la colonne
+  (voir § _Hétérogénéité des photos_, amendement du 2026-08-13) ;
 - les deux colonnes démarrent sur la même ligne, à hauteur du haut du titre.
 
 La colonne de gauche donne aux étapes une justification d'environ 40 signes — une colonne de
@@ -342,11 +370,32 @@ titre. La ligne illustrée est simplement plus haute.
 - Le titre reste exactement à sa place habituelle. La partie textuelle d'une ligne illustrée est
   **identique** à celle d'une ligne non illustrée.
 - La photo occupe la colonne principale, alignée à gauche, jamais la marge.
-- **Hauteur fixe : 200 px desktop, 160 px mobile.** Largeur libre selon le ratio
+- **Hauteur fixe : 112 px desktop, 96 px mobile.** Largeur libre selon le ratio
   (`height: 100%; width: auto; max-width: 100%`). Ratio d'origine conservé, **aucun recadrage
   automatique du plat**.
-- Une photo de plat en 4:3 fait donc environ 270 px de large sur une colonne de 900 : elle lit
+- Une photo de plat en 4:3 fait donc environ 150 px de large sur une colonne de 900 : elle lit
   comme une planche rapportée, pas comme une bannière.
+
+> **Amendement du 2026-08-13** — remplace « 200 px desktop, 160 px mobile », et mesure l'item 6 de
+> « Premier écran de `/` ».
+>
+> Deux règles se contredisaient : la densité de l'index d'un côté, la taille de la photo de
+> l'autre. `PRODUCT.md` tranche — « retrouver prime sur découvrir, l'index est un répertoire, pas
+> un fil d'inspiration » — donc c'est la photo qui rétrécit, et la règle de densité qui est tenue.
+>
+> Mesuré sur la page réelle, pas décrété. À 390×844, dans le pire cas où **toutes** les lignes
+> visibles portent une photo : le quatrième titre passe au-dessus de la ligne de flottaison jusqu'à
+> 100 px de photo, et pas au-delà. D'où 96 px, qui garde le plancher avec une marge. À 160 px, la
+> règle était fausse : trois titres.
+>
+> Ce que la mesure dit aussi, et qu'il faut écrire plutôt que taire : **« huit recettes au premier
+> écran desktop » ne vaut que pour un écran peu illustré.** Sur 1440×900, l'index commence à 289 px,
+> une ligne nue en fait 53 et une ligne illustrée 177 : huit lignes nues tiennent (688 px), mais
+> chaque photo consomme la place de deux lignes et demie. Aucune hauteur de photo ne rend les deux
+> moitiés de la règle vraies en même temps — il faudrait descendre à 40 px, ce qui n'est plus une
+> photo. La garantie ferme est donc **le plancher mobile** ; le chiffre desktop décrit un écran
+> textuel, et une photo s'y paie en lignes.
+
 - Angles droits, filet de 1 px en `--rule-strong`, aucune ombre.
 - **Aucune légende.** Le titre est trente pixels au-dessus ; la répéter serait du bruit.
 - **Toutes les recettes illustrées montrent leur photo.** Pas de cadence, pas de sélection, pas
@@ -364,6 +413,32 @@ complète : son absence ne laisse aucune trace.
 
 L'égalisation est d'abord **structurelle** : hauteur commune, filet identique, fond blanc entre
 elles. C'est l'espace blanc qui isole les différences plutôt que de prétendre les effacer.
+
+> **Amendement du 2026-08-13** — la hauteur commune est celle de **l'index**, pas celle de la
+> fiche.
+>
+> Les deux surfaces affichaient la même photo à la même taille, alors que le document les oppose :
+> l'index est « dense, utilitaire », la fiche est la surface de lecture. Une seule recette est à
+> l'écran, il n'y a plus rien à égaliser, et un portrait de 200 px de haut y faisait 146 px de
+> large dans une colonne de 494 — une vignette au milieu d'une double page.
+>
+> Sur la fiche, la photo prend donc **toute la largeur de sa colonne** et sa hauteur suit le ratio
+> (`width: 100%; height: auto`), **sans jamais dépasser ses propres pixels** (`max-width:
+max-content`). Conséquence assumée : un portrait devient haut. C'est le prix de « aucun recadrage
+> automatique du plat », qui ne bouge pas.
+>
+> Le plafond n'est pas une précaution abstraite : la dérivée d'affichage fait 400 px de haut, donc un
+> portrait 3:4 n'a que 300 px de large. Étirée à 494, elle rendait la photo ouverte **plus floue que
+> la petite qu'elle remplaçait**. Un paysage, lui, remplit la colonne à pleins pixels. Ce qui reste
+> ouvert, et qui appartient au pipeline d'images, pas à ce document : une fiche nette sur écran 2×
+> demanderait une dérivée deux fois plus haute, donc un `srcset` par largeur plutôt qu'un fichier
+> unique partagé avec l'index.
+>
+> Le CLS ne bouge pas non plus, mais il ne tient plus à la hauteur fixe : il tient aux dimensions
+> intrinsèques persistées par le pipeline d'images, servies en attributs `width`/`height`. Pour une
+> image dont on ne connaît que la source, l'`aspect-ratio: auto 4 / 3` du CSS réserve une planche au
+> lieu de laisser la boîte s'effondrer jusqu'au chargement. **Le jour où ces dimensions ne sont plus
+> écrites, cette règle redevient un saut de mise en page.**
 
 Une égalisation **colorimétrique** (clamp de saturation, voile papier en `multiply`) reste
 disponible si les photos réelles se battent visiblement entre elles — à ne mettre en place
@@ -441,6 +516,42 @@ pour ce qui est lu à voix haute :
   d'assistance et doublée d'un texte lu en fin de ligne. Un attribut `title` ne compte pas : il
   n'est pas fiable au lecteur d'écran et **inatteignable au toucher**, qui est la surface
   principale.
+
+---
+
+## Mouvement
+
+> **Section ajoutée le 2026-08-13.** Le document n'en avait aucune, et le CSS ne contenait ni
+> `transition` ni `@keyframes` : la thèse de l'imprimé interdisait le mouvement par défaut, sans le
+> dire. Elle l'autorise maintenant dans un seul cas, et l'écrit.
+
+Le mouvement ne sert qu'à une chose : **marquer une substitution que le lecteur n'a pas faite de sa
+main.** Trois surfaces sont concernées, et seulement elles :
+
+- l'index reconstruit 250 ms après une frappe ;
+- l'index reconstruit par un filtre, qui est un bouton posé ailleurs sur la page ;
+- la liste d'ingrédients réécrite par `−` / `+`.
+
+Dans ces trois cas, le contenu change sans que rien ne bouge à l'endroit où l'on regarde. La
+substitution est autrement muette : c'est la même raison qui impose déjà une région live à ces trois
+endroits. Le mouvement en est la moitié visible, pas un supplément d'agrément.
+
+**Ce que le mouvement peut être, et rien d'autre :**
+
+| Contrainte  | Valeur                   | Pourquoi                                                                                            |
+| ----------- | ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Propriété   | `opacity` seule          | Un déplacement fait bouger une cible sous le doigt et déclenche un recalcul de mise en page.        |
+| Durée       | 120 ms                   | Perceptible, jamais attendue. Au-delà, le résultat de la recherche arrive après la frappe suivante. |
+| Courbe      | `ease-out`               | Ce qui arrive s'installe ; rien ne rebondit.                                                        |
+| Déclencheur | une substitution de bloc | Pas le survol, pas le focus, pas l'apparition au défilement, pas le chargement d'une image.         |
+
+**`prefers-reduced-motion` n'est pas une option.** Toute règle d'animation est écrite **à
+l'intérieur** de `@media (prefers-reduced-motion: no-preference)`, jamais annulée après coup dans un
+`reduce`. La différence compte : avec la préférence réglée, aucune règle n'est émise du tout, donc la
+prochaine animation ajoutée ne peut pas oublier sa garde.
+
+Interdits, comme le reste de l'_Anti-slop_ : apparition au défilement, décalage, échelle, rotation,
+squelette pulsant, roue qui tourne, survol animé, transition sur un changement de page.
 
 ---
 

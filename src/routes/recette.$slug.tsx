@@ -124,7 +124,12 @@ function RecipePage() {
         ) : null}
 
         <h2 className="recipe__section">Ingrédients</h2>
-        <ul className="ingredients">
+        {/*
+          Keyed by the servings so −/+ substitutes the list instead of editing it in place: that is
+          what lets `.swap` fade the new quantities in. The remount costs nothing here — the list
+          holds no focusable control and no input state.
+        */}
+        <ul className="ingredients swap" key={current}>
           {lines.map(({ text, scaled }, i) => (
             <li key={i} className="ingredients__item">
               {text}

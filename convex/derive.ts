@@ -7,10 +7,12 @@ import { internalAction } from './_generated/server'
 import { renditionSlot } from './derivations'
 
 /**
- * The display box is 200px tall (160px under 640px), width free — see `DESIGN.md`. Deriving at twice
- * that height covers a 2× device pixel ratio on the desktop case, which is the larger of the two.
- * The mobile case then downloads about 20% more than it needs: ~6kB on a ~30kB file, against a
- * per-image `sizes` computation that only a width-based `srcset` could exploit. Not worth it.
+ * Two display boxes, one derivative. The index box is 112px tall (96px under 640px) and 400 covers it
+ * at any device pixel ratio it will meet. The recipe page is what actually sizes this number: the
+ * photo there opens to the width of its column, capped at its own pixels, so the derivative's height
+ * *is* the largest that page can show — see `DESIGN.md` § Hétérogénéité des photos, amendement du
+ * 2026-08-13. Raising it would sharpen a 2× recipe page and cost every index row its bytes; that
+ * trade needs a width-based `srcset`, not a bigger single file.
  */
 export const DERIVATIVE_HEIGHT = 400
 export const DERIVATIVE_QUALITY = 75
