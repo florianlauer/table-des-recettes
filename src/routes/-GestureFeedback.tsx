@@ -1,3 +1,4 @@
+import { gestureNoteMark, gestureNoteReading } from '../lib/gestureNote'
 import type { Outcome, Run } from '../lib/gestureRegistry'
 import { GestureProgress } from './-GestureProgress'
 
@@ -34,7 +35,16 @@ export function GestureFeedback({
           message this control can no longer print. Keyed by token so two identical messages in a row
           are two nodes, and the second one is announced instead of being swallowed as unchanged. */}
       {outcome && !outcome.orphaned && (
-        <p className="gesture__note" role="status" key={outcome.token}>
+        <p
+          className="gesture__note"
+          data-ok={outcome.result.ok}
+          role="status"
+          key={outcome.token}
+        >
+          <span aria-hidden="true">{gestureNoteMark(outcome.result)} </span>
+          <span className="visually-hidden">
+            {gestureNoteReading(outcome.result)}{' '}
+          </span>
           {outcome.result.text}
         </p>
       )}

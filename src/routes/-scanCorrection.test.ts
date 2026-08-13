@@ -14,13 +14,11 @@ describe('publication report', () => {
         ],
       }),
     ).toBe(
-      '2 publiée(s). Refusées : Tarte aux pommes (pas de titre publiable) · sans titre (les images du scan ont changé)',
+      '2 publiées. Refusées : Tarte aux pommes (pas de titre publiable) · sans titre (les images du scan ont changé)',
     )
   })
 
   test('stays silent about refusals when there are none', () => {
-    expect(publicationReport({ published: 3, refused: [] })).toBe(
-      '3 publiée(s).',
-    )
+    expect(publicationReport({ published: 3, refused: [] })).toBe('3 publiées.')
   })
 })

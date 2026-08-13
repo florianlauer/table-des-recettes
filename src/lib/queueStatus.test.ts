@@ -36,7 +36,7 @@ describe('queue status', () => {
     const now = 200_000
     expect(
       deriveQueueState({ facts: { ...idle, pendingCount: 1 }, now }).button,
-    ).toEqual({ label: "Démarrer l'extraction", disabled: false })
+    ).toEqual({ label: 'Démarrer l’extraction', disabled: false })
     expect(
       deriveQueueState({ facts: { ...idle, leaseStartedAt: 1 }, now }).button,
     ).toEqual({ label: 'Relancer la file', disabled: false })
@@ -67,7 +67,7 @@ describe('queue status', () => {
   })
 
   test('formats a bounded age for queue facts', () => {
-    expect(formatAge({ timestamp: 0, now: 30_000 })).toBe("moins d'une minute")
+    expect(formatAge({ timestamp: 0, now: 30_000 })).toBe('moins d’une minute')
     expect(formatAge({ timestamp: 0, now: 3_600_000 })).toBe('1 h')
   })
 })

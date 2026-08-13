@@ -6,6 +6,12 @@ import { api } from '../../convex/_generated/api'
 import { scaleIngredient, servingsFactor } from '../lib/scale'
 import { TYPE_LABELS } from '../lib/recipeTypes'
 
+/**
+ * Beyond this the `+` is answering a stuck finger, not a cook. It bounds the repeat tap the way
+ * `−` is already bounded at one person; the disabled state is the same one.
+ */
+const MAX_SERVINGS = 50
+
 export const Route = createFileRoute('/recette/$slug')({
   loader: async ({ context, params }) => {
     // Without `notFound()`, an unknown slug would answer HTTP 200 with a message in the body.
@@ -13,10 +19,25 @@ export const Route = createFileRoute('/recette/$slug')({
       convexQuery(api.recipes.getBySlug, { slug: params.slug }),
     )
     if (!recipe) throw notFound()
+    return { title: recipe.title }
   },
+  // Every recipe shared the index's title, so a browser with four open pages showed four
+  // identical tabs and a history nobody could read back.
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: loaderData
+          ? `${loaderData.title} — La table des recettes`
+          : 'La table des recettes',
+      },
+    ],
+  }),
+  // The same shell as the load failure, for the same reason: a page of one sentence gives no clue
+  // where one has landed.
   notFoundComponent: () => (
-    <main className="page">
-      <p className="empty">Cette recette n’existe pas.</p>
+    <main className="page failure">
+      <p className="failure__site">La table des recettes</p>
+      <p className="failure__line">Cette recette n’existe pas.</p>
       <Link to="/" className="back">
         Retour à l’index
       </Link>
@@ -54,7 +75,7 @@ function RecipePage() {
         The back link stays outside them so both columns start on the same line.
       */}
       <Link to="/" className="back">
-        Retour à l'index
+        Retour à l’index
       </Link>
 
       <div className="recipe__head">
@@ -92,7 +113,10 @@ function RecipePage() {
             <button
               className="servings__btn"
               aria-label="Une personne de plus"
-              onClick={() => setTarget((t) => (t ?? servings) + 1)}
+              disabled={current >= MAX_SERVINGS}
+              onClick={() =>
+                setTarget((t) => Math.min(MAX_SERVINGS, (t ?? servings) + 1))
+              }
             >
               +
             </button>
@@ -117,7 +141,7 @@ function RecipePage() {
                   </span>
                   <span className="visually-hidden">
                     {' '}
-                    — quantité non recalculée
+                    — quantité non ajustée
                   </span>
                 </>
               ) : null}
@@ -129,7 +153,7 @@ function RecipePage() {
             reader, no longer exists — each concerned line now carries its own explanation. */}
         {showNote ? (
           <p className="ingredients__note" aria-hidden="true">
-            † Cette quantité n'a pas pu être recalculée : la ligne est
+            † Cette quantité n’a pas pu suivre l’ajustement : la ligne est
             reproduite telle quelle.
           </p>
         ) : null}

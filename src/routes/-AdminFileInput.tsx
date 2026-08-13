@@ -38,9 +38,16 @@ export function AdminFileInput({
   const inert = disabled || running !== null || gestures.blocked(gesture)
 
   return (
-    <label className="admin-page__field">
-      <span id={labelId}>{running ? pendingLabel : label}</span>
+    <label className="admin-page__field admin-page__file">
+      {/* The label *is* the control: every caller already passes an imperative ("Photographier une
+          page"), and the native button next to it said "Choose File" — its text comes from the
+          browser UI language and no attribute reaches it. So it goes under, and the sentence that
+          was already there takes the click. */}
+      <span id={labelId} className="admin-page__file-button">
+        {running ? pendingLabel : label}
+      </span>
       <input
+        className="visually-hidden"
         type="file"
         multiple={multiple}
         accept={IMAGE_ACCEPT}

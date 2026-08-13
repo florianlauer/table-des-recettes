@@ -160,15 +160,33 @@ export const browse = query({
   },
 })
 
+/**
+ * Counted over the same set the filters will act on. Called without a query it counts the shelf;
+ * called with one it counts the matches, because a filter row advertising « Plats 42 » that clicks
+ * through to two results describes a state that does not exist.
+ *
+ * The type is deliberately not an argument: the row has to show what *every* type would give, and
+ * the active one is the caller's business.
+ */
 export const countsByType = query({
-  args: {},
+  args: { query: v.optional(v.string()) },
   returns: typeCounts,
-  handler: async (ctx) => {
-    const rows = await ctx.db
-      .query('recipes')
-      .withIndex('by_status_type', (q) => q.eq('status', 'published'))
-      .collect()
-    // Exhaustive over the closed union: a type with no recipe counts 0, it does not vanish
+  handler: async (ctx, { query: rawQuery }) => {
+    const tokens = toSearchQuery(rawQuery ?? '')
+    const rows = tokens
+      ? await ctx.db
+          .query('recipes')
+          .withSearchIndex('search_recipes', (s) =>
+            s.search('searchText', tokens).eq('status', 'published'),
+          )
+          // Same cap as `browse`, read the same way: two different ceilings would let the row
+          // promise a count the list cannot produce.
+          .take(1024)
+      : await ctx.db
+          .query('recipes')
+          .withIndex('by_status_type', (q) => q.eq('status', 'published'))
+          .collect()
+    // Exhaustive over the closed union: a type with no match counts 0, it does not vanish
     // from the shape. The filter row therefore has nothing to guess.
     const byType = Object.fromEntries(
       RECIPE_TYPES.map((t) => [t, 0]),

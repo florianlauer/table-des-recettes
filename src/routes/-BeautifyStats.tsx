@@ -1,5 +1,7 @@
 import { beautifyGroupKey } from '../lib/beautifyStats'
 import type { WireBeautifySummary } from '../lib/beautifyStats'
+import { formatCount } from '../lib/formatCount'
+import { formatMs, formatUsd } from '../lib/formatNumber'
 
 /**
  * What the image generations have cost and how they have landed, one block per configuration. Split
@@ -16,12 +18,12 @@ export function BeautifyStats({
 }) {
   return (
     <section className="admin-page__stats">
-      <h2>Générations d'images</h2>
+      <h2>Générations d’images</h2>
       {error && <p role="alert">{error.message}</p>}
       {groups?.length === 0 && <p>Aucune génération journalisée.</p>}
       {estimateMs === null && groups !== undefined && groups.length > 0 && (
         <p>
-          Pas encore assez d'appels sur la configuration en service pour estimer
+          Pas encore assez d’appels sur la configuration en service pour estimer
           une durée.
         </p>
       )}
@@ -33,32 +35,42 @@ export function BeautifyStats({
             {group.isCurrent && ' · en service'}
           </h3>
           <p>
-            {group.attempts} appel(s) · {group.accepted} accepté(s) ·{' '}
-            {group.rejected} rejeté(s) · {group.pending} en attente ·{' '}
-            {group.discarded} abandonné(s)
+            {formatCount(group.attempts, 'appel')} ·{' '}
+            {formatCount(group.accepted, 'accepté', 'acceptés')} ·{' '}
+            {formatCount(group.rejected, 'rejeté', 'rejetés')} · {group.pending}{' '}
+            en attente ·{' '}
+            {formatCount(group.discarded, 'abandonné', 'abandonnés')}
           </p>
           <p>
-            {group.technicalFailures} échec(s) technique(s)
+            {formatCount(
+              group.technicalFailures,
+              'échec technique',
+              'échecs techniques',
+            )}
             {group.failureKinds.length > 0 &&
               ` · ${group.failureKinds
                 .map(({ kind, count }) => `${kind} ${count}`)
                 .join(', ')}`}
           </p>
           <p>
-            {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
-            {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
-            {Math.round(group.averageLatencyMs)} ms en moyenne
+            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
+            {formatUsd(group.totalCostUsd)} au total ·{' '}
+            {formatMs(group.averageLatencyMs)} en moyenne
           </p>
           {group.unreportedCostCalls > 0 && (
             <p>
-              {group.unreportedCostCalls} appel(s) sans coût rapporté : le total
-              est un plancher, pas un montant exact.
+              {formatCount(group.unreportedCostCalls, 'appel')} sans coût
+              rapporté : le total est un plancher, pas un montant exact.
             </p>
           )}
           {group.excessiveCostCalls > 0 && (
             <p role="alert">
-              {group.excessiveCostCalls} appel(s) facturé(s) bien au-dessus du
-              coût mesuré.
+              {formatCount(
+                group.excessiveCostCalls,
+                'appel facturé',
+                'appels facturés',
+              )}{' '}
+              bien au-dessus du coût mesuré.
             </p>
           )}
         </article>

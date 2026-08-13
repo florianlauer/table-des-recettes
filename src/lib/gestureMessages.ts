@@ -4,6 +4,7 @@
  * adaptation happens here rather than inside an `onClick`, which is also how these sentences became
  * testable.
  */
+import { formatCount } from './formatCount'
 import type { GestureResult } from './gestures'
 import { formatRemaining } from './queueStatus'
 
@@ -56,7 +57,10 @@ export function uploadMessage({
   failures: readonly string[]
 }): GestureResult {
   if (failures.length === 0)
-    return { ok: true, text: `${total} scan(s) créé(s).` }
+    return {
+      ok: true,
+      text: `${formatCount(total, 'scan créé', 'scans créés')}.`,
+    }
   return { ok: false, text: failures.join(' · ') }
 }
 

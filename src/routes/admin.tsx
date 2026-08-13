@@ -2,11 +2,14 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { groupKey } from '../lib/attemptStats'
 import type { WireAttemptSummary } from '../lib/attemptStats'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
+import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
 import {
   extractionMessage,
   purgeMessage,
@@ -27,15 +30,17 @@ import {
   isLeaseLive,
 } from '../lib/queueStatus'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
-
-export const ADMIN_TOKEN_STORAGE_KEY = 'table-des-recettes-admin-token'
 
 export const Route = createFileRoute('/admin')({ component: AdminPage })
 
 function AdminPage() {
-  const [adminToken, setAdminToken] = useState('')
+  const { token, save: updateToken } = useAdminToken()
+  const [revealToken, setRevealToken] = useState(false)
+  const tokenAbsent = adminTokenState(token) === 'absent'
+  const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
@@ -56,16 +61,6 @@ function AdminPage() {
   })
   const extractionEstimateMs = estimateFrom(stats.data ?? [])
 
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
-
-  function updateToken(value: string) {
-    setAdminToken(value)
-    if (value) sessionStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, value)
-    else sessionStorage.removeItem(ADMIN_TOKEN_STORAGE_KEY)
-  }
-
   // One scan per file. Selecting thirty pages at once is how the initial backlog gets in, and those
   // pages have nothing to do with each other — grouping them would make one huge billed call.
   // Pages that belong together are grouped from the correction screen instead.
@@ -75,20 +70,33 @@ function AdminPage() {
     <main className="page admin-page">
       <header className="admin-page__header">
         <h1>Administration</h1>
+        {/* The way out was missing: /admin is reached by typing the path, and nothing on it led back
+            to the site it administers. */}
         <p>
-          <Link to="/admin/illustrations">Photos des plats</Link>
+          <Link to="/admin/illustrations">Photos des plats</Link> ·{' '}
+          <Link to="/">Voir le site</Link>
         </p>
       </header>
 
-      <label className="admin-page__field">
-        Jeton administrateur
-        <input
-          type="password"
-          value={adminToken}
-          autoComplete="off"
-          onChange={(event) => updateToken(event.target.value)}
-        />
-      </label>
+      {/* Sixty characters typed on a phone, masked, with a refusal as the only feedback: the reveal
+          is what lets the operator check the token instead of retyping it. */}
+      <div className="admin-page__token">
+        <label className="admin-page__field">
+          Jeton administrateur
+          <input
+            type={revealToken ? 'text' : 'password'}
+            value={adminToken}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            onChange={(event) => updateToken(event.target.value)}
+          />
+        </label>
+        <button type="button" onClick={() => setRevealToken(!revealToken)}>
+          {revealToken ? 'Masquer' : 'Afficher'}
+        </button>
+      </div>
 
       <AdminFileInput
         gestures={gestures}
@@ -115,16 +123,29 @@ function AdminPage() {
 
       <QueueBlock
         adminToken={adminToken}
+        tokenAbsent={tokenAbsent}
         now={now}
         gestures={gestures}
         estimateMs={extractionEstimateMs}
       />
 
-      {scans.error && <p role="alert">{scans.error.message}</p>}
-
       <section className="admin-page__scans">
         <h2>Scans</h2>
+        {/* Three states, not one silence. An operator with no token and an operator with an empty
+            queue used to see exactly the same page: a heading above nothing. */}
+        {tokenAbsent && (
+          <p className="empty">
+            Saisis le jeton administrateur pour afficher les scans.
+          </p>
+        )}
         {scans.isLoading && adminToken && <p>Chargement…</p>}
+        {scans.error && (
+          <AdminFailure
+            error={scans.error}
+            retry={() => void scans.refetch()}
+          />
+        )}
+        {scans.data?.length === 0 && <p className="empty">Aucun scan.</p>}
         {scans.data?.map((scan) => {
           const purge = rowGesture(scan.id, 'purge')
           const leaseLive = isLeaseLive({
@@ -144,9 +165,11 @@ function AdminPage() {
                 </Link>
               </h3>
               <p>
-                {scan.imageCount} image · {scan.drafts.length}
-                {scan.draftsTruncated ? '+' : ''} brouillon(s) ·{' '}
-                {scanStatusLabel(scan.status)}
+                {formatCount(scan.imageCount, 'image')} ·{' '}
+                {scan.draftsTruncated
+                  ? `${scan.drafts.length}+ brouillons`
+                  : formatCount(scan.drafts.length, 'brouillon')}{' '}
+                · {scanStatusLabel(scan.status)}
               </p>
               {scan.drafts.length > 0 && (
                 <p className="admin-page__drafts">
@@ -185,10 +208,10 @@ function AdminPage() {
                 <p>
                   {scan.lastAttempt.model} ·{' '}
                   {scan.lastAttempt.servedProvider ?? 'provider inconnu'} ·{' '}
-                  {Math.round(scan.lastAttempt.latencyMs)} ms ·{' '}
-                  {scan.lastAttempt.costUsd.toFixed(4)} USD ·{' '}
+                  {formatMs(scan.lastAttempt.latencyMs)} ·{' '}
+                  {formatUsd(scan.lastAttempt.costUsd)} ·{' '}
                   {scan.lastAttempt.failureKind ?? 'succès'} ·{' '}
-                  {scan.lastAttempt.repairCount} réparation(s)
+                  {formatCount(scan.lastAttempt.repairCount, 'réparation')}
                 </p>
               )}
               {scan.purgedAt === null && !leaseLive && (
@@ -212,32 +235,43 @@ function AdminPage() {
 
       <AttemptStatsBlock
         groups={stats.data}
+        tokenAbsent={tokenAbsent}
         loading={stats.isLoading && adminToken.length > 0}
         error={stats.error}
+        retry={() => void stats.refetch()}
       />
     </main>
   )
 }
 
-function formatRate(rate: number): string {
-  return `${(rate * 100).toFixed(rate > 0 && rate < 0.01 ? 1 : 0)} %`
-}
-
 function AttemptStatsBlock({
   groups,
+  tokenAbsent,
   loading,
   error,
+  retry,
 }: {
   groups: WireAttemptSummary[] | undefined
+  tokenAbsent: boolean
   loading: boolean
   error: Error | null
+  retry: () => void
 }) {
   return (
     <section className="admin-page__stats">
       <h2>Tentatives d’extraction</h2>
+      {/* `=== 0` alone never fired: a failed query leaves `groups` undefined, not empty, so the
+          heading floated above nothing on the very state that needed explaining. */}
+      {tokenAbsent && (
+        <p className="empty">
+          Saisis le jeton administrateur pour afficher le journal.
+        </p>
+      )}
       {loading && <p>Chargement…</p>}
-      {error && <p role="alert">{error.message}</p>}
-      {groups?.length === 0 && <p>Aucune tentative journalisée.</p>}
+      {error && <AdminFailure error={error} retry={retry} />}
+      {groups?.length === 0 && (
+        <p className="empty">Aucune tentative journalisée.</p>
+      )}
       {groups?.map((group) => (
         <article key={groupKey(group)} className="admin-page__stat">
           <h3>
@@ -246,7 +280,8 @@ function AttemptStatsBlock({
             {group.isCurrent && ' · en service'}
           </h3>
           <p>
-            {group.attempts} tentative(s) · {group.failures} échec(s) (
+            {formatCount(group.attempts, 'tentative')} ·{' '}
+            {formatCount(group.failures, 'échec')} (
             {formatRate(group.failureRate)})
             {group.failureKinds.length > 0 &&
               ` · ${group.failureKinds
@@ -254,13 +289,13 @@ function AttemptStatsBlock({
                 .join(', ')}`}
           </p>
           <p>
-            {group.averageCostUsd.toFixed(4)} USD en moyenne ·{' '}
-            {group.totalCostUsd.toFixed(4)} USD au total ·{' '}
-            {Math.round(group.averageLatencyMs)} ms en moyenne
+            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
+            {formatUsd(group.totalCostUsd)} au total ·{' '}
+            {formatMs(group.averageLatencyMs)} en moyenne
           </p>
           <p>
-            {group.repairs} réparation(s) de schéma sur {group.repairedAttempts}{' '}
-            tentative(s)
+            {formatCount(group.repairs, 'réparation')} de schéma sur{' '}
+            {formatCount(group.repairedAttempts, 'tentative')}
           </p>
         </article>
       ))}
@@ -270,11 +305,13 @@ function AttemptStatsBlock({
 
 function QueueBlock({
   adminToken,
+  tokenAbsent,
   now,
   gestures,
   estimateMs,
 }: {
   adminToken: string
+  tokenAbsent: boolean
   now: number
   gestures: Gestures
   estimateMs: number | null
@@ -296,9 +333,16 @@ function QueueBlock({
 
   return (
     <section className="admin-page__queue">
-      <h2>File d'extraction</h2>
+      <h2>File d’extraction</h2>
+      {tokenAbsent && (
+        <p className="empty">
+          Saisis le jeton administrateur pour piloter la file.
+        </p>
+      )}
       {queue.isLoading && adminToken && <p>Chargement…</p>}
-      {queue.error && <p role="alert">{queue.error.message}</p>}
+      {queue.error && (
+        <AdminFailure error={queue.error} retry={() => void queue.refetch()} />
+      )}
       {status && (
         <>
           <p>En attente : {status.counts.pending}</p>
@@ -334,7 +378,7 @@ function QueueBlock({
               {formatRemaining({ deadline: status.nextAttemptAt, now })}.
             </p>
           )}
-          {stopped && <p>File à l'arrêt.</p>}
+          {stopped && <p>File à l’arrêt.</p>}
         </>
       )}
       <AdminButton

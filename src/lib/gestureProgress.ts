@@ -92,7 +92,7 @@ export function progressView({
     return {
       visible: true,
       fraction: null,
-      text: note(`${elapsed} · pas d'estimation`, delayed),
+      text: note(`${elapsed} · pas d’estimation`, delayed),
       valueText: `${elapsed} écoulées, durée inconnue`,
       nextFloor: base,
     }
@@ -103,8 +103,8 @@ export function progressView({
     return {
       visible: true,
       fraction,
-      text: note(`${elapsed} · plus long que d'habitude`, delayed),
-      valueText: `${elapsed} écoulées, plus long que d'habitude`,
+      text: note(`${elapsed} · plus long que d’habitude`, delayed),
+      valueText: `${elapsed} écoulées, plus long que d’habitude`,
       nextFloor: fraction,
     }
   }
@@ -117,8 +117,8 @@ export function progressView({
   return {
     visible: true,
     fraction,
-    text: note(`${elapsed} / ~${typical} d'habitude`, delayed),
-    valueText: `${elapsed} écoulées sur environ ${typical} d'habitude`,
+    text: note(`${elapsed} / ~${typical} d’habitude`, delayed),
+    valueText: `${elapsed} écoulées sur environ ${typical} d’habitude`,
     nextFloor: fraction,
   }
 }

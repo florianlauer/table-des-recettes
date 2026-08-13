@@ -1,9 +1,10 @@
 import { useMutation } from 'convex/react'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
-import { RECIPE_TYPES } from '../lib/recipeTypes'
+import { RECIPE_STATUS_LABELS } from '../lib/recipeStatus'
+import { RECIPE_TYPES, TYPE_LABELS } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
 import { AdminButton } from './-AdminButton'
@@ -38,19 +39,14 @@ export function toDraft(recipe: RecipeView): Draft {
   }
 }
 
-const TYPE_LABELS: Record<RecipeType, string> = {
-  entree: 'Entrée',
-  plat: 'Plat',
-  dessert: 'Dessert',
-  apero: 'Apéro',
-  petitDej: 'Petit déjeuner',
-  autre: 'Autre',
-}
+/** The columns of the parsed line, in the order the grid lays them out. */
+const INGREDIENT_COLUMNS = ['Ligne', 'Quantité', 'Unité', 'Libellé'] as const
 
 /**
- * Holds no state of its own. `edited` is the page's draft when there is one, and being edited *is*
- * being dirty — so a save, a publication or anyone else's write drops the draft by bumping the
- * revision, with nothing to synchronise.
+ * Holds no state the server could disagree with. `edited` is the page's draft when there is one, and
+ * being edited *is* being dirty — so a save, a publication or anyone else's write drops the draft by
+ * bumping the revision, with nothing to synchronise. The removed line below is the exception, and
+ * deliberately not part of the draft: it is an offer to undo, not a value anyone means to save.
  */
 export function RecipeForm({
   recipe,
@@ -73,6 +69,10 @@ export function RecipeForm({
   const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
 
   const titleId = useId()
+  const [removed, setRemoved] = useState<{
+    index: number
+    line: IngredientLine
+  } | null>(null)
   const draft = edited ?? toDraft(recipe)
   const dirty = edited !== null
   const save = rowGesture(recipe.id, 'save')
@@ -108,7 +108,7 @@ export function RecipeForm({
     >
       <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
       <p>
-        {recipe.status === 'published' ? 'Publiée' : 'Brouillon'}
+        {RECIPE_STATUS_LABELS[recipe.status]}
         {recipe.slug && ` · /recette/${recipe.slug}`}
         {recipe.ingredientsInferred && ' · ingrédients déduits'}
       </p>
@@ -149,6 +149,18 @@ export function RecipeForm({
         {/* Four fields, not one: the servings selector reads `quantity` and rewrites the number
             inside `raw`, so a quantity left stale behind an edited line shows a wrong figure on the
             storefront without any error. */}
+        {/* Named columns, not four boxes of decreasing width: the labels existed for assistive tech
+            and nowhere for the eye, so telling the quantity from the unit meant clicking one. */}
+        {draft.ingredients.length > 0 && (
+          <div
+            className="scan-page__ingredient scan-page__ingredient--head"
+            aria-hidden="true"
+          >
+            {INGREDIENT_COLUMNS.map((column) => (
+              <span key={column}>{column}</span>
+            ))}
+          </div>
+        )}
         {draft.ingredients.map((line, index) => (
           <div key={index} className="scan-page__ingredient">
             <input
@@ -160,6 +172,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Quantité ${index + 1}`}
+              placeholder="Quantité"
               inputMode="decimal"
               value={line.quantity ?? ''}
               onChange={(event) =>
@@ -173,6 +186,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Unité ${index + 1}`}
+              placeholder="Unité"
               value={line.unit ?? ''}
               onChange={(event) =>
                 editIngredient(index, {
@@ -182,6 +196,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Libellé ${index + 1}`}
+              placeholder="Libellé"
               value={line.label ?? ''}
               onChange={(event) =>
                 editIngredient(index, {
@@ -191,18 +206,36 @@ export function RecipeForm({
             />
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
+                setRemoved({ index, line })
                 edit({
                   ingredients: draft.ingredients.filter(
                     (_, position) => position !== index,
                   ),
                 })
-              }
+              }}
             >
               Retirer
             </button>
           </div>
         ))}
+        {/* The line came off a photograph: retyping it means going back to the page. Offered until
+            another one is removed, and it returns where it was, not at the end. */}
+        {removed !== null && (
+          <p className="scan-page__undo" role="status">
+            <button
+              type="button"
+              onClick={() => {
+                const ingredients = [...draft.ingredients]
+                ingredients.splice(removed.index, 0, removed.line)
+                setRemoved(null)
+                edit({ ingredients })
+              }}
+            >
+              Rétablir « {removed.line.raw || 'ligne vide'} »
+            </button>
+          </p>
+        )}
         <button
           type="button"
           onClick={() =>

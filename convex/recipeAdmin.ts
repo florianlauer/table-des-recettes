@@ -88,7 +88,7 @@ async function publish(
   if (recipe.status === 'published') return succeeded
   if (!publishableTitle(recipe.title)) {
     return refuse(
-      `« ${recipe.title || 'Sans titre'} » n'a pas de titre publiable`,
+      `« ${recipe.title || 'Sans titre'} » n’a pas de titre publiable`,
     )
   }
   if (imagesChanged) {
