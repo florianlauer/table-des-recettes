@@ -261,7 +261,8 @@ largeur, **hors des deux colonnes** — placé dans l'une d'elles, son espacemen
 colonne vers le bas et l'autre démarrait plus haut :
 
 - à gauche : titre, type de plat, puis tout « Préparation » ;
-- à droite : portions, ingrédients, puis la photo éventuelle ;
+- à droite : portions, ingrédients, puis la photo éventuelle, à la largeur de la colonne
+  (voir § _Hétérogénéité des photos_, amendement du 2026-08-13) ;
 - les deux colonnes démarrent sur la même ligne, à hauteur du haut du titre.
 
 La colonne de gauche donne aux étapes une justification d'environ 40 signes — une colonne de
@@ -364,6 +365,32 @@ complète : son absence ne laisse aucune trace.
 
 L'égalisation est d'abord **structurelle** : hauteur commune, filet identique, fond blanc entre
 elles. C'est l'espace blanc qui isole les différences plutôt que de prétendre les effacer.
+
+> **Amendement du 2026-08-13** — la hauteur commune est celle de **l'index**, pas celle de la
+> fiche.
+>
+> Les deux surfaces affichaient la même photo à la même taille, alors que le document les oppose :
+> l'index est « dense, utilitaire », la fiche est la surface de lecture. Une seule recette est à
+> l'écran, il n'y a plus rien à égaliser, et un portrait de 200 px de haut y faisait 146 px de
+> large dans une colonne de 494 — une vignette au milieu d'une double page.
+>
+> Sur la fiche, la photo prend donc **toute la largeur de sa colonne** et sa hauteur suit le ratio
+> (`width: 100%; height: auto`), **sans jamais dépasser ses propres pixels** (`max-width:
+max-content`). Conséquence assumée : un portrait devient haut. C'est le prix de « aucun recadrage
+> automatique du plat », qui ne bouge pas.
+>
+> Le plafond n'est pas une précaution abstraite : la dérivée d'affichage fait 400 px de haut, donc un
+> portrait 3:4 n'a que 300 px de large. Étirée à 494, elle rendait la photo ouverte **plus floue que
+> la petite qu'elle remplaçait**. Un paysage, lui, remplit la colonne à pleins pixels. Ce qui reste
+> ouvert, et qui appartient au pipeline d'images, pas à ce document : une fiche nette sur écran 2×
+> demanderait une dérivée deux fois plus haute, donc un `srcset` par largeur plutôt qu'un fichier
+> unique partagé avec l'index.
+>
+> Le CLS ne bouge pas non plus, mais il ne tient plus à la hauteur fixe : il tient aux dimensions
+> intrinsèques persistées par le pipeline d'images, servies en attributs `width`/`height`. Pour une
+> image dont on ne connaît que la source, l'`aspect-ratio: auto 4 / 3` du CSS réserve une planche au
+> lieu de laisser la boîte s'effondrer jusqu'au chargement. **Le jour où ces dimensions ne sont plus
+> écrites, cette règle redevient un saut de mise en page.**
 
 Une égalisation **colorimétrique** (clamp de saturation, voile papier en `multiply`) reste
 disponible si les photos réelles se battent visiblement entre elles — à ne mettre en place

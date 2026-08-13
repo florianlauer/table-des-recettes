@@ -834,10 +834,18 @@ img {
   margin-top: 1rem;
 }
 
+/* The reading surface, not the directory: the photo takes the whole of its column and its height
+   follows the ratio. `auto 4 / 3` is the CLS guard — an image whose intrinsic dimensions are known
+   uses them, and one served from an underived source (no width/height attribute) reserves a plate
+   instead of collapsing to nothing until it loads. */
 .recipe__photo {
-  height: 200px;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  /* On a replaced element `max-content` is the file's own width: the photo opens up to its column
+     and stops at its own pixels. Without it, a 292px-wide portrait rendition was blown up to 494 —
+     an opened photo that is softer than the small one it replaced is not an improvement. */
+  max-width: max-content;
+  height: auto;
+  aspect-ratio: auto 4 / 3;
   margin-top: 2rem;
   border: 1px solid var(--rule-strong);
 }
