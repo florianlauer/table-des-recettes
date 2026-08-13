@@ -53,7 +53,7 @@ describe('uploadMessage', () => {
   it('counts what went through', () => {
     expect(uploadMessage({ total: 12, failures: [] })).toEqual({
       ok: true,
-      text: '12 scan(s) créé(s).',
+      text: '12 scans créés.',
     })
   })
 

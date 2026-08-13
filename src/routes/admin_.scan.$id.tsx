@@ -7,6 +7,7 @@ import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
@@ -307,7 +308,7 @@ export function publicationReport({
   published: number
   refused: readonly { title: string; error: string }[]
 }): string {
-  const head = `${published} publiée(s).`
+  const head = `${formatCount(published, 'publiée', 'publiées')}.`
   if (refused.length === 0) return head
   const detail = refused
     .map((row) => `${row.title || 'sans titre'} (${row.error})`)

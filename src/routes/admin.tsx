@@ -7,6 +7,7 @@ import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { groupKey } from '../lib/attemptStats'
 import type { WireAttemptSummary } from '../lib/attemptStats'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
 import {
   extractionMessage,
   purgeMessage,
@@ -151,9 +152,11 @@ function AdminPage() {
                 </Link>
               </h3>
               <p>
-                {scan.imageCount} image · {scan.drafts.length}
-                {scan.draftsTruncated ? '+' : ''} brouillon(s) ·{' '}
-                {scanStatusLabel(scan.status)}
+                {formatCount(scan.imageCount, 'image')} ·{' '}
+                {scan.draftsTruncated
+                  ? `${scan.drafts.length}+ brouillons`
+                  : formatCount(scan.drafts.length, 'brouillon')}{' '}
+                · {scanStatusLabel(scan.status)}
               </p>
               {scan.drafts.length > 0 && (
                 <p className="admin-page__drafts">
@@ -195,7 +198,7 @@ function AdminPage() {
                   {Math.round(scan.lastAttempt.latencyMs)} ms ·{' '}
                   {scan.lastAttempt.costUsd.toFixed(4)} USD ·{' '}
                   {scan.lastAttempt.failureKind ?? 'succès'} ·{' '}
-                  {scan.lastAttempt.repairCount} réparation(s)
+                  {formatCount(scan.lastAttempt.repairCount, 'réparation')}
                 </p>
               )}
               {scan.purgedAt === null && !leaseLive && (
@@ -268,7 +271,8 @@ function AttemptStatsBlock({
             {group.isCurrent && ' · en service'}
           </h3>
           <p>
-            {group.attempts} tentative(s) · {group.failures} échec(s) (
+            {formatCount(group.attempts, 'tentative')} ·{' '}
+            {formatCount(group.failures, 'échec')} (
             {formatRate(group.failureRate)})
             {group.failureKinds.length > 0 &&
               ` · ${group.failureKinds
@@ -281,8 +285,8 @@ function AttemptStatsBlock({
             {Math.round(group.averageLatencyMs)} ms en moyenne
           </p>
           <p>
-            {group.repairs} réparation(s) de schéma sur {group.repairedAttempts}{' '}
-            tentative(s)
+            {formatCount(group.repairs, 'réparation')} de schéma sur{' '}
+            {formatCount(group.repairedAttempts, 'tentative')}
           </p>
         </article>
       ))}

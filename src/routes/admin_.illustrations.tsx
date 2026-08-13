@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
@@ -209,7 +210,7 @@ function MigrationBanner({
     <div className="admin-page__banner">
       <p>
         {migration.started
-          ? `Migration en cours : ${migration.migrated} recette(s) indexée(s). La liste « sans photo » n'est pas encore exhaustive.`
+          ? `Migration en cours : ${formatCount(migration.migrated, 'recette indexée', 'recettes indexées')}. La liste « sans photo » n'est pas encore exhaustive.`
           : "Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n'est pas exhaustive."}
       </p>
       {/* No bar: `listIllustrationWork` reports how many recipes are indexed and no total — one
