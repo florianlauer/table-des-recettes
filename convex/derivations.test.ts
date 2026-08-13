@@ -2,6 +2,7 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
+import { MAX_DERIVATION_ATTEMPTS } from './derivations'
 import schema from './schema'
 
 const modules = import.meta.glob('./**/*.ts')
@@ -63,6 +64,15 @@ function readyRendition(
     storageId,
     width: 292,
     height: 400,
+  }
+}
+
+function failedRendition(sourceStorageId: Id<'_storage'>, attempts: number) {
+  return {
+    status: 'failed' as const,
+    sourceStorageId,
+    error: 'Input buffer contains unsupported image format',
+    attempts,
   }
 }
 
@@ -235,6 +245,66 @@ describe('failDerivation', () => {
     expect(written).toBe(false)
     expect(await recipeOf(t, recipeId)).not.toHaveProperty('imageRendition')
   })
+
+  // Two runs can overlap on one slot — an upload schedules its own derivation while a backfill pass
+  // selects the same slot. If the loser wrote its failure, a working derivative would become an
+  // orphan blob and the storefront would go quietly back to the full-weight source.
+  test('refuses to overwrite a derivative that already works', async () => {
+    const t = setup()
+    const source = await storeBlob(t)
+    const derivative = await storeBlob(t)
+    const recipeId = await newRecipe(t, {
+      imageStorageId: source,
+      hasIllustration: true,
+      imageRendition: readyRendition(source, derivative),
+    })
+
+    const written = await t.mutation(internal.derivations.failDerivation, {
+      recipeId,
+      slot: 'original',
+      sourceStorageId: source,
+      error: 'a second run broke after the first had succeeded',
+    })
+
+    expect(written).toBe(false)
+    expect(await recipeOf(t, recipeId)).toMatchObject({
+      imageRendition: { status: 'ready', storageId: derivative },
+    })
+    expect(await blobExists(t, derivative)).toBe(true)
+  })
+
+  test('accumulates attempts across runs, and starts over on a new source', async () => {
+    const t = setup()
+    const source = await storeBlob(t)
+    const recipeId = await newRecipe(t, {
+      imageStorageId: source,
+      hasIllustration: true,
+    })
+    const fail = (sourceStorageId: Id<'_storage'>) =>
+      t.mutation(internal.derivations.failDerivation, {
+        recipeId,
+        slot: 'original',
+        sourceStorageId,
+        error: 'boom',
+      })
+
+    await fail(source)
+    await fail(source)
+    expect(await recipeOf(t, recipeId)).toMatchObject({
+      imageRendition: { attempts: 2 },
+    })
+
+    // Replacing the photo makes it a different question, so the budget resets rather than inheriting
+    // the previous image's failures.
+    const replacement = await storeBlob(t)
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, { imageStorageId: replacement }),
+    )
+    await fail(replacement)
+    expect(await recipeOf(t, recipeId)).toMatchObject({
+      imageRendition: { attempts: 1, sourceStorageId: replacement },
+    })
+  })
 })
 
 describe('listPendingDerivations', () => {
@@ -301,18 +371,32 @@ describe('listPendingDerivations', () => {
   })
 
   // Without this, "repeat until zero" never converges on an image sharp cannot decode.
-  test('leaves a failed rendition alone unless retryFailed is asked for', async () => {
+  // The whole point of counting: a failure that had nothing to do with the bytes — a native library
+  // that did not load — must not park the photo at full weight until someone notices.
+  test('retries a failed rendition that is still under the attempt ceiling', async () => {
     const t = setup()
     const source = await storeBlob(t)
     const recipeId = await newRecipe(t, {
       imageStorageId: source,
       hasIllustration: true,
-      imageRendition: {
-        status: 'failed' as const,
-        sourceStorageId: source,
-        error: 'unsupported',
-        failedAt: 1,
-      },
+      imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS - 1),
+    })
+
+    const pending = await t.query(internal.derivations.listPendingDerivations, {
+      limit: 10,
+    })
+    expect(pending.slots).toEqual([
+      { recipeId, slot: 'original', sourceStorageId: source },
+    ])
+  })
+
+  test('leaves an exhausted rendition alone unless retryFailed is asked for', async () => {
+    const t = setup()
+    const source = await storeBlob(t)
+    const recipeId = await newRecipe(t, {
+      imageStorageId: source,
+      hasIllustration: true,
+      imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS),
     })
 
     const skipped = await t.query(internal.derivations.listPendingDerivations, {
@@ -429,12 +513,7 @@ describe('what the admin work list reports about renditions', () => {
       beautifiedStorageId: candidate,
       hasIllustration: true,
       // The original refused, the candidate succeeded: a single row-level state could not say which.
-      imageRendition: {
-        status: 'failed' as const,
-        sourceStorageId: source,
-        error: 'Input buffer contains unsupported image format',
-        failedAt: 1,
-      },
+      imageRendition: failedRendition(source, 1),
       beautifiedRendition: readyRendition(candidate, candidateDerivative),
     })
 

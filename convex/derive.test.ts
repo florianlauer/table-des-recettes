@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { internal } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
+import { MAX_DERIVATION_ATTEMPTS } from './derivations'
 import { DERIVATIVE_HEIGHT } from './derive'
 import schema from './schema'
 
@@ -330,14 +331,25 @@ describe('deriveMissing', () => {
     )
     const recipeId = await recipeWithPhoto(t, source)
 
-    await t.action(internal.derive.deriveMissing, { limit: 10 })
-    await t.finishAllScheduledFunctions(() => {})
-    expect((await renditionOf(t, recipeId))?.status).toBe('failed')
+    // The documented operation is "repeat until it reports zero". An undecodable image is retried
+    // while it is under the attempt ceiling — a failure could always have been transient — so what
+    // has to be certified is that the loop *ends*, not that it ends on the first pass.
+    let passes = 0
+    while (
+      (await t.action(internal.derive.deriveMissing, { limit: 10 })).scheduled >
+      0
+    ) {
+      await t.finishAllScheduledFunctions(() => {})
+      passes += 1
+      if (passes > MAX_DERIVATION_ATTEMPTS) throw new Error('does not converge')
+    }
 
-    // The failure is excluded by default, so "repeat until zero" terminates.
-    expect(
-      await t.action(internal.derive.deriveMissing, { limit: 10 }),
-    ).toEqual({ scheduled: 0, isDone: true })
+    expect(passes).toBe(MAX_DERIVATION_ATTEMPTS)
+    expect(await renditionOf(t, recipeId)).toMatchObject({
+      status: 'failed',
+      attempts: MAX_DERIVATION_ATTEMPTS,
+    })
+
     // And it is still reachable on demand.
     expect(
       await t.action(internal.derive.deriveMissing, {

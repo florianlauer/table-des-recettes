@@ -2,7 +2,12 @@ import { v } from 'convex/values'
 import type { Doc, Id } from './_generated/dataModel'
 import { internalMutation, internalQuery } from './_generated/server'
 import { deleteStoredBlob } from './lib/blobs'
-import { renditionOf, sourceOf, usableDerivative } from './lib/renditions'
+import {
+  renditionOf,
+  renditionPatch,
+  sourceOf,
+  usableDerivative,
+} from './lib/renditions'
 import type { RenditionSlot } from './lib/renditions'
 import { literalUnion } from './lib/validators'
 
@@ -11,10 +16,13 @@ export const renditionSlot = literalUnion(['original', 'beautified'] as const)
 /** One page per pass. The corpus is a few hundred recipes; an unbounded scan has no ceiling. */
 export const PENDING_SCAN_BATCH = 200
 
-const RENDITION_FIELD = {
-  original: 'imageRendition',
-  beautified: 'beautifiedRendition',
-} as const
+/**
+ * How many times a source is tried before the backfill stops selecting it on its own. Three, because
+ * the failures worth retrying are one-off — a native library that did not load, a transient storage
+ * read — and an image that is genuinely undecodable fails identically every time. `retryFailed` still
+ * reaches past this ceiling on demand.
+ */
+export const MAX_DERIVATION_ATTEMPTS = 3
 
 const pendingSlot = v.object({
   recipeId: v.id('recipes'),
@@ -57,13 +65,14 @@ export const finalizeDerivation = internalMutation({
       await deleteStoredBlob(ctx, current.storageId)
     }
 
-    await ctx.db.patch(recipeId, {
-      [RENDITION_FIELD[slot]]: {
+    await ctx.db.patch(
+      recipeId,
+      renditionPatch(slot, {
         status: 'ready' as const,
         sourceStorageId,
         ...derived,
-      },
-    })
+      }),
+    )
     return 'adopted'
   },
 })
@@ -89,14 +98,30 @@ export const failDerivation = internalMutation({
     const recipe = await ctx.db.get('recipes', recipeId)
     if (!recipe || sourceOf(recipe, slot) !== sourceStorageId) return false
 
-    await ctx.db.patch(recipeId, {
-      [RENDITION_FIELD[slot]]: {
+    // A failure must never destroy a success. Two runs can overlap on the same slot — `commitIllustration`
+    // schedules one while a backfill pass is selecting the same slot — and if the second one breaks
+    // after the first has adopted its derivative, writing `failed` here would drop a working
+    // derivative to an orphan blob and put the storefront back on the full-weight source, silently.
+    if (usableDerivative(recipe, slot)) return false
+
+    // Attempts accumulate across runs so the backfill can retry a transient failure and still
+    // converge. Counted per source: replacing the photo starts the budget over.
+    const previous = renditionOf(recipe, slot)
+    const attempts =
+      previous?.status === 'failed' &&
+      previous.sourceStorageId === sourceStorageId
+        ? previous.attempts + 1
+        : 1
+
+    await ctx.db.patch(
+      recipeId,
+      renditionPatch(slot, {
         status: 'failed' as const,
         sourceStorageId,
         error,
-        failedAt: Date.now(),
-      },
-    })
+        attempts,
+      }),
+    )
     return true
   },
 })
@@ -110,13 +135,16 @@ function pendingSlotsOf(
     const sourceStorageId = sourceOf(recipe, slot)
     if (!sourceStorageId) return []
     if (usableDerivative(recipe, slot)) return []
-    // A `failed` rendition is only picked up on demand. Selecting it every pass would keep an
-    // undecodable image in the work set for ever, and "repeat until zero" would never converge.
+    // A `failed` rendition is retried while it is under the attempt ceiling, then only on demand:
+    // selecting it for ever would keep an undecodable image in the work set and "repeat until zero"
+    // would never converge, while never selecting it at all would park a photo at full weight on a
+    // failure that had nothing to do with its bytes.
     const rendition = renditionOf(recipe, slot)
-    const failedForThisSource =
+    const exhausted =
       rendition?.status === 'failed' &&
-      rendition.sourceStorageId === sourceStorageId
-    if (failedForThisSource && !retryFailed) return []
+      rendition.sourceStorageId === sourceStorageId &&
+      rendition.attempts >= MAX_DERIVATION_ATTEMPTS
+    if (exhausted && !retryFailed) return []
     return [{ slot, sourceStorageId }]
   })
 }

@@ -89,7 +89,15 @@ export const imageRendition = v.union(
     status: v.literal('failed'),
     sourceStorageId: v.id('_storage'),
     error: v.string(),
-    failedAt: v.number(),
+    /**
+     * How many times deriving this source has been tried. A `catch` cannot tell "these bytes are
+     * not an image" from "this attempt broke" — a native library that failed to load, an image too
+     * large for the runtime — and treating both as a permanent refusal parks a photo at full weight
+     * on a transient blip. Counting is what separates them without guessing at error strings: the
+     * backfill retries while the count is under its ceiling, and stops once it is reached, so
+     * "repeat until zero" still converges on an image that genuinely cannot be decoded.
+     */
+    attempts: v.number(),
   }),
 )
 
