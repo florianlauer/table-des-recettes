@@ -91,6 +91,43 @@ export function summarizeAttempts(
   return groupByIdentity(attempts, groupKey).map(summarizeGroup)
 }
 
+/** The totals of the journal table, or `null` when there is nothing to total. */
+export type AttemptTotals = {
+  attempts: number
+  failures: number
+  failureRate: number
+  repairs: number
+  totalCostUsd: number
+  averageCostUsd: number
+  averageLatencyMs: number
+}
+
+/**
+ * The bottom line of the journal table. Rates and averages are weighted by the number of attempts in
+ * each group, never averaged across groups: a model tried four times must not weigh as much in the
+ * failure rate as one tried two hundred times.
+ */
+export function attemptTotals(groups: AttemptSummary[]): AttemptTotals | null {
+  if (groups.length === 0) return null
+  const sum = (pick: (group: AttemptSummary) => number) =>
+    groups.reduce((total, group) => total + pick(group), 0)
+
+  const attempts = sum((group) => group.attempts)
+  const failures = sum((group) => group.failures)
+  const totalCostUsd = sum((group) => group.totalCostUsd)
+  const latencySum = sum((group) => group.averageLatencyMs * group.attempts)
+
+  return {
+    attempts,
+    failures,
+    failureRate: failures / attempts,
+    repairs: sum((group) => group.repairs),
+    totalCostUsd,
+    averageCostUsd: totalCostUsd / attempts,
+    averageLatencyMs: latencySum / attempts,
+  }
+}
+
 function summarizeGroup(rows: NonEmpty<JournalledAttempt>): AttemptSummary {
   const { model, promptVersion, schemaVersion, servedProvider } = rows[0]
   const sum = (pick: (row: JournalledAttempt) => number) =>

@@ -5,7 +5,7 @@ import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
-import { groupKey } from '../lib/attemptStats'
+import { attemptTotals, groupKey } from '../lib/attemptStats'
 import type { WireAttemptSummary } from '../lib/attemptStats'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
@@ -17,6 +17,7 @@ import {
 } from '../lib/gestureMessages'
 import { isolatedGesture, pageGesture, rowGesture } from '../lib/gestures'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
+import { scanNotes } from '../lib/scanNotes'
 import { formatScanLabel, scanStatusLabel } from '../lib/scanLabel'
 import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures } from '../lib/useGestures'
@@ -146,91 +147,105 @@ function AdminPage() {
           />
         )}
         {scans.data?.length === 0 && <p className="empty">Aucun scan.</p>}
-        {scans.data?.map((scan) => {
-          const purge = rowGesture(scan.id, 'purge')
-          const leaseLive = isLeaseLive({
-            leaseStartedAt: scan.leaseStartedAt,
-            now,
-          })
-          return (
-            <article
-              key={scan.id}
-              className="admin-page__scan"
-              data-row-id={scan.id}
-              aria-busy={gestures.running(purge) !== null}
-            >
-              <h3>
-                <Link to="/admin/scan/$id" params={{ id: scan.id }}>
-                  {formatScanLabel(scan.createdAt)}
-                </Link>
-              </h3>
-              <p>
-                {formatCount(scan.imageCount, 'image')} ·{' '}
-                {scan.draftsTruncated
-                  ? `${scan.drafts.length}+ brouillons`
-                  : formatCount(scan.drafts.length, 'brouillon')}{' '}
-                · {scanStatusLabel(scan.status)}
-              </p>
-              {scan.drafts.length > 0 && (
-                <p className="admin-page__drafts">
-                  {scan.drafts
-                    .map((draft) => draft.title || 'sans titre')
-                    .join(' · ')}
-                </p>
-              )}
-              <p>
-                Tentatives : {scan.attempts} / {MAX_ATTEMPTS}
-              </p>
-              {leaseLive && scan.leaseStartedAt !== null && (
-                <GestureProgress
-                  startedAt={scan.leaseStartedAt}
-                  estimateMs={extractionEstimateMs}
-                  token={scan.leaseStartedAt}
-                />
-              )}
-              {scan.purgedAt !== null && (
-                <p>
-                  Photo purgée il y a{' '}
-                  {formatAge({ timestamp: scan.purgedAt, now })}.
-                </p>
-              )}
-              {scan.draftsTruncated && (
-                <p>
-                  Plus de {scan.drafts.length} brouillons : extraction
-                  probablement défectueuse.
-                </p>
-              )}
-              {scan.error && <p>Échec : {scan.error}</p>}
-              {scan.drafts.some((draft) => draft.ingredientsInferred) && (
-                <p>Ingrédients déduits à vérifier.</p>
-              )}
-              {scan.lastAttempt && (
-                <p>
-                  {scan.lastAttempt.model} ·{' '}
-                  {scan.lastAttempt.servedProvider ?? 'provider inconnu'} ·{' '}
-                  {formatMs(scan.lastAttempt.latencyMs)} ·{' '}
-                  {formatUsd(scan.lastAttempt.costUsd)} ·{' '}
-                  {scan.lastAttempt.failureKind ?? 'succès'} ·{' '}
-                  {formatCount(scan.lastAttempt.repairCount, 'réparation')}
-                </p>
-              )}
-              {scan.purgedAt === null && !leaseLive && (
-                <AdminButton
-                  gestures={gestures}
-                  gesture={purge}
-                  label="Purger la photo"
-                  pendingLabel="Purge…"
-                  confirm="Purger définitivement cette photo ?"
-                  run={async () =>
-                    purgeMessage(
-                      await purgeScanImages({ adminToken, scanId: scan.id }),
-                    )
-                  }
-                />
-              )}
-            </article>
-          )
-        })}
+        {/*
+          A table, because the question asked of this list is a comparison: which page has attempts
+          left, which one is stuck, how many drafts came out of each. Stacked paragraphs answered one
+          scan at a time. Everything that is not a column — the failure, the drafts, the last call —
+          rides in a detail row spanning the table, so nothing is dropped to fit a grid.
+        */}
+        {scans.data && scans.data.length > 0 && (
+          <div className="admin-table__scroll">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Page</th>
+                  <th scope="col" className="admin-table__n">
+                    Images
+                  </th>
+                  <th scope="col" className="admin-table__n">
+                    Brouillons
+                  </th>
+                  <th scope="col">État</th>
+                  <th scope="col" className="admin-table__n">
+                    Tentatives
+                  </th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              {scans.data.map((scan) => {
+                const purge = rowGesture(scan.id, 'purge')
+                const leaseLive = isLeaseLive({
+                  leaseStartedAt: scan.leaseStartedAt,
+                  now,
+                })
+                const notes = scanNotes({ scan, now })
+                return (
+                  // One `tbody` per scan rather than one per table: it is what carries `data-row-id`
+                  // for the gesture registry — `closest()` finds it from the button — and it keeps a
+                  // row and its detail line in the same group.
+                  <tbody
+                    key={scan.id}
+                    data-row-id={scan.id}
+                    aria-busy={gestures.running(purge) !== null}
+                  >
+                    <tr>
+                      <th scope="row">
+                        <Link to="/admin/scan/$id" params={{ id: scan.id }}>
+                          {formatScanLabel(scan.createdAt)}
+                        </Link>
+                      </th>
+                      <td className="admin-table__n">{scan.imageCount}</td>
+                      <td className="admin-table__n">
+                        {scan.drafts.length}
+                        {scan.draftsTruncated && '+'}
+                      </td>
+                      <td>{scanStatusLabel(scan.status)}</td>
+                      <td className="admin-table__n">
+                        {scan.attempts} / {MAX_ATTEMPTS}
+                      </td>
+                      <td>
+                        {scan.purgedAt === null && !leaseLive && (
+                          <AdminButton
+                            gestures={gestures}
+                            gesture={purge}
+                            label="Purger la photo"
+                            pendingLabel="Purge…"
+                            confirm="Purger définitivement cette photo ?"
+                            run={async () =>
+                              purgeMessage(
+                                await purgeScanImages({
+                                  adminToken,
+                                  scanId: scan.id,
+                                }),
+                              )
+                            }
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    {(notes.length > 0 ||
+                      (leaseLive && scan.leaseStartedAt !== null)) && (
+                      <tr className="admin-table__detail">
+                        <td colSpan={6}>
+                          {notes.map((note) => (
+                            <p key={note}>{note}</p>
+                          ))}
+                          {leaseLive && scan.leaseStartedAt !== null && (
+                            <GestureProgress
+                              startedAt={scan.leaseStartedAt}
+                              estimateMs={extractionEstimateMs}
+                              token={scan.leaseStartedAt}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                )
+              })}
+            </table>
+          </div>
+        )}
       </section>
 
       <AttemptStatsBlock
@@ -257,6 +272,8 @@ function AttemptStatsBlock({
   error: Error | null
   retry: () => void
 }) {
+  const totals = attemptTotals(groups ?? [])
+
   return (
     <section className="admin-page__stats">
       <h2>Tentatives d’extraction</h2>
@@ -272,33 +289,103 @@ function AttemptStatsBlock({
       {groups?.length === 0 && (
         <p className="empty">Aucune tentative journalisée.</p>
       )}
-      {groups?.map((group) => (
-        <article key={groupKey(group)} className="admin-page__stat">
-          <h3>
-            {group.model} · {group.servedProvider ?? 'provider inconnu'} ·
-            prompt {group.promptVersion} · schéma {group.schemaVersion}
-            {group.isCurrent && ' · en service'}
-          </h3>
-          <p>
-            {formatCount(group.attempts, 'tentative')} ·{' '}
-            {formatCount(group.failures, 'échec')} (
-            {formatRate(group.failureRate)})
-            {group.failureKinds.length > 0 &&
-              ` · ${group.failureKinds
-                .map(({ kind, count }) => `${kind} ${count}`)
-                .join(', ')}`}
-          </p>
-          <p>
-            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
-            {formatUsd(group.totalCostUsd)} au total ·{' '}
-            {formatMs(group.averageLatencyMs)} en moyenne
-          </p>
-          <p>
-            {formatCount(group.repairs, 'réparation')} de schéma sur{' '}
-            {formatCount(group.repairedAttempts, 'tentative')}
-          </p>
-        </article>
-      ))}
+      {/*
+        The whole point of this journal is a comparison — is the cheap model still cheaper once its
+        failures are paid for — and stacked prose made every figure a separate reading. Columns, and a
+        totals row weighted by attempts.
+      */}
+      {groups && groups.length > 0 && (
+        <div className="admin-table__scroll">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Modèle</th>
+                <th scope="col" className="admin-table__n">
+                  Tentatives
+                </th>
+                <th scope="col" className="admin-table__n">
+                  Échecs
+                </th>
+                <th scope="col" className="admin-table__n">
+                  Coût moyen
+                </th>
+                <th scope="col" className="admin-table__n">
+                  Coût total
+                </th>
+                <th scope="col" className="admin-table__n">
+                  Durée moyenne
+                </th>
+                <th scope="col" className="admin-table__n">
+                  Réparations
+                </th>
+              </tr>
+            </thead>
+            {groups.map((group) => (
+              <tbody key={groupKey(group)}>
+                <tr>
+                  <th scope="row">
+                    {group.model}
+                    {group.isCurrent && (
+                      <span className="admin-table__flag"> en service</span>
+                    )}
+                  </th>
+                  <td className="admin-table__n">{group.attempts}</td>
+                  <td className="admin-table__n">
+                    {group.failures} ({formatRate(group.failureRate)})
+                  </td>
+                  <td className="admin-table__n">
+                    {formatUsd(group.averageCostUsd)}
+                  </td>
+                  <td className="admin-table__n">
+                    {formatUsd(group.totalCostUsd)}
+                  </td>
+                  <td className="admin-table__n">
+                    {formatMs(group.averageLatencyMs)}
+                  </td>
+                  <td className="admin-table__n">
+                    {group.repairs} / {group.repairedAttempts}
+                  </td>
+                </tr>
+                {/* The identity of a reading is four things, not one: two of them would make the
+                    model column unreadable, so they ride under it. */}
+                <tr className="admin-table__detail">
+                  <td colSpan={7}>
+                    <p>
+                      {group.servedProvider ?? 'provider inconnu'} · prompt{' '}
+                      {group.promptVersion} · schéma {group.schemaVersion}
+                      {group.failureKinds.length > 0 &&
+                        ` · ${group.failureKinds
+                          .map(({ kind, count }) => `${kind} ${count}`)
+                          .join(', ')}`}
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+            {totals && (
+              <tfoot>
+                <tr>
+                  <th scope="row">{formatCount(groups.length, 'lecture')}</th>
+                  <td className="admin-table__n">{totals.attempts}</td>
+                  <td className="admin-table__n">
+                    {totals.failures} ({formatRate(totals.failureRate)})
+                  </td>
+                  <td className="admin-table__n">
+                    {formatUsd(totals.averageCostUsd)}
+                  </td>
+                  <td className="admin-table__n">
+                    {formatUsd(totals.totalCostUsd)}
+                  </td>
+                  <td className="admin-table__n">
+                    {formatMs(totals.averageLatencyMs)}
+                  </td>
+                  <td className="admin-table__n">{totals.repairs}</td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+      )}
     </section>
   )
 }
@@ -345,11 +432,28 @@ function QueueBlock({
       )}
       {status && (
         <>
-          <p>En attente : {status.counts.pending}</p>
-          <p>En cours : {status.counts.extracting}</p>
-          <p>Terminés : {status.counts.done}</p>
-          <p>En échec : {status.counts.failed}</p>
-          <p>Au plafond de tentatives : {status.attemptsCeiling}</p>
+          {/*
+            One typographic line of counts, the way the index sets its filters, instead of five
+            paragraphs each holding one number. Five separate lines could not be compared; a row of
+            tabular figures can.
+          */}
+          <p className="admin-page__counts">
+            <span>
+              En attente <b>{status.counts.pending}</b>
+            </span>
+            <span>
+              En cours <b>{status.counts.extracting}</b>
+            </span>
+            <span>
+              Terminés <b>{status.counts.done}</b>
+            </span>
+            <span>
+              En échec <b>{status.counts.failed}</b>
+            </span>
+            <span>
+              Au plafond <b>{status.attemptsCeiling}</b>
+            </span>
+          </p>
           {status.truncated && <p>Comptages plafonnés à 1000.</p>}
           {status.oldestPendingAt !== null && (
             <p>

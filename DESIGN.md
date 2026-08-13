@@ -542,6 +542,44 @@ pour ce qui est lu à voix haute :
 
 ---
 
+## `/admin` — le registre de tri
+
+> **Section ajoutée le 2026-08-13.** Le document ne disait de `/admin` que ce dont elle était
+> **exemptée** : Fraunces, l'échelle fluide, les encres de type. Une revue à cinq lentilles y a trouvé
+> 19 constats sur 28, tous de la même racine — non pas de la négligence, mais un vide de
+> spécification. Voici ce que la page **est**, désormais.
+
+**Registre utilitaire assumé.** Cette page n'est pas une vitrine : c'est le poste de travail d'un seul
+opérateur, et elle déclenche des appels facturés. Elle est jugée sur une seule chose — décider vite et
+juste — donc elle emprunte la forme de l'imprimé qui sert à ça : **le tableau**.
+
+**Les données de cette page sont tabulaires, elles se posent en colonnes.** La question qu'on lui pose
+est toujours une comparaison : quelle page a encore des tentatives, quel modèle coûte moins cher une
+fois ses échecs payés. Une pile de paragraphes répond une ligne à la fois, jamais à la question.
+
+- En-têtes de colonnes en 600, encre atténuée, sur un filet `--rule-strong`.
+- **Chiffres tabulaires et alignés à droite** (`font-variant-numeric: tabular-nums`) : sans cela une
+  colonne de coûts ne se compare pas.
+- Filets horizontaux seulement, jamais de bordure verticale, jamais de zébrures.
+- **Une ligne de total**, séparée par un filet fort. Taux et moyennes y sont pondérés par le nombre de
+  tentatives, jamais moyennés entre groupes.
+- Ce qui n'entre pas dans une colonne — l'échec, les brouillons, le dernier appel — descend dans une
+  **ligne de détail** qui traverse la table. Rien n'est supprimé pour tenir dans la grille.
+- Les compteurs de la file se posent sur **une seule ligne typographique**, comme les filtres de
+  l'index.
+- La table déborde dans sa propre boîte (`overflow-x`) ; la page ne défile jamais latéralement.
+
+**Ce que ça coûte, et qui est assumé** : c'est le registre le plus froid du système, et le plus
+éloigné de la thèse de l'objet imprimé. Il tient parce que `/` et `/recette/$slug` portent la thèse, et
+que cette page n'est jamais vue par un lecteur.
+
+**Ce qui ne change pas** : les interdits _Anti-slop_ s'appliquent ici comme ailleurs — pas de carte,
+pas d'angle arrondi, pas d'aplat, pas de pictogramme, pas de bouton à fond plein. Les contrôles
+restent du texte. Et les exemptions restent des exemptions : Fraunces sur les seuls titres de section,
+pas d'encre de type ailleurs que sur le mot qui nomme un type.
+
+---
+
 ## Mouvement et objets graphiques
 
 > **Section ajoutée le 2026-08-13.** Le document n'en avait aucune, et le CSS ne contenait ni
@@ -617,7 +655,8 @@ Une seule exception d'aplat : la reliure en tête de page, qui borde la fenêtre
 aucun contenu.
 
 Sur `/admin`, ces interdits restent applicables, contrairement aux obligations de Fraunces,
-d'échelle typographique fluide et d'encres de type.
+d'échelle typographique fluide et d'encres de type. **Cette exemption n'est pas un blanc-seing** : ce
+que la page doit être positivement est écrit, § _`/admin` — le registre de tri_.
 
 Les filets, la typographie, le blanc et les photographies réelles portent toute la composition.
 
