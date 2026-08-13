@@ -113,9 +113,10 @@ img {
   margin: 1rem 0;
   max-width: 42rem;
 }
-/* Text and file only. Left unqualified, this framed a checkbox like a text field and gave it the
-   padding of one — the box drifted away from the sentence it commands. */
-.admin-page__field input:not([type='checkbox']) {
+/* Text fields only. Left unqualified, this framed a checkbox like a text field and gave it the
+   padding of one — the box drifted away from the sentence it commands. The file input is hidden
+   behind its own label, so a frame around it would only frame a clipped pixel. */
+.admin-page__field input:not([type='checkbox']):not([type='file']) {
   border: 1px solid var(--rule-strong);
   background: var(--surface);
   color: var(--ink);
@@ -167,18 +168,33 @@ img {
   display: inline-block;
   padding: 0.7rem 0;
 }
-.admin-page button,
-.admin-page input[type='file']::file-selector-button {
+.admin-page button {
   cursor: pointer;
 }
-/* A native file input is intrinsically wider than a 390 px phone, and the scanning gesture is the
-   one thing the admin does *on* a phone: without `minmax(0, …)` its min-content width pushes the
-   grid column past the page and the whole thing scrolls sideways. */
+/* Long values — a file name, a slug, a token — must wrap rather than widen the column: without
+   `minmax(0, …)` their min-content width pushes the grid past a 390 px phone, and the scanning
+   gesture is the one thing the admin does *on* a phone. */
 .admin-page__field {
   grid-template-columns: minmax(0, 1fr);
 }
-.admin-page input[type='file'] {
-  max-width: 100%;
+/* The label carries the frame the hidden input can't. Same shape as `.admin-page button`, since it
+   is one; `justify-self` keeps it the width of its sentence instead of the whole column. */
+.admin-page__file {
+  position: relative;
+}
+.admin-page__file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  border: 1px solid var(--ochre);
+  padding: 0.5rem 0.8rem;
+  min-height: 48px;
+  cursor: pointer;
+}
+/* The ring belongs on what is visible: the input keeps the focus, the label shows it. */
+.admin-page__file:has(input:focus-visible) .admin-page__file-button {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
 }
 @media (hover: hover) {
   .admin-page a:hover {
@@ -186,7 +202,7 @@ img {
     text-decoration-color: var(--ochre);
   }
   .admin-page button:not(:disabled):hover,
-  .admin-page input[type='file']:not(:disabled):hover::file-selector-button {
+  .admin-page__file:has(input:not(:disabled)):hover .admin-page__file-button {
     color: var(--ochre-hover);
     border-color: var(--ochre-hover);
   }
@@ -194,12 +210,12 @@ img {
 /* Touch has no hover: this is the only confirmation a greasy finger registered. */
 .admin-page a:active,
 .admin-page button:not(:disabled):active,
-.admin-page input[type='file']:not(:disabled):active::file-selector-button {
+.admin-page__file:has(input:not(:disabled)):active .admin-page__file-button {
   color: var(--ochre-hover);
 }
 /* A dead control says so — the precedent is `−` in the servings selector. */
 .admin-page button:disabled,
-.admin-page input[type='file']:disabled::file-selector-button {
+.admin-page__file:has(input:disabled) .admin-page__file-button {
   color: var(--rule-strong);
   border-color: var(--rule);
   cursor: default;
