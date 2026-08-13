@@ -215,6 +215,16 @@ img {
   color: var(--ink-muted);
   margin: 0.3rem 0 0;
 }
+/* A settled gesture leaves the muted register: it is the answer to something the operator just did,
+   and it competed with the static captions around it. The glyph already carries the verdict — the
+   weight is the second channel, not a replacement for it. */
+.gesture__note[data-ok='true'],
+.gesture__note[data-ok='false'] {
+  color: var(--ink);
+}
+.gesture__note[data-ok='false'] {
+  font-weight: 600;
+}
 /* The admin's failure line. Same register as the storefront's `.failure`: the fact in body ink,
    the one recourse next to it, no icon and no panel. */
 .admin-page__failure {
