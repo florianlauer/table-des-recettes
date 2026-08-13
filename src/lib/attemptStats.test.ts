@@ -143,7 +143,9 @@ describe('attemptTotals', () => {
       // Twenty attempts of one model, two of them failed, against two attempts of another where
       // both failed: averaging the two rates would report 55%, the truth is 18%.
       ...Array.from({ length: 18 }, () => attempt()),
-      ...Array.from({ length: 2 }, () => attempt({ failureKind: 'schema' })),
+      ...Array.from({ length: 2 }, () =>
+        attempt({ failureKind: 'invalid_schema' }),
+      ),
       ...Array.from({ length: 2 }, () =>
         attempt({
           model: 'mistralai/ministral-8b-2512',

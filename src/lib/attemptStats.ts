@@ -10,6 +10,7 @@ import {
   countFailureKinds,
   groupByIdentity,
 } from './journalStats'
+import type { FailureKind } from './failureKinds'
 import type { NonEmpty } from './journalStats'
 
 // Enough attempts to read a trend over a few dozen recipes — the horizon the plan sets for judging
@@ -24,7 +25,7 @@ export type JournalledAttempt = {
   // In the identity, not merely in the diagnosis: the same model served by another provider can take
   // twice as long, and a latency read across both is a figure describing nothing.
   servedProvider: string | null
-  failureKind: string | null
+  failureKind: FailureKind | null
   costUsd: number
   latencyMs: number
   repairCount: number

@@ -1,3 +1,4 @@
+import type { api } from '../../convex/_generated/api'
 import { formatCount } from './formatCount'
 import { formatMs, formatUsd } from './formatNumber'
 import { formatAge } from './queueStatus'
@@ -9,19 +10,31 @@ import { formatAge } from './queueStatus'
  * A pure function rather than six conditionals in the row, because the order of these lines is a
  * decision — the failure before the cost, the cost last — and an order is worth a test.
  */
-export type ScannedForNotes = {
-  drafts: { title: string; ingredientsInferred: boolean }[]
-  draftsTruncated: boolean
-  error: string | null
-  purgedAt: number | null
-  lastAttempt: {
-    model: string
-    servedProvider: string | null
-    latencyMs: number
-    costUsd: number
-    failureKind: string | null
-    repairCount: number
-  } | null
+type Scan = (typeof api.admin.listScans)['_returnType'][number]
+type Attempt = NonNullable<Scan['lastAttempt']>
+
+/**
+ * Every field derived from the query rather than retyped, so a rename on the wire fails here at
+ * compile time instead of quietly never reaching the detail row. Narrowed to what the notes read —
+ * `Pick`, not the whole row — so a test fixture stays five fields, not a whole scan.
+ */
+export type ScannedForNotes = Pick<
+  Scan,
+  'draftsTruncated' | 'error' | 'purgedAt'
+> & {
+  drafts: readonly Pick<
+    Scan['drafts'][number],
+    'title' | 'ingredientsInferred'
+  >[]
+  lastAttempt: Pick<
+    Attempt,
+    | 'model'
+    | 'servedProvider'
+    | 'latencyMs'
+    | 'costUsd'
+    | 'failureKind'
+    | 'repairCount'
+  > | null
 }
 
 export function scanNotes({

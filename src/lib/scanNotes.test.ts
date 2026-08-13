@@ -43,7 +43,7 @@ describe('scanNotes', () => {
           servedProvider: 'google',
           latencyMs: 8420,
           costUsd: 0.0123,
-          failureKind: 'schema',
+          failureKind: 'invalid_schema',
           repairCount: 2,
         },
       }),
@@ -54,7 +54,7 @@ describe('scanNotes', () => {
     expect(notes).toContain('Ingrédients déduits à vérifier.')
     // The group separator is a no-break space, of a width ICU may spell either way.
     expect(notes[notes.length - 1]).toMatch(
-      /^gemini-2\.5-flash · google · 8\s420 ms · 0,0123 USD · schema · 2 réparations$/u,
+      /^gemini-2\.5-flash · google · 8\s420 ms · 0,0123 USD · invalid_schema · 2 réparations$/u,
     )
   })
 
