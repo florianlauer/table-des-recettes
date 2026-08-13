@@ -28,6 +28,19 @@ export function useSearchDraft({
     latestCommit.current = commit
   })
 
+  // The one place `pushed` is written. There are two ways to commit — a debounce behind the keystrokes
+  // and the clear control, which does not wait — but only one rule deciding what the URL owes, and the
+  // invariant `searchDraft.ts` exists to protect is maintained here or nowhere. Held in a ref for the
+  // same reason `latestCommit` is: read from inside the debounce effect, a fresh closure in its
+  // dependencies would re-arm the timer on every unrelated render.
+  const push = useRef<(next: string) => void>(() => {})
+  push.current = (next: string) => {
+    const change = draftChange({ draft: next, pushed: pushed.current })
+    if (!change.navigate) return
+    pushed.current = next
+    latestCommit.current(change)
+  }
+
   useEffect(() => {
     const change = urlChange({ q, pushed: pushed.current })
     if (!change.adopt) return
@@ -38,14 +51,17 @@ export function useSearchDraft({
   // Decided when the timer fires rather than when it is armed: a navigation that lands in between
   // moves `pushed`, and the pending push is then either stale or already satisfied.
   useEffect(() => {
-    const id = setTimeout(() => {
-      const change = draftChange({ draft, pushed: pushed.current })
-      if (!change.navigate) return
-      pushed.current = draft
-      latestCommit.current(change)
-    }, DEBOUNCE_MS)
+    const id = setTimeout(() => push.current(draft), DEBOUNCE_MS)
     return () => clearTimeout(id)
   }, [draft])
 
-  return [draft, setDraft] as const
+  // The clear control is not a keystroke: it commits at once rather than through the debounce, which
+  // for a deliberate press would read as a quarter second of nothing. The debounce that fires
+  // afterwards finds the draft and `pushed` already equal, so it does nothing.
+  const clear = () => {
+    setDraft('')
+    push.current('')
+  }
+
+  return [draft, setDraft, clear] as const
 }

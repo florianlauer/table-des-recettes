@@ -1,12 +1,13 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { useRef } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
-import { emptyIndexLine } from '../lib/emptyIndexLine'
 import { formatCount } from '../lib/formatCount'
 import { groupByLetter } from '../lib/groupByLetter'
+import { indexStatusLine } from '../lib/indexStatusLine'
 import {
   RECIPE_TYPES,
   TYPE_FILTER_LABELS,
@@ -65,8 +66,6 @@ function IndexPage() {
   const { q, type } = Route.useSearch()
   const navigate = Route.useNavigate()
   const searching = Boolean(q && q.trim())
-  // Announced for either restriction, not just the typed one: clicking a filter rebuilds the list as
-  // completely as a keystroke does, and said nothing.
   const restricted = searching || type !== undefined
   // The same rule the search field follows: entering the filters is worth a history entry, walking
   // between them is not. Five taps used to mean five presses of Back before leaving the site.
@@ -77,7 +76,7 @@ function IndexPage() {
 
   // The field is driven locally and the URL follows a debounce behind; `useSearchDraft` owns that
   // lag, which is trickier than it looks — see `searchDraft.ts`.
-  const [draft, setDraft] = useSearchDraft({
+  const [draft, setDraft, clearDraft] = useSearchDraft({
     q,
     commit: ({ q: next, replace: replaceEntry }) =>
       navigate({
@@ -85,6 +84,7 @@ function IndexPage() {
         replace: replaceEntry,
       }),
   })
+  const field = useRef<HTMLInputElement>(null)
 
   const shelf = useSuspenseQuery(countsOptions()).data
   const counts = useSuspenseQuery(countsOptions(q)).data
@@ -94,6 +94,9 @@ function IndexPage() {
   // has anything to do there — and `groupByLetter` sorts, so computing it anyway would re-sort the
   // whole list on each keystroke to throw the result away.
   const groups = searching ? [] : groupByLetter(listed)
+  // One sentence for the restriction, whichever form it takes: the count while there are results,
+  // the absence and its cause when there are none. `null` when nothing restricts the index.
+  const status = indexStatusLine({ count: listed.length, query: q, type })
   // Which rows sit above the fold, and therefore load eagerly: everything else stays lazy. The
   // position has to be **global**, because a row's rank inside its letter says nothing about where it
   // is on the page — and the query's order is not the display order either, since grouping sorts.
@@ -111,18 +114,46 @@ function IndexPage() {
         <p className="masthead__count">{formatCount(shelf.total, 'recette')}</p>
       </header>
 
-      <input
-        className="search"
-        type="search"
-        value={draft}
-        placeholder="Rechercher une recette"
-        aria-label="Rechercher une recette"
-        // A recipe name is not prose: iOS capitalised it and offered to correct « sarrasin ».
-        autoCapitalize="off"
-        autoCorrect="off"
-        spellCheck={false}
-        onChange={(e) => setDraft(e.target.value)}
-      />
+      {/*
+        `type="text"`, not `search`: the native clear only appears on focus, and never in Firefox, so
+        the only way out of the search regime was invisible on the surface that matters. The × below
+        is always there once something is typed.
+      */}
+      <div className="search-field">
+        <input
+          ref={field}
+          className="search"
+          type="text"
+          value={draft}
+          placeholder="Rechercher une recette"
+          aria-label="Rechercher une recette"
+          // A recipe name is not prose: iOS capitalised it and offered to correct « sarrasin ».
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+          onChange={(e) => setDraft(e.target.value)}
+          // The keyboard convention, kept as a second way out for whoever has a keyboard.
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') clearDraft()
+          }}
+        />
+        {draft === '' ? null : (
+          <button
+            type="button"
+            className="search__clear"
+            // The glyph is hidden from assistive tech and the name is written out: a multiplication
+            // sign read aloud is not an instruction.
+            aria-label="Effacer la recherche"
+            onClick={() => {
+              clearDraft()
+              // Erasing is not leaving: the next thing one does is type another word.
+              field.current?.focus()
+            }}
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        )}
+      </div>
 
       <nav className="filters" aria-label="Types de plat">
         <button
@@ -147,11 +178,12 @@ function IndexPage() {
       </nav>
 
       {/*
-        The list is rebuilt 250 ms after a keystroke, silently, and rebuilt again by a filter that
-        is a button somewhere above. Without this the only feedback for either is visual.
+        One line, read by everyone. It was `visually-hidden`, so the sighted reader got a list whose
+        regime had silently changed and no sentence saying so. Rendered even when empty: a live region
+        has to be in the DOM before its text changes to be announced at all.
       */}
-      <p className="visually-hidden" role="status">
-        {restricted ? formatCount(listed.length, 'résultat') : ''}
+      <p className="status" role="status">
+        {status ?? ''}
       </p>
 
       {/*
@@ -161,12 +193,8 @@ function IndexPage() {
         without `prefers-reduced-motion`.
       */}
       <div className="swap" key={`${q?.trim() ?? ''}|${type ?? ''}`}>
-        {listed.length === 0 ? (
-          <p className="empty">
-            {shelf.total === 0
-              ? 'Aucune recette publiée.'
-              : emptyIndexLine({ query: q, type })}
-          </p>
+        {listed.length === 0 && !restricted ? (
+          <p className="empty">Aucune recette publiée.</p>
         ) : searching ? (
           <ol className="index index--flat" aria-label="Résultats">
             {listed.map((recipe) => (

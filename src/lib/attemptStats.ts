@@ -10,6 +10,7 @@ import {
   countFailureKinds,
   groupByIdentity,
 } from './journalStats'
+import type { FailureKind } from './failureKinds'
 import type { NonEmpty } from './journalStats'
 
 // Enough attempts to read a trend over a few dozen recipes — the horizon the plan sets for judging
@@ -24,7 +25,7 @@ export type JournalledAttempt = {
   // In the identity, not merely in the diagnosis: the same model served by another provider can take
   // twice as long, and a latency read across both is a figure describing nothing.
   servedProvider: string | null
-  failureKind: string | null
+  failureKind: FailureKind | null
   costUsd: number
   latencyMs: number
   repairCount: number
@@ -89,6 +90,46 @@ export function summarizeAttempts(
   attempts: JournalledAttempt[],
 ): AttemptSummary[] {
   return groupByIdentity(attempts, groupKey).map(summarizeGroup)
+}
+
+/** The totals of the journal table. */
+export type AttemptTotals = {
+  attempts: number
+  failures: number
+  failureRate: number
+  repairs: number
+  totalCostUsd: number
+  averageCostUsd: number
+  averageLatencyMs: number
+}
+
+/**
+ * The bottom line of the journal table. Rates and averages are weighted by the number of attempts in
+ * each group, never averaged across groups: a model tried four times must not weigh as much in the
+ * failure rate as one tried two hundred times.
+ *
+ * `NonEmpty` rather than a nullable return: there is no bottom line under nothing, and stating that in
+ * the parameter costs the caller one check it already had to make — where it decides whether to draw a
+ * table at all — instead of four expressions of the same doubt spread over the call site.
+ */
+export function attemptTotals(groups: NonEmpty<AttemptSummary>): AttemptTotals {
+  const sum = (pick: (group: AttemptSummary) => number) =>
+    groups.reduce((total, group) => total + pick(group), 0)
+
+  const attempts = sum((group) => group.attempts)
+  const failures = sum((group) => group.failures)
+  const totalCostUsd = sum((group) => group.totalCostUsd)
+  const latencySum = sum((group) => group.averageLatencyMs * group.attempts)
+
+  return {
+    attempts,
+    failures,
+    failureRate: failures / attempts,
+    repairs: sum((group) => group.repairs),
+    totalCostUsd,
+    averageCostUsd: totalCostUsd / attempts,
+    averageLatencyMs: latencySum / attempts,
+  }
 }
 
 function summarizeGroup(rows: NonEmpty<JournalledAttempt>): AttemptSummary {

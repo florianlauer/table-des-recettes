@@ -5,36 +5,34 @@ import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
-import { groupKey } from '../lib/attemptStats'
-import type { WireAttemptSummary } from '../lib/attemptStats'
+import { dataView } from '../lib/dataView'
 import { estimateFrom } from '../lib/estimate'
-import { formatCount } from '../lib/formatCount'
-import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
-import {
-  extractionMessage,
-  purgeMessage,
-  uploadMessage,
-} from '../lib/gestureMessages'
-import { isolatedGesture, pageGesture, rowGesture } from '../lib/gestures'
+import { extractionMessage, uploadMessage } from '../lib/gestureMessages'
+import { isolatedGesture, pageGesture } from '../lib/gestures'
+import { nonEmpty } from '../lib/journalStats'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
-import { formatScanLabel, scanStatusLabel } from '../lib/scanLabel'
+import {
+  deriveQueueState,
+  formatAge,
+  formatRemaining,
+} from '../lib/queueStatus'
 import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
-import {
-  deriveQueueState,
-  formatAge,
-  formatRemaining,
-  isLeaseLive,
-} from '../lib/queueStatus'
+import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'
-import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
+import { AdminSectionState } from './-AdminSectionState'
+import { AttemptStatsTable } from './-AttemptStats'
 import { GestureProgress } from './-GestureProgress'
+import { ScanTable } from './-ScanTable'
 
-export const Route = createFileRoute('/admin')({ component: AdminPage })
+export const Route = createFileRoute('/admin')({
+  component: AdminPage,
+  head: adminHead,
+})
 
 function AdminPage() {
   const { token, save: updateToken } = useAdminToken()
@@ -42,7 +40,6 @@ function AdminPage() {
   const tokenAbsent = adminTokenState(token) === 'absent'
   const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
-  const purgeScanImages = useMutation(api.admin.purgeScanImages)
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
   const { now } = useServerClock(adminToken)
 
@@ -60,6 +57,23 @@ function AdminPage() {
     retry: false,
   })
   const extractionEstimateMs = estimateFrom(stats.data ?? [])
+
+  // One value per query rather than a ladder of booleans per block: `dataView` decides what the
+  // section is looking at, and only the `ready` case carries data at all.
+  const scansView = dataView({
+    tokenAbsent,
+    loading: scans.isLoading,
+    error: scans.error,
+    data: scans.data,
+  })
+  const scanRows = scansView.kind === 'ready' ? nonEmpty(scansView.data) : null
+  const statsView = dataView({
+    tokenAbsent,
+    loading: stats.isLoading,
+    error: stats.error,
+    data: stats.data,
+  })
+  const statsRows = statsView.kind === 'ready' ? nonEmpty(statsView.data) : null
 
   // One scan per file. Selecting thirty pages at once is how the initial backlog gets in, and those
   // pages have nothing to do with each other — grouping them would make one huge billed call.
@@ -131,175 +145,40 @@ function AdminPage() {
 
       <section className="admin-page__scans">
         <h2>Scans</h2>
-        {/* Three states, not one silence. An operator with no token and an operator with an empty
-            queue used to see exactly the same page: a heading above nothing. */}
-        {tokenAbsent && (
-          <p className="empty">
-            Saisis le jeton administrateur pour afficher les scans.
-          </p>
-        )}
-        {scans.isLoading && adminToken && <p>Chargement…</p>}
-        {scans.error && (
-          <AdminFailure
-            error={scans.error}
-            retry={() => void scans.refetch()}
-          />
-        )}
-        {scans.data?.length === 0 && <p className="empty">Aucun scan.</p>}
-        {scans.data?.map((scan) => {
-          const purge = rowGesture(scan.id, 'purge')
-          const leaseLive = isLeaseLive({
-            leaseStartedAt: scan.leaseStartedAt,
-            now,
-          })
-          return (
-            <article
-              key={scan.id}
-              className="admin-page__scan"
-              data-row-id={scan.id}
-              aria-busy={gestures.running(purge) !== null}
-            >
-              <h3>
-                <Link to="/admin/scan/$id" params={{ id: scan.id }}>
-                  {formatScanLabel(scan.createdAt)}
-                </Link>
-              </h3>
-              <p>
-                {formatCount(scan.imageCount, 'image')} ·{' '}
-                {scan.draftsTruncated
-                  ? `${scan.drafts.length}+ brouillons`
-                  : formatCount(scan.drafts.length, 'brouillon')}{' '}
-                · {scanStatusLabel(scan.status)}
-              </p>
-              {scan.drafts.length > 0 && (
-                <p className="admin-page__drafts">
-                  {scan.drafts
-                    .map((draft) => draft.title || 'sans titre')
-                    .join(' · ')}
-                </p>
-              )}
-              <p>
-                Tentatives : {scan.attempts} / {MAX_ATTEMPTS}
-              </p>
-              {leaseLive && scan.leaseStartedAt !== null && (
-                <GestureProgress
-                  startedAt={scan.leaseStartedAt}
-                  estimateMs={extractionEstimateMs}
-                  token={scan.leaseStartedAt}
-                />
-              )}
-              {scan.purgedAt !== null && (
-                <p>
-                  Photo purgée il y a{' '}
-                  {formatAge({ timestamp: scan.purgedAt, now })}.
-                </p>
-              )}
-              {scan.draftsTruncated && (
-                <p>
-                  Plus de {scan.drafts.length} brouillons : extraction
-                  probablement défectueuse.
-                </p>
-              )}
-              {scan.error && <p>Échec : {scan.error}</p>}
-              {scan.drafts.some((draft) => draft.ingredientsInferred) && (
-                <p>Ingrédients déduits à vérifier.</p>
-              )}
-              {scan.lastAttempt && (
-                <p>
-                  {scan.lastAttempt.model} ·{' '}
-                  {scan.lastAttempt.servedProvider ?? 'provider inconnu'} ·{' '}
-                  {formatMs(scan.lastAttempt.latencyMs)} ·{' '}
-                  {formatUsd(scan.lastAttempt.costUsd)} ·{' '}
-                  {scan.lastAttempt.failureKind ?? 'succès'} ·{' '}
-                  {formatCount(scan.lastAttempt.repairCount, 'réparation')}
-                </p>
-              )}
-              {scan.purgedAt === null && !leaseLive && (
-                <AdminButton
-                  gestures={gestures}
-                  gesture={purge}
-                  label="Purger la photo"
-                  pendingLabel="Purge…"
-                  confirm="Purger définitivement cette photo ?"
-                  run={async () =>
-                    purgeMessage(
-                      await purgeScanImages({ adminToken, scanId: scan.id }),
-                    )
-                  }
-                />
-              )}
-            </article>
-          )
-        })}
+        <AdminSectionState
+          view={scansView}
+          absent="Saisis le jeton administrateur pour afficher les scans."
+          retry={() => void scans.refetch()}
+        />
+        {scansView.kind === 'ready' &&
+          (scanRows ? (
+            <ScanTable
+              rows={scanRows}
+              adminToken={adminToken}
+              gestures={gestures}
+              now={now}
+              estimateMs={extractionEstimateMs}
+            />
+          ) : (
+            <p className="empty">Aucun scan.</p>
+          ))}
       </section>
 
-      <AttemptStatsBlock
-        groups={stats.data}
-        tokenAbsent={tokenAbsent}
-        loading={stats.isLoading && adminToken.length > 0}
-        error={stats.error}
-        retry={() => void stats.refetch()}
-      />
+      <section className="admin-page__stats">
+        <h2>Tentatives d’extraction</h2>
+        <AdminSectionState
+          view={statsView}
+          absent="Saisis le jeton administrateur pour afficher le journal."
+          retry={() => void stats.refetch()}
+        />
+        {statsView.kind === 'ready' &&
+          (statsRows ? (
+            <AttemptStatsTable rows={statsRows} />
+          ) : (
+            <p className="empty">Aucune tentative journalisée.</p>
+          ))}
+      </section>
     </main>
-  )
-}
-
-function AttemptStatsBlock({
-  groups,
-  tokenAbsent,
-  loading,
-  error,
-  retry,
-}: {
-  groups: WireAttemptSummary[] | undefined
-  tokenAbsent: boolean
-  loading: boolean
-  error: Error | null
-  retry: () => void
-}) {
-  return (
-    <section className="admin-page__stats">
-      <h2>Tentatives d’extraction</h2>
-      {/* `=== 0` alone never fired: a failed query leaves `groups` undefined, not empty, so the
-          heading floated above nothing on the very state that needed explaining. */}
-      {tokenAbsent && (
-        <p className="empty">
-          Saisis le jeton administrateur pour afficher le journal.
-        </p>
-      )}
-      {loading && <p>Chargement…</p>}
-      {error && <AdminFailure error={error} retry={retry} />}
-      {groups?.length === 0 && (
-        <p className="empty">Aucune tentative journalisée.</p>
-      )}
-      {groups?.map((group) => (
-        <article key={groupKey(group)} className="admin-page__stat">
-          <h3>
-            {group.model} · {group.servedProvider ?? 'provider inconnu'} ·
-            prompt {group.promptVersion} · schéma {group.schemaVersion}
-            {group.isCurrent && ' · en service'}
-          </h3>
-          <p>
-            {formatCount(group.attempts, 'tentative')} ·{' '}
-            {formatCount(group.failures, 'échec')} (
-            {formatRate(group.failureRate)})
-            {group.failureKinds.length > 0 &&
-              ` · ${group.failureKinds
-                .map(({ kind, count }) => `${kind} ${count}`)
-                .join(', ')}`}
-          </p>
-          <p>
-            {formatUsd(group.averageCostUsd)} en moyenne ·{' '}
-            {formatUsd(group.totalCostUsd)} au total ·{' '}
-            {formatMs(group.averageLatencyMs)} en moyenne
-          </p>
-          <p>
-            {formatCount(group.repairs, 'réparation')} de schéma sur{' '}
-            {formatCount(group.repairedAttempts, 'tentative')}
-          </p>
-        </article>
-      ))}
-    </section>
   )
 }
 
@@ -321,7 +200,13 @@ function QueueBlock({
     ...convexQuery(api.admin.queueStatus, adminToken ? { adminToken } : 'skip'),
     retry: false,
   })
-  const status = queue.data
+  const view = dataView({
+    tokenAbsent,
+    loading: queue.isLoading,
+    error: queue.error,
+    data: queue.data,
+  })
+  const status = view.kind === 'ready' ? view.data : null
   const { leaseLive, stopped, button } = deriveQueueState({
     facts: {
       pendingCount: status?.counts.pending ?? 0,
@@ -334,22 +219,35 @@ function QueueBlock({
   return (
     <section className="admin-page__queue">
       <h2>File d’extraction</h2>
-      {tokenAbsent && (
-        <p className="empty">
-          Saisis le jeton administrateur pour piloter la file.
-        </p>
-      )}
-      {queue.isLoading && adminToken && <p>Chargement…</p>}
-      {queue.error && (
-        <AdminFailure error={queue.error} retry={() => void queue.refetch()} />
-      )}
+      <AdminSectionState
+        view={view}
+        absent="Saisis le jeton administrateur pour piloter la file."
+        retry={() => void queue.refetch()}
+      />
       {status && (
         <>
-          <p>En attente : {status.counts.pending}</p>
-          <p>En cours : {status.counts.extracting}</p>
-          <p>Terminés : {status.counts.done}</p>
-          <p>En échec : {status.counts.failed}</p>
-          <p>Au plafond de tentatives : {status.attemptsCeiling}</p>
+          {/*
+            One typographic line of counts, the way the index sets its filters, instead of five
+            paragraphs each holding one number. Five separate lines could not be compared; a row of
+            tabular figures can.
+          */}
+          <p className="admin-page__counts">
+            <span>
+              En attente <b>{status.counts.pending}</b>
+            </span>
+            <span>
+              En cours <b>{status.counts.extracting}</b>
+            </span>
+            <span>
+              Terminés <b>{status.counts.done}</b>
+            </span>
+            <span>
+              En échec <b>{status.counts.failed}</b>
+            </span>
+            <span>
+              Au plafond <b>{status.attemptsCeiling}</b>
+            </span>
+          </p>
           {status.truncated && <p>Comptages plafonnés à 1000.</p>}
           {status.oldestPendingAt !== null && (
             <p>

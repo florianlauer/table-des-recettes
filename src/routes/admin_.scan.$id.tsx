@@ -17,6 +17,7 @@ import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
+import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
@@ -27,6 +28,7 @@ import type { Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
   component: ScanCorrectionPage,
+  head: adminHead,
 })
 
 /** A draft, and the revision it answers. */

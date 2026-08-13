@@ -58,11 +58,34 @@ parchemin jauni, toujours pas de faux grain.
   --ochre-hover: #7c4720;
   --on-ochre: #ffffff;
 
-  --rule: #c6bdb4;
-  --rule-strong: #8a7f74;
+  --rule: #ada59a; /* 2,20:1 sur --paper */
+  --rule-strong: #8a7f74; /* 3,53:1 sur --paper */
   --focus: #9a5b2b;
 }
 ```
+
+### L'échelle des filets
+
+> **Amendement du 2026-08-13** — remplace `--rule: #c6bdb4` (1,67:1).
+
+**Deux valeurs, et pas de troisième.** `--rule` sépare deux lignes, `--rule-strong` ouvre un groupe,
+et l'écart entre les deux _est_ la hiérarchie : c'est lui qui fait exister le classement alphabétique
+à l'œil, sur un index qui n'a pas d'autre ordre.
+
+À 1,67:1, le filet de ligne n'existait pratiquement pas — jugé côte à côte, sur le vrai markup, à
+trois échelles candidates. Il passe à **2,20:1**, où il se voit, et l'ouverture de groupe reste
+1,6× plus forte.
+
+**Écart assumé, à ne pas relire comme un oubli** : 2,20:1 est sous le seuil de 3:1 de la 1.4.11.
+C'est un choix, et il tient parce que ces filets ne portent aucune information : ils séparent, ils ne
+disent rien qu'on perde en ne les voyant pas. Le titre, le type et la cible d'une ligne d'index sont
+tous lisibles filet éteint. Ce qui **doit** tenir 3:1 est ce qui porte un état — la piste de
+progression, traitée à part, § _Mouvement et objets graphiques_ — et les bordures de champ de saisie,
+déjà en `--rule-strong`.
+
+Une troisième valeur intermédiaire a été essayée puis écartée : elle réglait le cas des contrôles
+mais obligeait chaque futur filet à choisir entre trois jetons, arbitrage que le document devrait
+rendre surface par surface.
 
 ### Une encre par type de plat
 
@@ -485,6 +508,32 @@ Les photos servent la flânerie, jamais la recherche.
 **Sans résultat** : une ligne factuelle, pas une illustration, pas une suggestion, pas un
 encouragement.
 
+### Sortir du régime de recherche
+
+> **Amendement du 2026-08-13.** Le document décrivait l'entrée dans ce régime et rien d'autre. À
+> l'usage, on y entrait sans savoir qu'on y était, et on n'en sortait qu'en vidant le champ soi-même.
+
+Deux ajouts, et pas un de plus.
+
+**Une ligne d'état, lue par tout le monde.** Sous les filtres : `2 résultats pour « courgette »`, en
+`--type-meta`, dans le registre de la ligne factuelle. Elle nomme aussi un filtre seul
+(`94 résultats dans « Plats »`) et se tait quand rien ne restreint l'index — le masthead dit déjà
+combien de recettes existent. C'est **la** région live de l'index : elle était `visually-hidden`, donc
+le lecteur voyant avait une liste qui changeait de régime sans phrase pour le dire.
+
+**Un `×` à la fin du champ**, présent dès que le champ n'est pas vide. `Échap` fait la même chose pour
+qui a un clavier.
+
+Pourquoi pas la croix native de `type="search"` : elle n'apparaît qu'au focus, et Firefox ne la
+dessine pas — la seule issue était donc invisible sur la surface principale, le téléphone posé sur le
+plan de travail. Le champ est un `type="text"` pour cette raison.
+
+Ce `×` **n'est pas un pictogramme** : c'est un signe typographique porteur d'une action, de la même
+famille que le `−` et le `+` du sélecteur de portions et que la dague. Il est masqué aux technologies
+d'assistance, son nom accessible est écrit en toutes lettres — « Effacer la recherche » — et sa cible
+fait 3 rem de côté, donc c'est une cible avant d'être un glyphe. Effacer laisse le focus dans le
+champ : on efface pour taper autre chose, pas pour partir.
+
 ---
 
 ## Résistance
@@ -519,7 +568,45 @@ pour ce qui est lu à voix haute :
 
 ---
 
-## Mouvement
+## `/admin` — le registre de tri
+
+> **Section ajoutée le 2026-08-13.** Le document ne disait de `/admin` que ce dont elle était
+> **exemptée** : Fraunces, l'échelle fluide, les encres de type. Une revue à cinq lentilles y a trouvé
+> 19 constats sur 28, tous de la même racine — non pas de la négligence, mais un vide de
+> spécification. Voici ce que la page **est**, désormais.
+
+**Registre utilitaire assumé.** Cette page n'est pas une vitrine : c'est le poste de travail d'un seul
+opérateur, et elle déclenche des appels facturés. Elle est jugée sur une seule chose — décider vite et
+juste — donc elle emprunte la forme de l'imprimé qui sert à ça : **le tableau**.
+
+**Les données de cette page sont tabulaires, elles se posent en colonnes.** La question qu'on lui pose
+est toujours une comparaison : quelle page a encore des tentatives, quel modèle coûte moins cher une
+fois ses échecs payés. Une pile de paragraphes répond une ligne à la fois, jamais à la question.
+
+- En-têtes de colonnes en 600, encre atténuée, sur un filet `--rule-strong`.
+- **Chiffres tabulaires et alignés à droite** (`font-variant-numeric: tabular-nums`) : sans cela une
+  colonne de coûts ne se compare pas.
+- Filets horizontaux seulement, jamais de bordure verticale, jamais de zébrures.
+- **Une ligne de total**, séparée par un filet fort. Taux et moyennes y sont pondérés par le nombre de
+  tentatives, jamais moyennés entre groupes.
+- Ce qui n'entre pas dans une colonne — l'échec, les brouillons, le dernier appel — descend dans une
+  **ligne de détail** qui traverse la table. Rien n'est supprimé pour tenir dans la grille.
+- Les compteurs de la file se posent sur **une seule ligne typographique**, comme les filtres de
+  l'index.
+- La table déborde dans sa propre boîte (`overflow-x`) ; la page ne défile jamais latéralement.
+
+**Ce que ça coûte, et qui est assumé** : c'est le registre le plus froid du système, et le plus
+éloigné de la thèse de l'objet imprimé. Il tient parce que `/` et `/recette/$slug` portent la thèse, et
+que cette page n'est jamais vue par un lecteur.
+
+**Ce qui ne change pas** : les interdits _Anti-slop_ s'appliquent ici comme ailleurs — pas de carte,
+pas d'angle arrondi, pas d'aplat, pas de pictogramme, pas de bouton à fond plein. Les contrôles
+restent du texte. Et les exemptions restent des exemptions : Fraunces sur les seuls titres de section,
+pas d'encre de type ailleurs que sur le mot qui nomme un type.
+
+---
+
+## Mouvement et objets graphiques
 
 > **Section ajoutée le 2026-08-13.** Le document n'en avait aucune, et le CSS ne contenait ni
 > `transition` ni `@keyframes` : la thèse de l'imprimé interdisait le mouvement par défaut, sans le
@@ -553,6 +640,25 @@ prochaine animation ajoutée ne peut pas oublier sa garde.
 Interdits, comme le reste de l'_Anti-slop_ : apparition au défilement, décalage, échelle, rotation,
 squelette pulsant, roue qui tourne, survol animé, transition sur un changement de page.
 
+### La piste de progression — un objet, pas un filet
+
+Le seul objet graphique du système : la barre qui montre l'avancement d'une extraction sur `/admin`.
+Elle n'est pas un filet et ne suit pas leur échelle, parce qu'elle **porte un état** — c'est le seul
+retour continu pendant une extraction facturée à l'appel.
+
+Donc elle tient 3:1 des deux côtés, ce qu'aucun filet n'a à faire : **piste `--rule-strong` (3,53:1
+sur le papier), remplissage `--ink` (3,75:1 sur la piste), 3 px de haut.**
+
+**L'ocre quitte cette barre**, et ce n'est pas un renoncement d'accent : la palette a été mesurée, et
+aucune piste ne peut tenir 3:1 **à la fois** contre le papier et contre l'ocre. Le meilleur cas de
+l'ocre — 2,90:1 sur `--rule` — échoue de l'autre côté, à 1,67:1 sur le papier. La règle « toute
+couleur porte une information » tranche le reste : ici l'information est portée par la **position**
+du remplissage, donc l'ocre n'y portait rien.
+
+Un remplissage reste un remplissage : pas de rayures, pas d'animation de va-et-vient, pas de
+pourcentage en pastille. Quand l'avancement est inconnu, on écrit le fait en `--type-meta` plutôt que
+d'inventer une barre qui bouge sans savoir.
+
 ---
 
 ## Anti-slop
@@ -563,6 +669,12 @@ Interdits, sans exception :
 - coins arrondis, sauf éventuellement les boutons `−` et `+` du sélecteur de portions ;
 - cartes, et a fortiori carte dans une carte ;
 - pictogrammes décoratifs, tuiles d'icône, loupe dans le champ de recherche ;
+  > **Précision du 2026-08-13.** L'interdit porte sur le **pictogramme**, pas sur le signe. La loupe
+  > reste bannie : elle redit ce que le texte du champ dit déjà. Un signe typographique qui **porte
+  > une action** est admis — `−`, `+`, et désormais le `×` qui efface la recherche — à trois
+  > conditions : masqué aux technologies d'assistance, nom accessible écrit en toutes lettres, cible
+  > au plancher habituel. Aucune icône dessinée, aucun jeu de symboles, aucun SVG décoratif : le jour
+  > où il faut un dessin, c'est que le contrôle manque de mot.
 - centrage général de la page ;
 - label en capitales répété au-dessus de chaque section ;
 - Inter, Roboto, Arial, Helvetica, `system-ui`, Open Sans, Lato, Montserrat, Poppins ;
@@ -575,7 +687,8 @@ Une seule exception d'aplat : la reliure en tête de page, qui borde la fenêtre
 aucun contenu.
 
 Sur `/admin`, ces interdits restent applicables, contrairement aux obligations de Fraunces,
-d'échelle typographique fluide et d'encres de type.
+d'échelle typographique fluide et d'encres de type. **Cette exemption n'est pas un blanc-seing** : ce
+que la page doit être positivement est écrit, § _`/admin` — le registre de tri_.
 
 Les filets, la typographie, le blanc et les photographies réelles portent toute la composition.
 

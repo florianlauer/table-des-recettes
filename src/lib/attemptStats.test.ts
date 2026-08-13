@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import type { JournalledAttempt } from './attemptStats'
-import { summarizeAttempts } from './attemptStats'
+import { attemptTotals, summarizeAttempts } from './attemptStats'
+import { nonEmpty } from './journalStats'
 
 function attempt(
   overrides: Partial<JournalledAttempt> = {},
@@ -126,5 +127,56 @@ describe('attempt statistics', () => {
       'v4',
       'v3',
     ])
+  })
+})
+
+/** The summaries under test always hold something; the type has to be told, and `nonEmpty` is how. */
+function summarized(rows: JournalledAttempt[]) {
+  const summary = nonEmpty(summarizeAttempts(rows))
+  if (summary === null) throw new Error('no summary to total')
+  return summary
+}
+
+describe('attemptTotals', () => {
+  test('weights the failure rate by attempts rather than averaging the groups', () => {
+    const summary = summarized([
+      // Twenty attempts of one model, two of them failed, against two attempts of another where
+      // both failed: averaging the two rates would report 55%, the truth is 18%.
+      ...Array.from({ length: 18 }, () => attempt()),
+      ...Array.from({ length: 2 }, () =>
+        attempt({ failureKind: 'invalid_schema' }),
+      ),
+      ...Array.from({ length: 2 }, () =>
+        attempt({
+          model: 'mistralai/ministral-8b-2512',
+          failureKind: 'timeout',
+        }),
+      ),
+    ])
+
+    const totals = attemptTotals(summary)
+    expect(totals.attempts).toBe(22)
+    expect(totals.failures).toBe(4)
+    expect(totals.failureRate).toBeCloseTo(4 / 22)
+  })
+
+  test('weights the average latency and cost by attempts', () => {
+    const summary = summarized([
+      ...Array.from({ length: 9 }, () =>
+        attempt({ latencyMs: 1000, costUsd: 0.001 }),
+      ),
+      attempt({
+        model: 'mistralai/ministral-8b-2512',
+        latencyMs: 11_000,
+        costUsd: 0.011,
+      }),
+    ])
+
+    const totals = attemptTotals(summary)
+    // Averaging the two group averages would give 6 000 ms; the ten calls really took 2 000 on
+    // average.
+    expect(totals.averageLatencyMs).toBeCloseTo(2000)
+    expect(totals.totalCostUsd).toBeCloseTo(0.02)
+    expect(totals.averageCostUsd).toBeCloseTo(0.002)
   })
 })

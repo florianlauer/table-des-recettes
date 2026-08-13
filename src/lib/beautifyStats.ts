@@ -116,3 +116,55 @@ function summarizeGroup(
     ),
   }
 }
+
+/** The totals of the generation journal. Mirrors `attemptTotals`, and for the same reasons. */
+export type BeautifyTotals = {
+  attempts: number
+  pending: number
+  accepted: number
+  rejected: number
+  discarded: number
+  technicalFailures: number
+  failureRate: number
+  totalCostUsd: number
+  averageCostUsd: number
+  averageLatencyMs: number
+  unreportedCostCalls: number
+  excessiveCostCalls: number
+}
+
+/**
+ * The bottom line of the generation journal. Rates and averages are weighted by the number of calls
+ * in each group, never averaged across groups — a configuration tried twice must not weigh as much as
+ * one tried two hundred times.
+ *
+ * `NonEmpty` for the same reason as `attemptTotals`: there is no bottom line under nothing, and the
+ * caller has already made that check to decide whether to draw a table at all.
+ */
+export function beautifyTotals(
+  groups: NonEmpty<BeautifySummary>,
+): BeautifyTotals {
+  const sum = (pick: (group: BeautifySummary) => number) =>
+    groups.reduce((total, group) => total + pick(group), 0)
+
+  const attempts = sum((group) => group.attempts)
+  const technicalFailures = sum((group) => group.technicalFailures)
+  const totalCostUsd = sum((group) => group.totalCostUsd)
+  // Reconstructed from each group's average, which is the only latency the wire carries.
+  const latencySum = sum((group) => group.averageLatencyMs * group.attempts)
+
+  return {
+    attempts,
+    pending: sum((group) => group.pending),
+    accepted: sum((group) => group.accepted),
+    rejected: sum((group) => group.rejected),
+    discarded: sum((group) => group.discarded),
+    technicalFailures,
+    failureRate: technicalFailures / attempts,
+    totalCostUsd,
+    averageCostUsd: totalCostUsd / attempts,
+    averageLatencyMs: latencySum / attempts,
+    unreportedCostCalls: sum((group) => group.unreportedCostCalls),
+    excessiveCostCalls: sum((group) => group.excessiveCostCalls),
+  }
+}

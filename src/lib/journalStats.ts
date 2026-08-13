@@ -59,3 +59,12 @@ export function costAndLatency(
     averageLatencyMs: totalLatencyMs / rows.length,
   }
 }
+
+/**
+ * The one place a non-empty check turns into the type that says so, so nothing downstream needs a
+ * cast — `length === 0` does not narrow an array to a tuple, and every caller that tried wrote the
+ * cast itself.
+ */
+export function nonEmpty<T>(rows: readonly T[]): NonEmpty<T> | null {
+  return rows.length === 0 ? null : (rows as NonEmpty<T>)
+}

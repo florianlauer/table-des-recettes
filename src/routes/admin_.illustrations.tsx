@@ -5,21 +5,26 @@ import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
+import { dataView } from '../lib/dataView'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
+import { nonEmpty } from '../lib/journalStats'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
+import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
+import { AdminSectionState } from './-AdminSectionState'
 import { BeautifyStats } from './-BeautifyStats'
 import { IllustrationRow } from './-IllustrationRow'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
 
 export const Route = createFileRoute('/admin_/illustrations')({
   component: IllustrationsPage,
+  head: adminHead,
 })
 
 /**
@@ -61,6 +66,13 @@ function IllustrationsPage() {
     retry: false,
   })
   const estimateMs = estimateFrom(stats.data ?? [])
+  const statsView = dataView({
+    tokenAbsent: adminTokenState(token) === 'absent',
+    loading: stats.isLoading,
+    error: stats.error,
+    data: stats.data,
+  })
+  const statsRows = statsView.kind === 'ready' ? nonEmpty(statsView.data) : null
 
   const data = work.data
 
@@ -182,11 +194,26 @@ function IllustrationsPage() {
               ))}
           </section>
 
-          <BeautifyStats
-            groups={stats.data}
-            error={stats.error}
-            estimateMs={estimateMs}
-          />
+          <section className="admin-page__stats">
+            <h2>Générations d’images</h2>
+            <AdminSectionState
+              view={statsView}
+              absent="Saisis le jeton administrateur pour afficher le journal."
+              retry={() => void stats.refetch()}
+            />
+            {estimateMs === null && statsRows && (
+              <p>
+                Pas encore assez d’appels sur la configuration en service pour
+                estimer une durée.
+              </p>
+            )}
+            {statsView.kind === 'ready' &&
+              (statsRows ? (
+                <BeautifyStats rows={statsRows} />
+              ) : (
+                <p className="empty">Aucune génération journalisée.</p>
+              ))}
+          </section>
         </>
       )}
     </main>
