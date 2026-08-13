@@ -5,15 +5,30 @@ import { deleteStoredBlob } from './blobs'
 /** The two image slots a recipe can carry. Each has its own source blob and its own rendition. */
 export type RenditionSlot = 'original' | 'beautified'
 
-type Rendition = NonNullable<Doc<'recipes'>['imageRendition']>
+export type Rendition = NonNullable<Doc<'recipes'>['imageRendition']>
 
-const FIELDS = {
-  original: { source: 'imageStorageId', rendition: 'imageRendition' },
-  beautified: {
-    source: 'beautifiedStorageId',
-    rendition: 'beautifiedRendition',
-  },
-} as const
+/**
+ * A patch that writes one slot's rendition field. **The only place the slot-to-field mapping is
+ * encoded on the write side** — every writer goes through `renditionPatch`, so there is one thing to
+ * change rather than one per call site.
+ *
+ * The annotation is what makes it safe: a computed key (`{[FIELDS[slot]]: …}`) widens to
+ * `Record<string, …>`, which `ctx.db.patch` accepts, so a mistyped field name compiles clean and only
+ * fails once Convex validates the patch at runtime. Returning a literal against this type puts the
+ * error back at compile time, where the rest of the recipe-write helpers already put theirs.
+ */
+export type RenditionPatch = Partial<
+  Pick<Doc<'recipes'>, 'imageRendition' | 'beautifiedRendition'>
+>
+
+export function renditionPatch(
+  slot: RenditionSlot,
+  rendition: Rendition | undefined,
+): RenditionPatch {
+  return slot === 'original'
+    ? { imageRendition: rendition }
+    : { beautifiedRendition: rendition }
+}
 
 export function renditionOf(
   recipe: Doc<'recipes'>,
@@ -59,19 +74,19 @@ export async function clearRendition(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
   slot: RenditionSlot,
-): Promise<Record<string, undefined>> {
+): Promise<RenditionPatch> {
   const rendition = renditionOf(recipe, slot)
   if (rendition?.status === 'ready') {
     await deleteStoredBlob(ctx, rendition.storageId)
   }
-  return { [FIELDS[slot].rendition]: undefined }
+  return renditionPatch(slot, undefined)
 }
 
 /** Both slots at once, for the paths that take a whole recipe down. */
 export async function clearAllRenditions(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
-): Promise<Record<string, undefined>> {
+): Promise<RenditionPatch> {
   return {
     ...(await clearRendition(ctx, recipe, 'original')),
     ...(await clearRendition(ctx, recipe, 'beautified')),

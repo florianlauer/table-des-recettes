@@ -13,7 +13,7 @@ import {
   sourceOf,
   usableDerivative,
 } from './lib/renditions'
-import type { RenditionSlot } from './lib/renditions'
+import type { RenditionPatch, RenditionSlot } from './lib/renditions'
 import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { rateLimiter } from './rateLimits'
@@ -87,7 +87,7 @@ function withoutGeneration(recipe: Doc<'recipes'>, reason: string) {
 async function dropCandidate(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
-): Promise<Record<string, undefined>> {
+): Promise<RenditionPatch> {
   if (!recipe.beautifiedStorageId) return {}
   await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
   // The derivative goes with its source: kept, it would be a blob nothing references, and the read

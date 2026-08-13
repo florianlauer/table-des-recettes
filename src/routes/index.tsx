@@ -97,11 +97,13 @@ function IndexPage() {
   const counts = useSuspenseQuery(countsOptions(q)).data
   const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
-  const groups = groupByLetter(listed)
+  // Searching dissolves the groups and hides every photo, so neither the grouping nor the eager set
+  // has anything to do there — and `groupByLetter` sorts, so computing it anyway would re-sort the
+  // whole list on each keystroke to throw the result away.
+  const groups = searching ? [] : groupByLetter(listed)
   // Which rows sit above the fold, and therefore load eagerly: everything else stays lazy. The
-  // position has to be **global**, because a row's rank inside its letter says nothing about where
-  // it is on the page — and `groupByLetter` sorts, so the query's order is not the display order
-  // either. Searching dissolves the groups and hides the photos, so this has nothing to do there.
+  // position has to be **global**, because a row's rank inside its letter says nothing about where it
+  // is on the page — and the query's order is not the display order either, since grouping sorts.
   const eager = new Set(
     groups
       .flatMap((group) => group.items)
