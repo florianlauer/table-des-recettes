@@ -15,11 +15,11 @@ describe('adminErrorLine', () => {
     const error = new Error(
       '[CONVEX Q(admin:listScans)] [Request ID: ebfd3c7] Server Error',
     )
-    expect(adminErrorLine(error)).toBe("Le serveur n'a pas répondu.")
+    expect(adminErrorLine(error)).toBe('Le serveur n’a pas répondu.')
   })
 
   it('survives a thrown value that is not an Error', () => {
-    expect(adminErrorLine(undefined)).toBe("Le serveur n'a pas répondu.")
+    expect(adminErrorLine(undefined)).toBe('Le serveur n’a pas répondu.')
     expect(adminErrorLine('Accès administrateur refusé')).toBe(
       'Jeton refusé. Vérifie le jeton administrateur.',
     )

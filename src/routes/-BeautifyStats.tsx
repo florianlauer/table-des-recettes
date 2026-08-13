@@ -17,12 +17,12 @@ export function BeautifyStats({
 }) {
   return (
     <section className="admin-page__stats">
-      <h2>Générations d'images</h2>
+      <h2>Générations d’images</h2>
       {error && <p role="alert">{error.message}</p>}
       {groups?.length === 0 && <p>Aucune génération journalisée.</p>}
       {estimateMs === null && groups !== undefined && groups.length > 0 && (
         <p>
-          Pas encore assez d'appels sur la configuration en service pour estimer
+          Pas encore assez d’appels sur la configuration en service pour estimer
           une durée.
         </p>
       )}

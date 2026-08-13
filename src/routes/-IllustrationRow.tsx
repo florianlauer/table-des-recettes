@@ -216,7 +216,7 @@ export function IllustrationRow({
             loading="lazy"
             decoding="async"
           />
-          <figcaption>Photo d'origine</figcaption>
+          <figcaption>Photo d’origine</figcaption>
         </figure>
       )}
       {row.candidateUrl && (

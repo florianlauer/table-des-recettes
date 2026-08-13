@@ -13,7 +13,7 @@ export function adminErrorLine(error: unknown): string {
   const message = messageOf(error)
   if (message.includes(REFUSED))
     return 'Jeton refusé. Vérifie le jeton administrateur.'
-  return "Le serveur n'a pas répondu."
+  return 'Le serveur n’a pas répondu.'
 }
 
 /**

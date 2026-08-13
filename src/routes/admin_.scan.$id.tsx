@@ -102,7 +102,7 @@ function ScanCorrectionPage() {
       <header className="admin-page__header">
         <h1>Correction du scan</h1>
         <p>
-          <Link to="/admin">Retour à l'administration</Link>
+          <Link to="/admin">Retour à l’administration</Link>
         </p>
       </header>
 
@@ -123,11 +123,11 @@ function ScanCorrectionPage() {
       {data && (
         <>
           <section className="scan-page__images">
-            <h2>Pages d'origine</h2>
+            <h2>Pages d’origine</h2>
             {purged ? (
               <p>
                 Photos purgées. La correction reste possible, pas la relance de
-                l'extraction.
+                l’extraction.
               </p>
             ) : (
               <>
@@ -195,8 +195,8 @@ function ScanCorrectionPage() {
           {imagesChanged && (
             <div className="admin-page__banner">
               <p role="alert">
-                Les images ont changé depuis l'extraction. La publication est
-                bloquée tant que les recettes n'ont pas été relues.
+                Les images ont changé depuis l’extraction. La publication est
+                bloquée tant que les recettes n’ont pas été relues.
               </p>
               <AdminButton
                 gestures={gestures}
@@ -231,7 +231,7 @@ function ScanCorrectionPage() {
             <AdminButton
               gestures={gestures}
               gesture={pageGesture('rescan')}
-              label="Relancer l'extraction"
+              label="Relancer l’extraction"
               pendingLabel="Relance…"
               confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
               disabled={purged || data.images.length === 0}
@@ -270,7 +270,7 @@ function ScanCorrectionPage() {
 
           {data.recipesTruncated && (
             <p role="alert">
-              Ce scan porte plus de recettes que l'écran n'en affiche :
+              Ce scan porte plus de recettes que l’écran n’en affiche :
               corrige-les une par une.
             </p>
           )}

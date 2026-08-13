@@ -40,15 +40,15 @@ describe('progressView', () => {
   it('fills against the journalled duration while inside it', () => {
     expect(at(18_000, { estimateMs: 26_000 })).toMatchObject({
       visible: true,
-      text: "18 s / ~26 s d'habitude",
-      valueText: "18 s écoulées sur environ 26 s d'habitude",
+      text: '18 s / ~26 s d’habitude',
+      valueText: '18 s écoulées sur environ 26 s d’habitude',
     })
   })
 
   it('stops at the ceiling and says so past the estimate', () => {
     expect(at(41_000, { estimateMs: 26_000 })).toMatchObject({
       fraction: PROGRESS_CEILING,
-      text: "41 s · plus long que d'habitude",
+      text: '41 s · plus long que d’habitude',
     })
   })
 
@@ -62,7 +62,7 @@ describe('progressView', () => {
     expect(at(41_000)).toMatchObject({
       visible: true,
       fraction: null,
-      text: "41 s · pas d'estimation",
+      text: '41 s · pas d’estimation',
     })
   })
 

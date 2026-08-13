@@ -336,7 +336,7 @@ function QueueBlock({
 
   return (
     <section className="admin-page__queue">
-      <h2>File d'extraction</h2>
+      <h2>File d’extraction</h2>
       {tokenAbsent && (
         <p className="empty">
           Saisis le jeton administrateur pour piloter la file.
@@ -381,7 +381,7 @@ function QueueBlock({
               {formatRemaining({ deadline: status.nextAttemptAt, now })}.
             </p>
           )}
-          {stopped && <p>File à l'arrêt.</p>}
+          {stopped && <p>File à l’arrêt.</p>}
         </>
       )}
       <AdminButton

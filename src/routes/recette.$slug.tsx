@@ -75,7 +75,7 @@ function RecipePage() {
         The back link stays outside them so both columns start on the same line.
       */}
       <Link to="/" className="back">
-        Retour à l'index
+        Retour à l’index
       </Link>
 
       <div className="recipe__head">
@@ -153,7 +153,7 @@ function RecipePage() {
             reader, no longer exists — each concerned line now carries its own explanation. */}
         {showNote ? (
           <p className="ingredients__note" aria-hidden="true">
-            † Cette quantité n'a pas pu suivre l'ajustement : la ligne est
+            † Cette quantité n’a pas pu suivre l’ajustement : la ligne est
             reproduite telle quelle.
           </p>
         ) : null}

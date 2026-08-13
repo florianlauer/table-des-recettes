@@ -83,7 +83,7 @@ function IllustrationsPage() {
       <header className="admin-page__header">
         <h1>Photos des plats</h1>
         <p>
-          <Link to="/admin">Retour à l'administration</Link>
+          <Link to="/admin">Retour à l’administration</Link>
         </p>
         <p>{FRAMING_ADVICE}</p>
       </header>
@@ -114,8 +114,8 @@ function IllustrationsPage() {
             {data.active.length === 0 && <p>Rien à arbitrer.</p>}
             {data.activeTruncated && (
               <p role="alert">
-                Plus de générations en cours que l'écran n'en affiche : arbitre
-                celles-ci d'abord.
+                Plus de générations en cours que l’écran n’en affiche : arbitre
+                celles-ci d’abord.
               </p>
             )}
             {data.active.map((row) => (
@@ -210,8 +210,8 @@ function MigrationBanner({
     <div className="admin-page__banner">
       <p>
         {migration.started
-          ? `Migration en cours : ${formatCount(migration.migrated, 'recette indexée', 'recettes indexées')}. La liste « sans photo » n'est pas encore exhaustive.`
-          : "Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n'est pas exhaustive."}
+          ? `Migration en cours : ${formatCount(migration.migrated, 'recette indexée', 'recettes indexées')}. La liste « sans photo » n’est pas encore exhaustive.`
+          : 'Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n’est pas exhaustive.'}
       </p>
       {/* No bar: `listIllustrationWork` reports how many recipes are indexed and no total — one
           document read, which is exactly what the batched backfill exists to preserve. A fraction
