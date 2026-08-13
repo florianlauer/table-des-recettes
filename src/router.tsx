@@ -19,7 +19,7 @@ function LoadFailed() {
       {/* An anonymous page of one sentence gives no clue where one has landed. The masthead
           at reduced scale is enough to recognise the object. */}
       <p className="failure__site">La table des recettes</p>
-      <p className="failure__line">Les recettes n'ont pas pu être chargées.</p>
+      <p className="failure__line">Les recettes n’ont pas pu être chargées.</p>
       <button
         className="failure__retry"
         onClick={() => void router.invalidate()}

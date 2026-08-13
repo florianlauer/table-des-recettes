@@ -74,6 +74,12 @@ export function scaleIngredient(
   if (RANGE_OR_FRACTION.test(after)) return unchanged
 
   const value = scaleQuantity(quantity, factor, unit !== undefined)
+  // Rounding can land back on the annotated quantity: one kiwi for four people is still one kiwi for
+  // five. The line then shows no trace of the adjustment it did not receive, and the reader has no
+  // way to tell that from a quantity that genuinely holds. Reproduced raw, and marked like the lines
+  // we could not read at all.
+  if (value === quantity) return unchanged
+
   const head = raw.slice(0, match.index)
 
   return { text: `${head}${formatQuantity(value)}${after}`, scaled: true }

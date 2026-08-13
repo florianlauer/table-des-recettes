@@ -2,16 +2,18 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
-import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { BeautifyStats } from './-BeautifyStats'
 import { IllustrationRow } from './-IllustrationRow'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
@@ -36,14 +38,11 @@ const FRAMING_ADVICE =
   'Photographie la page telle quelle, en gardant le texte imprimé autour du plat.'
 
 function IllustrationsPage() {
-  const [adminToken, setAdminToken] = useState('')
+  const { token } = useAdminToken()
+  const adminToken = token ?? ''
   const [includeIllustrated, setIncludeIllustrated] = useState(false)
   const gestures = useGestures({ epoch: `illustrations:${adminToken}` })
   const { now } = useServerClock(adminToken)
-
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
 
   const work = useQuery({
     ...convexQuery(
@@ -84,13 +83,20 @@ function IllustrationsPage() {
       <header className="admin-page__header">
         <h1>Photos des plats</h1>
         <p>
-          <Link to="/admin">Retour à l'administration</Link>
+          <Link to="/admin">Retour à l’administration</Link>
         </p>
         <p>{FRAMING_ADVICE}</p>
       </header>
 
-      {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
-      {work.error && <p role="alert">{work.error.message}</p>}
+      {/* Only once storage has actually been read: `sessionStorage` is invisible to the server
+          render and to the first client render, so this alert used to greet every operator who
+          had a token. */}
+      {adminTokenState(token) === 'absent' && (
+        <p role="alert">Jeton absent : passe par /admin.</p>
+      )}
+      {work.error && (
+        <AdminFailure error={work.error} retry={() => void work.refetch()} />
+      )}
       {work.isLoading && adminToken && <p>Chargement…</p>}
 
       <OrphanedOutcomes gestures={gestures} />
@@ -108,8 +114,8 @@ function IllustrationsPage() {
             {data.active.length === 0 && <p>Rien à arbitrer.</p>}
             {data.activeTruncated && (
               <p role="alert">
-                Plus de générations en cours que l'écran n'en affiche : arbitre
-                celles-ci d'abord.
+                Plus de générations en cours que l’écran n’en affiche : arbitre
+                celles-ci d’abord.
               </p>
             )}
             {data.active.map((row) => (
@@ -148,7 +154,9 @@ function IllustrationsPage() {
 
           <section className="illustrations__section">
             <h2>Déjà illustrées</h2>
-            <label className="admin-page__field">
+            {/* Not `admin-page__field`: that class is the stacked "label above field" grid, and it
+                put the box on its own row, stretched and centred, above its own sentence. */}
+            <label className="admin-page__check">
               <input
                 type="checkbox"
                 checked={includeIllustrated}
@@ -202,8 +210,8 @@ function MigrationBanner({
     <div className="admin-page__banner">
       <p>
         {migration.started
-          ? `Migration en cours : ${migration.migrated} recette(s) indexée(s). La liste « sans photo » n'est pas encore exhaustive.`
-          : "Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n'est pas exhaustive."}
+          ? `Migration en cours : ${formatCount(migration.migrated, 'recette indexée', 'recettes indexées')}. La liste « sans photo » n’est pas encore exhaustive.`
+          : 'Les recettes antérieures ne sont pas encore indexées : la liste « sans photo » n’est pas exhaustive.'}
       </p>
       {/* No bar: `listIllustrationWork` reports how many recipes are indexed and no total — one
           document read, which is exactly what the batched backfill exists to preserve. A fraction

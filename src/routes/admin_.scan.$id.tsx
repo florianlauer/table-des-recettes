@@ -2,10 +2,13 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
+import { formatCount } from '../lib/formatCount'
+import { formatUsd } from '../lib/formatNumber'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
@@ -14,8 +17,8 @@ import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
-import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
+import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
@@ -32,7 +35,8 @@ type Edit = { revision: number; draft: Draft }
 function ScanCorrectionPage() {
   const { id } = Route.useParams()
   const scanId = id as Id<'scans'>
-  const [adminToken, setAdminToken] = useState('')
+  const { token } = useAdminToken()
+  const adminToken = token ?? ''
   // The only editing state on the page. An entry stops counting the moment the server moves the
   // recipe underneath it, so publication reads liveness rather than a flag someone has to maintain,
   // and a deleted recipe takes its entry out of the reckoning by leaving `data.recipes`.
@@ -52,10 +56,6 @@ function ScanCorrectionPage() {
   const acknowledgeImageChange = useMutation(
     api.recipeAdmin.acknowledgeImageChange,
   )
-
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
 
   const scan = useQuery({
     ...convexQuery(
@@ -103,12 +103,19 @@ function ScanCorrectionPage() {
       <header className="admin-page__header">
         <h1>Correction du scan</h1>
         <p>
-          <Link to="/admin">Retour à l'administration</Link>
+          <Link to="/admin">Retour à l’administration</Link>
         </p>
       </header>
 
-      {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
-      {scan.error && <p role="alert">{scan.error.message}</p>}
+      {/* Only once storage has actually been read: `sessionStorage` is invisible to the server
+          render and to the first client render, so this alert used to greet every operator who
+          had a token. */}
+      {adminTokenState(token) === 'absent' && (
+        <p role="alert">Jeton absent : passe par /admin.</p>
+      )}
+      {scan.error && (
+        <AdminFailure error={scan.error} retry={() => void scan.refetch()} />
+      )}
       {scan.isLoading && adminToken && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
 
@@ -117,11 +124,11 @@ function ScanCorrectionPage() {
       {data && (
         <>
           <section className="scan-page__images">
-            <h2>Pages d'origine</h2>
+            <h2>Pages d’origine</h2>
             {purged ? (
               <p>
                 Photos purgées. La correction reste possible, pas la relance de
-                l'extraction.
+                l’extraction.
               </p>
             ) : (
               <>
@@ -129,7 +136,12 @@ function ScanCorrectionPage() {
                 {data.images.map((image, index) => (
                   <figure key={image.storageId} className="scan-page__image">
                     {image.url && (
-                      <img src={image.url} alt={`Page ${index + 1}`} />
+                      <img
+                        src={image.url}
+                        alt={`Page ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     )}
                     <figcaption>
                       Page {index + 1} / {data.images.length}
@@ -184,8 +196,8 @@ function ScanCorrectionPage() {
           {imagesChanged && (
             <div className="admin-page__banner">
               <p role="alert">
-                Les images ont changé depuis l'extraction. La publication est
-                bloquée tant que les recettes n'ont pas été relues.
+                Les images ont changé depuis l’extraction. La publication est
+                bloquée tant que les recettes n’ont pas été relues.
               </p>
               <AdminButton
                 gestures={gestures}
@@ -206,7 +218,7 @@ function ScanCorrectionPage() {
               État : {scanStatusLabel(data.status)}
               {data.error && ` · ${data.error}`}
               {data.totalCostUsd !== null &&
-                ` · ${data.totalCostUsd.toFixed(4)} USD consommés`}
+                ` · ${formatUsd(data.totalCostUsd)} consommés`}
             </p>
             {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
                 own `startedAt`, so it is there after a reload too. */}
@@ -220,7 +232,7 @@ function ScanCorrectionPage() {
             <AdminButton
               gestures={gestures}
               gesture={pageGesture('rescan')}
-              label="Relancer l'extraction"
+              label="Relancer l’extraction"
               pendingLabel="Relance…"
               confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
               disabled={purged || data.images.length === 0}
@@ -259,7 +271,7 @@ function ScanCorrectionPage() {
 
           {data.recipesTruncated && (
             <p role="alert">
-              Ce scan porte plus de recettes que l'écran n'en affiche :
+              Ce scan porte plus de recettes que l’écran n’en affiche :
               corrige-les une par une.
             </p>
           )}
@@ -302,7 +314,7 @@ export function publicationReport({
   published: number
   refused: readonly { title: string; error: string }[]
 }): string {
-  const head = `${published} publiée(s).`
+  const head = `${formatCount(published, 'publiée', 'publiées')}.`
   if (refused.length === 0) return head
   const detail = refused
     .map((row) => `${row.title || 'sans titre'} (${row.error})`)

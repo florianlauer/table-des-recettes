@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { gestureNoteMark, gestureNoteReading } from '../lib/gestureNote'
 import { outcomeKey } from '../lib/gestureRegistry'
 import type { Gestures } from '../lib/useGestures'
 
@@ -35,6 +36,7 @@ export function OrphanedOutcomes({ gestures }: { gestures: Gestures }) {
         return (
           <p
             className="gesture__note"
+            data-ok={outcome.result.ok}
             role="status"
             tabIndex={-1}
             key={key}
@@ -43,6 +45,10 @@ export function OrphanedOutcomes({ gestures }: { gestures: Gestures }) {
               else nodes.current.set(key, node)
             }}
           >
+            <span aria-hidden="true">{gestureNoteMark(outcome.result)} </span>
+            <span className="visually-hidden">
+              {gestureNoteReading(outcome.result)}{' '}
+            </span>
             {outcome.result.text}
           </p>
         )

@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
+import { emptyIndexLine } from '../lib/emptyIndexLine'
+import { formatCount } from '../lib/formatCount'
 import { groupByLetter } from '../lib/groupByLetter'
 import {
   RECIPE_TYPES,
@@ -25,14 +27,24 @@ export const Route = createFileRoute('/')({
   loaderDeps: ({ search }) => ({ q: search.q, type: search.type }),
   loader: async ({ context, deps }) => {
     await Promise.all([
-      context.queryClient.ensureQueryData(
-        convexQuery(api.recipes.countsByType, {}),
-      ),
+      context.queryClient.ensureQueryData(countsOptions()),
+      context.queryClient.ensureQueryData(countsOptions(deps.q)),
       context.queryClient.ensureQueryData(browseOptions(deps)),
     ])
   },
   component: IndexPage,
 })
+
+/**
+ * Two scopes of the same count. Without an argument it is the shelf — what the masthead says and
+ * what tells "nothing published" apart from "nothing matches". With the search it is the matches,
+ * which is what the filter row must promise. The args are built here rather than inline so that an
+ * empty search produces the same key as no search at all: one subscription, not two.
+ */
+function countsOptions(rawQuery?: string) {
+  const query = rawQuery?.trim()
+  return convexQuery(api.recipes.countsByType, query ? { query } : {})
+}
 
 /** A single query for the index: the list ↔ search switch lives in Convex. */
 function browseOptions({ q, type }: { q?: string; type?: RecipeType }) {
@@ -46,6 +58,15 @@ function IndexPage() {
   const { q, type } = Route.useSearch()
   const navigate = Route.useNavigate()
   const searching = Boolean(q && q.trim())
+  // Announced for either restriction, not just the typed one: clicking a filter rebuilds the list as
+  // completely as a keystroke does, and said nothing.
+  const restricted = searching || type !== undefined
+  // The same rule the search field follows: entering the filters is worth a history entry, walking
+  // between them is not. Five taps used to mean five presses of Back before leaving the site.
+  const replace = type !== undefined
+  const filterSearch =
+    (next: RecipeType | undefined) =>
+    (prev: { q?: string; type?: RecipeType }) => ({ ...prev, type: next })
 
   // The field is driven locally, the URL follows 250 ms behind. Typing "courgette" must not
   // stack nine history entries nor nine Convex subscriptions — but replacing everything would
@@ -65,16 +86,15 @@ function IndexPage() {
     return () => clearTimeout(id)
   }, [draft, q, navigate])
 
-  const counts = useSuspenseQuery(
-    convexQuery(api.recipes.countsByType, {}),
-  ).data
+  const shelf = useSuspenseQuery(countsOptions()).data
+  const counts = useSuspenseQuery(countsOptions(q)).data
   const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
   return (
     <main className="page">
       <header className="masthead">
         <h1 className="masthead__title">La table des recettes</h1>
-        <p className="masthead__count">{counts.total} recettes</p>
+        <p className="masthead__count">{formatCount(shelf.total, 'recette')}</p>
       </header>
 
       <input
@@ -83,6 +103,10 @@ function IndexPage() {
         value={draft}
         placeholder="Rechercher une recette"
         aria-label="Rechercher une recette"
+        // A recipe name is not prose: iOS capitalised it and offered to correct « sarrasin ».
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
         onChange={(e) => setDraft(e.target.value)}
       />
 
@@ -90,9 +114,7 @@ function IndexPage() {
         <button
           className="filters__item"
           aria-current={type === undefined}
-          onClick={() =>
-            navigate({ search: (prev) => ({ ...prev, type: undefined }) })
-          }
+          onClick={() => navigate({ search: filterSearch(undefined), replace })}
         >
           Toutes <span className="filters__count">{counts.total}</span>
         </button>
@@ -102,9 +124,7 @@ function IndexPage() {
             className="filters__item"
             data-type={t}
             aria-current={type === t}
-            onClick={() =>
-              navigate({ search: (prev) => ({ ...prev, type: t }) })
-            }
+            onClick={() => navigate({ search: filterSearch(t), replace })}
           >
             {TYPE_FILTER_LABELS[t]}{' '}
             <span className="filters__count">{counts.byType[t]}</span>
@@ -113,23 +133,21 @@ function IndexPage() {
       </nav>
 
       {/*
-        The list is rebuilt 250 ms after a keystroke, silently. Without this the only feedback
-        for the search is visual — a screen reader announces nothing at all while typing.
+        The list is rebuilt 250 ms after a keystroke, silently, and rebuilt again by a filter that
+        is a button somewhere above. Without this the only feedback for either is visual.
       */}
       <p className="visually-hidden" role="status">
-        {searching
-          ? `${listed.length} résultat${listed.length > 1 ? 's' : ''}`
-          : ''}
+        {restricted ? formatCount(listed.length, 'résultat') : ''}
       </p>
 
       {listed.length === 0 ? (
         <p className="empty">
-          {counts.total === 0
+          {shelf.total === 0
             ? 'Aucune recette publiée.'
-            : 'Aucune recette ne correspond.'}
+            : emptyIndexLine({ query: q, type })}
         </p>
       ) : searching ? (
-        <ol className="index index--flat">
+        <ol className="index index--flat" aria-label="Résultats">
           {listed.map((recipe) => (
             <RecipeRow key={recipe.id} recipe={recipe} showImage={false} />
           ))}
@@ -185,6 +203,7 @@ function RecipeRow({
             src={recipe.imageUrl}
             alt=""
             loading="lazy"
+            decoding="async"
           />
         ) : null}
       </div>

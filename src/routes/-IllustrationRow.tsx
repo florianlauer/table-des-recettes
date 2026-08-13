@@ -4,6 +4,8 @@ import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import { BEAUTIFY_LEASE_MS, illustrationActions } from '../lib/illustrationWork'
+import { recipeStatusLabel } from '../lib/recipeStatus'
+import { TYPE_LABELS } from '../lib/recipeTypes'
 import { useAttachIllustration } from '../lib/useAttachIllustration'
 import type { Gestures } from '../lib/useGestures'
 import { uploadProgress } from '../lib/uploadProgress'
@@ -55,6 +57,9 @@ export function IllustrationRow({
   const args = { adminToken, recipeId: row.id }
   const titleId = useId()
   const generate = rowGesture(row.id, 'generate')
+  // Named in every confirmation, so the dialog says which row it is about even when the scan gave
+  // the recipe no title yet.
+  const title = row.title || 'sans titre'
 
   /**
    * `requestBeautify` schedules and returns; the work then lives in `beautifyStatus`. The gesture is
@@ -94,6 +99,9 @@ export function IllustrationRow({
       action: 'reject',
       label: 'Rejeter le candidat',
       pendingLabel: 'Rejet…',
+      // `rejectPendingCandidate` deletes the blob: the render is paid for and gone, and getting
+      // another costs a second call. Same reason `detach` asks.
+      confirm: `Rejeter le candidat de « ${title} » ? L’image générée est supprimée, et en obtenir une autre demandera une nouvelle génération.`,
       run: () => rejectPending(args),
     },
     {
@@ -119,6 +127,7 @@ export function IllustrationRow({
       action: 'deleteCandidate',
       label: 'Supprimer le candidat conservé',
       pendingLabel: 'Suppression…',
+      confirm: `Supprimer le candidat conservé de « ${title} » ? L’image est effacée définitivement.`,
       run: () => deleteCandidate(args),
     },
     {
@@ -133,7 +142,7 @@ export function IllustrationRow({
       action: 'detach',
       label: 'Retirer la photo',
       pendingLabel: 'Retrait…',
-      confirm: `Retirer la photo de « ${row.title} » ?`,
+      confirm: `Retirer la photo de « ${title} » ?`,
       run: () => detachIllustration(args),
     },
   ]
@@ -172,7 +181,7 @@ export function IllustrationRow({
     >
       <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
       <p>
-        {row.type} · {row.status}
+        {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}
       </p>
       {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}
@@ -199,13 +208,25 @@ export function IllustrationRow({
           thing being judged — unreadable. */}
       {row.originalUrl && (
         <figure className="illustrations__shot">
-          <img src={row.originalUrl} alt={`Photo de ${row.title}`} />
-          <figcaption>Photo d'origine</figcaption>
+          {/* Lazy, and it matters here more than anywhere: the queue lists dozens of rows, each
+              carrying a page photographed at full resolution. */}
+          <img
+            src={row.originalUrl}
+            alt={`Photo de ${title}`}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>Photo d’origine</figcaption>
         </figure>
       )}
       {row.candidateUrl && (
         <figure className="illustrations__shot">
-          <img src={row.candidateUrl} alt={`Embellissement de ${row.title}`} />
+          <img
+            src={row.candidateUrl}
+            alt={`Embellissement de ${title}`}
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>
             Candidat embelli
             {row.beautifiedAccepted ? ' (publié)' : ''}

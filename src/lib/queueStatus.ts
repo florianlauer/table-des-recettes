@@ -19,7 +19,7 @@ export function formatAge({
 }): string {
   const elapsedMs = Math.max(0, now - timestamp)
   const minutes = Math.floor(elapsedMs / 60_000)
-  if (minutes < 1) return "moins d'une minute"
+  if (minutes < 1) return 'moins d’une minute'
   if (minutes < 60) return `${minutes} min`
   const hours = Math.floor(minutes / 60)
   if (hours < 24) return `${hours} h`
@@ -81,7 +81,7 @@ function buttonFor({
   if (leaseLive) return { label: 'Extraction en cours', disabled: true }
   if (expiredLease) return { label: 'Relancer la file', disabled: false }
   if (pendingCount > 0)
-    return { label: "Démarrer l'extraction", disabled: false }
+    return { label: 'Démarrer l’extraction', disabled: false }
   return { label: 'Rien à extraire', disabled: true }
 }
 
