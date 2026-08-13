@@ -5,10 +5,9 @@ import { useRef } from 'react'
 import { z } from 'zod'
 import { api } from '../../convex/_generated/api'
 import type { PublishedRecipeRow } from '../../convex/recipes'
-import { emptyIndexLine } from '../lib/emptyIndexLine'
 import { formatCount } from '../lib/formatCount'
 import { groupByLetter } from '../lib/groupByLetter'
-import { searchStatusLine } from '../lib/searchStatusLine'
+import { indexStatusLine } from '../lib/indexStatusLine'
 import {
   RECIPE_TYPES,
   TYPE_FILTER_LABELS,
@@ -67,6 +66,7 @@ function IndexPage() {
   const { q, type } = Route.useSearch()
   const navigate = Route.useNavigate()
   const searching = Boolean(q && q.trim())
+  const restricted = searching || type !== undefined
   // The same rule the search field follows: entering the filters is worth a history entry, walking
   // between them is not. Five taps used to mean five presses of Back before leaving the site.
   const replace = type !== undefined
@@ -94,14 +94,9 @@ function IndexPage() {
   // has anything to do there — and `groupByLetter` sorts, so computing it anyway would re-sort the
   // whole list on each keystroke to throw the result away.
   const groups = searching ? [] : groupByLetter(listed)
-  // The count line and the empty line say the same thing when the count is zero, so the region
-  // carries whichever of the two applies rather than stacking both. `null` means nothing restricts
-  // the index — and then an empty list can only be an empty shelf, which the block below names.
-  const counted = searchStatusLine({ count: listed.length, query: q, type })
-  const status =
-    counted && listed.length === 0
-      ? emptyIndexLine({ query: q, type })
-      : counted
+  // One sentence for the restriction, whichever form it takes: the count while there are results,
+  // the absence and its cause when there are none. `null` when nothing restricts the index.
+  const status = indexStatusLine({ count: listed.length, query: q, type })
   // Which rows sit above the fold, and therefore load eagerly: everything else stays lazy. The
   // position has to be **global**, because a row's rank inside its letter says nothing about where it
   // is on the page — and the query's order is not the display order either, since grouping sorts.
@@ -139,7 +134,7 @@ function IndexPage() {
           onChange={(e) => setDraft(e.target.value)}
           // The keyboard convention, kept as a second way out for whoever has a keyboard.
           onKeyDown={(e) => {
-            if (e.key === 'Escape' && draft !== '') clearDraft()
+            if (e.key === 'Escape') clearDraft()
           }}
         />
         {draft === '' ? null : (
@@ -198,10 +193,8 @@ function IndexPage() {
         without `prefers-reduced-motion`.
       */}
       <div className="swap" key={`${q?.trim() ?? ''}|${type ?? ''}`}>
-        {listed.length === 0 ? (
-          status === null ? (
-            <p className="empty">Aucune recette publiée.</p>
-          ) : null
+        {listed.length === 0 && !restricted ? (
+          <p className="empty">Aucune recette publiée.</p>
         ) : searching ? (
           <ol className="index index--flat" aria-label="Résultats">
             {listed.map((recipe) => (
