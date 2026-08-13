@@ -231,6 +231,9 @@ Le masthead reste purement typographique :
 5. Filtres sur une seule ligne typographique : `Toutes 203  Entrées 31  Plats 94  Desserts 52
 Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
    actif reste en ocre. **Aucune pastille, aucun bouton.**
+6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
+   desktop, quatre titres au minimum sur mobile — voir l'amendement du 2026-08-13, qui mesure
+   ce que cette règle vaut selon que les lignes portent une photo ou non.
 
 ### La reliure
 
@@ -240,10 +243,23 @@ Un aplat ocre plein, pleine largeur, **collé au bord haut du viewport** : la tr
 d'un livre relié. `position: fixed`, 10 px en desktop, 7 px sous 640 px. Il encadre l'objet à
 n'importe quelle profondeur de défilement.
 
-C'est **le seul aplat de couleur du système**, et il ne touche aucun contenu : il borde la
-fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait interdit —
-ce serait un en-tête de site, pas la tranche d'un livre. 6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
-desktop, quatre titres au minimum sur mobile.
+C'est **le seul aplat de couleur du système**, et il ne coiffe aucun contenu **au repos** : il
+borde la fenêtre, il ne coiffe pas le titre. Un bandeau posé derrière le masthead resterait
+interdit — ce serait un en-tête de site, pas la tranche d'un livre.
+
+> **Amendement du 2026-08-13** — remplace « et il ne touche aucun contenu ».
+>
+> `position: fixed` et « encadrer l'objet à n'importe quelle profondeur de défilement » sont la
+> même phrase : au défilement, la bande passe **devant** le contenu et recouvre 10 px de ce qui
+> passe dessous. C'est le prix de la métaphore de la tranche, et c'est le moins cher des trois —
+> une bande en `sticky` disparaîtrait sous le premier bloc, une bande en flux ferait un en-tête de
+> site. L'interdit qui reste entier : rien n'est **posé** derrière le masthead.
+>
+> Le cas où le recouvrement serait une perte d'information est déjà réglé : une cible d'ancre
+> réserve la hauteur de la bande (`[id] { scroll-margin-top: calc(var(--band) + 0.5rem) }`).
+>
+> Cette entrée corrige aussi une rupture de formatage : l'item 6 de « Premier écran de `/` » avait
+> glissé dans ce paragraphe. Il est revenu dans sa liste, texte inchangé.
 
 ### Premier écran de `/recette/$slug`
 
