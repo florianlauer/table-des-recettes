@@ -203,17 +203,28 @@ Chaque palier interpole entre sa valeur à 390 px de large et sa valeur à 1100 
 
 Les interlignes, eux, sont fixes : ils dépendent du rôle, pas de la taille.
 
-| Rôle                                       | Palier            | Famille / graisse                         | Interligne |
-| ------------------------------------------ | ----------------- | ----------------------------------------- | ---------- |
-| Titre du site                              | `--type-masthead` | Fraunces 600                              | `1.0`      |
-| Titre de recette, fiche                    | `--type-title`    | Fraunces 600, `letter-spacing: -0.02em`   | `1.02`     |
-| Titre de section                           | `--type-section`  | Fraunces 600                              | `1.1`      |
-| Lettre de groupe, index                    | `--type-letter`   | Fraunces 600                              | `1.0`      |
-| Titre de recette, index                    | `--type-lead`     | Fraunces 500                              | `1.15`     |
-| Étapes                                     | `--type-lead`     | Atkinson 400, `max-width: 68ch`           | `1.6`      |
-| Ingrédients                                | `--type-body`     | Atkinson 400                              | `1.5`      |
-| Contrôles                                  | `--type-control`  | Atkinson 600, cible tactile 48 px minimum | `1.25`     |
-| Recherche, filtres, type de plat, légendes | `--type-meta`     | Atkinson 400                              | `1.45`     |
+| Rôle                            | Palier            | Famille / graisse                         | Interligne |
+| ------------------------------- | ----------------- | ----------------------------------------- | ---------- |
+| Titre du site                   | `--type-masthead` | Fraunces 600                              | `1.0`      |
+| Titre de recette, fiche         | `--type-title`    | Fraunces 600, `letter-spacing: -0.02em`   | `1.02`     |
+| Titre de section                | `--type-section`  | Fraunces 600                              | `1.1`      |
+| Lettre de groupe, index         | `--type-letter`   | Fraunces 600                              | `1.0`      |
+| Titre de recette, index         | `--type-lead`     | Fraunces 500                              | `1.15`     |
+| Étapes                          | `--type-lead`     | Atkinson 400, `max-width: 68ch`           | `1.6`      |
+| Ingrédients                     | `--type-body`     | Atkinson 400                              | `1.5`      |
+| Contrôles                       | `--type-control`  | Atkinson 600, cible tactile 48 px minimum | `1.25`     |
+| Champ de recherche              | `--type-body`     | Atkinson 400                              | `1.5`      |
+| Filtres, type de plat, légendes | `--type-meta`     | Atkinson 400                              | `1.45`     |
+
+> **Amendement du 2026-08-13** — la ligne « Recherche, filtres, type de plat, légendes » se scinde.
+>
+> Le champ de recherche était rangé avec les légendes, et le CSS l'a toujours posé en
+> `--type-body`. C'est le CSS qui a raison : on **écrit** dans ce champ, ce n'est pas une légende
+> mais une saisie, et la taille de ce qu'on tape n'obéit pas à la taille de ce qu'on lit en marge.
+> Sous 16 px, iOS zoome de lui-même à la mise au point et l'écran change d'échelle sous les doigts.
+>
+> Les filtres restent en `--type-meta` : l'écart de 5 px avec le champ est désormais voulu et
+> écrit, et non le résultat d'une ligne de tableau que personne n'a appliquée.
 
 ---
 
