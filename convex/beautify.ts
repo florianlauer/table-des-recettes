@@ -2,6 +2,7 @@ import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import { internalAction, internalMutation } from './_generated/server'
 import { deleteStoredBlob } from './lib/blobs'
+import { clearRendition } from './lib/renditions'
 import {
   beautifyFailureKind as beautifyFailureKindValidator,
   beautifyObservation,
@@ -380,8 +381,11 @@ export const finalizeBeautify = internalMutation({
       return 'discarded'
     }
 
+    // The candidate replaces whatever the slot held, so its predecessor's derivative goes too.
+    const cleared = await clearRendition(ctx, recipe, 'beautified')
     await ctx.db.patch(recipeId, {
       beautifiedStorageId: candidateStorageId,
+      ...cleared,
       beautifyStatus: 'review',
       beautifyStartedAt: undefined,
       beautifyError: undefined,
@@ -392,6 +396,12 @@ export const finalizeBeautify = internalMutation({
       sourceStorageId,
       outcome: 'pending',
       failureKind: null,
+    })
+    // Only on the branch that adopts: a discarded candidate has no display to derive for.
+    await ctx.scheduler.runAfter(0, internal.derive.deriveRendition, {
+      recipeId,
+      slot: 'beautified',
+      sourceStorageId: candidateStorageId,
     })
     return 'adopted'
   },

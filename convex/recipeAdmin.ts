@@ -3,11 +3,13 @@ import type { Doc, Id } from './_generated/dataModel'
 import { mutation } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
+import { deleteStoredBlob } from './lib/blobs'
 import {
   revisionOf,
   withIllustration,
   withSearchText,
 } from './lib/recipeWrites'
+import { clearAllRenditions } from './lib/renditions'
 import { okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { reconcileRetention } from './retention'
@@ -206,7 +208,17 @@ export const deleteRecipe = mutation({
     if (recipe.status === 'published') {
       return refuse('Dépublie la recette avant de la supprimer')
     }
+    // Deleting the row used to leave every blob it referenced behind: an orphan for the photo, one
+    // for the beautified candidate, and — since renditions exist — one for each derivative. Nothing
+    // references them afterwards, so nothing can ever collect them.
     const { scanId } = recipe
+    for (const storageId of [
+      recipe.imageStorageId,
+      recipe.beautifiedStorageId,
+    ]) {
+      if (storageId) await deleteStoredBlob(ctx, storageId)
+    }
+    await clearAllRenditions(ctx, recipe)
     await ctx.db.delete(recipeId)
     await reconcileRetention(ctx, scanId)
     return succeeded
