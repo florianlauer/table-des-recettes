@@ -57,6 +57,9 @@ export function IllustrationRow({
   const args = { adminToken, recipeId: row.id }
   const titleId = useId()
   const generate = rowGesture(row.id, 'generate')
+  // Named in every confirmation, so the dialog says which row it is about even when the scan gave
+  // the recipe no title yet.
+  const title = row.title || 'sans titre'
 
   /**
    * `requestBeautify` schedules and returns; the work then lives in `beautifyStatus`. The gesture is
@@ -96,6 +99,9 @@ export function IllustrationRow({
       action: 'reject',
       label: 'Rejeter le candidat',
       pendingLabel: 'Rejet…',
+      // `rejectPendingCandidate` deletes the blob: the render is paid for and gone, and getting
+      // another costs a second call. Same reason `detach` asks.
+      confirm: `Rejeter le candidat de « ${title} » ? L’image générée est supprimée, et en obtenir une autre demandera une nouvelle génération.`,
       run: () => rejectPending(args),
     },
     {
@@ -121,6 +127,7 @@ export function IllustrationRow({
       action: 'deleteCandidate',
       label: 'Supprimer le candidat conservé',
       pendingLabel: 'Suppression…',
+      confirm: `Supprimer le candidat conservé de « ${title} » ? L’image est effacée définitivement.`,
       run: () => deleteCandidate(args),
     },
     {
@@ -135,7 +142,7 @@ export function IllustrationRow({
       action: 'detach',
       label: 'Retirer la photo',
       pendingLabel: 'Retrait…',
-      confirm: `Retirer la photo de « ${row.title} » ?`,
+      confirm: `Retirer la photo de « ${title} » ?`,
       run: () => detachIllustration(args),
     },
   ]
