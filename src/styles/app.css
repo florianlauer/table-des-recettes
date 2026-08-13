@@ -121,6 +121,7 @@ img {
   color: var(--ink);
   font: inherit;
   padding: 0.6rem;
+  min-height: 48px;
 }
 
 /* An inline control, not a stacked one: the box sits before its sentence and the whole line is the
@@ -139,12 +140,16 @@ img {
   flex: none;
   margin: 0;
 }
+/* 48px is the floor DESIGN.md sets for a control, and § Anti-slop exempts the admin from Fraunces,
+   from the fluid scale and from the type inks — not from the touch floor. Padding alone left these
+   at 44px, on the surface the code itself calls the one thing the admin does *on* a phone. */
 .admin-page button {
   border: 1px solid var(--ochre);
   background: transparent;
   color: var(--ink);
   font: inherit;
   padding: 0.5rem 0.8rem;
+  min-height: 48px;
 }
 
 /* The admin is a tool, not a shop window: its links carry their rule at rest. The public surfaces
@@ -154,6 +159,13 @@ img {
   text-decoration-thickness: 1px;
   text-decoration-color: var(--rule-strong);
   text-underline-offset: 0.18em;
+}
+/* These are the admin's only navigation, alone in their paragraph rather than inline in a sentence,
+   so the WCAG 2.5.8 exemption for a link inside running text does not cover them: at 22px they were
+   two pixels under the 24px floor. The rule at rest is untouched. */
+.admin-page__header a {
+  display: inline-block;
+  padding: 0.7rem 0;
 }
 .admin-page button,
 .admin-page input[type='file']::file-selector-button {
@@ -407,6 +419,8 @@ img {
   gap: 0.4rem;
   margin-bottom: 0.4rem;
 }
+/* 44 rather than 48: the correction screen is the one surface PRODUCT.md places at a desk, and
+   fifteen ingredient rows at 48px push the form past a laptop viewport. Still above the floor. */
 .scan-page__recipe input,
 .scan-page__recipe select,
 .scan-page__recipe textarea {
@@ -415,6 +429,7 @@ img {
   color: var(--ink);
   font: inherit;
   padding: 0.4rem;
+  min-height: 44px;
 }
 @media (max-width: 40rem) {
   .scan-page__ingredient {
