@@ -107,7 +107,7 @@ function ScanCorrectionPage() {
         </p>
       </header>
 
-      {/* Only once storage has actually been read: `sessionStorage` is invisible to the server
+      {/* Only once storage has actually been read: browser storage is invisible to the server
           render and to the first client render, so this alert used to greet every operator who
           had a token. */}
       {adminTokenState(token) === 'absent' && (

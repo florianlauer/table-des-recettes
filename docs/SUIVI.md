@@ -39,7 +39,7 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 
 - **Vitrine publique** — index une colonne groupé par lettre, fiche recette, recalcul de portions,
   recherche tolérante. Lit des recettes publiées.
-- **Pipeline d'ingestion** — `/admin` : jeton en `sessionStorage`, sélection de fichier passant par
+- **Pipeline d'ingestion** — `/admin` : jeton en `localStorage`, sélection de fichier passant par
   `compress.ts`, création de scan, compteurs de file, lancement ou relance avec verdict réel et
   purge manuelle. Un scan traverse compression → stockage → appel OpenRouter → brouillons en base,
   avec `lastAttempt` qui raconte l'appel ; sa photo suit une échéance de rétention et une purge
