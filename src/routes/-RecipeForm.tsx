@@ -1,5 +1,5 @@
 import { useMutation } from 'convex/react'
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
@@ -43,9 +43,10 @@ export function toDraft(recipe: RecipeView): Draft {
 const INGREDIENT_COLUMNS = ['Ligne', 'Quantité', 'Unité', 'Libellé'] as const
 
 /**
- * Holds no state of its own. `edited` is the page's draft when there is one, and being edited *is*
- * being dirty — so a save, a publication or anyone else's write drops the draft by bumping the
- * revision, with nothing to synchronise.
+ * Holds no state the server could disagree with. `edited` is the page's draft when there is one, and
+ * being edited *is* being dirty — so a save, a publication or anyone else's write drops the draft by
+ * bumping the revision, with nothing to synchronise. The removed line below is the exception, and
+ * deliberately not part of the draft: it is an offer to undo, not a value anyone means to save.
  */
 export function RecipeForm({
   recipe,
@@ -68,6 +69,10 @@ export function RecipeForm({
   const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
 
   const titleId = useId()
+  const [removed, setRemoved] = useState<{
+    index: number
+    line: IngredientLine
+  } | null>(null)
   const draft = edited ?? toDraft(recipe)
   const dirty = edited !== null
   const save = rowGesture(recipe.id, 'save')
@@ -201,18 +206,36 @@ export function RecipeForm({
             />
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
+                setRemoved({ index, line })
                 edit({
                   ingredients: draft.ingredients.filter(
                     (_, position) => position !== index,
                   ),
                 })
-              }
+              }}
             >
               Retirer
             </button>
           </div>
         ))}
+        {/* The line came off a photograph: retyping it means going back to the page. Offered until
+            another one is removed, and it returns where it was, not at the end. */}
+        {removed !== null && (
+          <p className="scan-page__undo" role="status">
+            <button
+              type="button"
+              onClick={() => {
+                const ingredients = [...draft.ingredients]
+                ingredients.splice(removed.index, 0, removed.line)
+                setRemoved(null)
+                edit({ ingredients })
+              }}
+            >
+              Rétablir « {removed.line.raw || 'ligne vide'} »
+            </button>
+          </p>
+        )}
         <button
           type="button"
           onClick={() =>

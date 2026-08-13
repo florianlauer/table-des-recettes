@@ -452,6 +452,9 @@ img {
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
+.scan-page__undo {
+  margin: 0 0 0.75rem;
+}
 .scan-page__ingredient--head {
   margin-bottom: 0.3rem;
   color: var(--ink-muted);
