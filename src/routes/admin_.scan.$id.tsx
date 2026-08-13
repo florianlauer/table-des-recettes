@@ -2,9 +2,10 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
@@ -14,7 +15,6 @@ import { useAttachImage } from '../lib/useAttachImage'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
-import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
@@ -33,7 +33,8 @@ type Edit = { revision: number; draft: Draft }
 function ScanCorrectionPage() {
   const { id } = Route.useParams()
   const scanId = id as Id<'scans'>
-  const [adminToken, setAdminToken] = useState('')
+  const { token } = useAdminToken()
+  const adminToken = token ?? ''
   // The only editing state on the page. An entry stops counting the moment the server moves the
   // recipe underneath it, so publication reads liveness rather than a flag someone has to maintain,
   // and a deleted recipe takes its entry out of the reckoning by leaving `data.recipes`.
@@ -53,10 +54,6 @@ function ScanCorrectionPage() {
   const acknowledgeImageChange = useMutation(
     api.recipeAdmin.acknowledgeImageChange,
   )
-
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
 
   const scan = useQuery({
     ...convexQuery(
@@ -108,7 +105,12 @@ function ScanCorrectionPage() {
         </p>
       </header>
 
-      {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
+      {/* Only once storage has actually been read: `sessionStorage` is invisible to the server
+          render and to the first client render, so this alert used to greet every operator who
+          had a token. */}
+      {adminTokenState(token) === 'absent' && (
+        <p role="alert">Jeton absent : passe par /admin.</p>
+      )}
       {scan.error && (
         <AdminFailure error={scan.error} retry={() => void scan.refetch()} />
       )}

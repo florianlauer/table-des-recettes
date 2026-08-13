@@ -2,15 +2,15 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { estimateFrom } from '../lib/estimate'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
-import { ADMIN_TOKEN_STORAGE_KEY } from './admin'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { BeautifyStats } from './-BeautifyStats'
@@ -37,14 +37,11 @@ const FRAMING_ADVICE =
   'Photographie la page telle quelle, en gardant le texte imprimé autour du plat.'
 
 function IllustrationsPage() {
-  const [adminToken, setAdminToken] = useState('')
+  const { token } = useAdminToken()
+  const adminToken = token ?? ''
   const [includeIllustrated, setIncludeIllustrated] = useState(false)
   const gestures = useGestures({ epoch: `illustrations:${adminToken}` })
   const { now } = useServerClock(adminToken)
-
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
 
   const work = useQuery({
     ...convexQuery(
@@ -90,7 +87,12 @@ function IllustrationsPage() {
         <p>{FRAMING_ADVICE}</p>
       </header>
 
-      {!adminToken && <p role="alert">Jeton absent : passe par /admin.</p>}
+      {/* Only once storage has actually been read: `sessionStorage` is invisible to the server
+          render and to the first client render, so this alert used to greet every operator who
+          had a token. */}
+      {adminTokenState(token) === 'absent' && (
+        <p role="alert">Jeton absent : passe par /admin.</p>
+      )}
       {work.error && (
         <AdminFailure error={work.error} retry={() => void work.refetch()} />
       )}

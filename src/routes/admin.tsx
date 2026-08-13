@@ -2,8 +2,8 @@ import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { groupKey } from '../lib/attemptStats'
 import type { WireAttemptSummary } from '../lib/attemptStats'
 import { estimateFrom } from '../lib/estimate'
@@ -31,12 +31,12 @@ import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 
-export const ADMIN_TOKEN_STORAGE_KEY = 'table-des-recettes-admin-token'
-
 export const Route = createFileRoute('/admin')({ component: AdminPage })
 
 function AdminPage() {
-  const [adminToken, setAdminToken] = useState('')
+  const { token, save: updateToken } = useAdminToken()
+  const tokenAbsent = adminTokenState(token) === 'absent'
+  const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
@@ -56,16 +56,6 @@ function AdminPage() {
     retry: false,
   })
   const extractionEstimateMs = estimateFrom(stats.data ?? [])
-
-  useEffect(() => {
-    setAdminToken(sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY) ?? '')
-  }, [])
-
-  function updateToken(value: string) {
-    setAdminToken(value)
-    if (value) sessionStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, value)
-    else sessionStorage.removeItem(ADMIN_TOKEN_STORAGE_KEY)
-  }
 
   // One scan per file. Selecting thirty pages at once is how the initial backlog gets in, and those
   // pages have nothing to do with each other — grouping them would make one huge billed call.
@@ -116,6 +106,7 @@ function AdminPage() {
 
       <QueueBlock
         adminToken={adminToken}
+        tokenAbsent={tokenAbsent}
         now={now}
         gestures={gestures}
         estimateMs={extractionEstimateMs}
@@ -125,7 +116,7 @@ function AdminPage() {
         <h2>Scans</h2>
         {/* Three states, not one silence. An operator with no token and an operator with an empty
             queue used to see exactly the same page: a heading above nothing. */}
-        {!adminToken && (
+        {tokenAbsent && (
           <p className="empty">
             Saisis le jeton administrateur pour afficher les scans.
           </p>
@@ -225,7 +216,7 @@ function AdminPage() {
 
       <AttemptStatsBlock
         groups={stats.data}
-        hasToken={adminToken.length > 0}
+        tokenAbsent={tokenAbsent}
         loading={stats.isLoading && adminToken.length > 0}
         error={stats.error}
         retry={() => void stats.refetch()}
@@ -240,13 +231,13 @@ function formatRate(rate: number): string {
 
 function AttemptStatsBlock({
   groups,
-  hasToken,
+  tokenAbsent,
   loading,
   error,
   retry,
 }: {
   groups: WireAttemptSummary[] | undefined
-  hasToken: boolean
+  tokenAbsent: boolean
   loading: boolean
   error: Error | null
   retry: () => void
@@ -256,7 +247,7 @@ function AttemptStatsBlock({
       <h2>Tentatives d’extraction</h2>
       {/* `=== 0` alone never fired: a failed query leaves `groups` undefined, not empty, so the
           heading floated above nothing on the very state that needed explaining. */}
-      {!hasToken && (
+      {tokenAbsent && (
         <p className="empty">
           Saisis le jeton administrateur pour afficher le journal.
         </p>
@@ -298,11 +289,13 @@ function AttemptStatsBlock({
 
 function QueueBlock({
   adminToken,
+  tokenAbsent,
   now,
   gestures,
   estimateMs,
 }: {
   adminToken: string
+  tokenAbsent: boolean
   now: number
   gestures: Gestures
   estimateMs: number | null
@@ -325,7 +318,7 @@ function QueueBlock({
   return (
     <section className="admin-page__queue">
       <h2>File d'extraction</h2>
-      {!adminToken && (
+      {tokenAbsent && (
         <p className="empty">
           Saisis le jeton administrateur pour piloter la file.
         </p>
