@@ -170,6 +170,22 @@ describe('scaleIngredient', () => {
     ).toBe("4 gousses d'ail")
   })
 
+  test('a quantity that rounding brings back to itself is marked, not passed off as adjusted', () => {
+    // One kiwi for four people is still one kiwi for five: `scaled: true` would have claimed an
+    // adjustment the line does not carry, and the reader could not tell it from a real one.
+    expect(scaleIngredient({ raw: '1 kiwi', quantity: 1 }, 1.25)).toEqual({
+      text: '1 kiwi',
+      scaled: false,
+    })
+    // Same for a measured quantity the factor barely moves.
+    expect(
+      scaleIngredient(
+        { raw: '200 g de farine', quantity: 200, unit: 'g' },
+        1.001,
+      ),
+    ).toEqual({ text: '200 g de farine', scaled: false })
+  })
+
   test('quantity annotated but no number in the raw line', () => {
     const result = scaleIngredient({ raw: 'une pincée de sel', quantity: 1 }, 3)
     expect(result).toEqual({ text: 'une pincée de sel', scaled: false })

@@ -117,7 +117,7 @@ function RecipePage() {
                   </span>
                   <span className="visually-hidden">
                     {' '}
-                    — quantité non recalculée
+                    — quantité non ajustée
                   </span>
                 </>
               ) : null}
@@ -129,7 +129,7 @@ function RecipePage() {
             reader, no longer exists — each concerned line now carries its own explanation. */}
         {showNote ? (
           <p className="ingredients__note" aria-hidden="true">
-            † Cette quantité n'a pas pu être recalculée : la ligne est
+            † Cette quantité n'a pas pu suivre l'ajustement : la ligne est
             reproduite telle quelle.
           </p>
         ) : null}
