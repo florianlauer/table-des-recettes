@@ -80,23 +80,24 @@ function IndexPage() {
   // also erase the empty index, and the back button would leave the site instead of returning
   // to it. So only entering the search is pushed; subsequent keystrokes replace.
   const [draft, setDraft] = useState(q ?? '')
-  // The URL echoes that navigation back late — the loader awaits Convex before it commits. Syncing
-  // the field on that echo overwrote whatever was typed in flight, so a fast typist watched letters
-  // vanish. Only a change we did not push — Back, a shared link — reaches the field.
-  const pushed = useRef(q)
+  // `q` trails the field by more than the debounce: the loader awaits Convex before the URL commits,
+  // so during that flight `q` is not what we last asked for — `pushed` is. Reading `q` instead cost
+  // a fast typist the letters typed in flight, and spent a history entry per keystroke that outran
+  // the loader. Only a change we did not push — Back, a shared link — reaches the field.
+  const pushed = useRef(q ?? '')
   useEffect(() => {
-    if (q === pushed.current) return
-    pushed.current = q
+    if ((q ?? '') === pushed.current) return
+    pushed.current = q ?? ''
     setDraft(q ?? '')
   }, [q])
   useEffect(() => {
-    const current = q ?? ''
-    if (draft === current) return
+    if (draft === pushed.current) return
     const id = setTimeout(() => {
-      pushed.current = draft || undefined
+      const opensSearch = pushed.current === ''
+      pushed.current = draft
       navigate({
         search: (prev) => ({ ...prev, q: draft || undefined }),
-        replace: current !== '',
+        replace: !opensSearch,
       })
     }, 250)
     return () => clearTimeout(id)
