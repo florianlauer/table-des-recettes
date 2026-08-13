@@ -151,7 +151,9 @@ function IllustrationsPage() {
 
           <section className="illustrations__section">
             <h2>Déjà illustrées</h2>
-            <label className="admin-page__field">
+            {/* Not `admin-page__field`: that class is the stacked "label above field" grid, and it
+                put the box on its own row, stretched and centred, above its own sentence. */}
+            <label className="admin-page__check">
               <input
                 type="checkbox"
                 checked={includeIllustrated}

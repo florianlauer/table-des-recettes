@@ -113,12 +113,31 @@ img {
   margin: 1rem 0;
   max-width: 42rem;
 }
-.admin-page__field input {
+/* Text and file only. Left unqualified, this framed a checkbox like a text field and gave it the
+   padding of one — the box drifted away from the sentence it commands. */
+.admin-page__field input:not([type='checkbox']) {
   border: 1px solid var(--rule-strong);
   background: var(--surface);
   color: var(--ink);
   font: inherit;
   padding: 0.6rem;
+}
+
+/* An inline control, not a stacked one: the box sits before its sentence and the whole line is the
+   target, rather than a 13px native square floating above the text. */
+.admin-page__check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+  min-height: 48px;
+  cursor: pointer;
+}
+.admin-page__check input[type='checkbox'] {
+  inline-size: 22px;
+  block-size: 22px;
+  flex: none;
+  margin: 0;
 }
 .admin-page button {
   border: 1px solid var(--ochre);
