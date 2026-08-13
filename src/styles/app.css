@@ -447,8 +447,15 @@ img {
 .scan-page__ingredient {
   display: grid;
   grid-template-columns: minmax(12rem, 3fr) 5rem 6rem minmax(6rem, 1fr) auto;
-  gap: 0.4rem;
-  margin-bottom: 0.4rem;
+  /* 0.4rem put "Retirer" six pixels from the field beside it, and stacked fifteen rows with no seam
+     between them: one mis-tap deleted a line transcribed from the photograph. */
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.scan-page__ingredient--head {
+  margin-bottom: 0.3rem;
+  color: var(--ink-muted);
+  font-size: var(--type-meta);
 }
 /* 44 rather than 48: the correction screen is the one surface PRODUCT.md places at a desk, and
    fifteen ingredient rows at 48px push the form past a laptop viewport. Still above the floor. */
@@ -465,6 +472,11 @@ img {
 @media (max-width: 40rem) {
   .scan-page__ingredient {
     grid-template-columns: 1fr 1fr;
+  }
+  /* The header cannot describe two columns that hold five fields; the placeholders carry the names
+     at this width. */
+  .scan-page__ingredient--head {
+    display: none;
   }
 }
 

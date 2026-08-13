@@ -4,7 +4,7 @@ import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import { RECIPE_STATUS_LABELS } from '../lib/recipeStatus'
-import { RECIPE_TYPES } from '../lib/recipeTypes'
+import { RECIPE_TYPES, TYPE_LABELS } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
 import { AdminButton } from './-AdminButton'
@@ -39,14 +39,8 @@ export function toDraft(recipe: RecipeView): Draft {
   }
 }
 
-const TYPE_LABELS: Record<RecipeType, string> = {
-  entree: 'Entrée',
-  plat: 'Plat',
-  dessert: 'Dessert',
-  apero: 'Apéro',
-  petitDej: 'Petit déjeuner',
-  autre: 'Autre',
-}
+/** The columns of the parsed line, in the order the grid lays them out. */
+const INGREDIENT_COLUMNS = ['Ligne', 'Quantité', 'Unité', 'Libellé'] as const
 
 /**
  * Holds no state of its own. `edited` is the page's draft when there is one, and being edited *is*
@@ -150,6 +144,18 @@ export function RecipeForm({
         {/* Four fields, not one: the servings selector reads `quantity` and rewrites the number
             inside `raw`, so a quantity left stale behind an edited line shows a wrong figure on the
             storefront without any error. */}
+        {/* Named columns, not four boxes of decreasing width: the labels existed for assistive tech
+            and nowhere for the eye, so telling the quantity from the unit meant clicking one. */}
+        {draft.ingredients.length > 0 && (
+          <div
+            className="scan-page__ingredient scan-page__ingredient--head"
+            aria-hidden="true"
+          >
+            {INGREDIENT_COLUMNS.map((column) => (
+              <span key={column}>{column}</span>
+            ))}
+          </div>
+        )}
         {draft.ingredients.map((line, index) => (
           <div key={index} className="scan-page__ingredient">
             <input
@@ -161,6 +167,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Quantité ${index + 1}`}
+              placeholder="Quantité"
               inputMode="decimal"
               value={line.quantity ?? ''}
               onChange={(event) =>
@@ -174,6 +181,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Unité ${index + 1}`}
+              placeholder="Unité"
               value={line.unit ?? ''}
               onChange={(event) =>
                 editIngredient(index, {
@@ -183,6 +191,7 @@ export function RecipeForm({
             />
             <input
               aria-label={`Libellé ${index + 1}`}
+              placeholder="Libellé"
               value={line.label ?? ''}
               onChange={(event) =>
                 editIngredient(index, {
