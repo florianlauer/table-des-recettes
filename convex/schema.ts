@@ -58,6 +58,49 @@ export const attemptFields = {
 
 export const attemptRecord = v.object(attemptFields)
 
+/**
+ * What derivation produced for one image slot. Three states, not two: an **absent** field means
+ * "never attempted", `failed` means "attempted and refused", `ready` carries the derivative. A plain
+ * nullable would conflate the first two, and that is exactly the distinction the admin work list
+ * needs in order to know whether there is anything to relaunch.
+ *
+ * `sourceStorageId` is repeated here rather than inferred: it is what makes the association
+ * *verifiable* at read time. Without it a forgotten cleanup path would serve the previous photo's
+ * derivative — a wrong image, silently. With it, the same oversight only costs a fallback to the
+ * source, which the work list reports.
+ *
+ * Dimensions live in `ready` only, deliberately: the only usable dimensions are **oriented** ones
+ * (EXIF applied), and only sharp yields those. A `failed` therefore carries none, and callers fall
+ * back to emitting no `width`/`height` — today's behaviour — rather than to swapped dimensions that
+ * would actively distort the layout.
+ */
+export const imageRendition = v.union(
+  v.object({
+    status: v.literal('ready'),
+    sourceStorageId: v.id('_storage'),
+    // Oriented: what the browser will display of the source, not what its header encodes.
+    sourceWidth: v.number(),
+    sourceHeight: v.number(),
+    storageId: v.id('_storage'),
+    width: v.number(),
+    height: v.number(),
+  }),
+  v.object({
+    status: v.literal('failed'),
+    sourceStorageId: v.id('_storage'),
+    error: v.string(),
+    /**
+     * How many times deriving this source has been tried. A `catch` cannot tell "these bytes are
+     * not an image" from "this attempt broke" — a native library that failed to load, an image too
+     * large for the runtime — and treating both as a permanent refusal parks a photo at full weight
+     * on a transient blip. Counting is what separates them without guessing at error strings: the
+     * backfill retries while the count is under its ceiling, and stops once it is reached, so
+     * "repeat until zero" still converges on an image that genuinely cannot be decoded.
+     */
+    attempts: v.number(),
+  }),
+)
+
 export default defineSchema({
   scans: defineTable({
     imageStorageIds: v.array(v.id('_storage')),
@@ -99,6 +142,10 @@ export default defineSchema({
     publishedAt: v.optional(v.number()),
     imageStorageId: v.optional(v.id('_storage')),
     beautifiedStorageId: v.optional(v.id('_storage')),
+    // The display derivative of each slot. Optional at the document level because a required field
+    // would reject every existing recipe; `renditions.ts` is the only thing allowed to write them.
+    imageRendition: v.optional(imageRendition),
+    beautifiedRendition: v.optional(imageRendition),
     beautifiedAccepted: v.boolean(),
     beautifyStatus,
     beautifyAttemptId: v.optional(v.string()),

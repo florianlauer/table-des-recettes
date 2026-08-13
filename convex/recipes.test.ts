@@ -162,3 +162,137 @@ test('a published recipe without a slug throws instead of degrading', async () =
   })
   await expect(t.query(api.recipes.browse, {})).rejects.toThrow(/sans slug/)
 })
+
+const IMAGE_MODULES = import.meta.glob('./**/*.ts')
+
+async function published(
+  t: ReturnType<typeof convexTest>,
+  over: Record<string, unknown>,
+) {
+  await t.run((ctx) =>
+    ctx.db.insert(
+      'recipes',
+      withSearchText({
+        ...base,
+        title: 'Clafoutis',
+        slug: 'clafoutis',
+        type: 'dessert' as const,
+        ingredients: [],
+        ...over,
+      }),
+    ),
+  )
+}
+
+/** Asserted on the whole array rather than on `rows[0]`: indexing is what needs a guard. */
+async function expectOnlyRow(
+  t: ReturnType<typeof convexTest>,
+  image: {
+    imageUrl: string | null
+    imageWidth: number | null
+    imageHeight: number | null
+  },
+) {
+  expect(await t.query(api.recipes.browse, {})).toMatchObject([image])
+}
+
+async function storedBlob(t: ReturnType<typeof convexTest>) {
+  return t.run((ctx) =>
+    ctx.storage.store(new Blob([new Uint8Array([1])], { type: 'image/webp' })),
+  )
+}
+
+test('browse serves the display derivative and its intrinsic dimensions', async () => {
+  const t = convexTest(schema, IMAGE_MODULES)
+  const source = await storedBlob(t)
+  const derivative = await storedBlob(t)
+  await published(t, {
+    imageStorageId: source,
+    hasIllustration: true,
+    imageRendition: {
+      status: 'ready' as const,
+      sourceStorageId: source,
+      sourceWidth: 864,
+      sourceHeight: 1184,
+      storageId: derivative,
+      width: 292,
+      height: 400,
+    },
+  })
+
+  await expectOnlyRow(t, {
+    imageUrl: await t.run((ctx) => ctx.storage.getUrl(derivative)),
+    imageWidth: 292,
+    imageHeight: 400,
+  })
+})
+
+// Correct rendering, degraded budget — and the admin work list is what reports it. Serving 1.9 MB
+// while nobody is told is how the bandwidth quota goes.
+test('browse falls back to the source, without dimensions, when no derivative is usable', async () => {
+  const t = convexTest(schema, IMAGE_MODULES)
+  const source = await storedBlob(t)
+  await published(t, { imageStorageId: source, hasIllustration: true })
+
+  await expectOnlyRow(t, {
+    imageUrl: await t.run((ctx) => ctx.storage.getUrl(source)),
+    imageWidth: null,
+    imageHeight: null,
+  })
+})
+
+// The compare-and-set that makes a missed cleanup harmless: a stale rendition must never be served
+// as if it described the photo the recipe now holds.
+test('browse ignores a rendition whose source no longer matches the slot', async () => {
+  const t = convexTest(schema, IMAGE_MODULES)
+  const oldSource = await storedBlob(t)
+  const newSource = await storedBlob(t)
+  const staleDerivative = await storedBlob(t)
+  await published(t, {
+    imageStorageId: newSource,
+    hasIllustration: true,
+    imageRendition: {
+      status: 'ready' as const,
+      sourceStorageId: oldSource,
+      sourceWidth: 864,
+      sourceHeight: 1184,
+      storageId: staleDerivative,
+      width: 292,
+      height: 400,
+    },
+  })
+
+  await expectOnlyRow(t, {
+    imageUrl: await t.run((ctx) => ctx.storage.getUrl(newSource)),
+    imageWidth: null,
+    imageHeight: null,
+  })
+})
+
+test('browse serves the beautified derivative once the candidate is accepted', async () => {
+  const t = convexTest(schema, IMAGE_MODULES)
+  const source = await storedBlob(t)
+  const candidate = await storedBlob(t)
+  const candidateDerivative = await storedBlob(t)
+  await published(t, {
+    imageStorageId: source,
+    beautifiedStorageId: candidate,
+    beautifiedAccepted: true,
+    hasIllustration: true,
+    beautifiedRendition: {
+      status: 'ready' as const,
+      sourceStorageId: candidate,
+      sourceWidth: 1184,
+      sourceHeight: 864,
+      storageId: candidateDerivative,
+      width: 548,
+      height: 400,
+    },
+  })
+
+  await expectOnlyRow(t, {
+    imageUrl: await t.run((ctx) => ctx.storage.getUrl(candidateDerivative)),
+    imageWidth: 548,
+    imageHeight: 400,
+  })
+})

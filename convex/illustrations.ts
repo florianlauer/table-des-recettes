@@ -7,6 +7,13 @@ import { requireAdmin } from './auth'
 import { deleteStoredBlob } from './lib/blobs'
 import { findAttempt, settleAttempt } from './lib/beautifyJournal'
 import { withIllustration } from './lib/recipeWrites'
+import {
+  clearRendition,
+  renditionOf,
+  sourceOf,
+  usableDerivative,
+} from './lib/renditions'
+import type { RenditionPatch, RenditionSlot } from './lib/renditions'
 import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { rateLimiter } from './rateLimits'
@@ -80,12 +87,16 @@ function withoutGeneration(recipe: Doc<'recipes'>, reason: string) {
 async function dropCandidate(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
-): Promise<void> {
-  if (!recipe.beautifiedStorageId) return
+): Promise<RenditionPatch> {
+  if (!recipe.beautifiedStorageId) return {}
   await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
+  // The derivative goes with its source: kept, it would be a blob nothing references, and the read
+  // path would still be pointing at a photo that no longer exists.
+  const cleared = await clearRendition(ctx, recipe, 'beautified')
   // Billed, destroyed, never judged. `rejected` would claim a verdict nobody gave; `discarded` is
   // the outcome that keeps the money counted and says no arbitration was possible.
   await settleAttempt(ctx, recipe.beautifyAttemptId, 'discarded')
+  return cleared
 }
 
 /**
@@ -186,10 +197,13 @@ export const commitIllustration = internalMutation({
 
     if (recipe.imageStorageId && recipe.imageStorageId !== storageId)
       await deleteStoredBlob(ctx, recipe.imageStorageId)
-    await dropCandidate(ctx, recipe)
+    const clearedOriginal = await clearRendition(ctx, recipe, 'original')
+    const clearedCandidate = await dropCandidate(ctx, recipe)
     await ctx.db.patch(recipeId, {
       ...withIllustration({ imageStorageId: storageId }),
       beautifiedStorageId: undefined,
+      ...clearedOriginal,
+      ...clearedCandidate,
       ...withoutGeneration(recipe, REPLACED_REASON),
     })
     await ctx.db.patch(ticketId, {
@@ -197,6 +211,14 @@ export const commitIllustration = internalMutation({
       storageId,
       recipeId,
       outcome: 'ok' as const,
+    })
+    // The new photo has no derivative yet, so the storefront serves it at full weight until this
+    // lands. Scheduled from here rather than from the action above: the ticket is spent inside this
+    // transaction, so this is the first point where the attachment is certain.
+    await ctx.scheduler.runAfter(0, internal.derive.deriveRendition, {
+      recipeId,
+      slot: 'original',
+      sourceStorageId: storageId,
     })
     return succeeded
   },
@@ -210,10 +232,13 @@ export const detachIllustration = recipeMutation(async (ctx, recipe) => {
   if (!recipe.imageStorageId) return refuse('Cette recette n’a pas de photo')
 
   await deleteStoredBlob(ctx, recipe.imageStorageId)
-  await dropCandidate(ctx, recipe)
+  const clearedOriginal = await clearRendition(ctx, recipe, 'original')
+  const clearedCandidate = await dropCandidate(ctx, recipe)
   await ctx.db.patch(recipe._id, {
     ...withIllustration({ imageStorageId: undefined }),
     beautifiedStorageId: undefined,
+    ...clearedOriginal,
+    ...clearedCandidate,
     ...withoutGeneration(recipe, DETACHED_REASON),
   })
   return succeeded
@@ -283,9 +308,10 @@ export const rejectPendingCandidate = recipeMutation(async (ctx, recipe) => {
   if (blocked) return blocked
 
   await settleAttempt(ctx, recipe.beautifyAttemptId, 'rejected')
-  await dropCandidate(ctx, recipe)
+  const cleared = await dropCandidate(ctx, recipe)
   await ctx.db.patch(recipe._id, {
     beautifiedStorageId: undefined,
+    ...cleared,
     beautifyStatus: 'idle',
     beautifyAttemptId: undefined,
   })
@@ -336,7 +362,11 @@ export const deleteUnpublishedCandidate = recipeMutation(
       return refuse('Aucun candidat conservé à supprimer')
 
     await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
-    await ctx.db.patch(recipe._id, { beautifiedStorageId: undefined })
+    const cleared = await clearRendition(ctx, recipe, 'beautified')
+    await ctx.db.patch(recipe._id, {
+      beautifiedStorageId: undefined,
+      ...cleared,
+    })
     return succeeded
   },
 )
@@ -361,6 +391,19 @@ export const abandonBeautify = recipeMutation(async (ctx, recipe) => {
   return succeeded
 })
 
+/**
+ * What derivation has to say about one slot. Three states rather than a boolean, and one report per
+ * slot rather than one per row: a row shows the original **and** the candidate, so a single state
+ * could not say which of the two failed — nor carry the cause this screen promises to show.
+ */
+const renditionReport = v.union(
+  v.object({
+    state: literalUnion(['ready', 'absent'] as const),
+    error: v.null(),
+  }),
+  v.object({ state: v.literal('failed'), error: v.string() }),
+)
+
 const illustrationRow = v.object({
   id: v.id('recipes'),
   title: v.string(),
@@ -372,13 +415,55 @@ const illustrationRow = v.object({
   // booleans above are what the buttons read, so a missing url costs a picture, never a gesture.
   originalUrl: v.union(v.string(), v.null()),
   candidateUrl: v.union(v.string(), v.null()),
+  // Null when the slot holds no blob at all, so there is nothing to say about it.
+  originalRendition: v.union(renditionReport, v.null()),
+  candidateRendition: v.union(renditionReport, v.null()),
+  // Whether the urls above point at derivatives, which is what tells the client how large a box to
+  // give them. The arbitration bucket says false, the inventory buckets say true.
+  thumbnails: v.boolean(),
   beautifyStatus,
   beautifiedAccepted: v.boolean(),
   beautifyError: v.union(v.string(), v.null()),
   beautifyStartedAt: v.union(v.number(), v.null()),
 })
 
-async function toRow(ctx: QueryCtx, recipe: Doc<'recipes'>) {
+function reportOf(recipe: Doc<'recipes'>, slot: RenditionSlot) {
+  if (!sourceOf(recipe, slot)) return null
+  const rendition = renditionOf(recipe, slot)
+  if (rendition?.status === 'failed') {
+    return { state: 'failed' as const, error: rendition.error }
+  }
+  return {
+    state: usableDerivative(recipe, slot)
+      ? ('ready' as const)
+      : ('absent' as const),
+    error: null,
+  }
+}
+
+/**
+ * The url for one slot. `thumbnail` is what separates the two kinds of screen this list carries:
+ * arbitration needs the full plate — degrading the very image one is judging would take the function
+ * away — while an inventory only needs to say *which* photo is there. The inventory therefore reuses
+ * the storefront derivative and produces nothing extra.
+ */
+async function slotUrl(
+  ctx: QueryCtx,
+  recipe: Doc<'recipes'>,
+  slot: RenditionSlot,
+  thumbnail: boolean,
+): Promise<string | null> {
+  const source = sourceOf(recipe, slot)
+  if (!source) return null
+  const derivative = thumbnail ? usableDerivative(recipe, slot) : null
+  return ctx.storage.getUrl(derivative ? derivative.storageId : source)
+}
+
+async function toRow(
+  ctx: QueryCtx,
+  recipe: Doc<'recipes'>,
+  thumbnail: boolean,
+) {
   return {
     id: recipe._id,
     title: recipe.title,
@@ -386,12 +471,11 @@ async function toRow(ctx: QueryCtx, recipe: Doc<'recipes'>) {
     status: recipe.status,
     hasOriginal: recipe.imageStorageId !== undefined,
     hasCandidate: recipe.beautifiedStorageId !== undefined,
-    originalUrl: recipe.imageStorageId
-      ? await ctx.storage.getUrl(recipe.imageStorageId)
-      : null,
-    candidateUrl: recipe.beautifiedStorageId
-      ? await ctx.storage.getUrl(recipe.beautifiedStorageId)
-      : null,
+    originalUrl: await slotUrl(ctx, recipe, 'original', thumbnail),
+    candidateUrl: await slotUrl(ctx, recipe, 'beautified', thumbnail),
+    originalRendition: reportOf(recipe, 'original'),
+    candidateRendition: reportOf(recipe, 'beautified'),
+    thumbnails: thumbnail,
     beautifyStatus: recipe.beautifyStatus,
     beautifiedAccepted: recipe.beautifiedAccepted,
     beautifyError: recipe.beautifyError ?? null,
@@ -456,13 +540,20 @@ export const listIllustrationWork = query({
     const done = bounded(illustrated)
 
     return {
-      active: await Promise.all(active.page.map((row) => toRow(ctx, row))),
+      // Full plates for the bucket one arbitrates in, thumbnails for the two that only inventory.
+      // Measured: at 150 recipes the capped "illustrated" bucket alone was 50 rows × 2 full-format
+      // images ≈ 160 MB in a single screen — worse than the storefront.
+      active: await Promise.all(
+        active.page.map((row) => toRow(ctx, row, false)),
+      ),
       activeTruncated: active.truncated,
       withoutIllustration: await Promise.all(
-        missing.page.map((row) => toRow(ctx, row)),
+        missing.page.map((row) => toRow(ctx, row, true)),
       ),
       withoutIllustrationTruncated: missing.truncated,
-      illustrated: await Promise.all(done.page.map((row) => toRow(ctx, row))),
+      illustrated: await Promise.all(
+        done.page.map((row) => toRow(ctx, row, true)),
+      ),
       illustratedTruncated: done.truncated,
       migration: {
         started: migration !== null,

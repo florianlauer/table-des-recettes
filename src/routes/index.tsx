@@ -15,6 +15,13 @@ import {
 } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
 
+/**
+ * How many rows load their photo eagerly. Four is what fits above the fold on the tallest phone we
+ * care about; beyond that the lazy loader is doing its job, and below it a lazy first photo is what
+ * delays the LCP when a photo *is* the LCP element.
+ */
+const EAGER_ROWS = 4
+
 const searchSchema = z.object({
   q: z.string().optional(),
   type: z.enum(RECIPE_TYPES).optional(),
@@ -90,6 +97,20 @@ function IndexPage() {
   const counts = useSuspenseQuery(countsOptions(q)).data
   const listed = useSuspenseQuery(browseOptions({ q, type })).data
 
+  // Searching dissolves the groups and hides every photo, so neither the grouping nor the eager set
+  // has anything to do there — and `groupByLetter` sorts, so computing it anyway would re-sort the
+  // whole list on each keystroke to throw the result away.
+  const groups = searching ? [] : groupByLetter(listed)
+  // Which rows sit above the fold, and therefore load eagerly: everything else stays lazy. The
+  // position has to be **global**, because a row's rank inside its letter says nothing about where it
+  // is on the page — and the query's order is not the display order either, since grouping sorts.
+  const eager = new Set(
+    groups
+      .flatMap((group) => group.items)
+      .slice(0, EAGER_ROWS)
+      .map((recipe) => recipe.id),
+  )
+
   return (
     <main className="page">
       <header className="masthead">
@@ -153,7 +174,7 @@ function IndexPage() {
           ))}
         </ol>
       ) : (
-        groupByLetter(listed).map((group) => (
+        groups.map((group) => (
           <section
             className="group"
             key={group.letter}
@@ -164,7 +185,12 @@ function IndexPage() {
             </h2>
             <ol className="index">
               {group.items.map((recipe) => (
-                <RecipeRow key={recipe.id} recipe={recipe} showImage />
+                <RecipeRow
+                  key={recipe.id}
+                  recipe={recipe}
+                  showImage
+                  eager={eager.has(recipe.id)}
+                />
               ))}
             </ol>
           </section>
@@ -177,9 +203,11 @@ function IndexPage() {
 function RecipeRow({
   recipe,
   showImage,
+  eager = false,
 }: {
   recipe: PublishedRecipeRow
   showImage: boolean
+  eager?: boolean
 }) {
   return (
     <li className="row">
@@ -202,7 +230,13 @@ function RecipeRow({
             className="row__photo"
             src={recipe.imageUrl}
             alt=""
-            loading="lazy"
+            // The CSS pins the height and leaves the width free, so these are what let the browser
+            // compute the box from the ratio. Absent when only an underived source is available:
+            // no attribute is better than a wrong one.
+            {...(recipe.imageWidth && recipe.imageHeight
+              ? { width: recipe.imageWidth, height: recipe.imageHeight }
+              : {})}
+            loading={eager ? 'eager' : 'lazy'}
             decoding="async"
           />
         ) : null}

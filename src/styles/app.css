@@ -402,9 +402,25 @@ img {
   max-width: 34rem;
   border: 1px solid var(--rule);
 }
-.illustrations__shot figcaption {
+.illustrations__shot figcaption,
+.illustrations__thumb figcaption {
   padding-top: 0.4rem;
   color: var(--ink-muted);
+}
+
+/* The inventory buckets, where there is nothing to arbitrate: the display derivative at the size it
+   was made for. An inventory answers "which photo is on this recipe", and that is a thumbnail's job;
+   the 34rem plate above is reserved for the bucket one actually judges in. */
+.illustrations__thumb {
+  flex-basis: 100%;
+  margin: 0.5rem 0;
+}
+.illustrations__thumb img {
+  display: block;
+  height: 120px;
+  width: auto;
+  max-width: 100%;
+  border: 1px solid var(--rule);
 }
 
 /* --- correction screen --- */

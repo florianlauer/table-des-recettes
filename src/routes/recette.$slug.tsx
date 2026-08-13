@@ -159,7 +159,18 @@ function RecipePage() {
         ) : null}
 
         {recipe.imageUrl ? (
-          <img className="recipe__photo" src={recipe.imageUrl} alt="" />
+          <img
+            className="recipe__photo"
+            src={recipe.imageUrl}
+            alt=""
+            {...(recipe.imageWidth && recipe.imageHeight
+              ? { width: recipe.imageWidth, height: recipe.imageHeight }
+              : {})}
+            // Under 900px the CSS gives this photo `order: 1`, which puts it at the very end of the
+            // recipe. Without `lazy` it downloaded before the reader had scrolled anywhere near it.
+            loading="lazy"
+            decoding="async"
+          />
         ) : null}
       </div>
 

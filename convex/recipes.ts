@@ -8,6 +8,7 @@ import { RECIPE_TYPES } from '../src/lib/recipeTypes'
 import { toSearchQuery } from '../src/lib/normalize'
 import { findMatchingIngredient } from '../src/lib/matchReason'
 import { pickDisplayImage } from '../src/lib/displayImage'
+import { usableDerivative } from './lib/renditions'
 
 type StorageCtx = Pick<QueryCtx, 'storage'>
 
@@ -22,6 +23,12 @@ export const publishedRecipeRow = v.object({
   slug: v.string(),
   type: recipeType,
   imageUrl: v.union(v.string(), v.null()),
+  // Intrinsic dimensions of the image actually served, so the browser can reserve its box from the
+  // ratio: the CSS pins the height and leaves the width free, and `DESIGN.md` forbids automatic
+  // cropping — which is exactly why a CSS `aspect-ratio` cannot stand in for the real numbers.
+  // Null when only the undérived source is available; no attribute beats a wrong one.
+  imageWidth: v.union(v.number(), v.null()),
+  imageHeight: v.union(v.number(), v.null()),
   matchedIngredient: v.union(v.string(), v.null()),
 })
 
@@ -51,16 +58,47 @@ const typeCounts = v.object({
   }),
 })
 
-async function imageUrl(
+type DisplayImage = {
+  url: string | null
+  width: number | null
+  height: number | null
+}
+
+const NO_IMAGE: DisplayImage = { url: null, width: null, height: null }
+
+/**
+ * The display derivative of whichever slot is on screen — and the source itself when that derivative
+ * is missing or no longer describes the blob the slot holds.
+ *
+ * The fallback keeps the photo on screen at full weight rather than making it vanish, and the admin
+ * work list is what reports it: silently serving 1.9 MB is how the bandwidth quota goes. The
+ * dimensions are always those of what is **actually served**, never of the source — announcing the
+ * source's size next to a derivative would distort the layout instead of reserving it.
+ */
+async function displayImage(
   ctx: StorageCtx,
   doc: Doc<'recipes'>,
-): Promise<string | null> {
+): Promise<DisplayImage> {
   const picked = pickDisplayImage({
     imageStorageId: doc.imageStorageId ?? null,
     beautifiedStorageId: doc.beautifiedStorageId ?? null,
     beautifiedAccepted: doc.beautifiedAccepted,
   })
-  return picked ? ctx.storage.getUrl(picked.storageId) : null
+  if (!picked) return NO_IMAGE
+
+  const derivative = usableDerivative(doc, picked.kind)
+  if (derivative) {
+    return {
+      url: await ctx.storage.getUrl(derivative.storageId),
+      width: derivative.width,
+      height: derivative.height,
+    }
+  }
+  return {
+    url: await ctx.storage.getUrl(picked.storageId),
+    width: null,
+    height: null,
+  }
 }
 
 /**
@@ -75,12 +113,15 @@ async function toRow(
   if (!doc.slug) {
     throw new Error(`Recette publiée sans slug : ${doc._id}`)
   }
+  const image = await displayImage(ctx, doc)
   return {
     id: doc._id,
     title: doc.title,
     slug: doc.slug,
     type: doc.type,
-    imageUrl: await imageUrl(ctx, doc),
+    imageUrl: image.url,
+    imageWidth: image.width,
+    imageHeight: image.height,
     matchedIngredient: tokens
       ? findMatchingIngredient(doc.title, doc.ingredients, tokens)
       : null,

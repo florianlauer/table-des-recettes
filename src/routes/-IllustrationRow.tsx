@@ -205,9 +205,17 @@ export function IllustrationRow({
       )}
 
       {/* Stacked, never side by side: on a phone, two columns make the print screen — the very
-          thing being judged — unreadable. */}
+          thing being judged — unreadable.
+
+          `thumbnails` says the urls point at display derivatives, which are ~292px wide: shown in
+          the 34rem plate they would be blurred, so the inventory buckets get a bounded box instead.
+          The plate itself is untouched wherever there is something to arbitrate. */}
       {row.originalUrl && (
-        <figure className="illustrations__shot">
+        <figure
+          className={
+            row.thumbnails ? 'illustrations__thumb' : 'illustrations__shot'
+          }
+        >
           {/* Lazy, and it matters here more than anywhere: the queue lists dozens of rows, each
               carrying a page photographed at full resolution. */}
           <img
@@ -216,11 +224,20 @@ export function IllustrationRow({
             loading="lazy"
             decoding="async"
           />
-          <figcaption>Photo d’origine</figcaption>
+          <figcaption>
+            Photo d’origine
+            {row.originalRendition?.state === 'failed'
+              ? ' — vignette impossible'
+              : ''}
+          </figcaption>
         </figure>
       )}
       {row.candidateUrl && (
-        <figure className="illustrations__shot">
+        <figure
+          className={
+            row.thumbnails ? 'illustrations__thumb' : 'illustrations__shot'
+          }
+        >
           <img
             src={row.candidateUrl}
             alt={`Embellissement de ${title}`}
@@ -230,8 +247,25 @@ export function IllustrationRow({
           <figcaption>
             Candidat embelli
             {row.beautifiedAccepted ? ' (publié)' : ''}
+            {row.candidateRendition?.state === 'failed'
+              ? ' — vignette impossible'
+              : ''}
           </figcaption>
         </figure>
+      )}
+      {/* The fallback of `recipes.browse` renders correctly and quietly costs the full weight, so the
+          screen that already exists to say "there is work left on the photos" is where it is said. */}
+      {[row.originalRendition, row.candidateRendition].some(
+        (rendition) => rendition?.state === 'failed',
+      ) && (
+        <p role="alert">
+          Vignette d’affichage impossible :{' '}
+          {row.originalRendition?.state === 'failed'
+            ? row.originalRendition.error
+            : row.candidateRendition?.state === 'failed'
+              ? row.candidateRendition.error
+              : ''}
+        </p>
       )}
 
       {can.replace && (
