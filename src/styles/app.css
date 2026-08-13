@@ -104,7 +104,8 @@ img {
 }
 .admin-page__header h1,
 .admin-page__scans h2,
-.admin-page__stats h2 {
+.admin-page__stats h2,
+.admin-page__queue h2 {
   font-family: var(--serif);
 }
 .admin-page__field {
@@ -298,7 +299,11 @@ img {
   margin: 0 0 0.6rem;
 }
 .admin-page__scans,
-.admin-page__stats {
+/* All three, not just the last one: the queue and the scans butted against what came before them,
+   so the page read as one long column of controls with a single visible break at the end. */
+.admin-page__stats,
+.admin-page__scans,
+.admin-page__queue {
   margin-top: 2.5rem;
 }
 .admin-page__scan,

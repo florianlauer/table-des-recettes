@@ -66,8 +66,11 @@ function AdminPage() {
     <main className="page admin-page">
       <header className="admin-page__header">
         <h1>Administration</h1>
+        {/* The way out was missing: /admin is reached by typing the path, and nothing on it led back
+            to the site it administers. */}
         <p>
-          <Link to="/admin/illustrations">Photos des plats</Link>
+          <Link to="/admin/illustrations">Photos des plats</Link> ·{' '}
+          <Link to="/">Voir le site</Link>
         </p>
       </header>
 
