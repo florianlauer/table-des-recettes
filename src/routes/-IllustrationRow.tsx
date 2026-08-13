@@ -4,6 +4,8 @@ import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import { BEAUTIFY_LEASE_MS, illustrationActions } from '../lib/illustrationWork'
+import { recipeStatusLabel } from '../lib/recipeStatus'
+import { TYPE_LABELS } from '../lib/recipeTypes'
 import { useAttachIllustration } from '../lib/useAttachIllustration'
 import type { Gestures } from '../lib/useGestures'
 import { uploadProgress } from '../lib/uploadProgress'
@@ -172,7 +174,7 @@ export function IllustrationRow({
     >
       <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
       <p>
-        {row.type} · {row.status}
+        {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}
       </p>
       {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}

@@ -3,6 +3,7 @@ import { useId } from 'react'
 import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
+import { RECIPE_STATUS_LABELS } from '../lib/recipeStatus'
 import { RECIPE_TYPES } from '../lib/recipeTypes'
 import type { RecipeType } from '../lib/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
@@ -108,7 +109,7 @@ export function RecipeForm({
     >
       <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
       <p>
-        {recipe.status === 'published' ? 'Publiée' : 'Brouillon'}
+        {RECIPE_STATUS_LABELS[recipe.status]}
         {recipe.slug && ` · /recette/${recipe.slug}`}
         {recipe.ingredientsInferred && ' · ingrédients déduits'}
       </p>
