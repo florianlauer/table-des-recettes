@@ -677,9 +677,12 @@ img {
   color: var(--ink-muted);
   margin: 0.25rem 0 0;
 }
+/* Measured, not chosen: at 390×844 with every visible row illustrated, the fourth title clears the
+   fold up to 100px of photo and no further. 96 keeps the floor of the density rule with a margin.
+   Desktop is the same decision one step up. See DESIGN.md § Amendement du 2026-08-13. */
 .row__photo {
   grid-column: 1 / -1;
-  height: 200px;
+  height: 112px;
   width: auto;
   max-width: 100%;
   margin-top: 0.75rem;
@@ -687,7 +690,7 @@ img {
 }
 @media (width <= 40rem) {
   .row__photo {
-    height: 160px;
+    height: 96px;
   }
   .row__body {
     padding-left: 1rem;

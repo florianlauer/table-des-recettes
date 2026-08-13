@@ -343,11 +343,32 @@ titre. La ligne illustrée est simplement plus haute.
 - Le titre reste exactement à sa place habituelle. La partie textuelle d'une ligne illustrée est
   **identique** à celle d'une ligne non illustrée.
 - La photo occupe la colonne principale, alignée à gauche, jamais la marge.
-- **Hauteur fixe : 200 px desktop, 160 px mobile.** Largeur libre selon le ratio
+- **Hauteur fixe : 112 px desktop, 96 px mobile.** Largeur libre selon le ratio
   (`height: 100%; width: auto; max-width: 100%`). Ratio d'origine conservé, **aucun recadrage
   automatique du plat**.
-- Une photo de plat en 4:3 fait donc environ 270 px de large sur une colonne de 900 : elle lit
+- Une photo de plat en 4:3 fait donc environ 150 px de large sur une colonne de 900 : elle lit
   comme une planche rapportée, pas comme une bannière.
+
+> **Amendement du 2026-08-13** — remplace « 200 px desktop, 160 px mobile », et mesure l'item 6 de
+> « Premier écran de `/` ».
+>
+> Deux règles se contredisaient : la densité de l'index d'un côté, la taille de la photo de
+> l'autre. `PRODUCT.md` tranche — « retrouver prime sur découvrir, l'index est un répertoire, pas
+> un fil d'inspiration » — donc c'est la photo qui rétrécit, et la règle de densité qui est tenue.
+>
+> Mesuré sur la page réelle, pas décrété. À 390×844, dans le pire cas où **toutes** les lignes
+> visibles portent une photo : le quatrième titre passe au-dessus de la ligne de flottaison jusqu'à
+> 100 px de photo, et pas au-delà. D'où 96 px, qui garde le plancher avec une marge. À 160 px, la
+> règle était fausse : trois titres.
+>
+> Ce que la mesure dit aussi, et qu'il faut écrire plutôt que taire : **« huit recettes au premier
+> écran desktop » ne vaut que pour un écran peu illustré.** Sur 1440×900, l'index commence à 289 px,
+> une ligne nue en fait 53 et une ligne illustrée 177 : huit lignes nues tiennent (688 px), mais
+> chaque photo consomme la place de deux lignes et demie. Aucune hauteur de photo ne rend les deux
+> moitiés de la règle vraies en même temps — il faudrait descendre à 40 px, ce qui n'est plus une
+> photo. La garantie ferme est donc **le plancher mobile** ; le chiffre desktop décrit un écran
+> textuel, et une photo s'y paie en lignes.
+
 - Angles droits, filet de 1 px en `--rule-strong`, aucune ombre.
 - **Aucune légende.** Le titre est trente pixels au-dessus ; la répéter serait du bruit.
 - **Toutes les recettes illustrées montrent leur photo.** Pas de cadence, pas de sélection, pas
