@@ -186,3 +186,56 @@ Note d'outillage, sans rapport avec les composants sinon par leurs paquets : `@c
 résout vers `src/` et non `dist/`, que `skipLibCheck` ne couvre pas. `noUnusedLocals` et
 `noUnusedParameters` quittent donc `tsconfig.json` pour `@typescript-eslint/no-unused-vars` dans
 `eslint.config.js`, où la garantie ne porte que sur nos propres fichiers.
+
+## Après implémentation — la review qualité de code
+
+Troisième passe demandée par le propriétaire, cette fois sur la structure plutôt que sur le
+comportement. Sept constats, tous appliqués. Deux méritent d'être retenus au-delà du diff.
+
+**La machinerie survit à son consommateur.** `derivations.listPendingDerivations` — curseur de
+pagination, plafond de page, réconciliation « fin de corpus » contre « arrêté sur la limite » — n'avait
+plus **aucun appelant en production** dès que `deriveMissing` a disparu. Elle était maintenue en vie par
+ses propres tests, et son commentaire justifiait sa conservation par une question (« reste-t-il quelque
+chose à faire ? ») que personne ne pose. Sa docstring nommait encore la fonction supprimée le commit
+précédent.
+
+C'est le même angle mort que le bouton, à l'envers : la review précédente a retiré le consommateur et
+laissé le moteur. Ce qui survit du fichier est `pendingSlotsOf`, la règle de sélection seule — une
+fonction pure d'un document, que la migration appelle sur chaque ligne qu'elle parcourt. Les tests la
+visent directement, et sont plus courts.
+
+Règle qui en sort : **quand on supprime un appelant, chercher ce qui n'est plus appelé.** Un test vert
+n'est pas une preuve d'utilité.
+
+**Un helper qui exige tous ses champs fait recopier le document.** `withIllustration` demandait les
+trois champs dont l'étape dérive, avec un motif solide — « un appelant qui en oublie un classerait la
+recette dans le mauvais casier, donc un champ oublié doit être une erreur de compilation ». Le motif
+était bon, la solution à l'envers : cinq gestes réénonçaient le document pour n'en changer qu'un seul
+champ, `noPhotoAvailable: recipe.noPhotoAvailable ?? false` compris, cinq fois.
+
+`restaged(recipe, change, at)` prend le document comme base et le changement comme écart. La garantie
+est **plus forte** ainsi : avec le document en base, il n'y a plus rien à oublier. `withIllustration`
+garde son rôle là où il est juste — l'insert, où l'appelant construit les champs de toute façon.
+
+Les cinq autres constats, plus courts :
+
+- **`number | null` portait deux concepts** dans `listIllustrationWork` : « replié » et « combien
+  afficher ». D'où le même `?? ILLUSTRATION_WORK_LISTED` à trois endroits. Un type
+  `Cap = { take, render }` calculé une fois les fait disparaître, avec deux `=== null` et un paramètre
+  par défaut mort.
+- **Une garde silencieuse contredisait son module** : `if (inserted)` après un `get` dans la même
+  transaction ne peut pas être faux, et s'il l'était, sauter la mise à jour de l'agrégat produirait
+  exactement le fantôme permanent que le module existe pour empêcher. C'est un `throw`.
+- **Les trois écrivains canoniques vivaient dans un module de comptage.** `insertRecipeDoc`,
+  `patchRecipeDoc` et `deleteRecipeDoc` sont désormais `convex/recipeDocs.ts` ; `recipeCounts.ts` garde
+  l'agrégat et la lecture. « Comment écrit-on une recette » a une réponse, et elle n'est pas classée
+  sous « comptes ». Les tests suivent la même coupure.
+- **`convex.config.test.ts` n'affirmait rien** : 24 lignes de mocks pour `expect(app).toBeDefined()`,
+  qui ne peut pas échouer, et un mock de plus à écrire à chaque composant monté. Il compare maintenant
+  les montages de `convex.config.ts` aux enregistrements de `test/convexComponents.ts`, noms compris —
+  la dérive réelle, qui sinon se manifeste par `Component "x" is not registered` dans le premier des
+  onze fichiers de test qui touche le chemin de code.
+- **`illustrations.test.ts` passait de 876 à 1319 lignes.** Deux sujets disjoints : la matrice de
+  transition des gestes, et la lecture de la file (partition, plafonds, regroupement par jour). Scindé
+  en `illustrations.test.ts` (752) et `illustrationsList.test.ts` (433), fixtures communes dans
+  `test/illustrationFixtures.ts`.

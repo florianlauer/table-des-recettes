@@ -10,11 +10,7 @@ import {
   withSearchText,
 } from './lib/recipeWrites'
 import { clearAllRenditions } from './lib/renditions'
-import {
-  deleteRecipeDoc,
-  insertRecipeDoc,
-  patchRecipeDoc,
-} from './recipeCounts'
+import { deleteRecipeDoc, insertRecipeDoc, patchRecipeDoc } from './recipeDocs'
 import { okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { reconcileRetention } from './retention'

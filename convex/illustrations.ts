@@ -7,7 +7,7 @@ import { requireAdmin } from './auth'
 import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
 import { findAttempt, settleAttempt } from './lib/beautifyJournal'
-import { touchedIllustration, withIllustration } from './lib/recipeWrites'
+import { restaged, touchedIllustration } from './lib/recipeWrites'
 import {
   clearRendition,
   renditionOf,
@@ -209,12 +209,9 @@ export const commitIllustration = internalMutation({
     await ctx.db.patch(recipeId, {
       // Attaching a photo clears the flag rather than leaving it dormant: a state that says "the
       // source has no photo" next to a photo would be a state that lies.
-      ...withIllustration(
-        {
-          imageStorageId: storageId,
-          beautifiedAccepted: recipe.beautifiedAccepted,
-          noPhotoAvailable: false,
-        },
+      ...restaged(
+        recipe,
+        { imageStorageId: storageId, noPhotoAvailable: false },
         Date.now(),
       ),
       beautifiedStorageId: undefined,
@@ -251,16 +248,10 @@ export const detachIllustration = recipeMutation(async (ctx, recipe) => {
   const clearedOriginal = await clearRendition(ctx, recipe, 'original')
   const clearedCandidate = await dropCandidate(ctx, recipe)
   await ctx.db.patch(recipe._id, {
-    // The flag is read off the document, not forced: a recipe whose photo is removed goes back to
-    // `missing`, and only a recipe that still carries the flag goes back to `source-has-none`.
-    ...withIllustration(
-      {
-        imageStorageId: undefined,
-        beautifiedAccepted: recipe.beautifiedAccepted,
-        noPhotoAvailable: recipe.noPhotoAvailable ?? false,
-      },
-      Date.now(),
-    ),
+    // Only the photo is named, so the flag is read off the document rather than forced: a recipe whose
+    // photo is removed goes back to `missing`, and only a recipe that still carries the flag goes back
+    // to `source-has-none`.
+    ...restaged(recipe, { imageStorageId: undefined }, Date.now()),
     beautifiedStorageId: undefined,
     ...clearedOriginal,
     ...clearedCandidate,
@@ -323,14 +314,7 @@ export const acceptBeautified = recipeMutation(async (ctx, recipe) => {
 
   await settleAttempt(ctx, recipe.beautifyAttemptId, 'accepted')
   await ctx.db.patch(recipe._id, {
-    ...withIllustration(
-      {
-        imageStorageId: recipe.imageStorageId,
-        beautifiedAccepted: true,
-        noPhotoAvailable: recipe.noPhotoAvailable ?? false,
-      },
-      Date.now(),
-    ),
+    ...restaged(recipe, { beautifiedAccepted: true }, Date.now()),
     beautifyStatus: 'idle',
     beautifyAttemptId: undefined,
   })
@@ -388,14 +372,7 @@ export const unpublishAcceptedCandidate = recipeMutation(
     // is on the storefront today.
     await ctx.db.patch(
       recipe._id,
-      withIllustration(
-        {
-          imageStorageId: recipe.imageStorageId,
-          beautifiedAccepted: false,
-          noPhotoAvailable: recipe.noPhotoAvailable ?? false,
-        },
-        Date.now(),
-      ),
+      restaged(recipe, { beautifiedAccepted: false }, Date.now()),
     )
     return succeeded
   },
@@ -456,14 +433,7 @@ export const markNoPhotoAvailable = recipeMutation(async (ctx, recipe) => {
 
   await ctx.db.patch(
     recipe._id,
-    withIllustration(
-      {
-        imageStorageId: undefined,
-        beautifiedAccepted: recipe.beautifiedAccepted,
-        noPhotoAvailable: true,
-      },
-      Date.now(),
-    ),
+    restaged(recipe, { noPhotoAvailable: true }, Date.now()),
   )
   return succeeded
 })
@@ -476,14 +446,7 @@ export const clearNoPhotoAvailable = recipeMutation(async (ctx, recipe) => {
 
   await ctx.db.patch(
     recipe._id,
-    withIllustration(
-      {
-        imageStorageId: recipe.imageStorageId,
-        beautifiedAccepted: recipe.beautifiedAccepted,
-        noPhotoAvailable: false,
-      },
-      Date.now(),
-    ),
+    restaged(recipe, { noPhotoAvailable: false }, Date.now()),
   )
   return succeeded
 })
@@ -599,27 +562,46 @@ async function toRow(
   }
 }
 
-/** One over the cap, so a truncation is reported rather than silently shortening the work list. */
-function bounded(rows: Doc<'recipes'>[], limit = ILLUSTRATION_WORK_LISTED) {
+/** The index range reads one over the cap, so a truncation is reported rather than hidden. */
+function bounded(rows: Doc<'recipes'>[], limit: number) {
   return { page: rows.slice(0, limit), truncated: rows.length > limit }
 }
 
 /**
- * One section, read whatever its state. The documents are always read — the counter on a collapsed
- * `<summary>` has no other source — but `toRow` is what mints urls and drags images over the wire, so
- * that part is conditional. A collapsed section costs its document reads and nothing else.
+ * How much of one section to read, and whether to render it — the two questions a collapsed section
+ * answers differently, resolved once.
+ *
+ * They used to be a single `number | null` where `null` meant "collapsed", which is why the same
+ * `?? ILLUSTRATION_WORK_LISTED` fallback had to be repeated at the index range, at the page cut and at
+ * the render, three places deciding the same thing.
+ */
+type Cap = { take: number; render: boolean }
+
+/**
+ * `null` on the wire is a folded section. It still reads its documents — the counter on a collapsed
+ * `<summary>` has no other source — so it takes the default page and renders nothing.
+ */
+function capOf(requested: number | null): Cap {
+  return requested === null
+    ? { take: ILLUSTRATION_WORK_LISTED, render: false }
+    : { take: boundedLimit(requested), render: true }
+}
+
+/**
+ * One section, read whatever its state. `toRow` is what mints urls and drags images over the wire, so
+ * a collapsed section costs its document reads and nothing else.
  */
 async function sectionOf(
   ctx: QueryCtx,
   rows: Doc<'recipes'>[],
-  { limit, thumbnail }: { limit: number | null; thumbnail: boolean },
+  cap: Cap,
+  thumbnail: boolean,
 ) {
-  const { page, truncated } = bounded(rows, limit ?? ILLUSTRATION_WORK_LISTED)
+  const { page, truncated } = bounded(rows, cap.take)
   return {
-    rows:
-      limit === null
-        ? []
-        : await Promise.all(page.map((row) => toRow(ctx, row, thumbnail))),
+    rows: cap.render
+      ? await Promise.all(page.map((row) => toRow(ctx, row, thumbnail)))
+      : [],
     count: page.length,
     truncated,
   }
@@ -670,17 +652,15 @@ export const listIllustrationWork = query({
     const migration = await readIllustrationStageStatus(ctx)
     const stagesReady = migration.ready
 
-    // `null` keeps the section collapsed; a number is the requested page, normalised.
-    const capOf = (requested: number | null) =>
-      requested === null ? null : boundedLimit(requested)
+    // `toBeautify` has no folded state: it is the main flow, so its cap is always a rendering one.
     const caps = {
-      toBeautify: boundedLimit(limits.toBeautify),
+      toBeautify: capOf(limits.toBeautify),
       missing: capOf(limits.missing),
       sourceHasNone: capOf(limits.sourceHasNone),
       done: capOf(limits.done),
     }
 
-    const byStage = (stage: IllustrationStage, cap: number | null) =>
+    const byStage = (stage: IllustrationStage, cap: Cap) =>
       stagesReady
         ? ctx.db
             .query('recipes')
@@ -693,7 +673,8 @@ export const listIllustrationWork = query({
             )
             // Descending over the third key, `illustrationUpdatedAt`: most recently touched first.
             .order('desc')
-            .take((cap ?? ILLUSTRATION_WORK_LISTED) + 1)
+            // One over the cap, so a truncation is reported rather than silently shortening the list.
+            .take(cap.take + 1)
         : Promise.resolve([])
 
     const [review, generating, failed, toBeautify, missing, none, done] =
@@ -715,23 +696,17 @@ export const listIllustrationWork = query({
     // single screen, worse than the storefront. A ~292 px thumbnail is enough to check a page is
     // legible before spending a generation.
     return {
-      active: await sectionOf(ctx, [...review, ...generating, ...failed], {
-        limit: ILLUSTRATION_WORK_LISTED,
-        thumbnail: false,
-      }),
-      toBeautify: await sectionOf(ctx, toBeautify, {
-        limit: caps.toBeautify,
-        thumbnail: true,
-      }),
-      missing: await sectionOf(ctx, missing, {
-        limit: caps.missing,
-        thumbnail: true,
-      }),
-      sourceHasNone: await sectionOf(ctx, none, {
-        limit: caps.sourceHasNone,
-        thumbnail: true,
-      }),
-      done: await sectionOf(ctx, done, { limit: caps.done, thumbnail: true }),
+      // Never folded, and never capped by the client: arbitration is work already paid for.
+      active: await sectionOf(
+        ctx,
+        [...review, ...generating, ...failed],
+        { take: ILLUSTRATION_WORK_LISTED, render: true },
+        false,
+      ),
+      toBeautify: await sectionOf(ctx, toBeautify, caps.toBeautify, true),
+      missing: await sectionOf(ctx, missing, caps.missing, true),
+      sourceHasNone: await sectionOf(ctx, none, caps.sourceHasNone, true),
+      done: await sectionOf(ctx, done, caps.done, true),
       stagesReady,
       migration,
     }

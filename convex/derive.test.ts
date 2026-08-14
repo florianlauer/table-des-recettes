@@ -8,7 +8,7 @@ import sharp from 'sharp'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { internal } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
-import { MAX_DERIVATION_ATTEMPTS } from './derivations'
+import { MAX_DERIVATION_ATTEMPTS, pendingSlotsOf } from './derivations'
 import { DERIVATIVE_HEIGHT } from './derive'
 import schema from './schema'
 import { registerComponents } from '../test/convexComponents'
@@ -89,6 +89,17 @@ async function renditionOf(
 ): Promise<Doc<'recipes'>['imageRendition']> {
   const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
   return recipe?.imageRendition
+}
+
+/**
+ * What the backfill would select on this recipe, asked of the rule directly. The migration is what
+ * walks the corpus, so a test that only needs one row's verdict reads the rule rather than replaying
+ * an enumeration.
+ */
+async function pendingOf(t: Ctx, recipeId: Id<'recipes'>, retryFailed = false) {
+  const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+  if (!recipe) throw new Error('Fixture introuvable')
+  return pendingSlotsOf(recipe, retryFailed)
 }
 
 /** A Blob cannot cross the `t.run` boundary, so the bytes are read on the inside. */
@@ -266,7 +277,7 @@ describe('deriveRendition', () => {
   })
 })
 
-describe('deriveMissing', () => {
+describe('deriving every slot that owes a derivative', () => {
   test('derives both slots of a recipe whose beautification hides its original, then converges', async () => {
     const t = setup()
     const source = await storeImage(t, await png({ width: 864, height: 1184 }))
@@ -297,18 +308,13 @@ describe('deriveMissing', () => {
     // (`_addWrite` throws "Write outside of transaction" when one action pops the frame the other is
     // writing into). Production shares no transaction between two actions, so serialising here is
     // faithful to what this test certifies rather than a workaround for a real race.
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending).toEqual({
-      slots: [
-        { recipeId, slot: 'original', sourceStorageId: source },
-        { recipeId, slot: 'beautified', sourceStorageId: candidate },
-      ],
-      isDone: true,
-    })
-    for (const slot of pending.slots) {
-      await t.action(internal.derive.deriveRendition, slot)
+    const pending = await pendingOf(t, recipeId)
+    expect(pending).toEqual([
+      { slot: 'original', sourceStorageId: source },
+      { slot: 'beautified', sourceStorageId: candidate },
+    ])
+    for (const slot of pending) {
+      await t.action(internal.derive.deriveRendition, { recipeId, ...slot })
     }
 
     // Flattened to strings rather than asserted as objects: vitest elides a nested diff, so a
@@ -320,9 +326,7 @@ describe('deriveMissing', () => {
     }).toEqual({ original: 'ready', beautified: 'ready' })
 
     // Converged: nothing is left pending.
-    expect(
-      await t.query(internal.derivations.listPendingDerivations, { limit: 10 }),
-    ).toEqual({ slots: [], isDone: true })
+    expect(await pendingOf(t, recipeId)).toEqual([])
   })
 
   test('does not loop for ever on an image sharp cannot decode', async () => {
@@ -341,13 +345,10 @@ describe('deriveMissing', () => {
     // make this assert the pool's wake-up timing instead. The pool has its own test above.
     let passes = 0
     for (;;) {
-      const pending = await t.query(
-        internal.derivations.listPendingDerivations,
-        { limit: 10 },
-      )
-      if (pending.slots.length === 0) break
-      for (const slot of pending.slots) {
-        await t.action(internal.derive.deriveRendition, slot)
+      const pending = await pendingOf(t, recipeId)
+      if (pending.length === 0) break
+      for (const slot of pending) {
+        await t.action(internal.derive.deriveRendition, { recipeId, ...slot })
       }
       passes += 1
       if (passes > MAX_DERIVATION_ATTEMPTS) throw new Error('does not converge')
@@ -360,15 +361,9 @@ describe('deriveMissing', () => {
     })
 
     // And it is still reachable on demand, through the migration that ignores the spent budget.
-    expect(
-      await t.query(internal.derivations.listPendingDerivations, {
-        limit: 10,
-        retryFailed: true,
-      }),
-    ).toEqual({
-      slots: [{ recipeId, slot: 'original', sourceStorageId: source }],
-      isDone: true,
-    })
+    expect(await pendingOf(t, recipeId, true)).toEqual([
+      { slot: 'original', sourceStorageId: source },
+    ])
   })
 
   /**

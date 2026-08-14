@@ -9,7 +9,7 @@ import type { Doc } from './_generated/dataModel'
 import { internalMutation } from './_generated/server'
 import type { MutationCtx, QueryCtx } from './_generated/server'
 import { pendingSlotsOf, renditionPool } from './derivations'
-import { withIllustration } from './lib/recipeWrites'
+import { restaged } from './lib/recipeWrites'
 import { publishedRecipes } from './recipeCounts'
 import { ceilingFor } from './retention'
 import schema from './schema'
@@ -46,14 +46,9 @@ export const backfillIllustrationStage = migrations.define({
   table: 'recipes',
   migrateOne: (_ctx, recipe) => {
     if (recipe.illustrationStage !== undefined) return
-    return withIllustration(
-      {
-        imageStorageId: recipe.imageStorageId,
-        beautifiedAccepted: recipe.beautifiedAccepted,
-        noPhotoAvailable: recipe.noPhotoAvailable ?? false,
-      },
-      recipe._creationTime,
-    )
+    // No change, only the derived keys: the backfill is the one write whose whole job is to catch a
+    // document up with what its own fields already say.
+    return restaged(recipe, {}, recipe._creationTime)
   },
 })
 

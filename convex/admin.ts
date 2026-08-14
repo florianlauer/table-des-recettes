@@ -8,7 +8,7 @@ import { readQueueWork } from './extract'
 import { deleteStoredBlob } from './lib/blobs'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
-import { deleteRecipeDoc } from './recipeCounts'
+import { deleteRecipeDoc } from './recipeDocs'
 import { ceilingFor, reconcileRetention } from './retention'
 import type { PurgeResult } from './retention'
 import {

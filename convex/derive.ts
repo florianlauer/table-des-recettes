@@ -111,5 +111,6 @@ export const deriveRendition = internalAction({
 // Deriving every slot that has a blob and no derivative is `migrations.backfillRenditions`. It used to
 // be a `deriveMissing` action here, driven by a human repeating it until it reported zero, and its own
 // comment justified the hand-roll by the cost of "a resumable batched migration" — a cost
-// `@convex-dev/migrations` removes. `listPendingDerivations` stays: a bounded read that answers "is
-// anything left", which is not the same thing as a loop.
+// `@convex-dev/migrations` removes. What survived the move is `pendingSlotsOf`, the selection rule
+// alone: the enumeration went with the action, because a second walker with its own cursor is the
+// mechanic the component replaced.

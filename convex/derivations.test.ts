@@ -2,7 +2,7 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
-import { MAX_DERIVATION_ATTEMPTS } from './derivations'
+import { MAX_DERIVATION_ATTEMPTS, pendingSlotsOf } from './derivations'
 import { withIllustration } from './lib/recipeWrites'
 import schema from './schema'
 import { registerComponents } from '../test/convexComponents'
@@ -358,7 +358,16 @@ describe('failDerivation', () => {
   })
 })
 
-describe('listPendingDerivations', () => {
+describe('pendingSlotsOf', () => {
+  /**
+   * Read through the document, because that is the only argument production gives it: the migration
+   * hands it each row it walks. There is no query to call — enumerating the corpus belongs to
+   * `@convex-dev/migrations`, not to a second cursor of our own.
+   */
+  async function slotsOf(t: Ctx, recipeId: Id<'recipes'>, retryFailed = false) {
+    return pendingSlotsOf(await recipeOf(t, recipeId), retryFailed)
+  }
+
   test('enumerates both slots, whichever one is on screen', async () => {
     const t = setup()
     const source = await storeBlob(t)
@@ -372,34 +381,23 @@ describe('listPendingDerivations', () => {
       hasIllustration: true,
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-
-    expect(pending.slots).toEqual(
-      expect.arrayContaining([
-        { recipeId, slot: 'original', sourceStorageId: source },
-        { recipeId, slot: 'beautified', sourceStorageId: candidate },
-      ]),
-    )
-    expect(pending.slots).toHaveLength(2)
-    expect(pending.isDone).toBe(true)
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: source },
+      { slot: 'beautified', sourceStorageId: candidate },
+    ])
   })
 
   test('skips a slot whose rendition is ready and still matches its source', async () => {
     const t = setup()
     const source = await storeBlob(t)
     const derivative = await storeBlob(t)
-    await newRecipe(t, {
+    const recipeId = await newRecipe(t, {
       imageStorageId: source,
       hasIllustration: true,
       imageRendition: readyRendition(source, derivative),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([])
+    expect(await slotsOf(t, recipeId)).toEqual([])
   })
 
   test('selects a rendition whose source no longer matches', async () => {
@@ -413,17 +411,14 @@ describe('listPendingDerivations', () => {
       imageRendition: readyRendition(oldSource, derivative),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: newSource },
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: newSource },
     ])
   })
 
-  // Without this, "repeat until zero" never converges on an image sharp cannot decode.
-  // The whole point of counting: a failure that had nothing to do with the bytes — a native library
-  // that did not load — must not park the photo at full weight until someone notices.
+  // Without this, a repeated pass never converges on an image sharp cannot decode. The whole point of
+  // counting: a failure that had nothing to do with the bytes — a native library that did not load —
+  // must not park the photo at full weight until someone notices.
   test('retries a failed rendition that is still under the attempt ceiling', async () => {
     const t = setup()
     const source = await storeBlob(t)
@@ -433,11 +428,8 @@ describe('listPendingDerivations', () => {
       imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS - 1),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: source },
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: source },
     ])
   })
 
@@ -450,35 +442,10 @@ describe('listPendingDerivations', () => {
       imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS),
     })
 
-    const skipped = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(skipped.slots).toEqual([])
-
-    const retried = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-      retryFailed: true,
-    })
-    expect(retried.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: source },
+    expect(await slotsOf(t, recipeId)).toEqual([])
+    expect(await slotsOf(t, recipeId, true)).toEqual([
+      { slot: 'original', sourceStorageId: source },
     ])
-  })
-
-  test('reports that it stopped on the limit rather than on the end of the corpus', async () => {
-    const t = setup()
-    for (let i = 0; i < 3; i += 1) {
-      await newRecipe(t, {
-        title: `Recette ${i}`,
-        imageStorageId: await storeBlob(t),
-        hasIllustration: true,
-      })
-    }
-
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 2,
-    })
-    expect(pending.slots).toHaveLength(2)
-    expect(pending.isDone).toBe(false)
   })
 })
 

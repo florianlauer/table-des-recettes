@@ -2,7 +2,7 @@ import { Workpool } from '@convex-dev/workpool'
 import { v } from 'convex/values'
 import { components } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
-import { internalMutation, internalQuery } from './_generated/server'
+import { internalMutation } from './_generated/server'
 import { deleteStoredBlob } from './lib/blobs'
 import {
   renditionOf,
@@ -38,9 +38,6 @@ export const renditionPool = new Workpool(components.renditionWorkpool, {
   maxParallelism: RENDITION_PARALLELISM,
 })
 
-/** One page per pass. The corpus is a few hundred recipes; an unbounded scan has no ceiling. */
-export const PENDING_SCAN_BATCH = 200
-
 /**
  * How many times a source is tried before the backfill stops selecting it on its own. Three, because
  * the failures worth retrying are one-off — a native library that did not load, a transient storage
@@ -48,12 +45,6 @@ export const PENDING_SCAN_BATCH = 200
  * reaches past this ceiling on demand.
  */
 export const MAX_DERIVATION_ATTEMPTS = 3
-
-const pendingSlot = v.object({
-  recipeId: v.id('recipes'),
-  slot: renditionSlot,
-  sourceStorageId: v.id('_storage'),
-})
 
 /**
  * Adopts a freshly derived blob, or destroys it — in one transaction, so no crash can land between
@@ -151,6 +142,15 @@ export const failDerivation = internalMutation({
   },
 })
 
+/**
+ * The slots one recipe still owes a derivative, **both of them, whichever one is on screen**: an
+ * original hidden behind an accepted beautification is not displayed today, but unpublishing puts it
+ * back — without a derivative, and therefore at full weight.
+ *
+ * A pure function of the document, called by `migrations.backfillRenditions` on each row it walks.
+ * There is deliberately no query wrapping it: enumerating the corpus is the migration's job, and a
+ * second enumerator with its own cursor was exactly the hand-rolled mechanic the component replaced.
+ */
 export function pendingSlotsOf(
   recipe: Doc<'recipes'>,
   retryFailed: boolean,
@@ -173,54 +173,3 @@ export function pendingSlotsOf(
     return [{ slot, sourceStorageId }]
   })
 }
-
-/**
- * The slots a backfill pass should derive. **Both slots are enumerated, whichever one is on screen**:
- * an original hidden behind an accepted beautification is not displayed today, but unpublishing puts
- * it back — without a derivative, and therefore at full weight.
- *
- * An action has no `ctx.db`, so `derive.deriveMissing` reaches this through `ctx.runQuery`.
- */
-export const listPendingDerivations = internalQuery({
-  args: { limit: v.number(), retryFailed: v.optional(v.boolean()) },
-  returns: v.object({
-    slots: v.array(pendingSlot),
-    // False when the walk stopped on `limit` rather than on the end of the corpus, so the caller
-    // knows a further pass has something left to find.
-    isDone: v.boolean(),
-  }),
-  handler: async (ctx, { limit, retryFailed }) => {
-    // Paginated inside the query rather than driven by a cursor from the action: the corpus is a few
-    // hundred rows, and walking it here keeps the backfill a single round trip.
-    const slots: (typeof pendingSlot)['type'][] = []
-    let cursor: string | null = null
-    let reachedEnd = false
-    // A page can reach the end of the corpus *and* drop pending slots over the limit in the same
-    // pass, so "walked to the end" alone would report done while work remains.
-    let truncated = false
-
-    while (slots.length < limit) {
-      const page = await ctx.db
-        .query('recipes')
-        .withIndex('by_illustration', (q) => q.eq('hasIllustration', true))
-        .paginate({ cursor, numItems: PENDING_SCAN_BATCH })
-
-      for (const recipe of page.page) {
-        for (const pending of pendingSlotsOf(recipe, retryFailed ?? false)) {
-          if (slots.length < limit) {
-            slots.push({ recipeId: recipe._id, ...pending })
-          } else {
-            truncated = true
-          }
-        }
-      }
-      cursor = page.continueCursor
-      if (page.isDone) {
-        reachedEnd = true
-        break
-      }
-    }
-
-    return { slots, isDone: reachedEnd && !truncated }
-  },
-})

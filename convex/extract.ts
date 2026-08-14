@@ -10,7 +10,7 @@ import { ingredient, recipeType } from './schema'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
-import { insertRecipeDoc } from './recipeCounts'
+import { insertRecipeDoc } from './recipeDocs'
 import { FAILURE_KINDS, isTerminalFailure } from '../src/lib/failureKinds'
 import type { FailureKind } from '../src/lib/failureKinds'
 import {
