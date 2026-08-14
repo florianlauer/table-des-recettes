@@ -10,6 +10,7 @@ import { ingredient, recipeType } from './schema'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
+import { insertRecipeDoc } from './recipeDocs'
 import { FAILURE_KINDS, isTerminalFailure } from '../src/lib/failureKinds'
 import type { FailureKind } from '../src/lib/failureKinds'
 import {
@@ -523,8 +524,8 @@ export const finalize = internalMutation({
     )
       return false
     for (const recipe of recipes) {
-      await ctx.db.insert(
-        'recipes',
+      await insertRecipeDoc(
+        ctx,
         withIllustration(
           withSearchText({
             ...recipe,
@@ -532,9 +533,11 @@ export const finalize = internalMutation({
             status: 'review' as const,
             imageStorageId: undefined,
             beautifiedAccepted: false,
+            noPhotoAvailable: false,
             beautifyStatus: 'idle' as const,
             revision: 0,
           }),
+          Date.now(),
         ),
       )
     }

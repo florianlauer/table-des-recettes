@@ -1,7 +1,9 @@
 import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import { internalAction, internalMutation } from './_generated/server'
+import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
+import { touchedIllustration } from './lib/recipeWrites'
 import { clearRendition } from './lib/renditions'
 import {
   beautifyFailureKind as beautifyFailureKindValidator,
@@ -389,6 +391,7 @@ export const finalizeBeautify = internalMutation({
       beautifyStatus: 'review',
       beautifyStartedAt: undefined,
       beautifyError: undefined,
+      ...touchedIllustration(Date.now()),
     })
     await journalBeautifyAttempt(ctx, {
       ...observation,
@@ -398,7 +401,7 @@ export const finalizeBeautify = internalMutation({
       failureKind: null,
     })
     // Only on the branch that adopts: a discarded candidate has no display to derive for.
-    await ctx.scheduler.runAfter(0, internal.derive.deriveRendition, {
+    await renditionPool.enqueueAction(ctx, internal.derive.deriveRendition, {
       recipeId,
       slot: 'beautified',
       sourceStorageId: candidateStorageId,
@@ -443,6 +446,7 @@ export const recordBeautifyFailure = internalMutation({
       beautifyError: error,
       beautifyAttemptId: undefined,
       beautifyStartedAt: undefined,
+      ...touchedIllustration(Date.now()),
     })
     return true
   },

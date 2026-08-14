@@ -11,6 +11,7 @@ function actions(state: Partial<IllustrationState>) {
       beautifiedAccepted: false,
       hasOriginal: true,
       hasCandidate: false,
+      noPhotoAvailable: false,
       beautifyStartedAt: null,
       ...state,
     },
@@ -73,5 +74,35 @@ describe('transition matrix, as the screen reads it', () => {
 
   test('offers a new generation after a failure', () => {
     expect(actions({ beautifyStatus: 'failed' }).generate).toBe(true)
+  })
+})
+
+describe('the source-has-no-photo flag', () => {
+  test('is offered on a recipe with no photo', () => {
+    const can = actions({ hasOriginal: false })
+    expect(can.markNoPhoto).toBe(true)
+    expect(can.unmarkNoPhoto).toBe(false)
+  })
+
+  // Marking a photographed recipe is not a claim about the source, it is a contradiction — and the
+  // server refuses it, so offering the button would be offering a known error.
+  test('is not offered once a photo is attached', () => {
+    expect(actions({ hasOriginal: true }).markNoPhoto).toBe(false)
+  })
+
+  test('swaps for its undo once set', () => {
+    const can = actions({ hasOriginal: false, noPhotoAvailable: true })
+    expect(can.markNoPhoto).toBe(false)
+    expect(can.unmarkNoPhoto).toBe(true)
+    // The way out is either gesture: post the photo, or say the source has one after all.
+    expect(can.replace).toBe(true)
+  })
+
+  // The flag survives an attachment in the document only as an inert value; the screen must still
+  // offer the undo, or a recipe attached then detached would be stuck marked with no way back.
+  test('offers the undo even on a photographed recipe that still carries the flag', () => {
+    const can = actions({ hasOriginal: true, noPhotoAvailable: true })
+    expect(can.unmarkNoPhoto).toBe(true)
+    expect(can.markNoPhoto).toBe(false)
   })
 })

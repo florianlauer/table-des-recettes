@@ -3,6 +3,15 @@ import { expect, test } from 'vitest'
 import { api } from './_generated/api'
 import schema from './schema'
 import { withSearchText } from './lib/recipeWrites'
+import { registerComponents } from '../test/convexComponents'
+
+const modules = import.meta.glob('./**/*.ts')
+
+function setup() {
+  const t = convexTest(schema, modules)
+  registerComponents(t)
+  return t
+}
 
 const base = {
   status: 'published' as const,
@@ -14,7 +23,7 @@ const base = {
 }
 
 async function withRecipes() {
-  const t = convexTest(schema)
+  const t = setup()
   await t.run(async (ctx) => {
     // `searchText` goes through `withSearchText`, never written by hand: a pre-stemmed fixture
     // would keep these tests green if the write boundary stopped normalising ingredients —
@@ -124,7 +133,7 @@ test('a plural query finds the indexed singular, and the title is explanation en
 })
 
 test('searching an ingredient absent from the title surfaces that line', async () => {
-  const t = convexTest(schema)
+  const t = setup()
   await t.run(async (ctx) => {
     await ctx.db.insert(
       'recipes',
@@ -149,7 +158,7 @@ test('an empty query lists everything instead of returning nothing', async () =>
 })
 
 test('a published recipe without a slug throws instead of degrading', async () => {
-  const t = convexTest(schema)
+  const t = setup()
   await t.run(async (ctx) => {
     // The only fixture inserted outside the boundary: it deliberately builds the broken invariant.
     await ctx.db.insert('recipes', {
@@ -162,8 +171,6 @@ test('a published recipe without a slug throws instead of degrading', async () =
   })
   await expect(t.query(api.recipes.browse, {})).rejects.toThrow(/sans slug/)
 })
-
-const IMAGE_MODULES = import.meta.glob('./**/*.ts')
 
 async function published(
   t: ReturnType<typeof convexTest>,
@@ -203,7 +210,7 @@ async function storedBlob(t: ReturnType<typeof convexTest>) {
 }
 
 test('browse serves the display derivative and its intrinsic dimensions', async () => {
-  const t = convexTest(schema, IMAGE_MODULES)
+  const t = setup()
   const source = await storedBlob(t)
   const derivative = await storedBlob(t)
   await published(t, {
@@ -230,7 +237,7 @@ test('browse serves the display derivative and its intrinsic dimensions', async 
 // Correct rendering, degraded budget — and the admin work list is what reports it. Serving 1.9 MB
 // while nobody is told is how the bandwidth quota goes.
 test('browse falls back to the source, without dimensions, when no derivative is usable', async () => {
-  const t = convexTest(schema, IMAGE_MODULES)
+  const t = setup()
   const source = await storedBlob(t)
   await published(t, { imageStorageId: source, hasIllustration: true })
 
@@ -244,7 +251,7 @@ test('browse falls back to the source, without dimensions, when no derivative is
 // The compare-and-set that makes a missed cleanup harmless: a stale rendition must never be served
 // as if it described the photo the recipe now holds.
 test('browse ignores a rendition whose source no longer matches the slot', async () => {
-  const t = convexTest(schema, IMAGE_MODULES)
+  const t = setup()
   const oldSource = await storedBlob(t)
   const newSource = await storedBlob(t)
   const staleDerivative = await storedBlob(t)
@@ -270,7 +277,7 @@ test('browse ignores a rendition whose source no longer matches the slot', async
 })
 
 test('browse serves the beautified derivative once the candidate is accepted', async () => {
-  const t = convexTest(schema, IMAGE_MODULES)
+  const t = setup()
   const source = await storedBlob(t)
   const candidate = await storedBlob(t)
   const candidateDerivative = await storedBlob(t)

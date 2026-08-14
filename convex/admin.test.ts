@@ -1,4 +1,3 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { DRAFTS_LISTED_PER_SCAN, QUEUE_COUNT_CAP } from './admin'
@@ -9,12 +8,13 @@ import { ATTEMPTS_SAMPLED } from '../src/lib/attemptStats'
 import { LEASE_MS, MAX_ATTEMPTS } from '../src/lib/queueContract'
 import { PROMPT_VERSION } from '../src/lib/recipe-prompt'
 import { RECIPE_SCHEMA_VERSION } from '../src/lib/recipe-schema'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
+  registerComponents(t)
   return t
 }
 

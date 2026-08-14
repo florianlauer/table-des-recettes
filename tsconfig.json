@@ -28,8 +28,9 @@
     /* Linting */
     "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    /* `noUnusedLocals` and `noUnusedParameters` moved to ESLint (`@typescript-eslint/no-unused-vars`):
+       a Convex component's test helper resolves to its `src/`, so those two flags policed vendored
+       `.ts` files that `skipLibCheck` does not cover. The linter only ever reads our own files. */
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     /* Indexing an array or a Record out of bounds yields `undefined` at runtime. Without this

@@ -19,6 +19,8 @@
     "test:watch": "vitest",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
+    "migrate": "convex run convex/migrations.ts:runAll",
+    "migrate:prod": "convex run convex/migrations.ts:runAll --prod",
     "backup": "tsx scripts/backup.ts",
     "restore": "tsx scripts/restore.ts",
     "ingest": "tsx spike/ingest.ts",
@@ -34,8 +36,11 @@
     "verify13": "tsc -p spike13/tsconfig.json --noEmit && vitest run --config spike13/vitest.config.ts"
   },
   "dependencies": {
+    "@convex-dev/aggregate": "^0.2.2",
+    "@convex-dev/migrations": "^0.3.6",
     "@convex-dev/rate-limiter": "^0.3.2",
     "@convex-dev/react-query": "^0.1.0",
+    "@convex-dev/workpool": "^0.4.9",
     "@tanstack/react-query": "^5.101.4",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-ssr-query": "^1.167.1",

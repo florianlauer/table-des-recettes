@@ -2,8 +2,10 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
-import { MAX_DERIVATION_ATTEMPTS } from './derivations'
+import { MAX_DERIVATION_ATTEMPTS, pendingSlotsOf } from './derivations'
+import { withIllustration } from './lib/recipeWrites'
 import schema from './schema'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
@@ -17,7 +19,9 @@ afterEach(() => {
 })
 
 function setup() {
-  return convexTest(schema, modules)
+  const t = convexTest(schema, modules)
+  registerComponents(t)
+  return t
 }
 
 type Ctx = ReturnType<typeof setup>
@@ -35,21 +39,68 @@ async function storeBlob(t: Ctx): Promise<Id<'_storage'>> {
 }
 
 async function newRecipe(t: Ctx, over: Record<string, unknown> = {}) {
+  const fields = {
+    title: 'Clafoutis',
+    type: 'dessert' as const,
+    ingredients: [],
+    ingredientsInferred: false,
+    steps: [],
+    searchText: 'clafoutis',
+    status: 'review' as const,
+    beautifiedAccepted: false,
+    beautifyStatus: 'idle' as const,
+    ...over,
+  }
   return t.run((ctx) =>
-    ctx.db.insert('recipes', {
-      title: 'Clafoutis',
-      type: 'dessert' as const,
-      ingredients: [],
-      ingredientsInferred: false,
-      steps: [],
-      searchText: 'clafoutis',
-      status: 'review' as const,
-      hasIllustration: false,
-      beautifiedAccepted: false,
-      beautifyStatus: 'idle' as const,
-      ...over,
-    }),
+    ctx.db.insert('recipes', { ...fields, ...keysOf(fields) }),
   )
+}
+
+/**
+ * The index keys, derived exactly as production derives them, so a fixture that sets
+ * `imageStorageId` lands in the bucket the screen would really put it in — rather than in whatever
+ * `hasIllustration` the test happened to hand-write.
+ */
+function keysOf(fields: Record<string, unknown>) {
+  return withIllustration(
+    {
+      imageStorageId: fields.imageStorageId as Id<'_storage'> | undefined,
+      beautifiedAccepted: Boolean(fields.beautifiedAccepted),
+      noPhotoAvailable: Boolean(fields.noPhotoAvailable),
+    },
+    (fields.illustrationUpdatedAt as number | undefined) ?? Date.now(),
+  )
+}
+
+/**
+ * The stage sections are not read until the backfill is done, so a test that reads them says so — by
+ * running the real migration rather than by hand-writing a "done" row.
+ *
+ * The stage backfill alone, not the whole `runAll` series: the rendition backfill in that series would
+ * re-enqueue a derivation over a fixture that deliberately holds a `failed` rendition.
+ */
+async function runStageBackfill(t: Ctx) {
+  await t.mutation(internal.migrations.backfillIllustrationStage, {})
+  await t.finishAllScheduledFunctions(() => {})
+}
+
+const ALL_OPEN = {
+  toBeautify: 50,
+  missing: 50,
+  sourceHasNone: 50,
+  done: 50,
+} as const
+
+async function listWork(
+  t: Ctx,
+  limits: Partial<typeof ALL_OPEN> & { stagesReady?: boolean } = {},
+) {
+  const { stagesReady = true, ...open } = limits
+  if (stagesReady) await runStageBackfill(t)
+  return t.query(api.illustrations.listIllustrationWork, {
+    adminToken,
+    limits: { ...ALL_OPEN, ...open },
+  })
 }
 
 function readyRendition(
@@ -307,7 +358,16 @@ describe('failDerivation', () => {
   })
 })
 
-describe('listPendingDerivations', () => {
+describe('pendingSlotsOf', () => {
+  /**
+   * Read through the document, because that is the only argument production gives it: the migration
+   * hands it each row it walks. There is no query to call — enumerating the corpus belongs to
+   * `@convex-dev/migrations`, not to a second cursor of our own.
+   */
+  async function slotsOf(t: Ctx, recipeId: Id<'recipes'>, retryFailed = false) {
+    return pendingSlotsOf(await recipeOf(t, recipeId), retryFailed)
+  }
+
   test('enumerates both slots, whichever one is on screen', async () => {
     const t = setup()
     const source = await storeBlob(t)
@@ -321,34 +381,23 @@ describe('listPendingDerivations', () => {
       hasIllustration: true,
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-
-    expect(pending.slots).toEqual(
-      expect.arrayContaining([
-        { recipeId, slot: 'original', sourceStorageId: source },
-        { recipeId, slot: 'beautified', sourceStorageId: candidate },
-      ]),
-    )
-    expect(pending.slots).toHaveLength(2)
-    expect(pending.isDone).toBe(true)
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: source },
+      { slot: 'beautified', sourceStorageId: candidate },
+    ])
   })
 
   test('skips a slot whose rendition is ready and still matches its source', async () => {
     const t = setup()
     const source = await storeBlob(t)
     const derivative = await storeBlob(t)
-    await newRecipe(t, {
+    const recipeId = await newRecipe(t, {
       imageStorageId: source,
       hasIllustration: true,
       imageRendition: readyRendition(source, derivative),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([])
+    expect(await slotsOf(t, recipeId)).toEqual([])
   })
 
   test('selects a rendition whose source no longer matches', async () => {
@@ -362,17 +411,14 @@ describe('listPendingDerivations', () => {
       imageRendition: readyRendition(oldSource, derivative),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: newSource },
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: newSource },
     ])
   })
 
-  // Without this, "repeat until zero" never converges on an image sharp cannot decode.
-  // The whole point of counting: a failure that had nothing to do with the bytes — a native library
-  // that did not load — must not park the photo at full weight until someone notices.
+  // Without this, a repeated pass never converges on an image sharp cannot decode. The whole point of
+  // counting: a failure that had nothing to do with the bytes — a native library that did not load —
+  // must not park the photo at full weight until someone notices.
   test('retries a failed rendition that is still under the attempt ceiling', async () => {
     const t = setup()
     const source = await storeBlob(t)
@@ -382,11 +428,8 @@ describe('listPendingDerivations', () => {
       imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS - 1),
     })
 
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(pending.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: source },
+    expect(await slotsOf(t, recipeId)).toEqual([
+      { slot: 'original', sourceStorageId: source },
     ])
   })
 
@@ -399,35 +442,10 @@ describe('listPendingDerivations', () => {
       imageRendition: failedRendition(source, MAX_DERIVATION_ATTEMPTS),
     })
 
-    const skipped = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-    })
-    expect(skipped.slots).toEqual([])
-
-    const retried = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 10,
-      retryFailed: true,
-    })
-    expect(retried.slots).toEqual([
-      { recipeId, slot: 'original', sourceStorageId: source },
+    expect(await slotsOf(t, recipeId)).toEqual([])
+    expect(await slotsOf(t, recipeId, true)).toEqual([
+      { slot: 'original', sourceStorageId: source },
     ])
-  })
-
-  test('reports that it stopped on the limit rather than on the end of the corpus', async () => {
-    const t = setup()
-    for (let i = 0; i < 3; i += 1) {
-      await newRecipe(t, {
-        title: `Recette ${i}`,
-        imageStorageId: await storeBlob(t),
-        hasIllustration: true,
-      })
-    }
-
-    const pending = await t.query(internal.derivations.listPendingDerivations, {
-      limit: 2,
-    })
-    expect(pending.slots).toHaveLength(2)
-    expect(pending.isDone).toBe(false)
   })
 })
 
@@ -517,12 +535,10 @@ describe('what the admin work list reports about renditions', () => {
       beautifiedRendition: readyRendition(candidate, candidateDerivative),
     })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
+    const work = await listWork(t)
 
-    expect(work.illustrated).toMatchObject([
+    // A candidate that is not accepted leaves work to do, so the row sits in "À embellir".
+    expect(work.toBeautify.rows).toMatchObject([
       {
         originalRendition: {
           state: 'failed',
@@ -537,12 +553,9 @@ describe('what the admin work list reports about renditions', () => {
     const t = setup()
     await newRecipe(t, { hasIllustration: false })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
+    const work = await listWork(t)
 
-    expect(work.withoutIllustration).toMatchObject([
+    expect(work.missing.rows).toMatchObject([
       { originalRendition: null, candidateRendition: null },
     ])
   })
@@ -569,31 +582,29 @@ describe('what the admin work list reports about renditions', () => {
       beautifyAttemptId: 'attempt-1',
     })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
+    const work = await listWork(t)
     const derivativeUrl = await t.run((ctx) => ctx.storage.getUrl(derivative))
     const sourceUrl = await t.run((ctx) => ctx.storage.getUrl(source))
 
-    // Asserted per row rather than on the whole bucket: a recipe awaiting arbitration is indexed by
-    // `hasIllustration` too, so it legitimately appears in both lists — full plate in the one it is
-    // judged in, thumbnail in the one that merely inventories it.
-    expect(work.illustrated).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: inventoried,
-          thumbnails: true,
-          originalUrl: derivativeUrl,
-        }),
-      ]),
-    )
-    expect(work.active).toEqual([
+    expect(work.toBeautify.rows).toEqual([
+      expect.objectContaining({
+        id: inventoried,
+        thumbnails: true,
+        originalUrl: derivativeUrl,
+      }),
+    ])
+    expect(work.active.rows).toEqual([
       expect.objectContaining({
         title: 'À arbitrer',
         thumbnails: false,
         originalUrl: sourceUrl,
       }),
     ])
+    // The partition, asserted where an earlier design documented the opposite as legitimate: a
+    // recipe awaiting arbitration used to appear in both lists, which on a screen that shows both
+    // sections open means the same row twice — and two gesture controls on one registry key.
+    expect(work.toBeautify.rows.map((row) => row.title)).not.toContain(
+      'À arbitrer',
+    )
   })
 })

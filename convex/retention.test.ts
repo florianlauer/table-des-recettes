@@ -1,4 +1,3 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
@@ -16,12 +15,13 @@ import {
   RETENTION_AFTER_TREATMENT_MS,
   RETENTION_CEILING_MS,
 } from './retention'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
+  registerComponents(t)
   return t
 }
 
@@ -87,7 +87,8 @@ describe('retention deadlines', () => {
       }),
     }))
 
-    await t.mutation(internal.retention.backfillPurgeAfter, {})
+    await t.mutation(internal.migrations.backfillPurgeAfter, {})
+    await t.finishAllScheduledFunctions(() => {})
     expect(await t.run((ctx) => ctx.db.get('scans', missingId))).toMatchObject({
       purgeAfter: expect.any(Number),
     })

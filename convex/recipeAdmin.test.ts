@@ -1,4 +1,3 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api } from './_generated/api'
@@ -6,13 +5,14 @@ import type { Id } from './_generated/dataModel'
 import schema from './schema'
 import { RETENTION_AFTER_TREATMENT_MS } from './retention'
 import { SLUG_PROBE_LIMIT } from '../src/lib/scanLimits'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
+  registerComponents(t)
   return t
 }
 

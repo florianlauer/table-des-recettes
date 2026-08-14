@@ -38,7 +38,10 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 ## Ce qui tourne aujourd'hui
 
 - **Vitrine publique** — index une colonne groupé par lettre, fiche recette, recalcul de portions,
-  recherche tolérante. Lit des recettes publiées.
+  recherche tolérante. Lit des recettes publiées. La ligne de filtres compte par type via le
+  composant `@convex-dev/aggregate` — douze petits agrégats, un par couple (statut, type) — au lieu de
+  lire toute la table à chaque affichage de la page d'accueil. La recherche, elle, continue de compter
+  ses propres résultats : un agrégat ne sait pas quelles lignes une requête touche.
 - **Pipeline d'ingestion** — `/admin` : jeton en `localStorage`, sélection de fichier passant par
   `compress.ts`, création de scan, compteurs de file, lancement ou relance avec verdict réel et
   purge manuelle. Un scan traverse compression → stockage → appel OpenRouter → brouillons en base,
@@ -51,10 +54,55 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   latence moyenne, volume de correction.
 - **Photos de plat** — `/admin/illustrations`, liste de travail pensée pour le mobile : poser une
   photo sur une recette **longtemps après** son ingestion, sans repasser par le scan dont elle vient.
-  Trois blocs bornés — ce qui attend un arbitrage, ce qui n'a pas de photo, et sur bascule ce qui en
-  a déjà une. L'écran dit le cadrage au moment de la prise, parce que c'est la conclusion la plus
+  L'écran dit le cadrage au moment de la prise, parce que c'est la conclusion la plus
   contre-intuitive de T13 : plan large avec le texte imprimé autour, **4 franchissements sur 4**,
   contre 1 sur 4 pour un gros plan détouré.
+
+  **Cinq sections, rangées par étape de travail et non par « a-t-elle un blob ».** Deux ouvertes —
+  ce qui attend un arbitrage, puis **ce qui attend un embellissement** — et trois repliées : sans
+  photo, sans photo dans la source, terminées. Le rangement vient d'un `illustrationStage`
+  dénormalisé, avec `beautifyStatus` en deuxième clé d'index : chaque recette est dans **exactement
+  une** section. Une photo posée et pas encore embellie était auparavant classée « déjà illustrée »,
+  derrière une case à cocher — l'étape principale du flux rangée sous « c'est fini ».
+
+  Une recette dont la source n'a pas de photo se **marque**, et quitte la file de travail pour sa
+  propre section repliée. Marque réversible d'un clic, effacée dès qu'une photo est posée, et sans
+  aucun effet sur la vitrine : une ligne sans photo y est déjà normale et complète.
+
+  Les quatre sections d'étape se lisent par lots de jour, ordonnés par `illustrationUpdatedAt` —
+  « quand le travail photo de cette recette a bougé », et non la date de scan. Sans ce champ, une
+  recette ingérée en mars puis photographiée aujourd'hui se rangeait au fond d'une section plafonnée,
+  c'est-à-dire nulle part. Toute écriture de `imageStorageId`, `beautifiedStorageId`,
+  `beautifiedAccepted`, `noPhotoAvailable` ou `beautifyStatus` le remet à jour ; un test d'inventaire
+  énumère les exports de `illustrations.ts` et `beautify.ts` et casse quand une fonction apparaît
+  sans être classée, parce que le compilateur peut prouver qu'un appel au helper est complet, jamais
+  qu'un appel qui devrait y passer y passe.
+
+  **Le remplissage de ces clés est une migration du composant `@convex-dev/migrations`, lancée par le
+  déploiement lui-même** — `vercel.json` en production, le workflow d'aperçu juste après son import de
+  données. Pas de bouton « Lancer la migration » : le flux principal de l'écran ne peut pas dépendre
+  de quelqu'un qui se souvient d'appuyer. Rejouer la série est sans effet quand elle est terminée, et
+  reprend au curseur quand elle a été interrompue, donc chaque déploiement peut l'appeler. À la main :
+  `npm run migrate` (dev) ou `npm run migrate:prod`. Tant qu'elle n'est pas finie, les quatre sections
+  d'étape ne sont **pas lues** plutôt que servies partielles — une file partielle demande à
+  l'opérateur de se souvenir d'une bannière en lisant des lignes, et il conclura qu'un lot est fini.
+  L'arbitrage, qui lit `by_beautify_status`, reste entier pendant toute la migration.
+
+  `convex/migrations.ts` est le seul domicile des backfills, quelle que soit la table parcourue, ce
+  qui fait de `runAll` la liste lisible de ce qu'un déploiement exécute : les clés d'étape,
+  l'échéance de purge des scans, les rendus d'affichage manquants, l'agrégat de comptage. Deux
+  d'entre eux étaient des mécaniques maison — une boucle paginée dans `retention.ts` et une action
+  `deriveMissing` qu'un humain relançait jusqu'à ce qu'elle annonce zéro.
+
+  Les dérivations d'image passent par un `Workpool` borné à `RENDITION_PARALLELISM = 4` au lieu de
+  `scheduler.runAfter(0, …)`. Le backfill traverse tout le corpus : sans borne, il démarrait autant
+  d'actions Node chargeant `sharp` qu'il y a de photos.
+
+  Reliquat sans urgence : la table `migrations` maison a disparu du schéma, mais Convex ne valide que
+  les tables **déclarées** — ses lignes de production survivent donc, orphelines et invisibles aux
+  requêtes typées. À supprimer depuis le tableau de bord Convex, une fois. Écrire une mutation dont
+  le seul rôle est de vider une table une seule fois ne vaut pas le code.
+
 - **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
   paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine
   largeur, puis s'accepte, se rejette ou se régénère. Un embellissement publié se dépublie sans
@@ -177,6 +225,14 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   illisible sans passer par une photo demande une route de création sans parent et un point d'entrée
   pour la lancer : c'est un flux distinct, écarté du périmètre de T8 et bloquant pour personne.
   `recipes.scanId` est déjà optionnel, et toutes les mutations traitent le cas.
+
+- **R10 · Le plafond dur de la file des photos.** `ILLUSTRATION_WORK_MAX = 500` reste arbitraire. « Afficher 50 de plus » le relève
+  par paliers, le serveur écrête, et au plafond l'écran **dit** qu'il est plafonné plutôt que d'offrir
+  un bouton inerte. Il dépasse le corpus entier aujourd'hui, donc le mur est théorique. Seuil de
+  réexamen explicite : le jour où une section rapporte une troncature à 500, la pagination à curseur
+  devient le lot suivant — un compteur exact au-delà demanderait un agrégat par étape de travail.
+  `@convex-dev/aggregate` est désormais monté pour les comptes de la vitrine : ajouter des espaces de
+  noms par `illustrationStage` serait la suite, pas une installation.
 
 ---
 

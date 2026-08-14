@@ -108,37 +108,9 @@ export const deriveRendition = internalAction({
   },
 })
 
-/**
- * Derives every slot that carries a blob but no usable derivative. Manual, repeated until it returns
- * zero — no button and no `migrations` row: a resumable batched migration would be a hundred lines of
- * plumbing for the three photos production holds today.
- *
- * `retryFailed` is optional and defaults to false. That is not cosmetic: the documented command omits
- * it, and a strict `v.boolean()` would make the call fail instead of converge.
- */
-export const deriveMissing = internalAction({
-  args: { limit: v.number(), retryFailed: v.optional(v.boolean()) },
-  returns: v.object({ scheduled: v.number(), isDone: v.boolean() }),
-  handler: async (
-    ctx,
-    { limit, retryFailed },
-  ): Promise<{ scheduled: number; isDone: boolean }> => {
-    const pending = await ctx.runQuery(
-      internal.derivations.listPendingDerivations,
-      { limit, retryFailed },
-    )
-    for (const slot of pending.slots) {
-      await ctx.scheduler.runAfter(0, internal.derive.deriveRendition, slot)
-    }
-
-    const scheduled = pending.slots.length
-    console.log(
-      JSON.stringify({
-        operation: 'derive_missing',
-        scheduled,
-        isDone: pending.isDone,
-      }),
-    )
-    return { scheduled, isDone: pending.isDone }
-  },
-})
+// Deriving every slot that has a blob and no derivative is `migrations.backfillRenditions`. It used to
+// be a `deriveMissing` action here, driven by a human repeating it until it reported zero, and its own
+// comment justified the hand-roll by the cost of "a resumable batched migration" — a cost
+// `@convex-dev/migrations` removes. What survived the move is `pendingSlotsOf`, the selection rule
+// alone: the enumeration went with the action, because a second walker with its own cursor is the
+// mechanic the component replaced.

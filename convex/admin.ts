@@ -8,6 +8,7 @@ import { readQueueWork } from './extract'
 import { deleteStoredBlob } from './lib/blobs'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
+import { deleteRecipeDoc } from './recipeDocs'
 import { ceilingFor, reconcileRetention } from './retention'
 import type { PurgeResult } from './retention'
 import {
@@ -304,7 +305,7 @@ export const rescan = mutation({
       .query('recipes')
       .withIndex('by_scan', (q) => q.eq('scanId', scanId))
       .collect()
-    for (const draft of drafts) await ctx.db.delete(draft._id)
+    for (const draft of drafts) await deleteRecipeDoc(ctx, draft)
 
     // The ceiling guards a queue replaying on its own; a human who changed the input and pressed a
     // button is a new problem, not a retry of the old one. `totalReservations` and `totalCostUsd`

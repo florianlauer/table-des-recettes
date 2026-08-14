@@ -2,10 +2,13 @@ import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 import { BEAUTIFY_FAILURE_KINDS } from '../src/lib/beautifyFailureKinds'
 import { FAILURE_KINDS } from '../src/lib/failureKinds'
+import { ILLUSTRATION_STAGES } from '../src/lib/illustrationStage'
 import { RECIPE_TYPES } from '../src/lib/recipeTypes'
 import { literalUnion } from './lib/validators'
 
 export const recipeType = literalUnion(RECIPE_TYPES)
+
+export const illustrationStage = literalUnion(ILLUSTRATION_STAGES)
 
 export const uploadPurpose = literalUnion(['scan', 'illustration'] as const)
 
@@ -154,9 +157,20 @@ export default defineSchema({
     // mutation leaves the recipe `generating` forever, with nothing on screen saying so.
     beautifyStartedAt: v.optional(v.number()),
     // Denormalised so "which recipes still have no photo" is an indexed read. Optional because a
-    // required boolean would reject every existing recipe; `migrations` carries the backfill, and
+    // required boolean would reject every existing recipe; `migrations.ts` carries the backfill, and
     // `withIllustration` is the only thing allowed to write it.
     hasIllustration: v.optional(v.boolean()),
+    // Set by the operator when the source has no photo for this recipe. Admin-only: the storefront
+    // row of a recipe without a photo is already normal and complete, and stays untouched.
+    noPhotoAvailable: v.optional(v.boolean()),
+    // Which of the four work buckets the recipe sits in. Derived, never authored — same single
+    // writer as `hasIllustration`, and optional for the same reason.
+    illustrationStage: v.optional(illustrationStage),
+    // When this recipe's photo work last moved. NOT `_creationTime`: a photo attached today to a
+    // recipe scanned in March must sort with today's batch, or the row it produces is unfindable in
+    // the one section that is always open. Every write of `imageStorageId`, `beautifiedStorageId`,
+    // `beautifiedAccepted`, `noPhotoAvailable` or `beautifyStatus` bumps it.
+    illustrationUpdatedAt: v.optional(v.number()),
     // Compare-and-set token for the correction form. An integer, not a timestamp: two writes in the
     // same millisecond would mint the same token and let the stale one through.
     revision: v.optional(v.number()),
@@ -165,6 +179,16 @@ export default defineSchema({
     .index('by_slug', ['slug'])
     .index('by_scan', ['scanId'])
     .index('by_illustration', ['hasIllustration'])
+    // The work screen's partition. `beautifyStatus` is the second key because a recipe being
+    // arbitrated must not also appear in its stage section — the exclusion has to live in the index
+    // range, not in a filter, or the truncation the screen reports stops being exact.
+    // `illustrationUpdatedAt` is third because Convex only appends `_creationTime`, which is the
+    // scan date and therefore the wrong order for "À embellir".
+    .index('by_illustration_stage_and_beautify_status_and_updated_at', [
+      'illustrationStage',
+      'beautifyStatus',
+      'illustrationUpdatedAt',
+    ])
     .index('by_beautify_status', ['beautifyStatus'])
     .searchIndex('search_recipes', {
       searchField: 'searchText',
@@ -212,15 +236,6 @@ export default defineSchema({
     // Not a unique constraint — Convex has none. It is what lets every journalling mutation read
     // before it inserts, which is how a replayed finalisation stops counting its cost twice.
     .index('by_attempt_id', ['attemptId']),
-
-  /** Durable progress of the batched backfills. One row per migration, keyed by name. */
-  migrations: defineTable({
-    name: v.string(),
-    cursor: v.union(v.string(), v.null()),
-    done: v.boolean(),
-    migrated: v.number(),
-    updatedAt: v.number(),
-  }).index('by_name', ['name']),
 
   uploadTickets: defineTable({
     createdAt: v.number(),

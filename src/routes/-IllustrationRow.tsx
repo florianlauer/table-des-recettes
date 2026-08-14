@@ -19,7 +19,8 @@ import { GestureProgress } from './-GestureProgress'
  * wrong, and it drifts weaker than the contract without saying so.
  */
 type Work = (typeof api.illustrations.listIllustrationWork)['_returnType']
-export type Row = Work['active'][number]
+export type WorkSection = Work['active']
+export type Row = WorkSection['rows'][number]
 type Outcome = (typeof api.illustrations.acceptBeautified)['_returnType']
 
 /**
@@ -52,6 +53,8 @@ export function IllustrationRow({
     api.illustrations.deleteUnpublishedCandidate,
   )
   const abandonBeautify = useMutation(api.illustrations.abandonBeautify)
+  const markNoPhoto = useMutation(api.illustrations.markNoPhotoAvailable)
+  const clearNoPhoto = useMutation(api.illustrations.clearNoPhotoAvailable)
 
   const can = illustrationActions(row, { now, leaseMs: BEAUTIFY_LEASE_MS })
   const args = { adminToken, recipeId: row.id }
@@ -145,6 +148,22 @@ export function IllustrationRow({
       confirm: `Retirer la photo de « ${title} » ?`,
       run: () => detachIllustration(args),
     },
+    // No confirmation on either: both are reversible with the opposite button and neither destroys a
+    // blob. The only thing they change is which section lists the recipe.
+    {
+      offered: can.markNoPhoto,
+      action: 'markNoPhoto',
+      label: 'Pas de photo dans la source',
+      pendingLabel: 'Marquage…',
+      run: () => markNoPhoto(args),
+    },
+    {
+      offered: can.unmarkNoPhoto,
+      action: 'unmarkNoPhoto',
+      label: 'La source a une photo',
+      pendingLabel: 'Retrait de la marque…',
+      run: () => clearNoPhoto(args),
+    },
   ]
 
   // `upload` too, not just the buttons: posting a photo is the longest thing the row does, and it is
@@ -183,6 +202,7 @@ export function IllustrationRow({
       <p>
         {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}
+        {row.noPhotoAvailable && ' · pas de photo dans la source'}
       </p>
       {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}
       {row.beautifyStatus === 'generating' && (

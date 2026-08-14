@@ -1,83 +1,29 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
-import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
-import { BACKFILL_BATCH } from './migrations'
-import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
 import {
   BEAUTIFY_MODEL,
   BEAUTIFY_PROMPT_VERSION,
 } from '../src/lib/beautifyPrompt'
+import {
+  adminToken,
+  attach,
+  harness,
+  jpeg,
+  jpegBytes,
+  listWork,
+  newRecipe,
+  runStageBackfill,
+  stored,
+  ticket,
+  toReview,
+  unmigratedRecipe,
+} from '../test/illustrationFixtures'
+import type { Ctx } from '../test/illustrationFixtures'
 
 const modules = import.meta.glob('./**/*.ts')
-const adminToken = 'test-secret'
-
-function setup() {
-  const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
-  return t
-}
-
-function jpegBytes(): Uint8Array<ArrayBuffer> {
-  const bytes = new Uint8Array(21)
-  bytes.set([0xff, 0xd8, 0xff, 0xc0, 0, 17, 8, 0, 16, 0, 16])
-  return bytes
-}
-
-function jpeg(): Blob {
-  return new Blob([jpegBytes()], { type: 'image/jpeg' })
-}
-
-type Ctx = ReturnType<typeof setup>
-
-async function newRecipe(t: Ctx, over: Record<string, unknown> = {}) {
-  return t.run((ctx) =>
-    ctx.db.insert('recipes', {
-      title: 'Clafoutis',
-      type: 'dessert' as const,
-      ingredients: [],
-      ingredientsInferred: false,
-      steps: [],
-      searchText: 'clafoutis',
-      status: 'review' as const,
-      hasIllustration: false,
-      beautifiedAccepted: false,
-      beautifyStatus: 'idle' as const,
-      ...over,
-    }),
-  )
-}
-
-async function ticket(
-  t: Ctx,
-  purpose: 'scan' | 'illustration' = 'illustration',
-) {
-  const grant = await t.mutation(api.admin.generateUploadUrl, {
-    adminToken,
-    purpose,
-  })
-  if (!grant.ok) throw new Error(grant.error)
-  return grant.ticketId
-}
-
-async function stored(t: Ctx, storageId: Id<'_storage'>) {
-  return t.run((ctx) => ctx.db.system.get('_storage', storageId))
-}
-
-/** Posts a photo the way the screen does: a ticket, an upload, then the action. */
-async function attach(t: Ctx, recipeId: Id<'recipes'>) {
-  const ticketId = await ticket(t)
-  const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
-  const result = await t.action(api.illustrations.attachIllustration, {
-    adminToken,
-    ticketId,
-    storageId,
-    recipeId,
-  })
-  return { ticketId, storageId, result }
-}
+const setup = () => harness(modules)
 
 beforeEach(() => {
   process.env.ADMIN_TOKEN = adminToken
@@ -383,35 +329,6 @@ describe('transition matrix', () => {
   })
 })
 
-/** Brings a recipe to `review` with a journalled attempt, the way a render does. */
-async function toReview(t: Ctx, recipeId: Id<'recipes'>) {
-  const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
-  const attemptId = `${recipeId}:1`
-  const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
-  await t.run(async (ctx) => {
-    await ctx.db.patch(recipeId, {
-      beautifiedStorageId: candidate,
-      beautifyStatus: 'review',
-      beautifyAttemptId: attemptId,
-    })
-    await ctx.db.insert('beautifyAttempts', {
-      attemptId,
-      recipeId,
-      model: 'google/gemini-2.5-flash-image',
-      promptVersion: BEAUTIFY_PROMPT_VERSION,
-      servedProvider: null,
-      latencyMs: 9100,
-      costUsd: 0.03944,
-      costReported: true,
-      failureKind: null,
-      sourceStorageId: recipe!.imageStorageId!,
-      outcome: 'pending',
-      createdAt: Date.now(),
-    })
-  })
-  return { attemptId, candidate }
-}
-
 describe('arbitration', () => {
   test('accepting publishes the candidate and settles its attempt', async () => {
     const t = setup()
@@ -548,69 +465,6 @@ describe('abandoning a stalled generation', () => {
   })
 })
 
-describe('the work list', () => {
-  test('bounds each block and reports its truncation', async () => {
-    const t = setup()
-    await Promise.all(
-      Array.from({ length: 3 }, (_unused, index) =>
-        newRecipe(t, { title: `Sans photo ${index}` }),
-      ),
-    )
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(work.withoutIllustration).toHaveLength(3)
-    expect(work.withoutIllustrationTruncated).toBe(false)
-    // Nothing claims the index is exhaustive until the backfill says so.
-    expect(work.migration).toEqual({ started: false, done: false, migrated: 0 })
-  })
-
-  test('hides the illustrated ones unless asked', async () => {
-    const t = setup()
-    const recipeId = await newRecipe(t)
-    await attach(t, recipeId)
-
-    const hidden = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(hidden.illustrated).toHaveLength(0)
-    expect(hidden.withoutIllustration).toHaveLength(0)
-
-    const shown = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
-    expect(shown.illustrated).toHaveLength(1)
-    expect(shown.illustrated[0]).toMatchObject({
-      hasOriginal: true,
-      hasCandidate: false,
-    })
-  })
-
-  test('puts what is waiting for arbitration ahead of what is still running', async () => {
-    const t = setup()
-    const waiting = await newRecipe(t, { title: 'À arbitrer' })
-    await attach(t, waiting)
-    await toReview(t, waiting)
-    const running = await newRecipe(t, { title: 'En cours' })
-    await attach(t, running)
-    await t.run((ctx) =>
-      ctx.db.patch(running, { beautifyStatus: 'generating' }),
-    )
-
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(work.active.map((row) => row.title)).toEqual([
-      'À arbitrer',
-      'En cours',
-    ])
-  })
-})
-
 describe('the nominal path, end to end', () => {
   const imageAnswer = () => ({
     provider: 'google-vertex',
@@ -699,7 +553,7 @@ describe('the nominal path, end to end', () => {
     const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
     expect(recipe?.beautifiedStorageId).toBeUndefined()
     expect(recipe?.beautifyStatus).toBe('idle')
-    expect(await stored(t, candidate!)).toBeNull()
+    expect(await stored(t, candidate)).toBeNull()
     // The original never moves: rejecting a render is not losing the photo it was made from.
     expect(await stored(t, storageId)).not.toBeNull()
 
@@ -707,98 +561,6 @@ describe('the nominal path, end to end', () => {
       ctx.db.query('beautifyAttempts').collect(),
     )
     expect(attempts).toMatchObject([{ outcome: 'rejected' }])
-  })
-})
-
-describe('the hasIllustration backfill', () => {
-  test('indexes the corpus in batches and survives an interruption', async () => {
-    const t = setup()
-    // Rows written straight to the table, without the flag: exactly what the existing corpus
-    // looks like before the migration runs.
-    const total = BACKFILL_BATCH + 5
-    await t.run(async (ctx) => {
-      const storageId = await ctx.storage.store(jpeg())
-      for (let index = 0; index < total; index += 1) {
-        await ctx.db.insert('recipes', {
-          title: `Ancienne ${index}`,
-          type: 'autre' as const,
-          ingredients: [],
-          ingredientsInferred: false,
-          steps: [],
-          searchText: `ancienne ${index}`,
-          status: 'review' as const,
-          beautifiedAccepted: false,
-          beautifyStatus: 'idle' as const,
-          ...(index === 0 ? { imageStorageId: storageId } : {}),
-        })
-      }
-    })
-
-    // One page, then the interruption: the scheduled continuation is not run here.
-    const first = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(first).toBe(BACKFILL_BATCH)
-    const midway = await t.run((ctx) =>
-      ctx.db
-        .query('migrations')
-        .withIndex('by_name', (q) => q.eq('name', 'hasIllustration'))
-        .first(),
-    )
-    expect(midway).toMatchObject({ done: false, migrated: BACKFILL_BATCH })
-
-    // Resumed from the stored cursor: it finishes the corpus without rewriting what it already did.
-    const second = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(second).toBe(5)
-    const third = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(third).toBe(0)
-
-    const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
-    expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
-    expect(rows.filter((row) => row.hasIllustration).length).toBe(1)
-
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(work.migration.done).toBe(true)
-  })
-
-  test('keeps the flag consistent with the photo after every write', async () => {
-    const t = setup()
-    const scanId = await t.run((ctx) =>
-      ctx.db.insert('scans', {
-        imageStorageIds: [],
-        status: 'done' as const,
-        attempts: 1,
-        createdAt: 1,
-      }),
-    )
-    const added = await t.mutation(api.recipeAdmin.addRecipe, {
-      adminToken,
-      scanId,
-    })
-    if (!added.ok) throw new Error(added.error)
-
-    const check = async () => {
-      const recipe = await t.run((ctx) => ctx.db.get('recipes', added.recipeId))
-      expect(recipe?.hasIllustration).toBe(recipe?.imageStorageId !== undefined)
-    }
-    await check()
-    await attach(t, added.recipeId)
-    await check()
-    await t.mutation(api.illustrations.detachIllustration, {
-      adminToken,
-      recipeId: added.recipeId,
-    })
-    await check()
   })
 })
 
@@ -872,5 +634,119 @@ describe('beautification journal', () => {
       adminToken,
     })
     expect(groups.map((group) => group.isCurrent)).toEqual([false])
+  })
+})
+
+describe('the source-has-no-photo flag', () => {
+  test('moves the recipe out of the work queue and back', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t, { title: 'Sans photo au livre' })
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+
+    const marked = await listWork(t)
+    expect(marked.missing.count).toBe(0)
+    expect(marked.sourceHasNone.rows).toMatchObject([
+      { id: recipeId, noPhotoAvailable: true },
+    ])
+
+    expect(
+      await t.mutation(api.illustrations.clearNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+
+    const cleared = await listWork(t)
+    expect(cleared.sourceHasNone.count).toBe(0)
+    expect(cleared.missing.rows).toMatchObject([
+      { id: recipeId, noPhotoAvailable: false },
+    ])
+  })
+
+  // Saying "the source has no photo" next to a photo is not a claim about the source.
+  test('refuses to mark a recipe that has a photo', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  test('refuses to clear a recipe that is not marked', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+
+    expect(
+      await t.mutation(api.illustrations.clearNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  test('refuses to mark the same recipe twice', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await t.mutation(api.illustrations.markNoPhotoAvailable, {
+      adminToken,
+      recipeId,
+    })
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  // A state that says "the source has no photo" next to a photo would be a state that lies, so
+  // attaching clears it — and detaching therefore returns the recipe to `missing`, not to the mark.
+  test('attaching a photo clears the mark for good', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await t.mutation(api.illustrations.markNoPhotoAvailable, {
+      adminToken,
+      recipeId,
+    })
+    await attach(t, recipeId)
+
+    expect(await t.run((ctx) => ctx.db.get('recipes', recipeId))).toMatchObject(
+      { noPhotoAvailable: false, illustrationStage: 'to-beautify' },
+    )
+
+    await t.mutation(api.illustrations.detachIllustration, {
+      adminToken,
+      recipeId,
+    })
+    const work = await listWork(t)
+    expect(work.missing.rows).toMatchObject([{ id: recipeId }])
+    expect(work.sourceHasNone.count).toBe(0)
+  })
+
+  test('a historical document with no flag field survives every gesture', async () => {
+    const t = setup()
+    const recipeId = await unmigratedRecipe(t)
+    await runStageBackfill(t)
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+    const work = await listWork(t, { stagesReady: false })
+    expect(work.sourceHasNone.rows).toMatchObject([{ id: recipeId }])
   })
 })

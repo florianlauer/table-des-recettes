@@ -65,6 +65,38 @@ pastille de filtre, rien de centré.
   commit ni dans les corps de PR.
 - Supprimer des fichiers avec `trash`, pas `rm`.
 
+### Composants Convex avant toute mécanique maison
+
+Avant d'écrire une mécanique d'infrastructure côté Convex — lotissement, curseur, file d'attente,
+quota, verrou, agrégat, réessai, présence, recherche —, **chercher le composant qui la couvre** dans
+<https://www.convex.dev/components> (officiel ou communautaire) et le préférer. `npm view` sur le
+paquet candidat, puis lire son `README` réel : ne jamais écrire son API de mémoire.
+
+Le motif, vécu : la file de travail des photos avait une migration maison — table `migrations`,
+curseur, worker auto-planifié, verrou `runId`, et un bouton « Lancer la migration » dans
+l'administration. Quatre rounds de review adversariale ont durci cette mécanique sans jamais
+demander si elle devait exister. `@convex-dev/migrations` la remplace en 88 lignes contre 258, avec
+un `state` que la version maison ne pouvait pas produire, et surtout sans bouton — un flux principal
+ne peut pas dépendre de quelqu'un qui se souvient d'appuyer.
+
+Corollaire : quand un composant existe, la surface maison à écrire est **le déclencheur et le
+contrat métier**, pas le moteur.
+
+Deux skills Convex mécanisent exactement cette règle et sont à préférer à une recherche à la main :
+
+- **`/convex-add`** — consulte le catalogue de capacités servi par Convex, et à défaut cherche et
+  installe le composant `@convex-dev` qui correspond. C'est le premier réflexe pour « ajouter une
+  capacité au backend ».
+- **`/convex-migrate`** — migration de schéma et backfill sur un déploiement, via
+  `@convex-dev/migrations`. Plus jamais de mécanique paginée maison.
+
+Ces skills vivent dans `.claude/skills/`, qui est **gitignoré** (`.gitignore:58`) : après un clone,
+`npx convex ai-files install` les réinstalle, avec `convex/_generated/ai/guidelines.md`.
+
+`guidelines.md` § « Component guidelines » donne le montage (`convex.config.ts`, objet `components`,
+transaction partagée) et nomme quelques composants ; sa liste n'est pas exhaustive, donc le catalogue
+en ligne fait foi.
+
 <!-- convex-ai-start -->
 
 This project uses [Convex](https://convex.dev) as its backend.
