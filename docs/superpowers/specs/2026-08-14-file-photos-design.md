@@ -55,10 +55,10 @@ mais reste invisible parce que « Déjà illustrées » est repliée derrière u
 
 ```ts
 export const illustrationStage = literalUnion([
-  'missing',         // no photo yet, still to shoot
+  'missing', // no photo yet, still to shoot
   'source-has-none', // no photo, and the source has none to shoot
-  'to-beautify',     // original attached, no beautification accepted
-  'done',            // beautification accepted and published
+  'to-beautify', // original attached, no beautification accepted
+  'done', // beautification accepted and published
 ] as const)
 ```
 
@@ -167,29 +167,31 @@ D'où un second fragment, à côté du premier :
 
 ```ts
 /** For the writes that move a recipe between sections without changing its stage. */
-export function touchedIllustration(at: number): { illustrationUpdatedAt: number } {
+export function touchedIllustration(at: number): {
+  illustrationUpdatedAt: number
+} {
   return { illustrationUpdatedAt: at }
 }
 ```
 
 Sites d'appel — l'inventaire complet, `beautify.ts` compris :
 
-| Site | Nature | Après |
-| --- | --- | --- |
-| `extract.ts:528` | insert | ajoute `noPhotoAvailable: false`, `at: now` — l'objet fournit déjà `imageStorageId: undefined` et `beautifiedAccepted: false` |
-| `seed.ts:282` | insert | idem |
-| `recipeAdmin.ts:146` | insert | idem (vérifié : insert simple, rien de particulier) |
-| `devImages.ts:44` | patch | lit `beautifiedAccepted` et `noPhotoAvailable ?? false` sur le doc |
-| `illustrations.ts:203` (attach) | patch | `noPhotoAvailable: false` — attacher une photo **efface** le drapeau |
-| `illustrations.ts:238` (detach) | patch | lit le drapeau sur le doc (donc `missing`, pas `source-has-none`) |
-| `illustrations.ts:298` (`acceptBeautified`) | patche `beautifiedAccepted: true` à la main | passe par le helper → `done` |
-| `illustrations.ts:351` (`unpublishAcceptedCandidate`) | patche `beautifiedAccepted: false` à la main | passe par le helper → `to-beautify` |
-| `illustrations.ts:306` (`rejectPendingCandidate`) | `review` → `idle`, candidat supprimé | `touchedIllustration(now)` — **entre dans « À embellir »**, doit y entrer en tête |
-| `illustrations.ts:357` (`deleteUnpublishedCandidate`) | supprime le candidat conservé | `touchedIllustration(now)` |
-| `illustrations.ts:251` (`requestBeautify`) | `idle` → `generating` | `touchedIllustration(now)` — sort de « À embellir » |
-| `illustrations.ts:379` (`abandonBeautify`) | `generating` → `failed` | `touchedIllustration(now)` |
-| `beautify.ts:386` (finalisation, succès) | `generating` → `review`, pose le candidat | `touchedIllustration(now)` |
-| `beautify.ts:441` (finalisation, échec) | `generating` → `failed` | `touchedIllustration(now)` |
+| Site                                                  | Nature                                       | Après                                                                                                                         |
+| ----------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `extract.ts:528`                                      | insert                                       | ajoute `noPhotoAvailable: false`, `at: now` — l'objet fournit déjà `imageStorageId: undefined` et `beautifiedAccepted: false` |
+| `seed.ts:282`                                         | insert                                       | idem                                                                                                                          |
+| `recipeAdmin.ts:146`                                  | insert                                       | idem (vérifié : insert simple, rien de particulier)                                                                           |
+| `devImages.ts:44`                                     | patch                                        | lit `beautifiedAccepted` et `noPhotoAvailable ?? false` sur le doc                                                            |
+| `illustrations.ts:203` (attach)                       | patch                                        | `noPhotoAvailable: false` — attacher une photo **efface** le drapeau                                                          |
+| `illustrations.ts:238` (detach)                       | patch                                        | lit le drapeau sur le doc (donc `missing`, pas `source-has-none`)                                                             |
+| `illustrations.ts:298` (`acceptBeautified`)           | patche `beautifiedAccepted: true` à la main  | passe par le helper → `done`                                                                                                  |
+| `illustrations.ts:351` (`unpublishAcceptedCandidate`) | patche `beautifiedAccepted: false` à la main | passe par le helper → `to-beautify`                                                                                           |
+| `illustrations.ts:306` (`rejectPendingCandidate`)     | `review` → `idle`, candidat supprimé         | `touchedIllustration(now)` — **entre dans « À embellir »**, doit y entrer en tête                                             |
+| `illustrations.ts:357` (`deleteUnpublishedCandidate`) | supprime le candidat conservé                | `touchedIllustration(now)`                                                                                                    |
+| `illustrations.ts:251` (`requestBeautify`)            | `idle` → `generating`                        | `touchedIllustration(now)` — sort de « À embellir »                                                                           |
+| `illustrations.ts:379` (`abandonBeautify`)            | `generating` → `failed`                      | `touchedIllustration(now)`                                                                                                    |
+| `beautify.ts:386` (finalisation, succès)              | `generating` → `review`, pose le candidat    | `touchedIllustration(now)`                                                                                                    |
+| `beautify.ts:441` (finalisation, échec)               | `generating` → `failed`                      | `touchedIllustration(now)`                                                                                                    |
 
 Aucun de ces sites n'est un faux positif : chacun écrit au moins un des cinq champs. C'est
 l'inverse — un site oublié — qui est le risque, et le test d'inventaire de §7 est là pour ça.
@@ -251,7 +253,7 @@ Retour : cinq sections de forme identique.
 const workSection = v.object({
   rows: v.array(illustrationRow), // empty when the section is collapsed
   count: v.number(),
-  truncated: v.boolean(),         // more rows exist beyond `count`
+  truncated: v.boolean(), // more rows exist beyond `count`
 })
 // active | toBeautify | missing | sourceHasNone | done
 ```
@@ -262,8 +264,9 @@ Lectures d'index — sept au total, une par section d'étape plus trois pour `ac
 const byStage = (stage: IllustrationStage, take: number) =>
   ctx.db
     .query('recipes')
-    .withIndex('by_illustration_stage_and_beautify_status_and_updated_at', (q) =>
-      q.eq('illustrationStage', stage).eq('beautifyStatus', 'idle'),
+    .withIndex(
+      'by_illustration_stage_and_beautify_status_and_updated_at',
+      (q) => q.eq('illustrationStage', stage).eq('beautifyStatus', 'idle'),
     )
     .order('desc') // by illustrationUpdatedAt, the third index key
     .take(take + 1)
@@ -416,7 +419,7 @@ poser le drapeau retire la ligne de sa section.
   - **inventaire des écrivains.** Énumérer `api.illustrations` ne marche pas : `_generated/api.js:11`
     exporte `anyApi`, un proxy dynamique dont les fonctions ne sont pas visibles par `Object.keys`.
     Le test énumère donc les **exports des modules sources** — `import * as illustrations from
-    './illustrations'` et `import * as beautify from './beautify'`, dont les exports sont des objets
+'./illustrations'` et `import * as beautify from './beautify'`, dont les exports sont des objets
     réels — et les confronte à une liste déclarée dans le test, chaque nom classé « bumpe » ou « ne
     touche pas au travail photo ». Les deux modules, pas seulement `illustrations` : la finalisation
     vit dans `beautify.ts` et écrit deux des cinq champs protégés, donc un inventaire qui l'exclut
@@ -462,8 +465,8 @@ poser le drapeau retire la ligne de sa section.
 4. **Trois clés requises dans le helper, `at` positionnel.** Verbeux sur les sites de patch, mais un
    oubli devient une erreur de compilation au lieu d'un mauvais bucket silencieux. `at` est
    positionnel précisément pour ne pas être répandu dans le patch.
-4bis. **Le bump est réglé par les cinq champs, pas par le stage — et gardé par un test
-   d'inventaire.** Le compilateur peut garantir qu'un site qui *passe* par le helper le fait
+   4bis. **Le bump est réglé par les cinq champs, pas par le stage — et gardé par un test
+   d'inventaire.** Le compilateur peut garantir qu'un site qui _passe_ par le helper le fait
    complètement ; il ne peut pas garantir qu'un site qui devrait y passer y passe. Deux sites m'ont
    échappé sur deux rounds successifs (`rejectPendingCandidate`, `deleteUnpublishedCandidate`), donc
    la garantie est déplacée là où elle peut exister : une énumération des **exports des modules
@@ -490,16 +493,16 @@ poser le drapeau retire la ligne de sa section.
    sur un curseur. En revanche `lastError` est retiré : il ne pourrait pas être écrit (la transaction
    qui jette annule l'écriture) et ne pourrait pas être affiché (`adminError.ts:1-7` interdit le
    message technique côté admin). Le besoin est couvert par `updatedAt`, qui existe déjà.
-12. **Les sections d'étape sont indisponibles, pas partielles, pendant la migration.** Une liste
+10. **Les sections d'étape sont indisponibles, pas partielles, pendant la migration.** Une liste
     partielle demande à l'opérateur de se rappeler d'un bandeau en lisant des lignes ; il conclura
     qu'un lot est fait. `active` reste entière, donc rien n'est bloqué, et l'écran ne fait plus que
     trois lectures pendant la fenêtre.
-10. **La vitrine n'est pas touchée** — décision explicite du propriétaire, pas un oubli :
+11. **La vitrine n'est pas touchée** — décision explicite du propriétaire, pas un oubli :
     `pickDisplayImage` continue de servir l'original brut en fallback quand aucun embellissement
     n'est accepté. Conséquence assumée : une photo de page imprimée, texte compris, peut apparaître
     sur le site public tant que l'embellissement n'est pas fait. C'est précisément ce que la section
     « À embellir » rend visible.
-11. **Le changement de signature de `listIllustrationWork` est fait d'un coup, sans shim.** Un
+12. **Le changement de signature de `listIllustrationWork` est fait d'un coup, sans shim.** Un
     onglet d'admin resté ouvert sur l'ancien bundle verra sa requête refusée. Une compatibilité
     transitoire ne le sauverait pas : la **forme de retour** change aussi, donc l'ancien bundle
     lirait `data.withoutIllustration` — `undefined` — et planterait au rendu. Écran d'admin à un
