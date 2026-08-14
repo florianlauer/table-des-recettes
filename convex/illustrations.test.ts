@@ -1,10 +1,11 @@
+import { DEFAULT_BATCH_SIZE } from '@convex-dev/migrations'
+import migrationsTest from '@convex-dev/migrations/test'
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import { withIllustration } from './lib/recipeWrites'
-import { BACKFILL_BATCH, ILLUSTRATION_STAGE_MIGRATION } from './migrations'
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
 import {
@@ -18,6 +19,7 @@ const adminToken = 'test-secret'
 function setup() {
   const t = convexTest(schema, modules)
   rateLimiterTest.register(t)
+  migrationsTest.register(t)
   return t
 }
 
@@ -88,25 +90,14 @@ function keysOf(fields: Record<string, unknown>) {
   )
 }
 
-/** The stage sections are not read until the backfill is done, so a test that reads them says so. */
-async function markStagesDone(t: Ctx) {
-  await t.run(async (ctx) => {
-    const existing = await ctx.db
-      .query('migrations')
-      .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
-      .first()
-    if (existing) {
-      await ctx.db.patch(existing._id, { done: true })
-      return
-    }
-    await ctx.db.insert('migrations', {
-      name: ILLUSTRATION_STAGE_MIGRATION,
-      cursor: null,
-      done: true,
-      migrated: 0,
-      updatedAt: Date.now(),
-    })
-  })
+/**
+ * The stage sections are not read until the backfill is done, so a test that reads them says so — by
+ * running the real migration rather than by hand-writing a "done" row. Over a corpus already carrying
+ * its stages that is a pass with zero patches, and it is the same code path production runs.
+ */
+async function runMigrations(t: Ctx) {
+  await t.mutation(internal.migrations.runAll, {})
+  await t.finishAllScheduledFunctions(() => {})
 }
 
 const ALL_OPEN = {
@@ -128,7 +119,7 @@ async function listWork(
   limits: OpenLimits & { stagesReady?: boolean } = {},
 ) {
   const { stagesReady = true, ...open } = limits
-  if (stagesReady) await markStagesDone(t)
+  if (stagesReady) await runMigrations(t)
   return t.query(api.illustrations.listIllustrationWork, {
     adminToken,
     limits: { ...ALL_OPEN, ...open },
@@ -655,10 +646,17 @@ describe('the work list', () => {
     const migrating = await listWork(t, { stagesReady: false })
     expect(migrating.stagesReady).toBe(false)
     expect(migrating.missing).toEqual({ rows: [], count: 0, truncated: false })
-    expect(migrating.migration).toMatchObject({ started: false, done: false })
+    // `unknown`, not a zero count: nobody has classified anything yet, and the screen must not print
+    // that as an answer.
+    expect(migrating.migration).toEqual({
+      state: 'unknown',
+      processed: 0,
+      ready: false,
+    })
 
     const ready = await listWork(t)
     expect(ready.stagesReady).toBe(true)
+    expect(ready.migration).toMatchObject({ state: 'success', ready: true })
     expect(ready.missing.count).toBe(1)
   })
 
@@ -840,64 +838,8 @@ describe('the nominal path, end to end', () => {
   })
 })
 
-describe('the hasIllustration backfill', () => {
-  test('indexes the corpus in batches and survives an interruption', async () => {
-    const t = setup()
-    // Rows written straight to the table, without the flag: exactly what the existing corpus
-    // looks like before the migration runs.
-    const total = BACKFILL_BATCH + 5
-    await t.run(async (ctx) => {
-      const storageId = await ctx.storage.store(jpeg())
-      for (let index = 0; index < total; index += 1) {
-        await ctx.db.insert('recipes', {
-          title: `Ancienne ${index}`,
-          type: 'autre' as const,
-          ingredients: [],
-          ingredientsInferred: false,
-          steps: [],
-          searchText: `ancienne ${index}`,
-          status: 'review' as const,
-          beautifiedAccepted: false,
-          beautifyStatus: 'idle' as const,
-          ...(index === 0 ? { imageStorageId: storageId } : {}),
-        })
-      }
-    })
-
-    // One page, then the interruption: the scheduled continuation is not run here.
-    const first = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(first).toBe(BACKFILL_BATCH)
-    const midway = await t.run((ctx) =>
-      ctx.db
-        .query('migrations')
-        .withIndex('by_name', (q) => q.eq('name', 'hasIllustration'))
-        .first(),
-    )
-    expect(midway).toMatchObject({ done: false, migrated: BACKFILL_BATCH })
-
-    // Resumed from the stored cursor: it finishes the corpus without rewriting what it already did.
-    const second = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(second).toBe(5)
-    const third = await t.mutation(
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    expect(third).toBe(0)
-
-    const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
-    expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
-    expect(rows.filter((row) => row.hasIllustration).length).toBe(1)
-  })
-})
-
 describe('the illustrationStage backfill', () => {
-  /** The corpus as it exists before this lot: no stage, and possibly no `hasIllustration` either. */
+  /** The corpus as it exists before this lot: no stage, and no `hasIllustration` either. */
   async function oldCorpus(t: Ctx, total: number) {
     return t.run(async (ctx) => {
       const storageId = await ctx.storage.store(jpeg())
@@ -918,52 +860,20 @@ describe('the illustrationStage backfill', () => {
     })
   }
 
-  async function stageState(t: Ctx) {
-    return t.run((ctx) =>
-      ctx.db
-        .query('migrations')
-        .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
-        .first(),
-    )
-  }
-
-  test('classifies the corpus in batches and survives an interruption', async () => {
+  /**
+   * A corpus larger than one batch, so the run really goes through the component's rescheduling
+   * rather than fitting in the first transaction. Batching, cursor and resume belong to the component
+   * and are its own tests; what is asserted here is the classification and the date it stamps.
+   */
+  test('classifies a corpus larger than one batch', async () => {
     const t = setup()
-    await oldCorpus(t, BACKFILL_BATCH + 5)
+    await oldCorpus(t, DEFAULT_BATCH_SIZE + 5)
 
-    const started = await t.mutation(
-      api.migrations.startIllustrationStageBackfill,
-      { adminToken },
-    )
-    expect(started).toEqual({ ok: true })
-    const runId = (await stageState(t))?.runId
-    expect(runId).toBeTypeOf('string')
-
-    // One page at a time, the scheduled continuation not run here: the cursor is what resumes it.
-    const first = await t.mutation(
-      internal.migrations.backfillIllustrationStage,
-      { runId: runId! },
-    )
-    expect(first).toBe(BACKFILL_BATCH)
-    expect(await stageState(t)).toMatchObject({
-      done: false,
-      migrated: BACKFILL_BATCH,
-    })
-
-    expect(
-      await t.mutation(internal.migrations.backfillIllustrationStage, {
-        runId: runId!,
-      }),
-    ).toBe(5)
-    expect(
-      await t.mutation(internal.migrations.backfillIllustrationStage, {
-        runId: runId!,
-      }),
-    ).toBe(0)
+    await runMigrations(t)
 
     const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
-    // Writes the superseded migration's field on the way, so a document the old chain never reached
-    // is repaired in one pass.
+    // Writes the superseded `hasIllustration` migration's field on the way, so a document that
+    // migration never reached is repaired in one pass.
     expect(rows.every((row) => row.illustrationStage !== undefined)).toBe(true)
     expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
     expect(
@@ -971,73 +881,45 @@ describe('the illustrationStage backfill', () => {
     ).toHaveLength(1)
     expect(
       rows.filter((row) => row.illustrationStage === 'missing'),
-    ).toHaveLength(BACKFILL_BATCH + 4)
+    ).toHaveLength(DEFAULT_BATCH_SIZE + 4)
     // The scan date, not the backfill's clock: it is the date the operator looks for in "Sans photo".
     expect(
       rows.every((row) => row.illustrationUpdatedAt === row._creationTime),
     ).toBe(true)
 
     const work = await listWork(t, { stagesReady: false })
-    expect(work.migration.done).toBe(true)
+    expect(work.migration).toMatchObject({
+      state: 'success',
+      processed: DEFAULT_BATCH_SIZE + 5,
+      ready: true,
+    })
     expect(work.stagesReady).toBe(true)
   })
 
   /**
-   * Two clicks on "Relancer la migration" used to schedule two chains over one cursor: pages
-   * reprocessed and `migrated` counted twice. Minting a token revokes the chain still in flight.
+   * The deploy runs the series every time, so the common case is a migration that has nothing left to
+   * do. It must not touch a stage a live mutation wrote since, and it must not restamp a date.
    */
-  test('a chain whose token was revoked stops without writing', async () => {
+  test('leaves an already classified recipe alone, however often it runs', async () => {
     const t = setup()
-    await oldCorpus(t, BACKFILL_BATCH + 5)
+    const recipeId = await newRecipe(t, { title: 'Déjà classée' })
+    await attach(t, recipeId)
+    // The three derived keys, and nothing else: `attach` also schedules a rendition, which the
+    // scheduler drain inside `runMigrations` completes and which has no business in this assertion.
+    const derived = async () => {
+      const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+      return {
+        hasIllustration: recipe?.hasIllustration,
+        illustrationStage: recipe?.illustrationStage,
+        illustrationUpdatedAt: recipe?.illustrationUpdatedAt,
+      }
+    }
+    const before = await derived()
 
-    await t.mutation(api.migrations.startIllustrationStageBackfill, {
-      adminToken,
-    })
-    const stale = (await stageState(t))?.runId
-    await t.mutation(internal.migrations.backfillIllustrationStage, {
-      runId: stale!,
-    })
-    expect(await stageState(t)).toMatchObject({ migrated: BACKFILL_BATCH })
+    await runMigrations(t)
+    await runMigrations(t)
 
-    // The relaunch mints a new token; the old chain's next batch no longer owns the migration.
-    await t.mutation(api.migrations.startIllustrationStageBackfill, {
-      adminToken,
-    })
-    const fresh = (await stageState(t))?.runId
-    expect(fresh).not.toBe(stale)
-
-    expect(
-      await t.mutation(internal.migrations.backfillIllustrationStage, {
-        runId: stale!,
-      }),
-    ).toBe(0)
-    expect(await stageState(t)).toMatchObject({ migrated: BACKFILL_BATCH })
-
-    // The owning chain carries on from the cursor it inherited, and the total is not doubled.
-    expect(
-      await t.mutation(internal.migrations.backfillIllustrationStage, {
-        runId: fresh!,
-      }),
-    ).toBe(5)
-    expect(await stageState(t)).toMatchObject({
-      done: true,
-      migrated: BACKFILL_BATCH + 5,
-    })
-  })
-
-  test('skips a recipe it has already classified', async () => {
-    const t = setup()
-    await newRecipe(t, { title: 'Déjà classée' })
-
-    await t.mutation(api.migrations.startIllustrationStageBackfill, {
-      adminToken,
-    })
-    const runId = (await stageState(t))?.runId
-    expect(
-      await t.mutation(internal.migrations.backfillIllustrationStage, {
-        runId: runId!,
-      }),
-    ).toBe(0)
+    expect(await derived()).toEqual(before)
   })
 
   test('keeps the flag consistent with the photo after every write', async () => {
@@ -1245,19 +1127,7 @@ describe('the source-has-no-photo flag', () => {
   test('a historical document with no flag field survives every gesture', async () => {
     const t = setup()
     const recipeId = await unmigratedRecipe(t)
-    await t.mutation(api.migrations.startIllustrationStageBackfill, {
-      adminToken,
-    })
-    const runId = await t.run(async (ctx) => {
-      const row = await ctx.db
-        .query('migrations')
-        .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
-        .first()
-      return row?.runId
-    })
-    await t.mutation(internal.migrations.backfillIllustrationStage, {
-      runId: runId!,
-    })
+    await runMigrations(t)
 
     expect(
       await t.mutation(api.illustrations.markNoPhotoAvailable, {
@@ -1431,7 +1301,7 @@ describe('the section ceiling', () => {
   test('clamps a limit past the hard ceiling', async () => {
     const t = setup()
     await newRecipe(t)
-    await markStagesDone(t)
+    await runMigrations(t)
 
     const work = await t.query(api.illustrations.listIllustrationWork, {
       adminToken,

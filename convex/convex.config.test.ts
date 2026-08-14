@@ -7,6 +7,13 @@ vi.mock('@convex-dev/rate-limiter/convex.config', () => ({
   },
 }))
 
+vi.mock('@convex-dev/migrations/convex.config', () => ({
+  default: {
+    componentDefinitionPath: 'migrations',
+    defaultName: 'migrations',
+  },
+}))
+
 test('mounts the application component configuration', async () => {
   const { default: app } = await import('./convex.config')
   expect(app).toBeDefined()

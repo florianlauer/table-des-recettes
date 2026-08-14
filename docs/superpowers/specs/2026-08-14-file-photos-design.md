@@ -302,52 +302,68 @@ validateur de retour dans « À arbitrer » (voir l'invariant de partition).
 
 `convex/migrations.ts`.
 
-**Nouvelle migration nommée `illustrationStage`**, pas un reset de l'existante : celle de
-`hasIllustration` est peut-être déjà `done` en production, et dans ce cas `backfillIllustrations`
-retourne 0 avant d'écrire quoi que ce soit.
+**Le remplissage des clés dérivées est une migration du composant officiel
+[`@convex-dev/migrations`](https://github.com/get-convex/migrations)**, et son déclencheur est le
+déploiement, pas un bouton.
 
-- `ILLUSTRATION_STAGE_MIGRATION = 'illustrationStage'`, nouvelle ligne `migrations`.
-- `backfillIllustrationStage`, même mécanique paginée et reprenable, condition de saut
-  `illustrationStage !== undefined`.
-- Écrit les **trois** clés dérivées via le helper, avec `at = recipe._creationTime` : un document
-  jamais photographié obtient donc `illustrationUpdatedAt === _creationTime`, ce qui est exactement
-  la date que l'opérateur cherche dans « Sans photo » (la date de scan).
-- Répare aussi un document que l'ancienne migration n'a jamais touché, puisqu'elle écrit
-  `hasIllustration` au passage.
+Un premier jet reprenait la mécanique déjà présente dans le dépôt : table `migrations` maison,
+curseur, worker qui se replanifie, jeton `runId` contre deux chaînes sur un même curseur, et un
+bouton « Relancer la migration » dans l'écran d'administration. Tout cela est remplacé. La mécanique
+était une copie moins bonne d'un composant que la plateforme maintient — et surtout son déclencheur
+était humain : un flux principal qui dépend de quelqu'un qui se souvient d'appuyer casse le jour où
+il oublie, et la décision 12 (§4) avait précisément transformé « oublier donne une liste partielle »
+en « oublier tue le flux photo ».
 
-**`backfillIllustrations` et `HAS_ILLUSTRATION_MIGRATION` sont conservées**, marquées dépréciées.
-Les supprimer casserait une continuation déjà planifiée : une chaîne en vol référence
-`internal.migrations.backfillIllustrations`, et ce job échouerait après déploiement en laissant
-l'ancienne migration inachevée sans reprise possible. Retrait dans un lot ultérieur, une fois sa
-ligne `migrations` confirmée `done` dans tous les environnements.
+- `migrations = new Migrations(components.migrations, { internalMutation })` — `internalMutation` est
+  passé pour que `migrateOne` soit typé contre les tables du projet.
+- `backfillIllustrationStage = migrations.define({ table: 'recipes', migrateOne })`, condition de
+  saut `illustrationStage !== undefined`. Écrit les **trois** clés dérivées via le helper, avec
+  `at = recipe._creationTime` : un document jamais photographié obtient donc
+  `illustrationUpdatedAt === _creationTime`, ce qui est exactement la date que l'opérateur cherche
+  dans « Sans photo » (la date de scan). Répare au passage un document que l'ancienne migration
+  `hasIllustration` n'a jamais touché, puisqu'elle écrit ce champ aussi.
+- `runAll = migrations.runner([...])` — un point d'entrée unique, une série, pour que la prochaine
+  migration soit une ligne ici et rien d'autre.
 
-**Verrou de relance.** `startIllustrationBackfill` planifie aujourd'hui une chaîne sans verrou :
-deux clics sur « Relancer la migration » créent deux chaînes qui partagent une seule ligne de
-curseur — pages retraitées, `migrated` compté deux fois, et avec `restart` une chaîne qui supprime
-la ligne sous les pieds de l'autre. La nouvelle migration porte donc un jeton d'exécution :
+**La table `migrations` maison, `backfillIllustrations`, `HAS_ILLUSTRATION_MIGRATION`,
+`startIllustrationBackfill`, `startIllustrationStageBackfill` et le verrou `runId` sont supprimés.**
+La crainte qui les gardait — une continuation en vol référençant
+`internal.migrations.backfillIllustrations` — coûte au pire un job planifié qui échoue une fois dans
+les journaux : la nouvelle migration écrit `hasIllustration` sur tout document sans étape, donc le
+corpus est réparé quelle que soit l'issue de l'ancienne chaîne. Le verrou, lui, n'a plus d'objet : le
+composant refuse de démarrer un doublon et reprend au curseur d'un batch échoué.
 
-- La ligne `migrations` gagne `runId: v.optional(v.string())` — et rien d'autre.
-- `startIllustrationStageBackfill` mint un `runId`, l'écrit, et le passe au premier batch.
-- Chaque batch commence par comparer son `runId` à celui de la ligne ; s'ils diffèrent, il retourne
-  0 sans rien écrire — la chaîne dont le jeton a été révoqué s'éteint d'elle-même. La comparaison et
-  l'écriture vivent dans la même transaction, donc le verrou n'a pas de fenêtre.
+**Déclenchement.**
 
-**Pas de `lastError`.** Un premier jet en prévoyait un ; il est retiré, pour deux raisons qui vont
-dans le même sens. D'abord il ne pourrait pas fonctionner : si le batch jette, sa transaction est
-annulée — l'écriture de `lastError` avec elle. Le faire marcher demanderait une action-wrapper qui
-rattrape et persiste dans une transaction séparée. Ensuite `src/lib/adminError.ts:1-7` interdit
-explicitement le message technique côté admin (`DESIGN.md` § Résistance), donc même capturée
-l'erreur brute ne serait pas affichable.
+- Production : `vercel.json` enchaîne `npx convex run convex/migrations.ts:runAll --prod` après
+  `convex deploy`. `convex deploy` n'a pas de `--run` pour la production — `--preview-run` est
+  documenté « ignored if deploying to a production deployment » — donc c'est bien un second appel. Il
+  est gardé par `[ "$VERCEL_ENV" = production ]` : `ignoreCommand` fait déjà que Vercel ne construit
+  que la production, et le garde rend ce couplage explicite plutôt que tacite.
+- Aperçu : une étape du job `data` de `.github/workflows/preview.yml`, **après** l'import. C'est le
+  seul endroit du workflow où des données arrivent, et un instantané pris avant que la migration
+  n'ait tourné en production atterrit non migré. Un push, qui saute ce job, garde le backend qu'il
+  avait déjà.
+- À la main : `npm run migrate` (dev) et `npm run migrate:prod`.
 
-Ce que le besoin réel — distinguer une migration bloquée d'une migration active — demande existe
-déjà : `updatedAt` sur la ligne `migrations`. Le bandeau dit « dernière avance il y a X », et
-« Relancer la migration » est là pour le reste. Cohérent avec le refus de surveillance automatique
-que documente `migrations.ts:83-86`.
+Rejouer la série est sans effet quand elle est terminée, no-op quand elle est en vol, et reprend au
+curseur quand elle a été interrompue — donc chaque déploiement peut l'appeler sans condition.
+
+**Pas de `lastError`, et plus besoin de « dernière avance ».** Un premier jet prévoyait les deux. Le
+premier ne pourrait pas fonctionner : si le batch jette, sa transaction est annulée — l'écriture de
+`lastError` avec elle ; et `src/lib/adminError.ts:1-7` interdit explicitement le message technique
+côté admin (`DESIGN.md` § Résistance). Le second était un contournement de ce refus : mesurer un
+délai depuis la dernière écriture pour distinguer une chaîne bloquée d'une chaîne lente. Le composant
+donne directement ce que ce délai approximait — `state: inProgress | success | failed | canceled`,
+plus `unknown` quand la migration n'a jamais tourné — donc l'heuristique disparaît avec lui.
+
+`readIllustrationStageStatus(ctx)` lit ce statut depuis une query, ce qui met la query en dépendance
+de l'avancement du composant : les quatre sections apparaissent d'elles-mêmes à la validation du
+dernier batch, sans rechargement.
 
 Contrat pendant la migration : les quatre sections d'étape sont **désactivées** (§4), pas affichées
-partielles. Le `MigrationBanner` existant est réutilisé, texte adapté — il annonce désormais que la
-file par étape est indisponible plutôt qu'incomplète, ce qui ne demande plus à l'opérateur de se
-souvenir d'une nuance en lisant une liste.
+partielles. Le `MigrationBanner` perd son bouton et devient un pur constat — il annonce que la file
+par étape est indisponible, et que l'arbitrage reste entier.
 
 ### 6. L'écran
 
@@ -437,10 +453,13 @@ poser le drapeau retire la ligne de sa section.
     d'étape vides, et une recette non migrée en `generating` est servie dans `active` avec
     `updatedAt === _creationTime` (sans le fallback, ce test échoue sur le validateur de retour).
   - un document historique sans `noPhotoAvailable` traverse chaque mutation sans erreur.
-- `convex/migrations.test.ts` : le backfill écrit les trois clés, saute les documents déjà classés,
-  reprend sur son curseur, répare un document que l'ancienne migration n'avait pas touché,
-  `illustrationUpdatedAt` vaut `_creationTime` ; **double relance** : une chaîne dont le `runId` a
-  été révoqué s'arrête sans écrire, et le compteur `migrated` n'est pas doublé.
+- Le backfill : il classe un corpus **plus grand qu'un batch** (donc il passe vraiment par la
+  replanification du composant), écrit les trois clés, `illustrationUpdatedAt` vaut `_creationTime`,
+  répare un document que l'ancienne migration `hasIllustration` n'avait pas touché, et laisse une
+  recette déjà classée intacte quel que soit le nombre de relances. Le lotissement, le curseur et la
+  reprise appartiennent au composant et sont couverts par ses propres tests ; ils ne sont pas
+  réécrits ici. Les tests qui lisent les sections d'étape appellent la vraie migration plutôt que
+  d'écrire une ligne « terminée » à la main.
 - `src/lib/…` (fonction pure de bornage) : `boundedLimit` sur `NaN`, `Infinity`, `-Infinity`, `-1`,
   `1.5`, `0`, `500`, `10_000`.
 - `src/lib/illustrationWork.test.ts` : les deux nouveaux gestes, dans les quatre états.
@@ -486,13 +505,18 @@ poser le drapeau retire la ligne de sa section.
    lecture cohérente. Le mur est donc théorique aujourd'hui, et il est **nommé** quand on l'atteint
    au lieu d'être caché derrière un bouton inerte. Seuil de réexamen explicite : le jour où une
    section rapporte `truncated` à 500, la pagination à curseur devient le lot suivant.
-8. **Ancienne migration conservée, dépréciée.** La supprimer casserait une continuation planifiée en
-   vol. Coût : du code mort pendant un lot.
-9. **Jeton d'exécution sur le backfill, et rien de plus.** Le `runId` corrige un défaut préexistant
-   de `startIllustrationBackfill` que ce lot réutiliserait tel quel : deux relances = deux chaînes
-   sur un curseur. En revanche `lastError` est retiré : il ne pourrait pas être écrit (la transaction
-   qui jette annule l'écriture) et ne pourrait pas être affiché (`adminError.ts:1-7` interdit le
-   message technique côté admin). Le besoin est couvert par `updatedAt`, qui existe déjà.
+8. **La migration passe au composant officiel, et son déclencheur au déploiement.** La mécanique
+   maison — table, curseur, worker, jeton `runId` — est supprimée avec l'ancienne migration
+   `hasIllustration` qu'un lot précédent gardait par prudence : la nouvelle écrit `hasIllustration`
+   sur tout document sans étape, donc le corpus est réparé quelle que soit l'issue d'une chaîne
+   restée en vol, et le pire coût est un job planifié qui échoue une fois dans les journaux.
+9. **Pas de bouton « Lancer la migration ».** C'est la décision qui annule le premier jet. La
+   décision 12 avait rendu les quatre sections indisponibles pendant la fenêtre de migration, ce qui
+   transformait un bouton oublié en flux photo mort. `vercel.json` et le job `data` du workflow
+   d'aperçu appellent la série ; rejouer une série terminée est sans effet, donc l'appel est
+   inconditionnel. `lastError` reste retiré (la transaction qui jette annule son écriture, et
+   `adminError.ts:1-7` interdit le message technique côté admin) et l'heuristique « dernière avance »
+   disparaît avec lui : le `state` du composant dit directement ce qu'elle approximait.
 10. **Les sections d'étape sont indisponibles, pas partielles, pendant la migration.** Une liste
     partielle demande à l'opérateur de se rappeler d'un bandeau en lisant des lignes ; il conclura
     qu'un lot est fait. `active` reste entière, donc rien n'est bloqué, et l'écran ne fait plus que
@@ -531,5 +555,4 @@ poser le drapeau retire la ligne de sa section.
   pas comme champ.
 - Compteurs exacts au-delà du plafond (composant `aggregate`).
 - Vraie pagination à curseur.
-- Retrait de `backfillIllustrations` (lot ultérieur, décision 8).
 - Le flow de scan (`/admin/scan/$id`) et le formulaire de correction.

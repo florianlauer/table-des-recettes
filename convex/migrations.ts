@@ -1,206 +1,94 @@
+import { Migrations } from '@convex-dev/migrations'
 import { v } from 'convex/values'
-import { internal } from './_generated/api'
-import type { Doc } from './_generated/dataModel'
-import { internalMutation, mutation } from './_generated/server'
-import type { MutationCtx, QueryCtx } from './_generated/server'
-import { requireAdmin } from './auth'
+import { components, internal } from './_generated/api'
+import { internalMutation } from './_generated/server'
+import type { QueryCtx } from './_generated/server'
 import { withIllustration } from './lib/recipeWrites'
-import { okOrError, refuse, succeeded } from './lib/validators'
 
 /**
- * @deprecated Superseded by `ILLUSTRATION_STAGE_MIGRATION`, which writes `hasIllustration` too. Kept
- * — with its worker — for one lot: a continuation already scheduled references
- * `internal.migrations.backfillIllustrations`, and deleting it would leave that job unresolvable and
- * the old migration stranded mid-corpus.
- */
-export const HAS_ILLUSTRATION_MIGRATION = 'hasIllustration'
-
-export const ILLUSTRATION_STAGE_MIGRATION = 'illustrationStage'
-// One page per transaction. The corpus is a few hundred recipes today, but a single mutation over
-// the whole table is a transaction with no ceiling, and Convex refuses those past a certain size.
-export const BACKFILL_BATCH = 200
-
-export async function readMigration(
-  ctx: QueryCtx,
-  name: string,
-): Promise<Doc<'migrations'> | null> {
-  return ctx.db
-    .query('migrations')
-    .withIndex('by_name', (q) => q.eq('name', name))
-    .first()
-}
-
-async function saveMigration(
-  ctx: MutationCtx,
-  {
-    name,
-    cursor,
-    done,
-    migrated,
-    runId,
-  }: {
-    name: string
-    cursor: string | null
-    done: boolean
-    migrated: number
-    runId?: string
-  },
-): Promise<void> {
-  const existing = await readMigration(ctx, name)
-  const fields = { name, cursor, done, migrated, runId, updatedAt: Date.now() }
-  if (existing) await ctx.db.patch(existing._id, fields)
-  else await ctx.db.insert('migrations', fields)
-}
-
-/**
- * Fills `hasIllustration` one page at a time, rescheduling itself until the corpus is done and
- * writing its cursor as it goes. Interrupted — a deploy, a crash, a transaction refused — it picks
- * up where it stopped instead of starting over.
+ * Batching, cursor, resume, refusal to run twice: all of it belongs to `@convex-dev/migrations`
+ * rather than to this file. What was hand-rolled here — a `migrations` table, a `runId` lease against
+ * two chains over one cursor, a "Relancer la migration" button — was a worse copy of a component the
+ * platform maintains, and its trigger was a human remembering to press something.
  *
- * Only rows that have no value are written. That is what makes a resumed run cheap, and it is also
- * what stops the backfill from stomping on a flag a live mutation set in the meantime.
+ * `internalMutation` is passed so `migrateOne` is typed against this project's tables.
  */
-export const backfillIllustrations = internalMutation({
-  args: {},
-  returns: v.number(),
-  handler: async (ctx) => {
-    const state = await readMigration(ctx, HAS_ILLUSTRATION_MIGRATION)
-    if (state?.done) return 0
-
-    const page = await ctx.db.query('recipes').paginate({
-      cursor: state?.cursor ?? null,
-      numItems: BACKFILL_BATCH,
-    })
-    let migrated = 0
-    for (const recipe of page.page) {
-      if (recipe.hasIllustration !== undefined) continue
-      await ctx.db.patch(recipe._id, {
-        hasIllustration: recipe.imageStorageId !== undefined,
-      })
-      migrated += 1
-    }
-
-    await saveMigration(ctx, {
-      name: HAS_ILLUSTRATION_MIGRATION,
-      cursor: page.continueCursor,
-      done: page.isDone,
-      migrated: (state?.migrated ?? 0) + migrated,
-    })
-    if (!page.isDone)
-      await ctx.scheduler.runAfter(
-        0,
-        internal.migrations.backfillIllustrations,
-        {},
-      )
-    return migrated
-  },
+export const migrations = new Migrations(components.migrations, {
+  internalMutation,
 })
 
 /**
- * Fills `illustrationStage`, `illustrationUpdatedAt` and `hasIllustration` one page at a time,
- * rescheduling itself until the corpus is done. Supersedes `backfillIllustrations`: it writes that
- * migration's field too, so a document the old chain never reached is repaired in one pass.
+ * Fills `illustrationStage`, `illustrationUpdatedAt` and `hasIllustration` — the three derived keys
+ * the photo work screen reads its sections from. Rows that already carry a stage are skipped, which
+ * is what makes a resumed run cheap and what stops the backfill from stomping on a value a live
+ * mutation wrote in the meantime.
  *
  * `at` is `_creationTime`, not `Date.now()`: a recipe that was never photographed must keep its scan
- * date, because that is the date the operator is looking for in "Sans photo".
- *
- * `runId` is the lease. Two clicks on "Relancer la migration" used to schedule two chains over one
- * cursor; a batch whose token has been revoked returns without writing, and the read and the write
- * share one transaction, so the check has no window.
+ * date, because that is the date the operator is looking for in "Sans photo". Stamping the whole
+ * corpus with the migration's own clock would flatten every batch into one.
  */
-export const backfillIllustrationStage = internalMutation({
-  args: { runId: v.string() },
-  returns: v.number(),
-  handler: async (ctx, { runId }) => {
-    const state = await readMigration(ctx, ILLUSTRATION_STAGE_MIGRATION)
-    if (state?.done) return 0
-    if (state && state.runId !== runId) return 0
-
-    const page = await ctx.db.query('recipes').paginate({
-      cursor: state?.cursor ?? null,
-      numItems: BACKFILL_BATCH,
-    })
-    let migrated = 0
-    for (const recipe of page.page) {
-      if (recipe.illustrationStage !== undefined) continue
-      await ctx.db.patch(
-        recipe._id,
-        withIllustration(
-          {
-            imageStorageId: recipe.imageStorageId,
-            beautifiedAccepted: recipe.beautifiedAccepted,
-            noPhotoAvailable: recipe.noPhotoAvailable ?? false,
-          },
-          recipe._creationTime,
-        ),
-      )
-      migrated += 1
-    }
-
-    await saveMigration(ctx, {
-      name: ILLUSTRATION_STAGE_MIGRATION,
-      cursor: page.continueCursor,
-      done: page.isDone,
-      migrated: (state?.migrated ?? 0) + migrated,
-      runId,
-    })
-    if (!page.isDone)
-      await ctx.scheduler.runAfter(
-        0,
-        internal.migrations.backfillIllustrationStage,
-        { runId },
-      )
-    return migrated
-  },
-})
-
-export const startIllustrationStageBackfill = mutation({
-  args: { adminToken: v.string(), restart: v.optional(v.boolean()) },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, restart }) => {
-    requireAdmin(adminToken)
-    const state = await readMigration(ctx, ILLUSTRATION_STAGE_MIGRATION)
-    if (state?.done && !restart) return refuse('Migration déjà terminée')
-
-    // Minting the token here is what revokes any chain still in flight: the next batch of the old
-    // run reads a name it does not own and stops.
-    const runId = crypto.randomUUID()
-    if (restart && state) await ctx.db.delete(state._id)
-    await saveMigration(ctx, {
-      name: ILLUSTRATION_STAGE_MIGRATION,
-      cursor: restart ? null : (state?.cursor ?? null),
-      done: false,
-      migrated: restart ? 0 : (state?.migrated ?? 0),
-      runId,
-    })
-    await ctx.scheduler.runAfter(
-      0,
-      internal.migrations.backfillIllustrationStage,
-      { runId },
+export const backfillIllustrationStage = migrations.define({
+  table: 'recipes',
+  migrateOne: (_ctx, recipe) => {
+    if (recipe.illustrationStage !== undefined) return
+    return withIllustration(
+      {
+        imageStorageId: recipe.imageStorageId,
+        beautifiedAccepted: recipe.beautifiedAccepted,
+        noPhotoAvailable: recipe.noPhotoAvailable ?? false,
+      },
+      recipe._creationTime,
     )
-    return succeeded
   },
 })
 
 /**
- * Manual relaunch, matching the project's refusal of automatic surveillance: a migration stuck
- * mid-corpus is visible on the work list, and restarting it is a decision, not a cron.
+ * The single entry point, run at the end of every production deploy (`vercel.json`) and after a
+ * preview's data import (`.github/workflows/preview.yml`). A series rather than one function so the
+ * next migration is one line here and nothing else has to change.
  *
- * @deprecated Drives the superseded `hasIllustration` migration. See the constant above.
+ * Safe to call on every deploy: a finished migration is skipped, an in-flight one no-ops, and an
+ * interrupted one resumes from its own cursor.
  */
-export const startIllustrationBackfill = mutation({
-  args: { adminToken: v.string(), restart: v.optional(v.boolean()) },
-  returns: okOrError,
-  handler: async (ctx, { adminToken, restart }) => {
-    requireAdmin(adminToken)
-    const state = await readMigration(ctx, HAS_ILLUSTRATION_MIGRATION)
-    if (state?.done && !restart) return refuse('Migration déjà terminée')
-    if (restart && state) await ctx.db.delete(state._id)
-    await ctx.scheduler.runAfter(
-      0,
-      internal.migrations.backfillIllustrations,
-      {},
-    )
-    return succeeded
-  },
+export const runAll = migrations.runner([
+  internal.migrations.backfillIllustrationStage,
+])
+
+export const illustrationStageStatus = v.object({
+  // `unknown` is the never-run case, and it is the one that must not read as zero on screen.
+  state: v.union(
+    v.literal('inProgress'),
+    v.literal('success'),
+    v.literal('failed'),
+    v.literal('canceled'),
+    v.literal('unknown'),
+  ),
+  processed: v.number(),
+  ready: v.boolean(),
 })
+
+/**
+ * What the photo work screen needs to decide whether the four stage sections can be read at all.
+ * Reading it adds a dependency on the component's own progress, so the sections appear by themselves
+ * the moment the last batch commits — no reload, no button.
+ *
+ * `state` is what the hand-rolled version could not produce: it tells a stalled chain from a running
+ * one without persisting an error the admin screen is not allowed to display (`adminError.ts`).
+ */
+export async function readIllustrationStageStatus(
+  ctx: QueryCtx,
+): Promise<typeof illustrationStageStatus.type> {
+  // `.at(0)` rather than a destructured `[status]`: the component answers one entry per requested
+  // name — a name it has never seen included — but the type does not say so, and a silent TypeError
+  // here would take the whole screen down.
+  const status = (
+    await migrations.getStatus(ctx, {
+      migrations: [internal.migrations.backfillIllustrationStage],
+    })
+  ).at(0)
+  return {
+    state: status?.state ?? 'unknown',
+    processed: status?.processed ?? 0,
+    ready: status?.isDone ?? false,
+  }
+}

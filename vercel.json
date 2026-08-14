@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL",
+  "buildCommand": "npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL && if [ \"$VERCEL_ENV\" = production ]; then npx convex run convex/migrations.ts:runAll --prod --codegen disable --typecheck disable; fi",
   "ignoreCommand": "test \"$VERCEL_ENV\" != production || git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ':(top,exclude)backup/**'",
   "headers": [
     {

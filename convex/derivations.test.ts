@@ -1,10 +1,10 @@
+import migrationsTest from '@convex-dev/migrations/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import { MAX_DERIVATION_ATTEMPTS } from './derivations'
 import { withIllustration } from './lib/recipeWrites'
-import { ILLUSTRATION_STAGE_MIGRATION } from './migrations'
 import schema from './schema'
 
 const modules = import.meta.glob('./**/*.ts')
@@ -19,7 +19,9 @@ afterEach(() => {
 })
 
 function setup() {
-  return convexTest(schema, modules)
+  const t = convexTest(schema, modules)
+  migrationsTest.register(t)
+  return t
 }
 
 type Ctx = ReturnType<typeof setup>
@@ -70,22 +72,13 @@ function keysOf(fields: Record<string, unknown>) {
   )
 }
 
-/** The stage sections are not read until the backfill is done, so a test that reads them says so. */
-async function markStagesDone(t: Ctx) {
-  await t.run(async (ctx) => {
-    const existing = await ctx.db
-      .query('migrations')
-      .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
-      .first()
-    if (existing) return
-    await ctx.db.insert('migrations', {
-      name: ILLUSTRATION_STAGE_MIGRATION,
-      cursor: null,
-      done: true,
-      migrated: 0,
-      updatedAt: Date.now(),
-    })
-  })
+/**
+ * The stage sections are not read until the backfill is done, so a test that reads them says so — by
+ * running the real migration rather than by hand-writing a "done" row.
+ */
+async function runMigrations(t: Ctx) {
+  await t.mutation(internal.migrations.runAll, {})
+  await t.finishAllScheduledFunctions(() => {})
 }
 
 const ALL_OPEN = {
@@ -100,7 +93,7 @@ async function listWork(
   limits: Partial<typeof ALL_OPEN> & { stagesReady?: boolean } = {},
 ) {
   const { stagesReady = true, ...open } = limits
-  if (stagesReady) await markStagesDone(t)
+  if (stagesReady) await runMigrations(t)
   return t.query(api.illustrations.listIllustrationWork, {
     adminToken,
     limits: { ...ALL_OPEN, ...open },

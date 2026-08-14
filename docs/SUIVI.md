@@ -75,6 +75,21 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   sans être classée, parce que le compilateur peut prouver qu'un appel au helper est complet, jamais
   qu'un appel qui devrait y passer y passe.
 
+  **Le remplissage de ces clés est une migration du composant `@convex-dev/migrations`, lancée par le
+  déploiement lui-même** — `vercel.json` en production, le workflow d'aperçu juste après son import de
+  données. Pas de bouton « Lancer la migration » : le flux principal de l'écran ne peut pas dépendre
+  de quelqu'un qui se souvient d'appuyer. Rejouer la série est sans effet quand elle est terminée, et
+  reprend au curseur quand elle a été interrompue, donc chaque déploiement peut l'appeler. À la main :
+  `npm run migrate` (dev) ou `npm run migrate:prod`. Tant qu'elle n'est pas finie, les quatre sections
+  d'étape ne sont **pas lues** plutôt que servies partielles — une file partielle demande à
+  l'opérateur de se souvenir d'une bannière en lisant des lignes, et il conclura qu'un lot est fini.
+  L'arbitrage, qui lit `by_beautify_status`, reste entier pendant toute la migration.
+
+  Reliquat sans urgence : la table `migrations` maison a disparu du schéma, mais Convex ne valide que
+  les tables **déclarées** — ses lignes de production survivent donc, orphelines et invisibles aux
+  requêtes typées. À supprimer depuis le tableau de bord Convex, une fois. Écrire une mutation dont
+  le seul rôle est de vider une table une seule fois ne vaut pas le code.
+
 - **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
   paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine
   largeur, puis s'accepte, se rejette ou se régénère. Un embellissement publié se dépublie sans
@@ -198,13 +213,7 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   pour la lancer : c'est un flux distinct, écarté du périmètre de T8 et bloquant pour personne.
   `recipes.scanId` est déjà optionnel, et toutes les mutations traitent le cas.
 
-- **R10 · Deux dettes ouvertes par la refonte de la file des photos.** `backfillIllustrations` et sa
-  constante `HAS_ILLUSTRATION_MIGRATION` sont **conservées et marquées dépréciées** : les supprimer
-  casserait une continuation déjà planifiée, qui référence `internal.migrations.backfillIllustrations`
-  et échouerait après déploiement en laissant l'ancienne migration à mi-corpus, sans reprise possible.
-  À retirer une fois sa ligne `migrations` confirmée `done` dans tous les environnements.
-
-  Et le plafond dur `ILLUSTRATION_WORK_MAX = 500` reste arbitraire. « Afficher 50 de plus » le relève
+- **R10 · Le plafond dur de la file des photos.** `ILLUSTRATION_WORK_MAX = 500` reste arbitraire. « Afficher 50 de plus » le relève
   par paliers, le serveur écrête, et au plafond l'écran **dit** qu'il est plafonné plutôt que d'offrir
   un bouton inerte. Il dépasse le corpus entier aujourd'hui, donc le mur est théorique. Seuil de
   réexamen explicite : le jour où une section rapporte une troncature à 500, la pagination à curseur

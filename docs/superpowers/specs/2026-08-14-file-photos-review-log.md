@@ -87,3 +87,41 @@ VERDICT: APPROVED
 Convergence au round 5 sur MAX_ROUNDS=5. 19 critiques sur quatre rounds : 17 acceptées (dont 6 avec
 un fix différent de celui proposé), 2 rejetées avec motif logué (shim de compatibilité de signature,
 pagination à curseur). Aucune ligne de code écrite pendant la boucle.
+
+## Après implémentation — le bouton de migration
+
+Une question du propriétaire après la création de la PR : « on est d'accord que c'est un bouton
+lancer migration dans l'app admin ? c'est une bonne pratique ? »
+
+Non. Et la boucle de review ne l'avait pas vu, moi non plus. Le bouton était hérité du lot T14 et
+personne — ni Codex sur quatre rounds, ni moi — ne l'a remis en cause, parce qu'il existait déjà.
+C'est l'angle mort de la boucle : elle attaque ce que le plan ajoute, pas ce qu'il reprend tel quel.
+
+Pire, la décision 12 acceptée au round 2 en avait aggravé l'enjeu. Rendre les quatre sections
+**indisponibles** pendant la fenêtre de migration était le bon choix pour l'honnêteté de l'écran,
+mais il transformait « oublier le bouton donne une liste partielle » en « oublier le bouton tue le
+flux photo ». Un flux principal ne peut pas dépendre de quelqu'un qui se souvient d'appuyer.
+
+Vérifié avant de recommander quoi que ce soit : `convex deploy` n'a pas de `--run` pour la production
+(`--preview-run` seulement, documenté « ignored if deploying to a production deployment »). Il n'y a
+donc pas de hook post-déploiement gratuit — c'est un second appel à enchaîner.
+
+Choix du propriétaire : le composant officiel `@convex-dev/migrations`. Trois conséquences, toutes
+des retraits :
+
+- La mécanique maison disparaît : table `migrations`, curseur, worker qui se replanifie, jeton `runId`
+  contre deux chaînes sur un curseur. Le composant refuse un doublon et reprend au curseur d'un batch
+  échoué ; le verrou n'a plus d'objet.
+- L'ancienne migration `hasIllustration`, conservée au round 1 sur une critique de Codex, est
+  supprimée avec. La crainte tenait : une continuation en vol référençant
+  `internal.migrations.backfillIllustrations` échouerait. Mais le coût réel est un job planifié qui
+  échoue une fois dans les journaux, et la nouvelle migration écrit `hasIllustration` sur tout
+  document sans étape — le corpus est réparé quelle que soit l'issue de l'ancienne chaîne. La
+  décision 8 s'inverse donc, avec le motif chiffré qui manquait au round 1.
+- L'heuristique « dernière avance il y a X », acceptée au round 2 comme substitut à `lastError`,
+  disparaît aussi : `state: inProgress | success | failed | canceled` — plus `unknown` quand la
+  migration n'a jamais tourné — dit directement ce qu'un délai depuis la dernière écriture
+  approximait.
+
+Le déclencheur est désormais le déploiement : `vercel.json` en production, le job `data` du workflow
+d'aperçu après son import de données. `npm run migrate` / `migrate:prod` restent pour la main.

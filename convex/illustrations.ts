@@ -18,7 +18,10 @@ import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { beautifyStatus, recipeType } from './schema'
-import { ILLUSTRATION_STAGE_MIGRATION, readMigration } from './migrations'
+import {
+  illustrationStageStatus,
+  readIllustrationStageStatus,
+} from './migrations'
 import {
   BEAUTIFY_ATTEMPTS_SAMPLED,
   beautifySummary,
@@ -649,14 +652,10 @@ export const listIllustrationWork = query({
     // partial work queue asks the operator to remember a banner while reading rows, and they will
     // conclude a batch is done. `active` stays whole throughout, so arbitration is never blocked.
     stagesReady: v.boolean(),
-    // A single document read. Counting the whole table to derive "how many are off the index"
-    // would be exactly the unbounded scan the batched backfill exists to avoid.
-    migration: v.object({
-      started: v.boolean(),
-      done: v.boolean(),
-      migrated: v.number(),
-      updatedAt: v.union(v.number(), v.null()),
-    }),
+    // A single document read, from the migrations component. Counting the whole table to derive "how
+    // many are off the index" would be exactly the unbounded scan the batched backfill exists to
+    // avoid.
+    migration: illustrationStageStatus,
   }),
   handler: async (ctx, { adminToken, limits }) => {
     requireAdmin(adminToken)
@@ -667,8 +666,8 @@ export const listIllustrationWork = query({
         .order('desc')
         .take(ILLUSTRATION_WORK_LISTED + 1)
 
-    const migration = await readMigration(ctx, ILLUSTRATION_STAGE_MIGRATION)
-    const stagesReady = migration?.done ?? false
+    const migration = await readIllustrationStageStatus(ctx)
+    const stagesReady = migration.ready
 
     // `null` keeps the section collapsed; a number is the requested page, normalised.
     const capOf = (requested: number | null) =>
@@ -733,12 +732,7 @@ export const listIllustrationWork = query({
       }),
       done: await sectionOf(ctx, done, { limit: caps.done, thumbnail: true }),
       stagesReady,
-      migration: {
-        started: migration !== null,
-        done: stagesReady,
-        migrated: migration?.migrated ?? 0,
-        updatedAt: migration?.updatedAt ?? null,
-      },
+      migration,
     }
   },
 })

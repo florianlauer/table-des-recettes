@@ -1,15 +1,12 @@
 import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { dataView } from '../lib/dataView'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
-import { outcomeMessage } from '../lib/gestureMessages'
-import { pageGesture } from '../lib/gestures'
 import { groupByDay } from '../lib/groupByDay'
 import {
   ILLUSTRATION_WORK_LISTED,
@@ -20,7 +17,6 @@ import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
 import { adminHead } from './-adminHead'
-import { AdminButton } from './-AdminButton'
 import { AdminSectionState } from './-AdminSectionState'
 import { BeautifyStats } from './-BeautifyStats'
 import { IllustrationRow } from './-IllustrationRow'
@@ -162,12 +158,7 @@ function IllustrationsPage() {
 
       {data && (
         <>
-          <MigrationBanner
-            adminToken={adminToken}
-            migration={data.migration}
-            now={now}
-            gestures={gestures}
-          />
+          <MigrationBanner migration={data.migration} />
 
           <section className="illustrations__section">
             <h2>À arbitrer</h2>
@@ -366,55 +357,37 @@ function FoldedSection({
   )
 }
 
-function MigrationBanner({
-  adminToken,
-  migration,
-  now,
-  gestures,
-}: {
-  adminToken: string
-  migration: Work['migration']
-  now: number
-  gestures: Gestures
-}) {
-  const startBackfill = useMutation(
-    api.migrations.startIllustrationStageBackfill,
+/**
+ * No button. The backfill is run by the deploy itself — `vercel.json` in production, the preview
+ * workflow after its data import — so there is nothing here for the operator to remember. A screen
+ * whose main flow depends on someone pressing "Lancer la migration" is a screen that breaks the day
+ * they forget.
+ */
+function MigrationBanner({ migration }: { migration: Work['migration'] }) {
+  if (migration.ready) return null
+  const classified = formatCount(
+    migration.processed,
+    'recette classée',
+    'recettes classées',
   )
-  if (migration.done) return null
-  // A div, not a `<p role="alert">`: a bar, a result and a blocked reason are blocks, and the count
-  // below changes as the backfill advances — announced assertively at every tick it would be noise.
+  // A div, not a `<p role="alert">`: the count below changes as the backfill advances, and announced
+  // assertively at every tick it would be noise.
   return (
     <div className="admin-page__banner">
       <p>
-        {migration.started
-          ? `Migration en cours : ${formatCount(migration.migrated, 'recette classée', 'recettes classées')}. La file par étape est indisponible jusqu’à la fin.`
-          : 'Les recettes ne sont pas encore classées par étape : la file par étape est indisponible. L’arbitrage, lui, reste entier.'}
+        {migration.state === 'inProgress'
+          ? `Classement en cours : ${classified}.`
+          : migration.state === 'unknown'
+            ? 'Les recettes ne sont pas encore classées par étape.'
+            : `Le classement s’est interrompu à ${classified}. Il reprend au prochain déploiement.`}
       </p>
-      {/* What tells a stalled chain from a running one without persisting a server error the admin is
-          not allowed to display (`adminError.ts`): how long ago it last advanced. */}
-      {migration.updatedAt !== null && (
-        <p>Dernière avance {sinceLabel(now - migration.updatedAt)}.</p>
-      )}
       {/* No bar: `listIllustrationWork` reports how many recipes are classified and no total — one
           document read, which is exactly what the batched backfill exists to preserve. A fraction
           would need a denominator nobody can produce without scanning the table. */}
-      <AdminButton
-        gestures={gestures}
-        gesture={pageGesture('migrate')}
-        label={
-          migration.started ? 'Relancer la migration' : 'Lancer la migration'
-        }
-        pendingLabel="Migration…"
-        disabled={!adminToken}
-        run={async () => outcomeMessage(await startBackfill({ adminToken }))}
-      />
+      <p>
+        La file par étape est indisponible jusqu’à la fin. L’arbitrage, lui,
+        reste entier.
+      </p>
     </div>
   )
-}
-
-function sinceLabel(elapsedMs: number): string {
-  const minutes = Math.floor(Math.max(elapsedMs, 0) / 60_000)
-  if (minutes < 1) return 'à l’instant'
-  if (minutes < 60) return `il y a ${formatCount(minutes, 'minute', 'minutes')}`
-  return `il y a ${formatCount(Math.floor(minutes / 60), 'heure', 'heures')}`
 }

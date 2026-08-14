@@ -157,7 +157,7 @@ export default defineSchema({
     // mutation leaves the recipe `generating` forever, with nothing on screen saying so.
     beautifyStartedAt: v.optional(v.number()),
     // Denormalised so "which recipes still have no photo" is an indexed read. Optional because a
-    // required boolean would reject every existing recipe; `migrations` carries the backfill, and
+    // required boolean would reject every existing recipe; `migrations.ts` carries the backfill, and
     // `withIllustration` is the only thing allowed to write it.
     hasIllustration: v.optional(v.boolean()),
     // Set by the operator when the source has no photo for this recipe. Admin-only: the storefront
@@ -236,19 +236,6 @@ export default defineSchema({
     // Not a unique constraint — Convex has none. It is what lets every journalling mutation read
     // before it inserts, which is how a replayed finalisation stops counting its cost twice.
     .index('by_attempt_id', ['attemptId']),
-
-  /** Durable progress of the batched backfills. One row per migration, keyed by name. */
-  migrations: defineTable({
-    name: v.string(),
-    cursor: v.union(v.string(), v.null()),
-    done: v.boolean(),
-    migrated: v.number(),
-    updatedAt: v.number(),
-    // Which relaunch owns the chain. Two clicks on "Relancer la migration" used to schedule two
-    // chains over one cursor: pages reprocessed, `migrated` counted twice. A batch that no longer
-    // holds the token stops instead of writing.
-    runId: v.optional(v.string()),
-  }).index('by_name', ['name']),
 
   uploadTickets: defineTable({
     createdAt: v.number(),

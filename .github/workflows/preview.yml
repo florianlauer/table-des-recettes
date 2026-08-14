@@ -191,6 +191,17 @@ jobs:
             echo "Snapshot carries no table: production is still empty, import skipped."
           fi
 
+      # The import brings in production rows as they are, so a snapshot taken before a backfill has
+      # run in production lands unmigrated here. Production runs the same series at the end of its
+      # own deploy (`vercel.json`); this is its preview counterpart, and the only place in the
+      # workflow where data arrives. A push, which skips this job, keeps the backend it already had.
+      - name: Run the migrations
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
+        run: >-
+          npx convex run --deployment "preview/$PREVIEW_NAME"
+          convex/migrations.ts:runAll
+
       # Separates an import that technically succeeded from a backend that is actually usable.
       # `countsByType` is a public query of the storefront, so it needs no admin token.
       - name: Smoke check
