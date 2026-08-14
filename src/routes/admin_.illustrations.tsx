@@ -1,7 +1,7 @@
 import { convexQuery } from '@convex-dev/react-query'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { dataView } from '../lib/dataView'
@@ -12,6 +12,7 @@ import {
   ILLUSTRATION_WORK_LISTED,
   ILLUSTRATION_WORK_MAX,
 } from '../lib/illustrationLimits'
+import type { Outcome } from '../lib/gestureRegistry'
 import { nonEmpty } from '../lib/journalStats'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
@@ -45,6 +46,16 @@ const FRAMING_ADVICE =
 
 /** The three sections that start folded. `toBeautify` is not one of them: it is the main flow. */
 type Foldable = 'missing' | 'sourceHasNone' | 'done'
+
+/** The five partitions of the work, in the order the screen prints them. */
+const SECTIONS = [
+  'active',
+  'toBeautify',
+  'missing',
+  'sourceHasNone',
+  'done',
+] as const
+type Section = (typeof SECTIONS)[number]
 
 type Limits = {
   toBeautify: number
@@ -84,12 +95,25 @@ function IllustrationsPage() {
         ILLUSTRATION_WORK_LISTED,
     }))
 
+  /**
+   * `limits` is part of the query key, so unfolding a section asks for a key nothing has answered yet.
+   * Without a placeholder the answer is `undefined` for one render, `dataView` reports `loading`, and
+   * the whole screen below the header unmounts: the page collapses to one line — the browser lands back
+   * at the top — and every `<details>` comes back as a **new** node, which is to say closed, because a
+   * native fold keeps its open state in the DOM and not in React. The first click on a fold did nothing,
+   * twice over.
+   *
+   * Keeping the previous answer is not a cosmetic transition here: it is what makes the fold's own state
+   * survive its own query. A cleared token still empties the screen — `dataView` reads `tokenAbsent`
+   * before it reads the data.
+   */
   const work = useQuery({
     ...convexQuery(
       api.illustrations.listIllustrationWork,
       adminToken ? { adminToken, limits } : 'skip',
     ),
     retry: false,
+    placeholderData: keepPreviousData,
   })
   // Hoisted out of the statistics block: the journal that reports what a generation costs is also
   // what says how long one usually takes, and every row's bar reads it.
@@ -125,16 +149,39 @@ function IllustrationsPage() {
    */
   const liveRowIds = data
     ? new Set<string>(
-        [
-          ...data.active.rows,
-          ...data.toBeautify.rows,
-          ...data.missing.rows,
-          ...data.sourceHasNone.rows,
-          ...data.done.rows,
-        ].map((row) => row.id),
+        SECTIONS.flatMap((name) => data[name].rows).map((row) => row.id),
       )
     : null
   useOrphanedRows({ gestures, liveRowIds })
+
+  /**
+   * Where each row was last seen. Written in an effect, so it is deliberately one render behind: on the
+   * render where a row disappears, the map still names the section it left — which is where its result
+   * has to reappear, next to the rows the operator is reading, rather than at the top of the page.
+   *
+   * A message printed above everything pushed the whole screen down at the exact moment the row under
+   * the cursor vanished: two shifts in opposite directions, and the browser cannot anchor through
+   * either, since the node it would have anchored to is the one that left.
+   */
+  const homes = useRef(new Map<string, Section>())
+  useEffect(() => {
+    if (!data) return
+    for (const name of SECTIONS)
+      for (const row of data[name].rows) homes.current.set(row.id, name)
+  })
+
+  // A message inside a closed fold would not be read at all, so those go back to the top of the page.
+  // Losing an outcome is worse than misplacing it.
+  const reachable = (name: Section) =>
+    name === 'active' || name === 'toBeautify' || limits[name] !== null
+  const homeOf = (outcome: Outcome): Section | null => {
+    const { scope } = outcome.gesture
+    if (scope.kind !== 'row') return null
+    const home = homes.current.get(scope.rowId)
+    return home !== undefined && reachable(home) ? home : null
+  }
+  const from = (name: Section) => (outcome: Outcome) => homeOf(outcome) === name
+  const unattached = (outcome: Outcome) => homeOf(outcome) === null
 
   const rowProps = { adminToken, gestures, now, estimateMs }
 
@@ -148,7 +195,8 @@ function IllustrationsPage() {
         <p>{FRAMING_ADVICE}</p>
       </header>
 
-      <OrphanedOutcomes gestures={gestures} />
+      {/* Only what no open section can carry: a page-wide gesture, or a row whose section is folded. */}
+      <OrphanedOutcomes gestures={gestures} keep={unattached} />
 
       <AdminSectionState
         view={workView}
@@ -171,6 +219,7 @@ function IllustrationsPage() {
                 celles-ci d’abord.
               </p>
             )}
+            <OrphanedOutcomes gestures={gestures} keep={from('active')} />
             <DayGroups section={data.active} {...rowProps} />
           </section>
 
@@ -183,6 +232,7 @@ function IllustrationsPage() {
             {data.stagesReady && data.toBeautify.count === 0 && (
               <p className="empty">Aucune photo n’attend d’être embellie.</p>
             )}
+            <OrphanedOutcomes gestures={gestures} keep={from('toBeautify')} />
             <DayGroups section={data.toBeautify} {...rowProps} />
             <MoreRows
               section={data.toBeautify}
@@ -199,6 +249,7 @@ function IllustrationsPage() {
             empty="Toutes les recettes classées ont une photo."
             onFold={(open) => fold('missing', open)}
             onMore={() => showMore('missing')}
+            keep={from('missing')}
             {...rowProps}
           />
 
@@ -210,6 +261,7 @@ function IllustrationsPage() {
             empty="Aucune recette marquée."
             onFold={(open) => fold('sourceHasNone', open)}
             onMore={() => showMore('sourceHasNone')}
+            keep={from('sourceHasNone')}
             {...rowProps}
           />
 
@@ -221,6 +273,7 @@ function IllustrationsPage() {
             empty="Aucun embellissement publié."
             onFold={(open) => fold('done', open)}
             onMore={() => showMore('done')}
+            keep={from('done')}
             {...rowProps}
           />
         </>
@@ -324,6 +377,7 @@ function FoldedSection({
   empty,
   onFold,
   onMore,
+  keep,
   ...rowProps
 }: {
   title: string
@@ -333,6 +387,7 @@ function FoldedSection({
   empty: string
   onFold: (open: boolean) => void
   onMore: () => void
+  keep: (outcome: Outcome) => boolean
 } & RowProps) {
   return (
     <details
@@ -347,12 +402,19 @@ function FoldedSection({
           {ready ? sectionCount(section) : '—'}
         </span>
       </summary>
-      {!ready && <MigratingNotice />}
-      {ready && limit !== null && section.count === 0 && (
-        <p className="empty">{empty}</p>
-      )}
-      <DayGroups section={section} {...rowProps} />
-      <MoreRows section={section} limit={limit} onMore={onMore} />
+      {/* Everything the fold holds, in one element rather than as siblings of the summary: the open
+          block is held by an ochre stem down its left edge, and a stem needs something to run beside.
+          The summary stays outside it, so the title keeps the page's own left margin while the rows
+          step in behind the rule. */}
+      <div className="illustrations__fold-body">
+        <OrphanedOutcomes gestures={rowProps.gestures} keep={keep} />
+        {!ready && <MigratingNotice />}
+        {ready && limit !== null && section.count === 0 && (
+          <p className="empty">{empty}</p>
+        )}
+        <DayGroups section={section} {...rowProps} />
+        <MoreRows section={section} limit={limit} onMore={onMore} />
+      </div>
     </details>
   )
 }

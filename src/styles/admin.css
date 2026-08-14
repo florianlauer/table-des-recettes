@@ -425,6 +425,50 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* An open fold has to say two things a plain horizontal rule cannot: where its rows end, and whose
+   rows they are once the title has scrolled off. Two open folds on the same paper, with only floating
+   text between them, left no way to tell.
+   Both answers are made of rule and paper, nothing else. The band is the lighter paper of the
+   storefront, ruled in ochre, and it sticks: the name stays on screen for as long as its own rows do.
+   The ochre stem down the left holds the block, and the title stays out in the margin — the list
+   visibly hangs from the word that names it. */
+.illustrations__fold[open] > .illustrations__fold-summary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface);
+  border-top: 2px solid var(--ochre);
+  border-bottom: 1px solid var(--rule-strong);
+  /* Equal and opposite, so the band bleeds past the text on both sides while the title stays on the
+     page's own left edge: an open fold must not shift its own heading. The bleed is smaller than the
+     1.5rem gutter of `.page`, so nothing can overflow sideways. */
+  margin-inline: -0.9rem;
+  padding-inline: 0.9rem;
+}
+.illustrations__fold[open] .illustrations__fold-body {
+  margin-left: 0.9rem;
+  padding-left: 1.5rem;
+  padding-bottom: 1.4rem;
+  border-left: 2px solid var(--ochre);
+}
+/* The stem already opens the block, so the first row inside it does not need a rule of its own. */
+.illustrations__fold[open]
+  .illustrations__fold-body
+  > .illustrations__recipe:first-child,
+.illustrations__fold[open]
+  .illustrations__fold-body
+  > .illustrations__day:first-child
+  .illustrations__day-label {
+  border-top: 0;
+}
+.illustrations__fold[open]
+  .illustrations__fold-body
+  > .illustrations__day:first-child
+  .illustrations__day-label {
+  margin-top: 0.6rem;
+  padding-top: 0;
+}
+
 /* The batch separator. Same job as the letter in the storefront index — it opens a group — so it
    borrows the strong rule and the ochre, and nothing else. */
 .illustrations__day-label {
@@ -441,7 +485,11 @@
   margin-top: 0.4rem;
 }
 
-.illustrations__more {
+/* Qualified by the page, and not by the class alone: `.admin-page button` frames every button of the
+   screen at specificity (0,1,1), so a bare `.illustrations__more` at (0,1,0) lost its `border: 0` and
+   its ochre — the one control meant to read as a sentence was rendering as a framed button in body
+   ink. Nothing else in this file competes with `.admin-page button`, which is why it went unseen. */
+.admin-page .illustrations__more {
   margin-top: 1rem;
   padding: 0;
   border: 0;
@@ -452,6 +500,8 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
   cursor: pointer;
+  /* `min-height: 3rem` keeps coming from `.admin-page button`, and it stays: the touch floor holds for
+     a control that reads as a sentence too. Without a frame it costs nothing but room to hit. */
 }
 
 /* --- correction screen --- */
@@ -546,6 +596,12 @@
   min-height: 2.75rem;
 }
 @media (width <= 40rem) {
+  /* The stem keeps its job at a narrower indent: 2.4rem of it on a phone was taken out of the only
+     measure the titles have. */
+  .illustrations__fold[open] .illustrations__fold-body {
+    margin-left: 0;
+    padding-left: 0.9rem;
+  }
   .scan-page__ingredient {
     grid-template-columns: 1fr 1fr;
   }

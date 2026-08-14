@@ -98,10 +98,27 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   `scheduler.runAfter(0, …)`. Le backfill traverse tout le corpus : sans borne, il démarrait autant
   d'actions Node chargeant `sharp` qu'il y a de photos.
 
-  Reliquat sans urgence : la table `migrations` maison a disparu du schéma, mais Convex ne valide que
-  les tables **déclarées** — ses lignes de production survivent donc, orphelines et invisibles aux
-  requêtes typées. À supprimer depuis le tableau de bord Convex, une fois. Écrire une mutation dont
-  le seul rôle est de vider une table une seule fois ne vaut pas le code.
+  La table `migrations` maison a disparu du schéma, mais Convex ne valide que les tables
+  **déclarées** : sa ligne de production a survécu au retrait, orpheline et invisible aux requêtes
+  typées. Elle ne se supprime que du tableau de bord, et seulement une fois le schéma **déployé**
+  débarrassé de sa déclaration — vider ses lignes ne suffit pas, et pendant que l'ancien code tournait
+  encore, il les réécrivait.
+
+  Ce retrait a coûté deux déploiements de production échoués, pour une raison qui n'a rien à voir avec
+  le code : `convex deploy` exécute `checkForLargeIndexDeletion`, un contrôle réservé à la production —
+  `convex dev`, `convex run`, le codegen et les **previews** passent tous `'no verification'`. Dès
+  qu'un index disparaît du diff, le contrôle compte les documents des tables concernées avec
+  `_system/cli/tableSize`, ce qui exige `deployment:data:view` ; le seuil d'alerte est de **1**
+  document, et sans terminal interactif il faut alors `--allow-deleting-large-indexes`. La clé de
+  déploiement de Vercel, scopée `deployment:deploy` comme la documentation le recommande pour une CI,
+  échouait donc sur `data:view`, puis — une fois ce mur passé — sur
+  `deployment:functions:runInternalMutations`, réclamé par le `runAll` de la seconde moitié du
+  `buildCommand`.
+
+  Les droits d'une clé ne s'éditent pas : elle se remplace. `CONVEX_DEPLOY_KEY` (Production) porte
+  désormais une clé mintée en CLI (`npx convex deployment token create`), qui reçoit le jeu large et
+  passe les deux étapes. Conséquence à retenir : **une PR qui supprime un index ne se voit pas en
+  CI** — previews vertes, production en échec.
 
 - **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
   paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine

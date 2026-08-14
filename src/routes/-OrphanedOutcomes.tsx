@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gestureNoteMark, gestureNoteReading } from '../lib/gestureNote'
 import { outcomeKey } from '../lib/gestureRegistry'
+import type { Outcome } from '../lib/gestureRegistry'
 import type { Gestures } from '../lib/useGestures'
 
 /**
@@ -14,8 +15,19 @@ import type { Gestures } from '../lib/useGestures'
  * Which message takes the focus is read off the outcomes themselves, so the node is named rather than
  * guessed. Honouring the claim clears it, which is also what lets a second disappearance be honoured.
  */
-export function OrphanedOutcomes({ gestures }: { gestures: Gestures }) {
-  const outcomes = gestures.orphanedOutcomes()
+export function OrphanedOutcomes({
+  gestures,
+  keep = () => true,
+}: {
+  gestures: Gestures
+  /**
+   * Which of the orphaned outcomes this instance owns. A screen with sections publishes each message
+   * where its row was, so several instances share the set and each takes its own — the default takes
+   * them all, for a screen that has one list.
+   */
+  keep?: (outcome: Outcome) => boolean
+}) {
+  const outcomes = gestures.orphanedOutcomes().filter(keep)
   const nodes = useRef(new Map<string, HTMLParagraphElement>())
   const claiming = outcomes.find((outcome) => outcome.stealsFocus) ?? null
   const claimingKey = claiming === null ? null : outcomeKey(claiming)

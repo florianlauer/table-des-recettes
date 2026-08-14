@@ -27,6 +27,8 @@ import type * as lib_validators from "../lib/validators.js";
 import type * as migrations from "../migrations.js";
 import type * as rateLimits from "../rateLimits.js";
 import type * as recipeAdmin from "../recipeAdmin.js";
+import type * as recipeCounts from "../recipeCounts.js";
+import type * as recipeDocs from "../recipeDocs.js";
 import type * as recipes from "../recipes.js";
 import type * as retention from "../retention.js";
 import type * as seed from "../seed.js";
@@ -57,6 +59,8 @@ declare const fullApi: ApiFromModules<{
   migrations: typeof migrations;
   rateLimits: typeof rateLimits;
   recipeAdmin: typeof recipeAdmin;
+  recipeCounts: typeof recipeCounts;
+  recipeDocs: typeof recipeDocs;
   recipes: typeof recipes;
   retention: typeof retention;
   seed: typeof seed;
