@@ -1,4 +1,3 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { describe, expect, test, vi } from 'vitest'
 import { internal } from './_generated/api'
@@ -12,6 +11,7 @@ import {
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
 import { BEAUTIFY_MODEL } from '../src/lib/beautifyPrompt'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = { OPENROUTER_API_KEY: 'key' }
@@ -43,7 +43,7 @@ function imageAnswer(base64: string = bytesToBase64(jpegBytes())) {
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
+  registerComponents(t)
   return t
 }
 

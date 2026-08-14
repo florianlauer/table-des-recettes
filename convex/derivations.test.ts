@@ -1,4 +1,3 @@
-import migrationsTest from '@convex-dev/migrations/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
@@ -6,6 +5,7 @@ import type { Id } from './_generated/dataModel'
 import { MAX_DERIVATION_ATTEMPTS } from './derivations'
 import { withIllustration } from './lib/recipeWrites'
 import schema from './schema'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
@@ -20,7 +20,7 @@ afterEach(() => {
 
 function setup() {
   const t = convexTest(schema, modules)
-  migrationsTest.register(t)
+  registerComponents(t)
   return t
 }
 
@@ -75,9 +75,12 @@ function keysOf(fields: Record<string, unknown>) {
 /**
  * The stage sections are not read until the backfill is done, so a test that reads them says so — by
  * running the real migration rather than by hand-writing a "done" row.
+ *
+ * The stage backfill alone, not the whole `runAll` series: the rendition backfill in that series would
+ * re-enqueue a derivation over a fixture that deliberately holds a `failed` rendition.
  */
-async function runMigrations(t: Ctx) {
-  await t.mutation(internal.migrations.runAll, {})
+async function runStageBackfill(t: Ctx) {
+  await t.mutation(internal.migrations.backfillIllustrationStage, {})
   await t.finishAllScheduledFunctions(() => {})
 }
 
@@ -93,7 +96,7 @@ async function listWork(
   limits: Partial<typeof ALL_OPEN> & { stagesReady?: boolean } = {},
 ) {
   const { stagesReady = true, ...open } = limits
-  if (stagesReady) await runMigrations(t)
+  if (stagesReady) await runStageBackfill(t)
   return t.query(api.illustrations.listIllustrationWork, {
     adminToken,
     limits: { ...ALL_OPEN, ...open },

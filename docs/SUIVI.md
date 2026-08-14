@@ -38,7 +38,10 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 ## Ce qui tourne aujourd'hui
 
 - **Vitrine publique** — index une colonne groupé par lettre, fiche recette, recalcul de portions,
-  recherche tolérante. Lit des recettes publiées.
+  recherche tolérante. Lit des recettes publiées. La ligne de filtres compte par type via le
+  composant `@convex-dev/aggregate` — douze petits agrégats, un par couple (statut, type) — au lieu de
+  lire toute la table à chaque affichage de la page d'accueil. La recherche, elle, continue de compter
+  ses propres résultats : un agrégat ne sait pas quelles lignes une requête touche.
 - **Pipeline d'ingestion** — `/admin` : jeton en `localStorage`, sélection de fichier passant par
   `compress.ts`, création de scan, compteurs de file, lancement ou relance avec verdict réel et
   purge manuelle. Un scan traverse compression → stockage → appel OpenRouter → brouillons en base,
@@ -84,6 +87,16 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   d'étape ne sont **pas lues** plutôt que servies partielles — une file partielle demande à
   l'opérateur de se souvenir d'une bannière en lisant des lignes, et il conclura qu'un lot est fini.
   L'arbitrage, qui lit `by_beautify_status`, reste entier pendant toute la migration.
+
+  `convex/migrations.ts` est le seul domicile des backfills, quelle que soit la table parcourue, ce
+  qui fait de `runAll` la liste lisible de ce qu'un déploiement exécute : les clés d'étape,
+  l'échéance de purge des scans, les rendus d'affichage manquants, l'agrégat de comptage. Deux
+  d'entre eux étaient des mécaniques maison — une boucle paginée dans `retention.ts` et une action
+  `deriveMissing` qu'un humain relançait jusqu'à ce qu'elle annonce zéro.
+
+  Les dérivations d'image passent par un `Workpool` borné à `RENDITION_PARALLELISM = 4` au lieu de
+  `scheduler.runAfter(0, …)`. Le backfill traverse tout le corpus : sans borne, il démarrait autant
+  d'actions Node chargeant `sharp` qu'il y a de photos.
 
   Reliquat sans urgence : la table `migrations` maison a disparu du schéma, mais Convex ne valide que
   les tables **déclarées** — ses lignes de production survivent donc, orphelines et invisibles aux
@@ -217,7 +230,9 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   par paliers, le serveur écrête, et au plafond l'écran **dit** qu'il est plafonné plutôt que d'offrir
   un bouton inerte. Il dépasse le corpus entier aujourd'hui, donc le mur est théorique. Seuil de
   réexamen explicite : le jour où une section rapporte une troncature à 500, la pagination à curseur
-  devient le lot suivant — un compteur exact au-delà demanderait le composant `aggregate` de Convex.
+  devient le lot suivant — un compteur exact au-delà demanderait un agrégat par étape de travail.
+  `@convex-dev/aggregate` est désormais monté pour les comptes de la vitrine : ajouter des espaces de
+  noms par `illustrationStage` serait la suite, pas une installation.
 
 ---
 

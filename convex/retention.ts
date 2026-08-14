@@ -101,34 +101,8 @@ export const auditPurgeAfter = internalMutation({
   },
 })
 
-export const backfillPurgeAfter = internalMutation({
-  args: {},
-  returns: v.null(),
-  handler: async (ctx) => {
-    const now = Date.now()
-    const rows = await ctx.db
-      .query('scans')
-      .withIndex('by_purge_after', (q) => q.eq('purgeAfter', undefined))
-      .take(PURGE_BATCH)
-    for (const scan of rows) {
-      await ctx.db.patch(scan._id, {
-        purgeAfter: ceilingFor({ createdAt: scan.createdAt, now }),
-      })
-    }
-    const rescheduled = rows.length === PURGE_BATCH
-    if (rescheduled) {
-      await ctx.scheduler.runAfter(0, internal.retention.backfillPurgeAfter, {})
-    }
-    console.log(
-      JSON.stringify({
-        operation: 'retention_backfill',
-        processed: rows.length,
-        rescheduled,
-      }),
-    )
-    return null
-  },
-})
+// The `purgeAfter` backfill lives in `migrations.ts` as a declared migration of the component: it was
+// a hand-rolled paginated loop here, with its own `take`/reschedule pair and no trigger but a human.
 
 export const purgeOneScan = internalMutation({
   args: { scanId: v.id('scans') },

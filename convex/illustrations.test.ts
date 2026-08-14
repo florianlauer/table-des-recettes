@@ -1,6 +1,4 @@
 import { DEFAULT_BATCH_SIZE } from '@convex-dev/migrations'
-import migrationsTest from '@convex-dev/migrations/test'
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
@@ -12,14 +10,14 @@ import {
   BEAUTIFY_MODEL,
   BEAUTIFY_PROMPT_VERSION,
 } from '../src/lib/beautifyPrompt'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
-  migrationsTest.register(t)
+  registerComponents(t)
   return t
 }
 
@@ -92,11 +90,14 @@ function keysOf(fields: Record<string, unknown>) {
 
 /**
  * The stage sections are not read until the backfill is done, so a test that reads them says so — by
- * running the real migration rather than by hand-writing a "done" row. Over a corpus already carrying
+ * running the real migration rather than by hand-writing a "done" row.
+ *
+ * The stage backfill alone, not the whole `runAll` series: the rendition backfill in that series would
+ * re-enqueue a derivation over a fixture that deliberately holds a `failed` rendition. Over a corpus already carrying
  * its stages that is a pass with zero patches, and it is the same code path production runs.
  */
-async function runMigrations(t: Ctx) {
-  await t.mutation(internal.migrations.runAll, {})
+async function runStageBackfill(t: Ctx) {
+  await t.mutation(internal.migrations.backfillIllustrationStage, {})
   await t.finishAllScheduledFunctions(() => {})
 }
 
@@ -119,7 +120,7 @@ async function listWork(
   limits: OpenLimits & { stagesReady?: boolean } = {},
 ) {
   const { stagesReady = true, ...open } = limits
-  if (stagesReady) await runMigrations(t)
+  if (stagesReady) await runStageBackfill(t)
   return t.query(api.illustrations.listIllustrationWork, {
     adminToken,
     limits: { ...ALL_OPEN, ...open },
@@ -869,7 +870,7 @@ describe('the illustrationStage backfill', () => {
     const t = setup()
     await oldCorpus(t, DEFAULT_BATCH_SIZE + 5)
 
-    await runMigrations(t)
+    await runStageBackfill(t)
 
     const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
     // Writes the superseded `hasIllustration` migration's field on the way, so a document that
@@ -916,8 +917,8 @@ describe('the illustrationStage backfill', () => {
     }
     const before = await derived()
 
-    await runMigrations(t)
-    await runMigrations(t)
+    await runStageBackfill(t)
+    await runStageBackfill(t)
 
     expect(await derived()).toEqual(before)
   })
@@ -1127,7 +1128,7 @@ describe('the source-has-no-photo flag', () => {
   test('a historical document with no flag field survives every gesture', async () => {
     const t = setup()
     const recipeId = await unmigratedRecipe(t)
-    await runMigrations(t)
+    await runStageBackfill(t)
 
     expect(
       await t.mutation(api.illustrations.markNoPhotoAvailable, {
@@ -1301,7 +1302,7 @@ describe('the section ceiling', () => {
   test('clamps a limit past the hard ceiling', async () => {
     const t = setup()
     await newRecipe(t)
-    await runMigrations(t)
+    await runStageBackfill(t)
 
     const work = await t.query(api.illustrations.listIllustrationWork, {
       adminToken,

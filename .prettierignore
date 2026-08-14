@@ -5,6 +5,9 @@ yarn.lock
 # Codegen Convex : reformater ces fichiers est annulé au prochain `convex dev`.
 convex/_generated
 
+# Worktrees locaux : des copies complètes du dépôt, déjà vérifiées chez elles.
+.claude
+
 # Artefacts du spike T1 : sortie brute du harnais, à comparer octet pour octet.
 spike/fixtures/runs
 spike/ladder.*.json

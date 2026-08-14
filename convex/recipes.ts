@@ -9,6 +9,8 @@ import { toSearchQuery } from '../src/lib/normalize'
 import { findMatchingIngredient } from '../src/lib/matchReason'
 import { pickDisplayImage } from '../src/lib/displayImage'
 import { usableDerivative } from './lib/renditions'
+import { recipeCountsReady } from './migrations'
+import { countPublishedByType } from './recipeCounts'
 
 type StorageCtx = Pick<QueryCtx, 'storage'>
 
@@ -173,6 +175,14 @@ export const countsByType = query({
   returns: typeCounts,
   handler: async (ctx, { query: rawQuery }) => {
     const tokens = toSearchQuery(rawQuery ?? '')
+
+    // Only the unfiltered shelf can be answered by the aggregate. A search counts the *matches*, and
+    // those come from the search index capped at 1024 — an aggregate keyed on (status, type) knows
+    // nothing about which rows a query hits.
+    if (!tokens && (await recipeCountsReady(ctx))) {
+      return countPublishedByType(ctx)
+    }
+
     const rows = tokens
       ? await ctx.db
           .query('recipes')

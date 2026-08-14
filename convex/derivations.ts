@@ -1,4 +1,6 @@
+import { Workpool } from '@convex-dev/workpool'
 import { v } from 'convex/values'
+import { components } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
 import { internalMutation, internalQuery } from './_generated/server'
 import { deleteStoredBlob } from './lib/blobs'
@@ -12,6 +14,29 @@ import type { RenditionSlot } from './lib/renditions'
 import { literalUnion } from './lib/validators'
 
 export const renditionSlot = literalUnion(['original', 'beautified'] as const)
+
+/**
+ * How many derivations run at once. Every job loads sharp and a full-size image into a Node action,
+ * so the bound is about memory and not about politeness: the backfill enumerates the whole corpus, and
+ * `scheduler.runAfter(0, …)` would start all of them at once — the scheduler has no ceiling.
+ *
+ * Four, not one: a single-file queue makes a batch of twenty photos take twenty decodes end to end for
+ * no reason, and four sharp instances is a size a Convex action holds without trouble.
+ */
+export const RENDITION_PARALLELISM = 4
+
+/**
+ * The bound is only real if **every** call site goes through it. A pool the backfill uses and the
+ * attach path bypasses would still let a burst of uploads fan out unbounded — three sites enqueue
+ * here: the backfill migration, `commitIllustration`, and the branch of `finalizeBeautify` that adopts.
+ *
+ * No `retryActionsByDefault`: `deriveRendition` catches every failure itself and records it against a
+ * per-source attempt budget (`MAX_DERIVATION_ATTEMPTS` below). It therefore never throws, so a pool
+ * retry would never fire — and if it did, the two budgets would count the same failure twice.
+ */
+export const renditionPool = new Workpool(components.renditionWorkpool, {
+  maxParallelism: RENDITION_PARALLELISM,
+})
 
 /** One page per pass. The corpus is a few hundred recipes; an unbounded scan has no ceiling. */
 export const PENDING_SCAN_BATCH = 200
@@ -126,7 +151,7 @@ export const failDerivation = internalMutation({
   },
 })
 
-function pendingSlotsOf(
+export function pendingSlotsOf(
   recipe: Doc<'recipes'>,
   retryFailed: boolean,
 ): { slot: RenditionSlot; sourceStorageId: Id<'_storage'> }[] {

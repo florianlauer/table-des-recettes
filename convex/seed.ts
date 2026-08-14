@@ -1,6 +1,7 @@
 import { v } from 'convex/values'
 import { internalMutation } from './_generated/server'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
+import { deleteRecipeDoc, insertRecipeDoc } from './recipeCounts'
 import { resolveSlugCollision, slugify } from '../src/lib/slug'
 
 const RECIPES = [
@@ -270,15 +271,15 @@ export const run = internalMutation({
       if (row.imageStorageId) await ctx.storage.delete(row.imageStorageId)
       if (row.beautifiedStorageId)
         await ctx.storage.delete(row.beautifiedStorageId)
-      await ctx.db.delete(row._id)
+      await deleteRecipeDoc(ctx, row)
     }
 
     const slugs: string[] = []
     for (const recipe of RECIPES) {
       const slug = resolveSlugCollision(slugify(recipe.title), slugs)
       slugs.push(slug)
-      await ctx.db.insert(
-        'recipes',
+      await insertRecipeDoc(
+        ctx,
         withIllustration(
           {
             ...withSearchText(recipe),

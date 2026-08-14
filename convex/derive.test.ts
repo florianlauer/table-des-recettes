@@ -11,11 +11,14 @@ import type { Doc, Id } from './_generated/dataModel'
 import { MAX_DERIVATION_ATTEMPTS } from './derivations'
 import { DERIVATIVE_HEIGHT } from './derive'
 import schema from './schema'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 
 function setup() {
-  return convexTest(schema, modules)
+  const t = convexTest(schema, modules)
+  registerComponents(t)
+  return t
 }
 
 type Ctx = ReturnType<typeof setup>
@@ -316,10 +319,10 @@ describe('deriveMissing', () => {
       beautified: renditionShape(recipe?.beautifiedRendition),
     }).toEqual({ original: 'ready', beautified: 'ready' })
 
-    // Converged: a second pass finds nothing.
+    // Converged: nothing is left pending.
     expect(
-      await t.action(internal.derive.deriveMissing, { limit: 10 }),
-    ).toEqual({ scheduled: 0, isDone: true })
+      await t.query(internal.derivations.listPendingDerivations, { limit: 10 }),
+    ).toEqual({ slots: [], isDone: true })
   })
 
   test('does not loop for ever on an image sharp cannot decode', async () => {
@@ -331,15 +334,21 @@ describe('deriveMissing', () => {
     )
     const recipeId = await recipeWithPhoto(t, source)
 
-    // The documented operation is "repeat until it reports zero". An undecodable image is retried
-    // while it is under the attempt ceiling — a failure could always have been transient — so what
-    // has to be certified is that the loop *ends*, not that it ends on the first pass.
+    // An undecodable image is retried while it is under the attempt ceiling — a failure could always
+    // have been transient — so what has to be certified is that the retries *end*, not that they end
+    // on the first pass. Driven through the action directly rather than through the backfill: what is
+    // under test is the selection rule and the attempt budget, and routing it through the pool would
+    // make this assert the pool's wake-up timing instead. The pool has its own test above.
     let passes = 0
-    while (
-      (await t.action(internal.derive.deriveMissing, { limit: 10 })).scheduled >
-      0
-    ) {
-      await t.finishAllScheduledFunctions(() => {})
+    for (;;) {
+      const pending = await t.query(
+        internal.derivations.listPendingDerivations,
+        { limit: 10 },
+      )
+      if (pending.slots.length === 0) break
+      for (const slot of pending.slots) {
+        await t.action(internal.derive.deriveRendition, slot)
+      }
       passes += 1
       if (passes > MAX_DERIVATION_ATTEMPTS) throw new Error('does not converge')
     }
@@ -350,12 +359,40 @@ describe('deriveMissing', () => {
       attempts: MAX_DERIVATION_ATTEMPTS,
     })
 
-    // And it is still reachable on demand.
+    // And it is still reachable on demand, through the migration that ignores the spent budget.
     expect(
-      await t.action(internal.derive.deriveMissing, {
+      await t.query(internal.derivations.listPendingDerivations, {
         limit: 10,
         retryFailed: true,
       }),
-    ).toEqual({ scheduled: 1, isDone: true })
+    ).toEqual({
+      slots: [{ recipeId, slot: 'original', sourceStorageId: source }],
+      isDone: true,
+    })
+  })
+
+  /**
+   * Falsifiable rather than decorative: a derivation that went through `scheduler.runAfter` leaves a
+   * job named after `deriveRendition` in the app's own `_scheduled_functions`, and one that went
+   * through the pool does not — the pool schedules its own worker inside the component. Reverting the
+   * enqueue to a raw `runAfter` therefore fails this test.
+   */
+  test('the backfill enqueues on the pool instead of the raw scheduler', async () => {
+    const t = setup()
+    const source = await storeImage(t, await png({ width: 864, height: 1184 }))
+    const recipeId = await recipeWithPhoto(t, source)
+
+    await t.mutation(internal.migrations.backfillRenditions, {})
+    const appJobs = await t.run(async (ctx) => {
+      const jobs = await ctx.db.system.query('_scheduled_functions').collect()
+      return jobs.map((job) => job.name)
+    })
+    expect(appJobs.filter((name) => name.includes('deriveRendition'))).toEqual(
+      [],
+    )
+
+    // And the work still lands: the pool is carrying it, not swallowing it.
+    await t.finishAllScheduledFunctions(() => {})
+    expect(await renditionOf(t, recipeId)).toMatchObject({ status: 'ready' })
   })
 })

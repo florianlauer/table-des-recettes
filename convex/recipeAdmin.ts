@@ -10,6 +10,11 @@ import {
   withSearchText,
 } from './lib/recipeWrites'
 import { clearAllRenditions } from './lib/renditions'
+import {
+  deleteRecipeDoc,
+  insertRecipeDoc,
+  patchRecipeDoc,
+} from './recipeCounts'
 import { okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { reconcileRetention } from './retention'
@@ -105,7 +110,7 @@ async function publish(
     if (!resolved.ok) return resolved
     slug = resolved.slug
   }
-  await ctx.db.patch(recipe._id, {
+  await patchRecipeDoc(ctx, recipe, {
     status: 'published',
     slug,
     publishedAt: Date.now(),
@@ -141,8 +146,8 @@ export const addRecipe = mutation({
       return refuse(`Ce scan porte déjà ${MAX_RECIPES_PER_SCAN} recettes`)
     }
 
-    const recipeId = await ctx.db.insert(
-      'recipes',
+    const recipeId = await insertRecipeDoc(
+      ctx,
       withIllustration(
         withSearchText({
           scanId,
@@ -192,8 +197,10 @@ export const saveRecipe = mutation({
       )
     }
 
-    await ctx.db.patch(
-      recipeId,
+    // `fields` carries `type`, one of the two keys the counts aggregate is namespaced on.
+    await patchRecipeDoc(
+      ctx,
+      recipe,
       withSearchText({ ...fields, revision: expectedRevision + 1 }),
     )
     return succeeded
@@ -221,7 +228,7 @@ export const deleteRecipe = mutation({
       if (storageId) await deleteStoredBlob(ctx, storageId)
     }
     await clearAllRenditions(ctx, recipe)
-    await ctx.db.delete(recipeId)
+    await deleteRecipeDoc(ctx, recipe)
     await reconcileRetention(ctx, scanId)
     return succeeded
   },
@@ -252,7 +259,7 @@ export const unpublishRecipe = mutation({
     if (recipe.status === 'review') return succeeded
     // The slug stays: it is the address the storefront published, and reusing it for another
     // recipe would break the first one on republication.
-    await ctx.db.patch(recipeId, {
+    await patchRecipeDoc(ctx, recipe, {
       status: 'review',
       publishedAt: undefined,
       revision: revisionOf(recipe) + 1,

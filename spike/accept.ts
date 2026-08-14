@@ -8,7 +8,6 @@ import { fileURLToPath } from 'node:url'
 import { z } from 'zod'
 
 import { extractionSchema, repairExtraction } from '../src/lib/recipe-schema.js'
-import type { Extraction } from '../src/lib/recipe-schema.js'
 import { BudgetCounter } from './budget.js'
 import { CORRECTION_COST_CEILING_USD, runCorrectionPass } from './correct.js'
 import type { Correction } from './correct.js'
@@ -17,7 +16,7 @@ import {
   runVisionPass,
   serializeRun,
 } from './openrouter.js'
-import type { LadderEntry, LadderFile } from './rank-endpoints.js'
+import type { LadderFile } from './rank-endpoints.js'
 import { parseNamedArguments } from './run.js'
 import { normalizedText, textSimilarity } from './text.js'
 

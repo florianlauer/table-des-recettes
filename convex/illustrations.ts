@@ -4,6 +4,7 @@ import type { Doc } from './_generated/dataModel'
 import { action, internalMutation, mutation, query } from './_generated/server'
 import type { MutationCtx, QueryCtx } from './_generated/server'
 import { requireAdmin } from './auth'
+import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
 import { findAttempt, settleAttempt } from './lib/beautifyJournal'
 import { touchedIllustration, withIllustration } from './lib/recipeWrites'
@@ -228,9 +229,9 @@ export const commitIllustration = internalMutation({
       outcome: 'ok' as const,
     })
     // The new photo has no derivative yet, so the storefront serves it at full weight until this
-    // lands. Scheduled from here rather than from the action above: the ticket is spent inside this
+    // lands. Enqueued from here rather than from the action above: the ticket is spent inside this
     // transaction, so this is the first point where the attachment is certain.
-    await ctx.scheduler.runAfter(0, internal.derive.deriveRendition, {
+    await renditionPool.enqueueAction(ctx, internal.derive.deriveRendition, {
       recipeId,
       slot: 'original',
       sourceStorageId: storageId,

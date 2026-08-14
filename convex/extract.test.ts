@@ -1,4 +1,3 @@
-import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import { convexTest } from 'convex-test'
 import { describe, expect, test, vi } from 'vitest'
 import { internal } from './_generated/api'
@@ -21,6 +20,7 @@ import {
   REQUEST_TIMEOUT_MS,
 } from '../src/lib/queueContract'
 import { MAX_IMAGES_PER_SCAN } from '../src/lib/scanLimits'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 const environment = {
@@ -37,7 +37,7 @@ function jpeg(): Blob {
 
 function setup() {
   const t = convexTest(schema, modules)
-  rateLimiterTest.register(t)
+  registerComponents(t)
   return t
 }
 

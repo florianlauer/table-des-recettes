@@ -125,3 +125,64 @@ des retraits :
 
 Le déclencheur est désormais le déploiement : `vercel.json` en production, le job `data` du workflow
 d'aperçu après son import de données. `npm run migrate` / `migrate:prod` restent pour la main.
+
+## Après implémentation — l'audit des composants Convex
+
+Suite directe de la question précédente, posée par le propriétaire : « utilise les bons skills pour
+review la codebase et voir si on a pas déjà oublié d'utiliser des compo convex ». Si le bouton avait
+survécu à quatre rounds parce qu'il existait déjà, la même cécité couvrait probablement d'autres
+mécaniques du dépôt.
+
+Quatre constats retenus, tous sur cette PR.
+
+**1 et 2 — deux backfills maison restaient.** `retention.backfillPurgeAfter` était une boucle paginée
+avec plafond d'audit ; `derive.deriveMissing` était une action qu'un humain relançait jusqu'à ce
+qu'elle annonce zéro, et son propre commentaire justifiait le fait-main par le coût « d'une migration
+lotie reprenable » — le coût exact que `@convex-dev/migrations` supprime. Les deux sont désormais des
+`migrations.define` dans `convex/migrations.ts`, membres de la série `runAll`. `customRange` fait
+mieux que l'original dans les deux cas : la plage est « les scans sans échéance » et « les recettes
+qui ont une photo », donc une reprise ne repasse pas sur ce qui est fait.
+
+Conséquence de forme : `convex/migrations.ts` devient le domicile de tous les backfills, quelle que
+soit la table parcourue. La règle de domaine reste dans son module et est importée — `ceilingFor`
+vient de `retention.ts`. C'est ce qui fait de `runAll` la liste lisible de ce qu'un déploiement
+exécute.
+
+**3 — le fan-out des dérivations n'était pas borné.** `scheduler.runAfter(0, …)` par emplacement, sur
+un backfill qui traverse tout le corpus : autant d'actions Node chargeant `sharp` en parallèle qu'il
+y a de photos. `@convex-dev/workpool` avec `maxParallelism: RENDITION_PARALLELISM = 4` remplace les
+trois points d'appel. Pas de `retryActionsByDefault` : `deriveRendition` attrape déjà tous ses échecs
+contre un budget de tentatives par source, donc il ne jette jamais et deux budgets compteraient deux
+fois.
+
+**4 — `recipes.countsByType` lisait toute la table.** Sur la page d'accueil, à chaque affichage.
+`@convex-dev/aggregate` le remplace, mais seulement sur la branche sans requête : une recherche
+compte ses **résultats**, et un agrégat ne sait pas quelles lignes une requête touche. Périmètre
+volontairement limité — pas d'agrégat pour la file de travail (R10), qui demanderait des espaces de
+noms par étape.
+
+Deux choses que l'agrégat impose et qui valaient d'être écrites :
+
+- **Douze espaces de noms `${statut}:${type}`, avec `Key: null`.** L'alternative — un espace par
+  statut, `type` en clé — demande une lecture bornée par type, et la documentation du composant est
+  explicite : des clés adjacentes partagent des nœuds internes. Toutes les recettes publiées
+  vivraient dans une seule structure, donc publier quoi que ce soit invaliderait tous les comptes.
+  `countBatch` lit les douze en un aller-retour, donc le coût est le même.
+- **Trois écrivains autorisés, et un test d'inventaire.** `insertRecipeDoc`, `patchRecipeDoc`,
+  `deleteRecipeDoc` — même discipline que `withSearchText`. L'inventaire a immédiatement trouvé deux
+  sites qui écrivaient sans prévenir l'agrégat : la purge des brouillons de `admin.rescan` et
+  l'effacement du corpus par `seed.run`. Un `status` changé sans notification est irréparable :
+  `deleteIfExists` cherche dans l'espace de noms que le document nomme **maintenant**, donc la
+  ligne fantôme reste pour toujours. Les variantes idempotentes (`insertIfDoesNotExist` plutôt que
+  `insert`) sont permanentes, pas un échafaudage : entre un push de code et le dernier lot du
+  backfill, l'agrégat est légitimement désynchronisé, et les variantes strictes jetteraient sur
+  exactement les écritures de cette fenêtre.
+
+Deux mécaniques maison ont été examinées et **gardées** : la boucle `drain` de `extract.ts`, couplée
+au limiteur de débit et à ses natures d'échec métier, et les compteurs de tentatives par source, que
+`@convex-dev/action-retrier` remplacerait par un budget qui ne connaît pas la source.
+
+Note d'outillage, sans rapport avec les composants sinon par leurs paquets : `@convex-dev/workpool/test`
+résout vers `src/` et non `dist/`, que `skipLibCheck` ne couvre pas. `noUnusedLocals` et
+`noUnusedParameters` quittent donc `tsconfig.json` pour `@typescript-eslint/no-unused-vars` dans
+`eslint.config.js`, où la garantie ne porte que sur nos propres fichiers.

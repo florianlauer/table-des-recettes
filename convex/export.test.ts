@@ -5,11 +5,13 @@ import { z } from 'zod'
 import { backupRecipeSchema } from '../src/lib/backup-schema'
 import { internal } from './_generated/api'
 import schema from './schema'
+import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')
 
 test('backupPayload exports drafts and published recipes with nullable fields', async () => {
   const t = convexTest(schema, modules)
+  registerComponents(t)
   await t.run(async (ctx) => {
     for (const status of ['published', 'review'] as const) {
       await ctx.db.insert('recipes', {
