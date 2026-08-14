@@ -3,7 +3,8 @@ import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
-import { BACKFILL_BATCH } from './migrations'
+import { withIllustration } from './lib/recipeWrites'
+import { BACKFILL_BATCH, ILLUSTRATION_STAGE_MIGRATION } from './migrations'
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
 import {
@@ -33,21 +34,105 @@ function jpeg(): Blob {
 type Ctx = ReturnType<typeof setup>
 
 async function newRecipe(t: Ctx, over: Record<string, unknown> = {}) {
+  const fields = {
+    title: 'Clafoutis',
+    type: 'dessert' as const,
+    ingredients: [],
+    ingredientsInferred: false,
+    steps: [],
+    searchText: 'clafoutis',
+    status: 'review' as const,
+    beautifiedAccepted: false,
+    beautifyStatus: 'idle' as const,
+    ...over,
+  }
+  return t.run((ctx) =>
+    ctx.db.insert('recipes', { ...fields, ...keysOf(fields) }),
+  )
+}
+
+/**
+ * A recipe as it exists before the stage backfill reaches it: no `illustrationStage`, so it is in
+ * none of the four stage sections — and, if it is mid-generation, still served by `active`.
+ */
+async function unmigratedRecipe(t: Ctx, over: Record<string, unknown> = {}) {
   return t.run((ctx) =>
     ctx.db.insert('recipes', {
-      title: 'Clafoutis',
-      type: 'dessert' as const,
+      title: 'Ancienne',
+      type: 'autre' as const,
       ingredients: [],
       ingredientsInferred: false,
       steps: [],
-      searchText: 'clafoutis',
+      searchText: 'ancienne',
       status: 'review' as const,
-      hasIllustration: false,
       beautifiedAccepted: false,
       beautifyStatus: 'idle' as const,
       ...over,
     }),
   )
+}
+
+/**
+ * The index keys, derived exactly as production derives them, so a fixture that sets
+ * `imageStorageId` lands in the bucket the screen would really put it in — rather than in whatever
+ * `hasIllustration` the test happened to hand-write.
+ */
+function keysOf(fields: Record<string, unknown>) {
+  return withIllustration(
+    {
+      imageStorageId: fields.imageStorageId as Id<'_storage'> | undefined,
+      beautifiedAccepted: Boolean(fields.beautifiedAccepted),
+      noPhotoAvailable: Boolean(fields.noPhotoAvailable),
+    },
+    (fields.illustrationUpdatedAt as number | undefined) ?? Date.now(),
+  )
+}
+
+/** The stage sections are not read until the backfill is done, so a test that reads them says so. */
+async function markStagesDone(t: Ctx) {
+  await t.run(async (ctx) => {
+    const existing = await ctx.db
+      .query('migrations')
+      .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
+      .first()
+    if (existing) {
+      await ctx.db.patch(existing._id, { done: true })
+      return
+    }
+    await ctx.db.insert('migrations', {
+      name: ILLUSTRATION_STAGE_MIGRATION,
+      cursor: null,
+      done: true,
+      migrated: 0,
+      updatedAt: Date.now(),
+    })
+  })
+}
+
+const ALL_OPEN = {
+  toBeautify: 50,
+  missing: 50,
+  sourceHasNone: 50,
+  done: 50,
+} as const
+
+type OpenLimits = {
+  toBeautify?: number
+  missing?: number | null
+  sourceHasNone?: number | null
+  done?: number | null
+}
+
+async function listWork(
+  t: Ctx,
+  limits: OpenLimits & { stagesReady?: boolean } = {},
+) {
+  const { stagesReady = true, ...open } = limits
+  if (stagesReady) await markStagesDone(t)
+  return t.query(api.illustrations.listIllustrationWork, {
+    adminToken,
+    limits: { ...ALL_OPEN, ...open },
+  })
 }
 
 async function ticket(
@@ -556,37 +641,82 @@ describe('the work list', () => {
         newRecipe(t, { title: `Sans photo ${index}` }),
       ),
     )
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(work.withoutIllustration).toHaveLength(3)
-    expect(work.withoutIllustrationTruncated).toBe(false)
-    // Nothing claims the index is exhaustive until the backfill says so.
-    expect(work.migration).toEqual({ started: false, done: false, migrated: 0 })
+    const work = await listWork(t)
+    expect(work.missing.count).toBe(3)
+    expect(work.missing.truncated).toBe(false)
   })
 
-  test('hides the illustrated ones unless asked', async () => {
+  // Nothing claims the queue is exhaustive until the backfill says so — and while it has not, the
+  // four stage sections are not read at all rather than shown partial.
+  test('withholds the stage sections until the backfill is done', async () => {
+    const t = setup()
+    await newRecipe(t, { title: 'Sans photo' })
+
+    const migrating = await listWork(t, { stagesReady: false })
+    expect(migrating.stagesReady).toBe(false)
+    expect(migrating.missing).toEqual({ rows: [], count: 0, truncated: false })
+    expect(migrating.migration).toMatchObject({ started: false, done: false })
+
+    const ready = await listWork(t)
+    expect(ready.stagesReady).toBe(true)
+    expect(ready.missing.count).toBe(1)
+  })
+
+  /**
+   * A recipe the backfill has not reached is still served by `active`, which reads
+   * `by_beautify_status` and knows nothing about the stage. Its `updatedAt` has to fall back to
+   * `_creationTime`: without that, the return validator rejects `undefined` and the whole screen —
+   * arbitration included — goes down for the length of the migration.
+   */
+  test('serves an unmigrated recipe in arbitration with a fallback date', async () => {
+    const t = setup()
+    const recipeId = await unmigratedRecipe(t, {
+      beautifyStatus: 'generating' as const,
+      beautifyAttemptId: 'attempt-1',
+    })
+    const created = await t.run(async (ctx) => {
+      const doc = await ctx.db.get('recipes', recipeId)
+      return doc?._creationTime
+    })
+
+    const work = await listWork(t, { stagesReady: false })
+    expect(work.active.count).toBe(1)
+    expect(work.active.rows[0]).toMatchObject({ updatedAt: created })
+  })
+
+  test('files a photographed recipe under what is left to beautify, not under what is done', async () => {
     const t = setup()
     const recipeId = await newRecipe(t)
     await attach(t, recipeId)
 
-    const hidden = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(hidden.illustrated).toHaveLength(0)
-    expect(hidden.withoutIllustration).toHaveLength(0)
-
-    const shown = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
-    expect(shown.illustrated).toHaveLength(1)
-    expect(shown.illustrated[0]).toMatchObject({
+    const work = await listWork(t)
+    // The defect this lot exists to fix: a photo posted and not yet beautified used to be filed as
+    // illustrated, behind a checkbox, which put the main step of the flow out of sight.
+    expect(work.toBeautify.count).toBe(1)
+    expect(work.toBeautify.rows[0]).toMatchObject({
       hasOriginal: true,
       hasCandidate: false,
     })
+    expect(work.done.count).toBe(0)
+    expect(work.missing.count).toBe(0)
+  })
+
+  test('reads a folded section for its count and nothing else', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await toReview(t, recipeId)
+    await t.mutation(api.illustrations.acceptBeautified, {
+      adminToken,
+      recipeId,
+    })
+
+    const folded = await listWork(t, { done: null })
+    expect(folded.done).toMatchObject({ count: 1, rows: [] })
+
+    const open = await listWork(t, { done: 50 })
+    expect(open.done.rows).toHaveLength(1)
+    expect(open.done.rows[0]?.originalUrl).not.toBeNull()
   })
 
   test('puts what is waiting for arbitration ahead of what is still running', async () => {
@@ -600,14 +730,14 @@ describe('the work list', () => {
       ctx.db.patch(running, { beautifyStatus: 'generating' }),
     )
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
-    expect(work.active.map((row) => row.title)).toEqual([
+    const work = await listWork(t)
+    expect(work.active.rows.map((row) => row.title)).toEqual([
       'À arbitrer',
       'En cours',
     ])
+    // The partition again, from the other side: neither is offered as work to beautify while a
+    // verdict or a generation is outstanding on it.
+    expect(work.toBeautify.count).toBe(0)
   })
 })
 
@@ -763,12 +893,151 @@ describe('the hasIllustration backfill', () => {
     const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
     expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
     expect(rows.filter((row) => row.hasIllustration).length).toBe(1)
+  })
+})
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
+describe('the illustrationStage backfill', () => {
+  /** The corpus as it exists before this lot: no stage, and possibly no `hasIllustration` either. */
+  async function oldCorpus(t: Ctx, total: number) {
+    return t.run(async (ctx) => {
+      const storageId = await ctx.storage.store(jpeg())
+      for (let index = 0; index < total; index += 1) {
+        await ctx.db.insert('recipes', {
+          title: `Ancienne ${index}`,
+          type: 'autre' as const,
+          ingredients: [],
+          ingredientsInferred: false,
+          steps: [],
+          searchText: `ancienne ${index}`,
+          status: 'review' as const,
+          beautifiedAccepted: false,
+          beautifyStatus: 'idle' as const,
+          ...(index === 0 ? { imageStorageId: storageId } : {}),
+        })
+      }
     })
+  }
+
+  async function stageState(t: Ctx) {
+    return t.run((ctx) =>
+      ctx.db
+        .query('migrations')
+        .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
+        .first(),
+    )
+  }
+
+  test('classifies the corpus in batches and survives an interruption', async () => {
+    const t = setup()
+    await oldCorpus(t, BACKFILL_BATCH + 5)
+
+    const started = await t.mutation(
+      api.migrations.startIllustrationStageBackfill,
+      { adminToken },
+    )
+    expect(started).toEqual({ ok: true })
+    const runId = (await stageState(t))?.runId
+    expect(runId).toBeTypeOf('string')
+
+    // One page at a time, the scheduled continuation not run here: the cursor is what resumes it.
+    const first = await t.mutation(
+      internal.migrations.backfillIllustrationStage,
+      { runId: runId! },
+    )
+    expect(first).toBe(BACKFILL_BATCH)
+    expect(await stageState(t)).toMatchObject({
+      done: false,
+      migrated: BACKFILL_BATCH,
+    })
+
+    expect(
+      await t.mutation(internal.migrations.backfillIllustrationStage, {
+        runId: runId!,
+      }),
+    ).toBe(5)
+    expect(
+      await t.mutation(internal.migrations.backfillIllustrationStage, {
+        runId: runId!,
+      }),
+    ).toBe(0)
+
+    const rows = await t.run((ctx) => ctx.db.query('recipes').collect())
+    // Writes the superseded migration's field on the way, so a document the old chain never reached
+    // is repaired in one pass.
+    expect(rows.every((row) => row.illustrationStage !== undefined)).toBe(true)
+    expect(rows.every((row) => row.hasIllustration !== undefined)).toBe(true)
+    expect(
+      rows.filter((row) => row.illustrationStage === 'to-beautify'),
+    ).toHaveLength(1)
+    expect(
+      rows.filter((row) => row.illustrationStage === 'missing'),
+    ).toHaveLength(BACKFILL_BATCH + 4)
+    // The scan date, not the backfill's clock: it is the date the operator looks for in "Sans photo".
+    expect(
+      rows.every((row) => row.illustrationUpdatedAt === row._creationTime),
+    ).toBe(true)
+
+    const work = await listWork(t, { stagesReady: false })
     expect(work.migration.done).toBe(true)
+    expect(work.stagesReady).toBe(true)
+  })
+
+  /**
+   * Two clicks on "Relancer la migration" used to schedule two chains over one cursor: pages
+   * reprocessed and `migrated` counted twice. Minting a token revokes the chain still in flight.
+   */
+  test('a chain whose token was revoked stops without writing', async () => {
+    const t = setup()
+    await oldCorpus(t, BACKFILL_BATCH + 5)
+
+    await t.mutation(api.migrations.startIllustrationStageBackfill, {
+      adminToken,
+    })
+    const stale = (await stageState(t))?.runId
+    await t.mutation(internal.migrations.backfillIllustrationStage, {
+      runId: stale!,
+    })
+    expect(await stageState(t)).toMatchObject({ migrated: BACKFILL_BATCH })
+
+    // The relaunch mints a new token; the old chain's next batch no longer owns the migration.
+    await t.mutation(api.migrations.startIllustrationStageBackfill, {
+      adminToken,
+    })
+    const fresh = (await stageState(t))?.runId
+    expect(fresh).not.toBe(stale)
+
+    expect(
+      await t.mutation(internal.migrations.backfillIllustrationStage, {
+        runId: stale!,
+      }),
+    ).toBe(0)
+    expect(await stageState(t)).toMatchObject({ migrated: BACKFILL_BATCH })
+
+    // The owning chain carries on from the cursor it inherited, and the total is not doubled.
+    expect(
+      await t.mutation(internal.migrations.backfillIllustrationStage, {
+        runId: fresh!,
+      }),
+    ).toBe(5)
+    expect(await stageState(t)).toMatchObject({
+      done: true,
+      migrated: BACKFILL_BATCH + 5,
+    })
+  })
+
+  test('skips a recipe it has already classified', async () => {
+    const t = setup()
+    await newRecipe(t, { title: 'Déjà classée' })
+
+    await t.mutation(api.migrations.startIllustrationStageBackfill, {
+      adminToken,
+    })
+    const runId = (await stageState(t))?.runId
+    expect(
+      await t.mutation(internal.migrations.backfillIllustrationStage, {
+        runId: runId!,
+      }),
+    ).toBe(0)
   })
 
   test('keeps the flag consistent with the photo after every write', async () => {
@@ -872,5 +1141,308 @@ describe('beautification journal', () => {
       adminToken,
     })
     expect(groups.map((group) => group.isCurrent)).toEqual([false])
+  })
+})
+
+describe('the source-has-no-photo flag', () => {
+  test('moves the recipe out of the work queue and back', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t, { title: 'Sans photo au livre' })
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+
+    const marked = await listWork(t)
+    expect(marked.missing.count).toBe(0)
+    expect(marked.sourceHasNone.rows).toMatchObject([
+      { id: recipeId, noPhotoAvailable: true },
+    ])
+
+    expect(
+      await t.mutation(api.illustrations.clearNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+
+    const cleared = await listWork(t)
+    expect(cleared.sourceHasNone.count).toBe(0)
+    expect(cleared.missing.rows).toMatchObject([
+      { id: recipeId, noPhotoAvailable: false },
+    ])
+  })
+
+  // Saying "the source has no photo" next to a photo is not a claim about the source.
+  test('refuses to mark a recipe that has a photo', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  test('refuses to clear a recipe that is not marked', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+
+    expect(
+      await t.mutation(api.illustrations.clearNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  test('refuses to mark the same recipe twice', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await t.mutation(api.illustrations.markNoPhotoAvailable, {
+      adminToken,
+      recipeId,
+    })
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toMatchObject({ ok: false })
+  })
+
+  // A state that says "the source has no photo" next to a photo would be a state that lies, so
+  // attaching clears it — and detaching therefore returns the recipe to `missing`, not to the mark.
+  test('attaching a photo clears the mark for good', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await t.mutation(api.illustrations.markNoPhotoAvailable, {
+      adminToken,
+      recipeId,
+    })
+    await attach(t, recipeId)
+
+    expect(await t.run((ctx) => ctx.db.get('recipes', recipeId))).toMatchObject(
+      { noPhotoAvailable: false, illustrationStage: 'to-beautify' },
+    )
+
+    await t.mutation(api.illustrations.detachIllustration, {
+      adminToken,
+      recipeId,
+    })
+    const work = await listWork(t)
+    expect(work.missing.rows).toMatchObject([{ id: recipeId }])
+    expect(work.sourceHasNone.count).toBe(0)
+  })
+
+  test('a historical document with no flag field survives every gesture', async () => {
+    const t = setup()
+    const recipeId = await unmigratedRecipe(t)
+    await t.mutation(api.migrations.startIllustrationStageBackfill, {
+      adminToken,
+    })
+    const runId = await t.run(async (ctx) => {
+      const row = await ctx.db
+        .query('migrations')
+        .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
+        .first()
+      return row?.runId
+    })
+    await t.mutation(internal.migrations.backfillIllustrationStage, {
+      runId: runId!,
+    })
+
+    expect(
+      await t.mutation(api.illustrations.markNoPhotoAvailable, {
+        adminToken,
+        recipeId,
+      }),
+    ).toEqual({ ok: true })
+    const work = await listWork(t, { stagesReady: false })
+    expect(work.sourceHasNone.rows).toMatchObject([{ id: recipeId }])
+  })
+})
+
+describe('recency in the section that is always open', () => {
+  /**
+   * The three ways a recipe enters "À embellir". Only the first was covered by an earlier draft, and
+   * the other two are exactly where the writer inventory was incomplete: neither changes the stage,
+   * so neither would bump the date unless the rule is stated on `beautifyStatus` too.
+   */
+  async function twoRecipes(t: Ctx) {
+    const older = await newRecipe(t, { title: 'Ancienne' })
+    await attach(t, older)
+    const newer = await newRecipe(t, { title: 'Récente' })
+    await attach(t, newer)
+    return { older, newer }
+  }
+
+  const titles = async (t: Ctx) =>
+    (await listWork(t)).toBeautify.rows.map((row) => row.title)
+
+  test('the most recently photographed comes first', async () => {
+    const t = setup()
+    await twoRecipes(t)
+    expect(await titles(t)).toEqual(['Récente', 'Ancienne'])
+  })
+
+  test('a rejected candidate brings its recipe back to the top', async () => {
+    const t = setup()
+    const { older } = await twoRecipes(t)
+    await toReview(t, older)
+    await t.mutation(api.illustrations.rejectPendingCandidate, {
+      adminToken,
+      recipeId: older,
+    })
+
+    expect(await titles(t)).toEqual(['Ancienne', 'Récente'])
+  })
+
+  test('deleting a kept candidate brings its recipe back to the top', async () => {
+    const t = setup()
+    const { older } = await twoRecipes(t)
+    await toReview(t, older)
+    await t.mutation(api.illustrations.acceptBeautified, {
+      adminToken,
+      recipeId: older,
+    })
+    await t.mutation(api.illustrations.unpublishAcceptedCandidate, {
+      adminToken,
+      recipeId: older,
+    })
+    await t.mutation(api.illustrations.deleteUnpublishedCandidate, {
+      adminToken,
+      recipeId: older,
+    })
+
+    expect(await titles(t)).toEqual(['Ancienne', 'Récente'])
+  })
+
+  /**
+   * The guard the compiler cannot give: it can prove a call that goes through the helper is complete,
+   * never that a call which should go through it does. Two sites escaped review twice.
+   */
+  test('every function of both modules is classified as bumping or not', async () => {
+    const illustrations = await import('./illustrations')
+    const beautify = await import('./beautify')
+
+    const bumps = [
+      'attachIllustration',
+      'commitIllustration',
+      'detachIllustration',
+      'requestBeautify',
+      'acceptBeautified',
+      'rejectPendingCandidate',
+      'unpublishAcceptedCandidate',
+      'deleteUnpublishedCandidate',
+      'abandonBeautify',
+      'markNoPhotoAvailable',
+      'clearNoPhotoAvailable',
+      'finalizeBeautify',
+      'recordBeautifyFailure',
+    ]
+    /** Writes none of the five fields itself — reads, constants, or delegation to the two above. */
+    const writesNothingIndexed = [
+      'listIllustrationWork',
+      'beautifyStats',
+      // An action: it cannot patch. Its two outcomes are `finalizeBeautify` and
+      // `recordBeautifyFailure`, which are classified as bumping.
+      'render',
+      'beautifyImage',
+      'readBoundedBody',
+      'decodeBeautifiedImage',
+      'OPENROUTER_API_URL',
+      'BEAUTIFY_TIMEOUT_MS',
+      'MAX_BEAUTIFIED_BYTES',
+      'MAX_BASE64_CHARS',
+      'MAX_RESPONSE_BYTES',
+    ]
+
+    const classified = new Set([...bumps, ...writesNothingIndexed])
+    const exported = [
+      ...Object.keys(illustrations),
+      ...Object.keys(beautify),
+    ].sort()
+    const unclassified = exported.filter((name) => !classified.has(name))
+    expect(
+      unclassified,
+      'A new export must be classified: does it write imageStorageId, beautifiedStorageId, beautifiedAccepted, noPhotoAvailable or beautifyStatus? Then it bumps illustrationUpdatedAt.',
+    ).toEqual([])
+  })
+
+  test('each bumping gesture actually moves the date', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    const dateOf = async () =>
+      (await t.run((ctx) => ctx.db.get('recipes', recipeId)))
+        ?.illustrationUpdatedAt ?? 0
+
+    const before = await dateOf()
+    await attach(t, recipeId)
+    const attached = await dateOf()
+    expect(attached).toBeGreaterThanOrEqual(before)
+
+    await toReview(t, recipeId)
+    await t.mutation(api.illustrations.rejectPendingCandidate, {
+      adminToken,
+      recipeId,
+    })
+    expect(await dateOf()).toBeGreaterThanOrEqual(attached)
+
+    await t.mutation(api.illustrations.requestBeautify, {
+      adminToken,
+      recipeId,
+    })
+    const requested = await dateOf()
+    expect(requested).toBeGreaterThanOrEqual(attached)
+
+    await t.mutation(api.illustrations.detachIllustration, {
+      adminToken,
+      recipeId,
+    })
+    expect(await dateOf()).toBeGreaterThanOrEqual(requested)
+  })
+})
+
+describe('the section ceiling', () => {
+  test('serves past the default page once the limit is raised', async () => {
+    const t = setup()
+    for (let index = 0; index < 3; index += 1) {
+      await newRecipe(t, { title: `Sans photo ${index}` })
+    }
+
+    const capped = await listWork(t, { missing: 2 })
+    expect(capped.missing.count).toBe(2)
+    expect(capped.missing.truncated).toBe(true)
+
+    const raised = await listWork(t, { missing: 4 })
+    expect(raised.missing.count).toBe(3)
+    expect(raised.missing.truncated).toBe(false)
+  })
+
+  // A client-supplied limit must never become an unbounded read.
+  test('clamps a limit past the hard ceiling', async () => {
+    const t = setup()
+    await newRecipe(t)
+    await markStagesDone(t)
+
+    const work = await t.query(api.illustrations.listIllustrationWork, {
+      adminToken,
+      limits: {
+        toBeautify: 10_000,
+        missing: 10_000,
+        sourceHasNone: null,
+        done: null,
+      },
+    })
+    expect(work.missing.count).toBe(1)
+    expect(work.missing.truncated).toBe(false)
   })
 })

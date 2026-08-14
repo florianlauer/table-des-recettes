@@ -384,6 +384,76 @@
   border: 1px solid var(--rule);
 }
 
+/* The two inventory sections and the finished one fold, the two work sections do not. Native
+   `<details>`, so the open state is the browser's — no card, no rounded corner, no shadow: a rule and
+   a marker, like every other block of this screen. */
+.illustrations__fold {
+  border-top: 1px solid var(--rule-strong);
+}
+.illustrations__fold-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  cursor: pointer;
+  /* The native triangle is replaced below; on Safari this is the property that removes it. */
+  list-style: none;
+}
+.illustrations__fold-summary::-webkit-details-marker {
+  display: none;
+}
+.illustrations__fold-title {
+  font-family: var(--serif);
+  font-size: var(--type-section);
+}
+/* A typographic chevron, not a pictogram: the only decoration DESIGN.md § Anti-slop leaves available
+   is a character. It rotates because the same glyph has to say both states. */
+.illustrations__fold-title::before {
+  content: '›';
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: var(--ochre);
+  transition: transform 120ms ease;
+}
+.illustrations__fold[open] .illustrations__fold-title::before {
+  transform: rotate(90deg);
+}
+.illustrations__fold-count {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The batch separator. Same job as the letter in the storefront index — it opens a group — so it
+   borrows the strong rule and the ochre, and nothing else. */
+.illustrations__day-label {
+  margin: 1.6rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--rule-strong);
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--type-meta);
+  color: var(--ochre);
+}
+/* The first group of a section already sits under the section's own heading. */
+.illustrations__day:first-child .illustrations__day-label {
+  margin-top: 0.4rem;
+}
+
+.illustrations__more {
+  margin-top: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--type-control);
+  color: var(--ochre);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
 /* --- correction screen --- */
 
 .scan-page__images {

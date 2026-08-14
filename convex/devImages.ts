@@ -41,7 +41,17 @@ export const attach = internalMutation({
     }
     // Re-running the script would swap the pointer and leave the old file behind.
     if (doc.imageStorageId) await ctx.storage.delete(doc.imageStorageId)
-    await ctx.db.patch(doc._id, withIllustration({ imageStorageId: storageId }))
+    await ctx.db.patch(
+      doc._id,
+      withIllustration(
+        {
+          imageStorageId: storageId,
+          beautifiedAccepted: doc.beautifiedAccepted,
+          noPhotoAvailable: false,
+        },
+        Date.now(),
+      ),
+    )
     return null
   },
 })

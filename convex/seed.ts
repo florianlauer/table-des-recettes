@@ -279,16 +279,20 @@ export const run = internalMutation({
       slugs.push(slug)
       await ctx.db.insert(
         'recipes',
-        withIllustration({
-          ...withSearchText(recipe),
-          ingredientsInferred: false,
-          slug,
-          status: 'published' as const,
-          publishedAt: Date.now(),
-          imageStorageId: undefined,
-          beautifiedAccepted: false,
-          beautifyStatus: 'idle' as const,
-        }),
+        withIllustration(
+          {
+            ...withSearchText(recipe),
+            ingredientsInferred: false,
+            slug,
+            status: 'published' as const,
+            publishedAt: Date.now(),
+            imageStorageId: undefined,
+            beautifiedAccepted: false,
+            noPhotoAvailable: false,
+            beautifyStatus: 'idle' as const,
+          },
+          Date.now(),
+        ),
       )
     }
     return null

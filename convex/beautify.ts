@@ -2,6 +2,7 @@ import { v } from 'convex/values'
 import { internal } from './_generated/api'
 import { internalAction, internalMutation } from './_generated/server'
 import { deleteStoredBlob } from './lib/blobs'
+import { touchedIllustration } from './lib/recipeWrites'
 import { clearRendition } from './lib/renditions'
 import {
   beautifyFailureKind as beautifyFailureKindValidator,
@@ -389,6 +390,7 @@ export const finalizeBeautify = internalMutation({
       beautifyStatus: 'review',
       beautifyStartedAt: undefined,
       beautifyError: undefined,
+      ...touchedIllustration(Date.now()),
     })
     await journalBeautifyAttempt(ctx, {
       ...observation,
@@ -443,6 +445,7 @@ export const recordBeautifyFailure = internalMutation({
       beautifyError: error,
       beautifyAttemptId: undefined,
       beautifyStartedAt: undefined,
+      ...touchedIllustration(Date.now()),
     })
     return true
   },

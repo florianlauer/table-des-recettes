@@ -532,9 +532,11 @@ export const finalize = internalMutation({
             status: 'review' as const,
             imageStorageId: undefined,
             beautifiedAccepted: false,
+            noPhotoAvailable: false,
             beautifyStatus: 'idle' as const,
             revision: 0,
           }),
+          Date.now(),
         ),
       )
     }

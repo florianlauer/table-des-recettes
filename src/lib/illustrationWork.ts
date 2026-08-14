@@ -19,6 +19,7 @@ export type IllustrationState = {
   beautifiedAccepted: boolean
   hasOriginal: boolean
   hasCandidate: boolean
+  noPhotoAvailable: boolean
   beautifyStartedAt: number | null
 }
 
@@ -31,6 +32,8 @@ export type IllustrationActions = {
   abandon: boolean
   replace: boolean
   detach: boolean
+  markNoPhoto: boolean
+  unmarkNoPhoto: boolean
 }
 
 export function illustrationActions(
@@ -42,6 +45,7 @@ export function illustrationActions(
     beautifiedAccepted,
     hasOriginal,
     hasCandidate,
+    noPhotoAvailable,
     beautifyStartedAt,
   } = state
   const running = beautifyStatus === 'generating'
@@ -65,5 +69,9 @@ export function illustrationActions(
     abandon: running && now - (beautifyStartedAt ?? 0) >= leaseMs,
     replace: !beautifiedAccepted,
     detach: hasOriginal && !beautifiedAccepted,
+    // Only offered where the statement can be true: saying "the source has no photo" next to a photo
+    // is not a claim about the source, it is a contradiction.
+    markNoPhoto: !hasOriginal && !noPhotoAvailable,
+    unmarkNoPhoto: noPhotoAvailable,
   }
 }

@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import { MAX_DERIVATION_ATTEMPTS } from './derivations'
+import { withIllustration } from './lib/recipeWrites'
+import { ILLUSTRATION_STAGE_MIGRATION } from './migrations'
 import schema from './schema'
 
 const modules = import.meta.glob('./**/*.ts')
@@ -35,21 +37,74 @@ async function storeBlob(t: Ctx): Promise<Id<'_storage'>> {
 }
 
 async function newRecipe(t: Ctx, over: Record<string, unknown> = {}) {
+  const fields = {
+    title: 'Clafoutis',
+    type: 'dessert' as const,
+    ingredients: [],
+    ingredientsInferred: false,
+    steps: [],
+    searchText: 'clafoutis',
+    status: 'review' as const,
+    beautifiedAccepted: false,
+    beautifyStatus: 'idle' as const,
+    ...over,
+  }
   return t.run((ctx) =>
-    ctx.db.insert('recipes', {
-      title: 'Clafoutis',
-      type: 'dessert' as const,
-      ingredients: [],
-      ingredientsInferred: false,
-      steps: [],
-      searchText: 'clafoutis',
-      status: 'review' as const,
-      hasIllustration: false,
-      beautifiedAccepted: false,
-      beautifyStatus: 'idle' as const,
-      ...over,
-    }),
+    ctx.db.insert('recipes', { ...fields, ...keysOf(fields) }),
   )
+}
+
+/**
+ * The index keys, derived exactly as production derives them, so a fixture that sets
+ * `imageStorageId` lands in the bucket the screen would really put it in — rather than in whatever
+ * `hasIllustration` the test happened to hand-write.
+ */
+function keysOf(fields: Record<string, unknown>) {
+  return withIllustration(
+    {
+      imageStorageId: fields.imageStorageId as Id<'_storage'> | undefined,
+      beautifiedAccepted: Boolean(fields.beautifiedAccepted),
+      noPhotoAvailable: Boolean(fields.noPhotoAvailable),
+    },
+    (fields.illustrationUpdatedAt as number | undefined) ?? Date.now(),
+  )
+}
+
+/** The stage sections are not read until the backfill is done, so a test that reads them says so. */
+async function markStagesDone(t: Ctx) {
+  await t.run(async (ctx) => {
+    const existing = await ctx.db
+      .query('migrations')
+      .withIndex('by_name', (q) => q.eq('name', ILLUSTRATION_STAGE_MIGRATION))
+      .first()
+    if (existing) return
+    await ctx.db.insert('migrations', {
+      name: ILLUSTRATION_STAGE_MIGRATION,
+      cursor: null,
+      done: true,
+      migrated: 0,
+      updatedAt: Date.now(),
+    })
+  })
+}
+
+const ALL_OPEN = {
+  toBeautify: 50,
+  missing: 50,
+  sourceHasNone: 50,
+  done: 50,
+} as const
+
+async function listWork(
+  t: Ctx,
+  limits: Partial<typeof ALL_OPEN> & { stagesReady?: boolean } = {},
+) {
+  const { stagesReady = true, ...open } = limits
+  if (stagesReady) await markStagesDone(t)
+  return t.query(api.illustrations.listIllustrationWork, {
+    adminToken,
+    limits: { ...ALL_OPEN, ...open },
+  })
 }
 
 function readyRendition(
@@ -517,12 +572,10 @@ describe('what the admin work list reports about renditions', () => {
       beautifiedRendition: readyRendition(candidate, candidateDerivative),
     })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
+    const work = await listWork(t)
 
-    expect(work.illustrated).toMatchObject([
+    // A candidate that is not accepted leaves work to do, so the row sits in "À embellir".
+    expect(work.toBeautify.rows).toMatchObject([
       {
         originalRendition: {
           state: 'failed',
@@ -537,12 +590,9 @@ describe('what the admin work list reports about renditions', () => {
     const t = setup()
     await newRecipe(t, { hasIllustration: false })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: false,
-    })
+    const work = await listWork(t)
 
-    expect(work.withoutIllustration).toMatchObject([
+    expect(work.missing.rows).toMatchObject([
       { originalRendition: null, candidateRendition: null },
     ])
   })
@@ -569,31 +619,29 @@ describe('what the admin work list reports about renditions', () => {
       beautifyAttemptId: 'attempt-1',
     })
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
-      adminToken,
-      includeIllustrated: true,
-    })
+    const work = await listWork(t)
     const derivativeUrl = await t.run((ctx) => ctx.storage.getUrl(derivative))
     const sourceUrl = await t.run((ctx) => ctx.storage.getUrl(source))
 
-    // Asserted per row rather than on the whole bucket: a recipe awaiting arbitration is indexed by
-    // `hasIllustration` too, so it legitimately appears in both lists — full plate in the one it is
-    // judged in, thumbnail in the one that merely inventories it.
-    expect(work.illustrated).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: inventoried,
-          thumbnails: true,
-          originalUrl: derivativeUrl,
-        }),
-      ]),
-    )
-    expect(work.active).toEqual([
+    expect(work.toBeautify.rows).toEqual([
+      expect.objectContaining({
+        id: inventoried,
+        thumbnails: true,
+        originalUrl: derivativeUrl,
+      }),
+    ])
+    expect(work.active.rows).toEqual([
       expect.objectContaining({
         title: 'À arbitrer',
         thumbnails: false,
         originalUrl: sourceUrl,
       }),
     ])
+    // The partition, asserted where an earlier design documented the opposite as legitimate: a
+    // recipe awaiting arbitration used to appear in both lists, which on a screen that shows both
+    // sections open means the same row twice — and two gesture controls on one registry key.
+    expect(work.toBeautify.rows.map((row) => row.title)).not.toContain(
+      'À arbitrer',
+    )
   })
 })

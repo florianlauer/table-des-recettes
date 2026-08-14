@@ -51,10 +51,30 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   latence moyenne, volume de correction.
 - **Photos de plat** — `/admin/illustrations`, liste de travail pensée pour le mobile : poser une
   photo sur une recette **longtemps après** son ingestion, sans repasser par le scan dont elle vient.
-  Trois blocs bornés — ce qui attend un arbitrage, ce qui n'a pas de photo, et sur bascule ce qui en
-  a déjà une. L'écran dit le cadrage au moment de la prise, parce que c'est la conclusion la plus
+  L'écran dit le cadrage au moment de la prise, parce que c'est la conclusion la plus
   contre-intuitive de T13 : plan large avec le texte imprimé autour, **4 franchissements sur 4**,
   contre 1 sur 4 pour un gros plan détouré.
+
+  **Cinq sections, rangées par étape de travail et non par « a-t-elle un blob ».** Deux ouvertes —
+  ce qui attend un arbitrage, puis **ce qui attend un embellissement** — et trois repliées : sans
+  photo, sans photo dans la source, terminées. Le rangement vient d'un `illustrationStage`
+  dénormalisé, avec `beautifyStatus` en deuxième clé d'index : chaque recette est dans **exactement
+  une** section. Une photo posée et pas encore embellie était auparavant classée « déjà illustrée »,
+  derrière une case à cocher — l'étape principale du flux rangée sous « c'est fini ».
+
+  Une recette dont la source n'a pas de photo se **marque**, et quitte la file de travail pour sa
+  propre section repliée. Marque réversible d'un clic, effacée dès qu'une photo est posée, et sans
+  aucun effet sur la vitrine : une ligne sans photo y est déjà normale et complète.
+
+  Les quatre sections d'étape se lisent par lots de jour, ordonnés par `illustrationUpdatedAt` —
+  « quand le travail photo de cette recette a bougé », et non la date de scan. Sans ce champ, une
+  recette ingérée en mars puis photographiée aujourd'hui se rangeait au fond d'une section plafonnée,
+  c'est-à-dire nulle part. Toute écriture de `imageStorageId`, `beautifiedStorageId`,
+  `beautifiedAccepted`, `noPhotoAvailable` ou `beautifyStatus` le remet à jour ; un test d'inventaire
+  énumère les exports de `illustrations.ts` et `beautify.ts` et casse quand une fonction apparaît
+  sans être classée, parce que le compilateur peut prouver qu'un appel au helper est complet, jamais
+  qu'un appel qui devrait y passer y passe.
+
 - **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
   paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine
   largeur, puis s'accepte, se rejette ou se régénère. Un embellissement publié se dépublie sans
@@ -177,6 +197,18 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
   illisible sans passer par une photo demande une route de création sans parent et un point d'entrée
   pour la lancer : c'est un flux distinct, écarté du périmètre de T8 et bloquant pour personne.
   `recipes.scanId` est déjà optionnel, et toutes les mutations traitent le cas.
+
+- **R10 · Deux dettes ouvertes par la refonte de la file des photos.** `backfillIllustrations` et sa
+  constante `HAS_ILLUSTRATION_MIGRATION` sont **conservées et marquées dépréciées** : les supprimer
+  casserait une continuation déjà planifiée, qui référence `internal.migrations.backfillIllustrations`
+  et échouerait après déploiement en laissant l'ancienne migration à mi-corpus, sans reprise possible.
+  À retirer une fois sa ligne `migrations` confirmée `done` dans tous les environnements.
+
+  Et le plafond dur `ILLUSTRATION_WORK_MAX = 500` reste arbitraire. « Afficher 50 de plus » le relève
+  par paliers, le serveur écrête, et au plafond l'écran **dit** qu'il est plafonné plutôt que d'offrir
+  un bouton inerte. Il dépasse le corpus entier aujourd'hui, donc le mur est théorique. Seuil de
+  réexamen explicite : le jour où une section rapporte une troncature à 500, la pagination à curseur
+  devient le lot suivant — un compteur exact au-delà demanderait le composant `aggregate` de Convex.
 
 ---
 
