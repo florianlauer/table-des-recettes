@@ -604,6 +604,34 @@ pas d'angle arrondi, pas d'aplat, pas de pictogramme, pas de bouton à fond plei
 restent du texte. Et les exemptions restent des exemptions : Fraunces sur les seuls titres de section,
 pas d'encre de type ailleurs que sur le mot qui nomme un type.
 
+### Un repli ouvert se tient à son titre
+
+> **Ajouté le 2026-08-14.** La file photos partitionne le travail en cinq sections, dont trois se
+> replient. Deux replis ouverts en même temps, sur le même papier, sans rien entre eux que du texte
+> flottant : on ne savait plus de quel titre dépendait la ligne qu'on lisait. Le défaut n'était pas
+> dans une règle mal appliquée, c'était l'absence de règle.
+
+Un repli **ouvert** doit répondre à deux questions qu'un filet horizontal ne sait pas poser : où finit
+son contenu, et à quel titre il appartient une fois ce titre sorti de l'écran. Les deux réponses ne
+sont faites que de filet et de papier.
+
+- **Le bandeau.** Le résumé d'un repli ouvert passe sur `--surface`, fileté `--ochre` 2 px au-dessus et
+  `--rule-strong` en dessous, et il **colle en haut de la fenêtre** tant que ses propres lignes
+  défilent. Le fond déborde de 0,9 rem de chaque côté du texte, jamais plus que la gouttière de la
+  page, et le titre garde exactement la marge gauche qu'il a fermé : **un repli qui s'ouvre ne déplace
+  pas son propre titre.** Un repli fermé n'est pas un bandeau.
+- **La hampe.** Un filet `--ochre` vertical de 2 px court sur toute la hauteur du contenu ouvert, et
+  les lignes rentrent derrière lui. Le titre reste **en dehors**, dans la marge : la liste pend du mot
+  qui la nomme. La hampe est le seul filet vertical admis sur cette page — « filets horizontaux
+  seulement » gouverne **la table**, où une bordure verticale dessinerait une colonne qui n'existe pas.
+  Sous 40 rem, la hampe garde son rôle à une gouttière plus courte : la mesure des titres est ce qui
+  manque sur un téléphone, pas le filet.
+- Ce que la hampe ouvre, la première ligne n'a pas à le redire : elle perd son filet supérieur.
+
+**Ce que ça coûte** : deux mécaniques là où il n'y en avait aucune, et un bandeau qui occupe une ligne
+de haut d'écran pendant la lecture. Assumé, parce que la question qu'elles suppriment — « cette recette
+est-elle sans photo, ou sans photo dans la source ? » — se paie en gestes sur la mauvaise ligne.
+
 ---
 
 ## Mouvement et objets graphiques
