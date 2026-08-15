@@ -3,7 +3,7 @@ import { EXTRACTION_PROMPT, PROMPT_VERSION } from './recipe-prompt'
 
 describe('recipe prompt', () => {
   test('versions and states both inference branches explicitly', () => {
-    expect(PROMPT_VERSION).toBe('v5')
+    expect(PROMPT_VERSION).toBe('v6')
     expect(EXTRACTION_PROMPT).toContain('ingredientsInferred à true')
     expect(EXTRACTION_PROMPT).toContain('ingredientsInferred à false')
     expect(EXTRACTION_PROMPT).toContain("n'imprime aucune liste d'ingrédients")
@@ -15,6 +15,18 @@ describe('recipe prompt', () => {
     )
     expect(EXTRACTION_PROMPT).toContain('à cheval sur deux')
     expect(EXTRACTION_PROMPT).toContain('rends-la une seule fois')
+  })
+
+  // The deterministic pass can lower capitals but cannot restore a lost accent or recognise a proper
+  // noun, so the prompt has to carry those two rules itself.
+  test('states the typography expected of a title', () => {
+    expect(EXTRACTION_PROMPT).toContain('casse de phrase')
+    expect(EXTRACTION_PROMPT).toContain(
+      'Ne recopie jamais un titre en capitales',
+    )
+    expect(EXTRACTION_PROMPT).toContain("les accents que l'impression")
+    expect(EXTRACTION_PROMPT).toContain('Développe les abréviations')
+    expect(EXTRACTION_PROMPT).toContain('artefact de maquette')
   })
 
   // The three things measured wrong on page E under v3, each named in the prompt rather than left to

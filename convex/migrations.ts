@@ -39,7 +39,7 @@ export const migrations = new Migrations(components.migrations, {
  * mutation wrote in the meantime.
  *
  * `at` is `_creationTime`, not `Date.now()`: a recipe that was never photographed must keep its scan
- * date, because that is the date the operator is looking for in "Sans photo". Stamping the whole
+ * date, because that is the date the operator is looking for in "À traiter". Stamping the whole
  * corpus with the migration's own clock would flatten every batch into one.
  */
 export const backfillIllustrationStage = migrations.define({

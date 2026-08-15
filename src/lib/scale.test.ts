@@ -3,6 +3,7 @@ import {
   formatQuantity,
   scaleIngredient,
   scaleQuantity,
+  scaleRecipe,
   servingsFactor,
 } from './scale'
 
@@ -239,5 +240,36 @@ describe('scaleIngredient', () => {
       scaleIngredient({ raw: "1,50 L d'eau", quantity: 1.5, unit: 'L' }, 1)
         .text,
     ).toBe("1,50 L d'eau")
+  })
+})
+
+describe('scaleRecipe', () => {
+  const list = [
+    { raw: '200 g de farine', quantity: 200, unit: 'g' },
+    // Annotated as a range, so it can never follow an adjustment.
+    { raw: '2 à 3 gousses d’ail', quantity: 2 },
+  ]
+
+  /** The assertion the split version could not make: the two are one expression or they are not. */
+  test('a marked line and the footnote come together, or neither does', () => {
+    const adjusted = scaleRecipe(list, { from: 4, to: 6 })
+    expect(adjusted.lines.map((line) => line.marked)).toEqual([false, true])
+    expect(adjusted.note).not.toBeNull()
+
+    const untouched = scaleRecipe(list, { from: 4, to: 4 })
+    expect(untouched.lines.every((line) => !line.marked)).toBe(true)
+    expect(untouched.note).toBeNull()
+
+    // Every line followed: nothing to explain, so nothing is printed.
+    const clean = scaleRecipe([list[0]!], { from: 4, to: 6 })
+    expect(clean.lines[0]?.text).toBe('300 g de farine')
+    expect(clean.note).toBeNull()
+  })
+
+  test('a coupure that states no serving count is reproduced as written', () => {
+    const { lines, note } = scaleRecipe(list, { from: null, to: 12 })
+    expect(lines.map((line) => line.text)).toEqual(list.map((one) => one.raw))
+    expect(lines.every((line) => !line.marked)).toBe(true)
+    expect(note).toBeNull()
   })
 })

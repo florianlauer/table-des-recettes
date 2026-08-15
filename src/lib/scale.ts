@@ -84,3 +84,37 @@ export function scaleIngredient(
 
   return { text: `${head}${formatQuantity(value)}${after}`, scaled: true }
 }
+
+/** One line as the page shows it: the text, and whether it carries the dagger. */
+export type ScaledLine = { text: string; marked: boolean }
+
+const UNSCALED_NOTE =
+  'Cette quantité n’a pas pu suivre l’ajustement : la ligne est reproduite telle quelle.'
+
+/**
+ * The whole ingredient list at one serving count — the marker on each line **and** the footnote
+ * that decodes it, derived from the same expression.
+ *
+ * They used to be two: the page computed `factor !== 1 && lines.some(line => !line.scaled)` for the
+ * footnote and `factor !== 1 && !scaled` again inside the list, under a comment claiming it was
+ * computed once. Nothing caught the drift, and the failure it invites is silent — a dagger printed
+ * with nothing on the page explaining it. Here a marked line and a note cannot exist without each
+ * other.
+ *
+ * `from` is the coupure's own serving count, null on the recipes that never stated one: no
+ * statement means no ratio, so the list is reproduced as written.
+ */
+export function scaleRecipe(
+  ingredients: readonly Ingredient[],
+  { from, to }: { from: number | null; to: number },
+): { lines: ScaledLine[]; note: string | null } {
+  const factor = from ? servingsFactor(from, to) : 1
+  const lines = ingredients.map((ingredient) => {
+    const { text, scaled } = scaleIngredient(ingredient, factor)
+    return { text, marked: factor !== 1 && !scaled }
+  })
+  return {
+    lines,
+    note: lines.some((line) => line.marked) ? UNSCALED_NOTE : null,
+  }
+}

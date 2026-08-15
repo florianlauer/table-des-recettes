@@ -31,3 +31,8 @@ export function dataView<T>({
   if (loading || data === undefined) return { kind: 'loading' }
   return { kind: 'ready', data }
 }
+
+/** The answer if there is one — for the callers that only need to know what to compute from. */
+export function readyData<T>(view: DataView<T>): T | null {
+  return view.kind === 'ready' ? view.data : null
+}

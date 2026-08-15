@@ -269,7 +269,7 @@ export function RecipeForm({
               adminToken,
               recipeId: recipe.id,
               expectedRevision: recipe.revision,
-              title: draft.title,
+              title: draft.title.trim(),
               type: draft.type,
               servings:
                 draft.servings.trim() === ''
