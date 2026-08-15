@@ -151,74 +151,83 @@ export function RecipeForm({
             storefront without any error. */}
         {/* Named columns, not four boxes of decreasing width: the labels existed for assistive tech
             and nowhere for the eye, so telling the quantity from the unit meant clicking one. */}
+        {/* The columns hold their width and the block scrolls sideways, rather than the row folding
+            onto three ranks on a phone: a transcription is checked against the photograph field by
+            field, and a field that has moved under the one above it is read twice. One box around
+            the header and every row, so a single gesture moves them together and the columns stay
+            in register. No `tabindex`: every cell here is an input or a button, so the keyboard
+            already reaches — and scrolls to — the whole width, and a stop on the box itself would
+            only add one before each line. */}
         {draft.ingredients.length > 0 && (
-          <div
-            className="scan-page__ingredient scan-page__ingredient--head"
-            aria-hidden="true"
-          >
-            {INGREDIENT_COLUMNS.map((column) => (
-              <span key={column}>{column}</span>
+          <div className="scan-page__ingredients-scroll">
+            <div
+              className="scan-page__ingredient scan-page__ingredient--head"
+              aria-hidden="true"
+            >
+              {INGREDIENT_COLUMNS.map((column) => (
+                <span key={column}>{column}</span>
+              ))}
+            </div>
+            {draft.ingredients.map((line, index) => (
+              <div key={index} className="scan-page__ingredient">
+                <input
+                  aria-label={`Ligne ${index + 1}`}
+                  value={line.raw}
+                  onChange={(event) =>
+                    editIngredient(index, { raw: event.target.value })
+                  }
+                />
+                <input
+                  aria-label={`Quantité ${index + 1}`}
+                  placeholder="Quantité"
+                  inputMode="decimal"
+                  value={line.quantity ?? ''}
+                  onChange={(event) =>
+                    editIngredient(index, {
+                      quantity:
+                        event.target.value === ''
+                          ? undefined
+                          : Number(event.target.value),
+                    })
+                  }
+                />
+                <input
+                  aria-label={`Unité ${index + 1}`}
+                  placeholder="Unité"
+                  value={line.unit ?? ''}
+                  onChange={(event) =>
+                    editIngredient(index, {
+                      unit: event.target.value || undefined,
+                    })
+                  }
+                />
+                <input
+                  aria-label={`Libellé ${index + 1}`}
+                  placeholder="Libellé"
+                  value={line.label ?? ''}
+                  onChange={(event) =>
+                    editIngredient(index, {
+                      label: event.target.value || undefined,
+                    })
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRemoved({ index, line })
+                    edit({
+                      ingredients: draft.ingredients.filter(
+                        (_, position) => position !== index,
+                      ),
+                    })
+                  }}
+                >
+                  Retirer
+                </button>
+              </div>
             ))}
           </div>
         )}
-        {draft.ingredients.map((line, index) => (
-          <div key={index} className="scan-page__ingredient">
-            <input
-              aria-label={`Ligne ${index + 1}`}
-              value={line.raw}
-              onChange={(event) =>
-                editIngredient(index, { raw: event.target.value })
-              }
-            />
-            <input
-              aria-label={`Quantité ${index + 1}`}
-              placeholder="Quantité"
-              inputMode="decimal"
-              value={line.quantity ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  quantity:
-                    event.target.value === ''
-                      ? undefined
-                      : Number(event.target.value),
-                })
-              }
-            />
-            <input
-              aria-label={`Unité ${index + 1}`}
-              placeholder="Unité"
-              value={line.unit ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  unit: event.target.value || undefined,
-                })
-              }
-            />
-            <input
-              aria-label={`Libellé ${index + 1}`}
-              placeholder="Libellé"
-              value={line.label ?? ''}
-              onChange={(event) =>
-                editIngredient(index, {
-                  label: event.target.value || undefined,
-                })
-              }
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setRemoved({ index, line })
-                edit({
-                  ingredients: draft.ingredients.filter(
-                    (_, position) => position !== index,
-                  ),
-                })
-              }}
-            >
-              Retirer
-            </button>
-          </div>
-        ))}
         {/* The line came off a photograph: retyping it means going back to the page. Offered until
             another one is removed, and it returns where it was, not at the end. */}
         {removed !== null && (

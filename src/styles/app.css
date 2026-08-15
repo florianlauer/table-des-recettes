@@ -149,7 +149,7 @@ img {
 .search {
   width: 100%;
   border: 0;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule-strong);
   background: transparent;
   font: inherit;
   font-size: var(--type-body);
@@ -276,6 +276,12 @@ img {
   padding: 0.75rem 0 0.75rem 1.5rem;
   min-height: 3rem;
   align-content: center;
+}
+/* Between the lines, not after the last one — the same rule the ingredient list follows. Left on,
+   the closing filet stacked against the next group's `--rule-strong` and opened it as a two-tone
+   2px band, which is exactly the 1.6x ladder DESIGN.md § Filets calls the whole hierarchy. */
+.row:last-child {
+  border-bottom: 0;
 }
 .row__title {
   font-family: var(--serif);
