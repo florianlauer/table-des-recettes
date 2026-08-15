@@ -57,6 +57,21 @@ describe('recipe schema versions', () => {
     })
   })
 
+  test('cleans the title on its way out of the extraction', () => {
+    const parsed = extractionSchemaV2.parse({
+      recipes: [
+        {
+          ...v1Recipe,
+          title: '  NOIX DE SAINT-JACQUES A LA TAPENADE — ',
+          ingredientsInferred: false,
+        },
+      ],
+    })
+    expect(normalizeExtraction(parsed).recipes[0]?.title).toBe(
+      'Noix de saint-jacques a la tapenade',
+    )
+  })
+
   test('locks Zod nullable fields to Convex optional fields', () => {
     const zodKeys = Object.keys(ingredientSchema.shape).sort()
     const convexFields = (
