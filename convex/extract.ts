@@ -7,6 +7,7 @@ import type { MutationCtx, QueryCtx } from './_generated/server'
 import { PURGED_ERROR } from './retention'
 import type { attemptRecord } from './schema'
 import { ingredient, recipeType } from './schema'
+import { callOpenRouter } from './lib/openrouter'
 import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
@@ -33,8 +34,10 @@ import {
   REQUEST_TIMEOUT_MS,
 } from '../src/shared/queueContract'
 
-export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1'
 export const MAX_OUTPUT_TOKENS = 8000
+// The answer is at most `MAX_OUTPUT_TOKENS` of JSON plus its envelope — a megabyte over any of it.
+// The ceiling exists so an oversized body is refused rather than read whole into the action.
+export const MAX_RESPONSE_BYTES = 1024 * 1024
 export const UNCONSUMED_TICKET_GRACE_MS = 60 * 60 * 1000
 export const CONSUMED_TICKET_RETENTION_MS = 7 * 24 * 60 * 60 * 1000
 export const TICKET_SWEEP_BATCH = 100
@@ -63,23 +66,16 @@ export type ExtractionResult =
   | ({ ok: false; kind: FailureKind; error: string } & AttemptObservation)
 
 type OpenRouterResponse = {
-  provider?: string
   choices?: Array<{
     finish_reason?: string | null
     message?: { content?: string | null; refusal?: string | null }
   }>
-  usage?: { cost?: number }
-  error?: { message?: string }
 }
 
 /** What the answer says, with no notion of when it arrived — hence testable without a fetch stub. */
-export type ResponseReading = {
-  costUsd: number
-  servedProvider: string | null
-} & (
+export type ExtractionReading =
   | { ok: true; extraction: Extraction; repairCount: number }
   | { ok: false; kind: FailureKind; error: string }
-)
 
 function failure({
   kind,
@@ -147,43 +143,14 @@ export function requestBody({
   })
 }
 
-export function interpretResponse({
-  ok,
-  status,
-  body,
-}: {
-  ok: boolean
-  status: number
-  body: string
-}): ResponseReading {
-  let raw: OpenRouterResponse
-  try {
-    raw = JSON.parse(body) as OpenRouterResponse
-  } catch {
-    return {
-      ok: false,
-      kind: 'transport',
-      error: `Réponse OpenRouter illisible : HTTP ${status}`,
-      costUsd: 0,
-      servedProvider: null,
-    }
-  }
-  // Billed even when the answer is unusable, so the cost is read before any rejection.
-  const costUsd = typeof raw.usage?.cost === 'number' ? raw.usage.cost : 0
-  const servedProvider = raw.provider ?? null
-  const refuse = (kind: FailureKind, error: string): ResponseReading => ({
+export function interpretResponse(answer: unknown): ExtractionReading {
+  const raw = answer as OpenRouterResponse
+  const refuse = (kind: FailureKind, error: string): ExtractionReading => ({
     ok: false,
     kind,
     error,
-    costUsd,
-    servedProvider,
   })
 
-  if (!ok)
-    return refuse(
-      'transport',
-      `OpenRouter HTTP ${status} : ${raw.error?.message ?? body}`,
-    )
   const choice = raw.choices?.[0]
   if (choice?.message?.refusal) return refuse('refusal', choice.message.refusal)
   if (choice?.finish_reason !== 'stop')
@@ -207,8 +174,6 @@ export function interpretResponse({
     ok: true,
     extraction: normalizeExtraction(validated.data),
     repairCount: repaired.repairs.length,
-    costUsd,
-    servedProvider,
   }
 }
 
@@ -278,58 +243,37 @@ export async function extractImages({
     dataUris.push(`data:image/${header.format};base64,${bytesToBase64(bytes)}`)
   }
 
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-  let response: Response
-  let body: string
-  try {
-    response = await fetchImpl(`${OPENROUTER_API_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-      body: requestBody({ model, provider, dataUris }),
-    })
-    body = await response.text()
-  } catch (error) {
-    const timedOut =
-      error instanceof DOMException && error.name === 'AbortError'
-    return failure({
-      kind: timedOut ? 'timeout' : 'transport',
-      error: timedOut
-        ? 'Délai OpenRouter dépassé'
-        : `Transport OpenRouter : ${String(error)}`,
-      model,
-      startedAt,
-    })
-  } finally {
-    clearTimeout(timer)
-  }
-
-  const reading = interpretResponse({
-    ok: response.ok,
-    status: response.status,
-    body,
+  const call = await callOpenRouter({
+    apiKey,
+    fetchImpl,
+    timeoutMs: REQUEST_TIMEOUT_MS,
+    maxResponseBytes: MAX_RESPONSE_BYTES,
+    body: requestBody({ model, provider, dataUris }),
+    decode: (raw) => {
+      const reading = interpretResponse(raw)
+      return reading.ok
+        ? { ok: true as const, value: reading }
+        : { ok: false as const, kind: reading.kind, error: reading.error }
+    },
   })
+
   const observation = {
     model,
-    servedProvider: reading.servedProvider,
-    latencyMs: performance.now() - startedAt,
-    costUsd: reading.costUsd,
+    servedProvider: call.servedProvider,
+    latencyMs: call.latencyMs,
+    costUsd: call.costUsd,
   }
-  return reading.ok
+  return call.ok
     ? {
         ok: true,
-        extraction: reading.extraction,
-        repairCount: reading.repairCount,
+        extraction: call.value.extraction,
+        repairCount: call.value.repairCount,
         ...observation,
       }
     : {
         ok: false,
-        kind: reading.kind,
-        error: reading.error,
+        kind: call.kind,
+        error: call.error,
         repairCount: 0,
         ...observation,
       }

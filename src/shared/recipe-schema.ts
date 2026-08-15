@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { trimIngredientLine } from './ingredientLine.js'
 import { RECIPE_TYPES } from './recipeTypes.js'
 import { MAX_RECIPES_PER_SCAN } from './scanLimits.js'
+import { cleanTitle } from './title.js'
 
 export const RECIPE_SCHEMA_VERSION = '2'
 
@@ -132,7 +133,7 @@ export function normalizeExtraction(extraction: Extraction): DomainExtraction {
   return {
     recipes: extraction.recipes.map(
       ({ title, type, servings, ingredients, ingredientsInferred, steps }) => ({
-        title,
+        title: cleanTitle(title),
         type,
         servings: servings ?? undefined,
         ingredients: ingredients.map(({ raw, quantity, unit, label }) => ({

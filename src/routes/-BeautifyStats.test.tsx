@@ -54,6 +54,17 @@ describe('BeautifyStats', () => {
     expect(markup).toContain('role="alert"')
   })
 
+  test('rides the identity under the model, without a schema it does not have', () => {
+    const markup = renderToStaticMarkup(
+      <BeautifyStats rows={[group()] as NonEmpty<WireBeautifySummary>} />,
+    )
+    expect(markup).toContain('Google AI Studio')
+    expect(markup).toContain('prompt v2')
+    expect(markup).toContain('refusal 1')
+    // The generation journal has no schema version: the shared line must not print an empty segment.
+    expect(markup).not.toContain('schéma')
+  })
+
   test('totals the configurations, weighted by calls', () => {
     const rows = [
       group({ attempts: 9, averageLatencyMs: 1000, totalCostUsd: 0.009 }),

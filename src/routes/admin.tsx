@@ -1,15 +1,12 @@
-import { convexQuery } from '@convex-dev/react-query'
-import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import { adminTokenState, useAdminToken } from '../lib/adminToken'
-import { dataView } from '../lib/dataView'
-import { estimateFrom } from '../lib/estimate'
+import { useAdminToken } from '../lib/adminToken'
+import { readyData } from '../lib/dataView'
 import { extractionMessage, uploadMessage } from '../lib/gestureMessages'
 import { isolatedGesture, pageGesture } from '../lib/gestures'
-import { nonEmpty } from '../shared/journalStats'
+import { estimateFrom, nonEmpty } from '../shared/journalStats'
 import { MAX_ATTEMPTS } from '../shared/queueContract'
 import {
   deriveQueueState,
@@ -17,6 +14,7 @@ import {
   formatRemaining,
 } from '../lib/queueStatus'
 import { useAttachImage } from '../client/useAttachImage'
+import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../client/useServerClock'
@@ -37,43 +35,20 @@ export const Route = createFileRoute('/admin')({
 function AdminPage() {
   const { token, save: updateToken } = useAdminToken()
   const [revealToken, setRevealToken] = useState(false)
-  const tokenAbsent = adminTokenState(token) === 'absent'
   const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
   const { now } = useServerClock(adminToken)
 
-  const scans = useQuery({
-    ...convexQuery(api.admin.listScans, adminToken ? { adminToken } : 'skip'),
-    retry: false,
-  })
+  // One value per query rather than a ladder of booleans per block: the view decides what the
+  // section is looking at, and only the `ready` case carries data at all.
+  const scans = useAdminQuery(token, api.admin.listScans, {})
   // Hoisted out of the statistics block: the same journal that reports what calls cost is what says
   // how long they usually take, and the bar under the queue reads it.
-  const stats = useQuery({
-    ...convexQuery(
-      api.admin.attemptStats,
-      adminToken ? { adminToken } : 'skip',
-    ),
-    retry: false,
-  })
-  const extractionEstimateMs = estimateFrom(stats.data ?? [])
-
-  // One value per query rather than a ladder of booleans per block: `dataView` decides what the
-  // section is looking at, and only the `ready` case carries data at all.
-  const scansView = dataView({
-    tokenAbsent,
-    loading: scans.isLoading,
-    error: scans.error,
-    data: scans.data,
-  })
-  const scanRows = scansView.kind === 'ready' ? nonEmpty(scansView.data) : null
-  const statsView = dataView({
-    tokenAbsent,
-    loading: stats.isLoading,
-    error: stats.error,
-    data: stats.data,
-  })
-  const statsRows = statsView.kind === 'ready' ? nonEmpty(statsView.data) : null
+  const stats = useAdminQuery(token, api.admin.attemptStats, {})
+  const extractionEstimateMs = estimateFrom(readyData(stats) ?? [])
+  const scanRows = nonEmpty(readyData(scans) ?? [])
+  const statsRows = nonEmpty(readyData(stats) ?? [])
 
   // One scan per file. Selecting thirty pages at once is how the initial backlog gets in, and those
   // pages have nothing to do with each other — grouping them would make one huge billed call.
@@ -136,8 +111,7 @@ function AdminPage() {
       />
 
       <QueueBlock
-        adminToken={adminToken}
-        tokenAbsent={tokenAbsent}
+        token={token}
         now={now}
         gestures={gestures}
         estimateMs={extractionEstimateMs}
@@ -146,11 +120,11 @@ function AdminPage() {
       <section className="admin-page__scans">
         <h2>Scans</h2>
         <AdminSectionState
-          view={scansView}
+          view={scans}
           absent="Saisis le jeton administrateur pour afficher les scans."
-          retry={() => void scans.refetch()}
+          retry={scans.refetch}
         />
-        {scansView.kind === 'ready' &&
+        {scans.kind === 'ready' &&
           (scanRows ? (
             <ScanTable
               rows={scanRows}
@@ -167,11 +141,11 @@ function AdminPage() {
       <section className="admin-page__stats">
         <h2>Tentatives d’extraction</h2>
         <AdminSectionState
-          view={statsView}
+          view={stats}
           absent="Saisis le jeton administrateur pour afficher le journal."
-          retry={() => void stats.refetch()}
+          retry={stats.refetch}
         />
-        {statsView.kind === 'ready' &&
+        {stats.kind === 'ready' &&
           (statsRows ? (
             <AttemptStatsTable rows={statsRows} />
           ) : (
@@ -183,30 +157,20 @@ function AdminPage() {
 }
 
 function QueueBlock({
-  adminToken,
-  tokenAbsent,
+  token,
   now,
   gestures,
   estimateMs,
 }: {
-  adminToken: string
-  tokenAbsent: boolean
+  token: string | null
   now: number
   gestures: Gestures
   estimateMs: number | null
 }) {
+  const adminToken = token ?? ''
   const startExtraction = useMutation(api.admin.startExtraction)
-  const queue = useQuery({
-    ...convexQuery(api.admin.queueStatus, adminToken ? { adminToken } : 'skip'),
-    retry: false,
-  })
-  const view = dataView({
-    tokenAbsent,
-    loading: queue.isLoading,
-    error: queue.error,
-    data: queue.data,
-  })
-  const status = view.kind === 'ready' ? view.data : null
+  const queue = useAdminQuery(token, api.admin.queueStatus, {})
+  const status = readyData(queue)
   const { leaseLive, stopped, button } = deriveQueueState({
     facts: {
       pendingCount: status?.counts.pending ?? 0,
@@ -220,9 +184,9 @@ function QueueBlock({
     <section className="admin-page__queue">
       <h2>File d’extraction</h2>
       <AdminSectionState
-        view={view}
+        view={queue}
         absent="Saisis le jeton administrateur pour piloter la file."
-        retry={() => void queue.refetch()}
+        retry={queue.refetch}
       />
       {status && (
         <>

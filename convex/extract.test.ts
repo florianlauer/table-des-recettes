@@ -7,6 +7,7 @@ import {
   eligibility,
   extractImages,
   interpretResponse,
+  MAX_RESPONSE_BYTES,
   RESERVE_SCAN_BATCH,
   TICKET_SWEEP_BATCH,
   UNCONSUMED_TICKET_GRACE_MS,
@@ -239,14 +240,7 @@ describe('extraction transport', () => {
 // The interpretation carries no notion of time or transport, so each failure kind costs one object
 // literal instead of a fetch stub returning a whole OpenRouter envelope.
 describe('answer interpretation', () => {
-  const answer = (payload: unknown, status = 200) => ({
-    ok: status < 400,
-    status,
-    body: JSON.stringify(payload),
-  })
   const content = (value: unknown) => ({
-    provider: 'served-provider',
-    usage: { cost: 0.0045 },
     choices: [
       { finish_reason: 'stop', message: { content: JSON.stringify(value) } },
     ],
@@ -254,61 +248,77 @@ describe('answer interpretation', () => {
 
   test('reports a model refusal', () => {
     expect(
-      interpretResponse(
-        answer({
-          provider: 'served-provider',
-          choices: [{ finish_reason: 'stop', message: { refusal: 'non' } }],
-        }),
-      ),
+      interpretResponse({
+        choices: [{ finish_reason: 'stop', message: { refusal: 'non' } }],
+      }),
     ).toMatchObject({ ok: false, kind: 'refusal', error: 'non' })
   })
 
   test('reports a truncated answer', () => {
     expect(
-      interpretResponse(
-        answer({ choices: [{ finish_reason: 'length', message: {} }] }),
-      ),
+      interpretResponse({
+        choices: [{ finish_reason: 'length', message: {} }],
+      }),
     ).toMatchObject({ ok: false, kind: 'truncated' })
   })
 
   test('reports an answer that misses the schema', () => {
     expect(
-      interpretResponse(answer(content({ recipes: [{ title: 'Soup' }] }))),
+      interpretResponse(content({ recipes: [{ title: 'Soup' }] })),
     ).toMatchObject({ ok: false, kind: 'invalid_schema' })
   })
 
   test('reports an answer that found no recipe', () => {
-    expect(interpretResponse(answer(content({ recipes: [] })))).toMatchObject({
+    expect(interpretResponse(content({ recipes: [] }))).toMatchObject({
       ok: false,
       kind: 'no_recipes',
     })
   })
+})
 
-  test('keeps the billed cost of an answer it rejects', () => {
-    expect(
-      interpretResponse(
-        answer({
-          provider: 'served-provider',
-          usage: { cost: 0.0045 },
-          choices: [{ finish_reason: 'length', message: {} }],
-        }),
-      ),
-    ).toMatchObject({
+// Billing is the transport's business now, so what used to be asserted on the interpretation is
+// asserted where it lives: through a call whose answer is unusable, and through one that is not
+// even JSON.
+describe('billing of a call whose answer is refused', () => {
+  test('keeps the billed cost of an answer it rejects', async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            provider: 'served-provider',
+            usage: { cost: 0.0045 },
+            choices: [{ finish_reason: 'length', message: {} }],
+          }),
+        ),
+    )
+    await expect(
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
+    ).resolves.toMatchObject({
       ok: false,
+      kind: 'truncated',
       costUsd: 0.0045,
       servedProvider: 'served-provider',
     })
   })
 
-  test('reports an unreadable body without inventing a provider', () => {
-    expect(
-      interpretResponse({ ok: false, status: 502, body: '<html>' }),
-    ).toMatchObject({
+  test('reports an unreadable body without inventing a provider', async () => {
+    const fetchImpl = vi.fn(async () => new Response('<html>', { status: 502 }))
+    await expect(
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
+    ).resolves.toMatchObject({
       ok: false,
       kind: 'transport',
       costUsd: 0,
       servedProvider: null,
     })
+  })
+
+  test('refuses a body over the ceiling instead of reading it whole', async () => {
+    const huge = 'x'.repeat(MAX_RESPONSE_BYTES + 1)
+    const fetchImpl = vi.fn(async () => new Response(huge))
+    await expect(
+      extractImages({ blobs: [jpeg()], environment, fetchImpl }),
+    ).resolves.toMatchObject({ ok: false, kind: 'truncated' })
   })
 })
 

@@ -308,6 +308,40 @@ describe('transition matrix', () => {
     expect(await stored(t, candidate)).toBeNull()
   })
 
+  test('the kept candidate takes its derivative and its rendition with it', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    const candidate = await t.run((ctx) => ctx.storage.store(jpeg()))
+    const derivative = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.run((ctx) =>
+      ctx.db.patch(recipeId, {
+        beautifiedStorageId: candidate,
+        beautifiedRendition: {
+          status: 'ready',
+          sourceStorageId: candidate,
+          sourceWidth: 1200,
+          sourceHeight: 800,
+          storageId: derivative,
+          width: 292,
+          height: 195,
+        },
+      }),
+    )
+
+    await t.mutation(api.illustrations.requestBeautify, {
+      adminToken,
+      recipeId,
+    })
+
+    // The destruction used to be computed and then dropped on the floor: the derivative died, but
+    // the field naming it was never written back, so the row carried a rendition pointing at a blob
+    // that no longer existed. Only the compare-and-set on `sourceStorageId` kept it harmless.
+    expect(await stored(t, derivative)).toBeNull()
+    const recipe = await t.run((ctx) => ctx.db.get('recipes', recipeId))
+    expect(recipe?.beautifiedRendition).toBeUndefined()
+  })
+
   test('refuses to arbitrate outside review', async () => {
     const t = setup()
     const recipeId = await newRecipe(t)

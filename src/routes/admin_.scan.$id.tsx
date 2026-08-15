@@ -1,18 +1,18 @@
-import { convexQuery } from '@convex-dev/react-query'
-import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
-import { adminTokenState, useAdminToken } from '../lib/adminToken'
-import { estimateFrom } from '../lib/estimate'
+import { useAdminToken } from '../lib/adminToken'
+import { readyData } from '../lib/dataView'
 import { formatCount } from '../lib/formatCount'
 import { formatUsd } from '../lib/formatNumber'
+import { estimateFrom } from '../shared/journalStats'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../shared/scanLimits'
+import { useAdminQuery } from '../lib/useAdminQuery'
 import { useAttachImage } from '../client/useAttachImage'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../client/useServerClock'
@@ -59,25 +59,16 @@ function ScanCorrectionPage() {
     api.recipeAdmin.acknowledgeImageChange,
   )
 
-  const scan = useQuery({
-    ...convexQuery(
-      api.admin.getScanForCorrection,
-      adminToken ? { adminToken, scanId } : 'skip',
-    ),
-    retry: false,
-  })
+  const scan = useAdminQuery(token, api.admin.getScanForCorrection, { scanId })
   // The extraction relaunched from here is the same work the queue journals, so the same journal
   // says how long it usually takes.
-  const stats = useQuery({
-    ...convexQuery(
-      api.admin.attemptStats,
-      adminToken ? { adminToken } : 'skip',
-    ),
-    retry: false,
-  })
-  const estimateMs = estimateFrom(stats.data ?? [])
+  const stats = useAdminQuery(token, api.admin.attemptStats, {})
+  const estimateMs = estimateFrom(readyData(stats) ?? [])
 
-  const data = scan.data
+  // Not `readyData`: this query answers `null` for a scan that does not exist, and that answer is
+  // the one below saying « Scan introuvable ». Folding it into « nothing yet » would print the
+  // verdict over every load.
+  const data = scan.kind === 'ready' ? scan.data : undefined
   const purged = data != null && data.purgedAt !== null
   const imagesChanged = Boolean(data?.imagesChangedAt)
   const liveEdit = (recipe: RecipeView): Draft | null => {
@@ -112,13 +103,13 @@ function ScanCorrectionPage() {
       {/* Only once storage has actually been read: browser storage is invisible to the server
           render and to the first client render, so this alert used to greet every operator who
           had a token. */}
-      {adminTokenState(token) === 'absent' && (
+      {scan.kind === 'absent' && (
         <p role="alert">Jeton absent : passe par /admin.</p>
       )}
-      {scan.error && (
-        <AdminFailure error={scan.error} retry={() => void scan.refetch()} />
+      {scan.kind === 'failed' && (
+        <AdminFailure error={scan.error} retry={scan.refetch} />
       )}
-      {scan.isLoading && adminToken && <p>Chargement…</p>}
+      {scan.kind === 'loading' && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
 
       <OrphanedOutcomes gestures={gestures} />

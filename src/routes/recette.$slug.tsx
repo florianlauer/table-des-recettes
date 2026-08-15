@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import { scaleIngredient, servingsFactor } from '../lib/scale'
+import { scaleRecipe } from '../lib/scale'
 import { TYPE_LABELS } from '../shared/recipeTypes'
 
 /**
@@ -58,14 +58,10 @@ function RecipePage() {
 
   const servings = recipe.servings
   const current = target ?? servings ?? 0
-  const factor = servings ? servingsFactor(servings, current) : 1
-
-  // Computed once: the line marker and the footnote must depend on exactly the same
-  // predicate, otherwise a dagger can appear with nothing explaining it.
-  const lines = recipe.ingredients.map((ingredient) =>
-    scaleIngredient(ingredient, factor),
-  )
-  const showNote = factor !== 1 && lines.some((line) => !line.scaled)
+  const { lines, note } = scaleRecipe(recipe.ingredients, {
+    from: servings,
+    to: current,
+  })
 
   return (
     <main className="page recipe">
@@ -130,10 +126,10 @@ function RecipePage() {
           holds no focusable control and no input state.
         */}
         <ul className="ingredients swap" key={current}>
-          {lines.map(({ text, scaled }, i) => (
+          {lines.map(({ text, marked }, i) => (
             <li key={i} className="ingredients__item">
               {text}
-              {factor !== 1 && !scaled ? (
+              {marked ? (
                 <>
                   {/*
                     The dagger carried its meaning in a `title`, which is unreliable on a screen
@@ -156,10 +152,9 @@ function RecipePage() {
 
         {/* Hidden from assistive tech: its only job is to decode a glyph that, for a screen
             reader, no longer exists — each concerned line now carries its own explanation. */}
-        {showNote ? (
+        {note ? (
           <p className="ingredients__note" aria-hidden="true">
-            † Cette quantité n’a pas pu suivre l’ajustement : la ligne est
-            reproduite telle quelle.
+            † {note}
           </p>
         ) : null}
 
