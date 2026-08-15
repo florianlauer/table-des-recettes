@@ -566,11 +566,16 @@
   font-family: var(--serif);
   margin: 0 0 0.3rem;
 }
+/* `min-inline-size: 0` fights the browser's own stylesheet: a `fieldset` ships with
+   `min-inline-size: min-content`, so it grew to the width of the ingredient grid instead of letting
+   it overflow. The scroll box below then had nothing to scroll — it was as wide as its content — and
+   the page went sideways instead, which is the one thing § _registre de tri_ forbids. */
 .scan-page__ingredients {
   border: none;
   border-left: 1px solid var(--rule);
   padding: 0 0 0 0.8rem;
   margin: 1rem 0;
+  min-inline-size: 0;
 }
 .scan-page__ingredients legend {
   padding: 0;
