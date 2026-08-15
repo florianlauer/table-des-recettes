@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import {
   BEAUTIFY_EXPECTED_COST_USD,
   BEAUTIFY_COST_ALERT_FACTOR,
-} from './beautifyPrompt'
+} from './beautifyCost'
 import { beautifyTotals, summarizeBeautifyAttempts } from './beautifyStats'
 import { nonEmpty } from './journalStats'
 import type { JournalledBeautifyAttempt } from './beautifyStats'

@@ -2,8 +2,8 @@ import { TableAggregate } from '@convex-dev/aggregate'
 import { components } from './_generated/api'
 import type { DataModel, Doc } from './_generated/dataModel'
 import type { QueryCtx } from './_generated/server'
-import { RECIPE_TYPES } from '../src/lib/recipeTypes'
-import type { RecipeType } from '../src/lib/recipeTypes'
+import { RECIPE_TYPES } from '../src/shared/recipeTypes'
+import type { RecipeType } from '../src/shared/recipeTypes'
 
 type RecipeStatus = Doc<'recipes'>['status']
 

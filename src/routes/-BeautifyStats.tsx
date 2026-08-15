@@ -1,8 +1,8 @@
-import { beautifyGroupKey, beautifyTotals } from '../lib/beautifyStats'
+import { beautifyGroupKey, beautifyTotals } from '../shared/beautifyStats'
 import { formatCount } from '../lib/formatCount'
 import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
-import type { WireBeautifySummary } from '../lib/beautifyStats'
-import type { NonEmpty } from '../lib/journalStats'
+import type { WireBeautifySummary } from '../shared/beautifyStats'
+import type { NonEmpty } from '../shared/journalStats'
 import { AdminTable, AdminTableDetail } from './-AdminTable'
 
 const COLUMNS = [

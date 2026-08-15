@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { LEASE_MS } from './queueContract'
+import { LEASE_MS } from '../shared/queueContract'
 import { deriveQueueState, formatAge, isLeaseLive } from './queueStatus'
 
 const idle = { pendingCount: 0, leaseStartedAt: null, nextAttemptAt: null }

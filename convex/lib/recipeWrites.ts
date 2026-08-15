@@ -1,7 +1,7 @@
 import type { Id } from '../_generated/dataModel'
-import { buildSearchText } from '../../src/lib/normalize'
-import { stageOf } from '../../src/lib/illustrationStage'
-import type { IllustrationStage } from '../../src/lib/illustrationStage'
+import { buildSearchText } from '../../src/shared/normalize'
+import { stageOf } from '../../src/shared/illustrationStage'
+import type { IllustrationStage } from '../../src/shared/illustrationStage'
 
 /**
  * The only authorised entry point for writing the (title, ingredients) pair.

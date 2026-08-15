@@ -1,1 +1,4 @@
-export { EXTRACTION_PROMPT, PROMPT_VERSION } from '../src/lib/recipe-prompt.js'
+export {
+  EXTRACTION_PROMPT,
+  PROMPT_VERSION,
+} from '../src/shared/recipe-prompt.js'

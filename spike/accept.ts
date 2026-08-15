@@ -7,7 +7,10 @@ import { fileURLToPath } from 'node:url'
 
 import { z } from 'zod'
 
-import { extractionSchema, repairExtraction } from '../src/lib/recipe-schema.js'
+import {
+  extractionSchema,
+  repairExtraction,
+} from '../src/shared/recipe-schema.js'
 import { BudgetCounter } from './budget.js'
 import { CORRECTION_COST_CEILING_USD, runCorrectionPass } from './correct.js'
 import type { Correction } from './correct.js'

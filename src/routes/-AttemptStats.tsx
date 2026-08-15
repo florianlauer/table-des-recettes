@@ -1,8 +1,8 @@
-import { attemptTotals, groupKey } from '../lib/attemptStats'
+import { attemptTotals, groupKey } from '../shared/attemptStats'
 import { formatCount } from '../lib/formatCount'
 import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
-import type { WireAttemptSummary } from '../lib/attemptStats'
-import type { NonEmpty } from '../lib/journalStats'
+import type { WireAttemptSummary } from '../shared/attemptStats'
+import type { NonEmpty } from '../shared/journalStats'
 import { AdminTable, AdminTableDetail } from './-AdminTable'
 
 const COLUMNS = [

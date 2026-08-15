@@ -9,7 +9,7 @@
 import { useMutation } from 'convex/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import { setClockOffset } from './clock'
+import { setClockOffset } from '../lib/clock'
 
 /**
  * Returns `now` for what is spelled out in words — the age of a lease, a scheduled retry. The progress

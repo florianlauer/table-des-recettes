@@ -9,9 +9,9 @@ import {
   requireBackupEnvironment,
   serializeBackupRecipe,
 } from './backup'
-import { BACKUP_FORMAT_VERSION } from '../src/lib/backup-schema'
-import { completeBackupRecipe } from '../src/lib/backup-schema.fixture'
-import type { BackupRecipe } from '../src/lib/backup-schema'
+import { BACKUP_FORMAT_VERSION } from '../src/shared/backup-schema'
+import { completeBackupRecipe } from '../src/shared/backup-schema.fixture'
+import type { BackupRecipe } from '../src/shared/backup-schema'
 
 function recipe({
   id,

@@ -1,7 +1,7 @@
 import { v } from 'convex/values'
 import { internalQuery } from './_generated/server'
 import { ingredient, recipeType } from './schema'
-import { compareBackupIds } from '../src/lib/backup-schema'
+import { compareBackupIds } from '../src/shared/backup-schema'
 
 const nullableString = v.union(v.string(), v.null())
 const nullableNumber = v.union(v.number(), v.null())

@@ -1,7 +1,7 @@
 import type { api } from '../../convex/_generated/api'
-import { formatCount } from './formatCount'
-import { formatMs, formatUsd } from './formatNumber'
-import { formatAge } from './queueStatus'
+import { formatCount } from '../lib/formatCount'
+import { formatMs, formatUsd } from '../lib/formatNumber'
+import { formatAge } from '../lib/queueStatus'
 
 /**
  * What a scan has to say that no column can hold: the titles it produced, why it failed, what its

@@ -4,8 +4,8 @@ import type { Doc, Id } from '../_generated/dataModel'
 import type { MutationCtx, QueryCtx } from '../_generated/server'
 import type { beautifyOutcome } from '../schema'
 import { literalUnion } from './validators'
-import { BEAUTIFY_PROMPT_VERSION } from '../../src/lib/beautifyPrompt'
-import { BEAUTIFY_FAILURE_KINDS } from '../../src/lib/beautifyFailureKinds'
+import { BEAUTIFY_PROMPT_VERSION } from '../../src/shared/beautifyPrompt'
+import { BEAUTIFY_FAILURE_KINDS } from '../../src/shared/beautifyFailureKinds'
 
 /** What the action measured about a call, and nothing about what was decided of it. */
 export const beautifyObservation = {

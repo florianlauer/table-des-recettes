@@ -6,8 +6,8 @@ import { api } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import { publishedRecipes } from './recipeCounts'
 import schema from './schema'
-import { RECIPE_TYPES } from '../src/lib/recipeTypes'
-import type { RecipeType } from '../src/lib/recipeTypes'
+import { RECIPE_TYPES } from '../src/shared/recipeTypes'
+import type { RecipeType } from '../src/shared/recipeTypes'
 import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')

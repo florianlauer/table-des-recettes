@@ -18,8 +18,8 @@ import {
 import {
   BACKUP_FORMAT_VERSION,
   backupManifestSchema,
-} from '../src/lib/backup-schema'
-import { completeBackupRecipe } from '../src/lib/backup-schema.fixture'
+} from '../src/shared/backup-schema'
+import { completeBackupRecipe } from '../src/shared/backup-schema.fixture'
 
 const temporaryDirectories: string[] = []
 

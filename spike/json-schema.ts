@@ -2,4 +2,4 @@ export {
   extractionJsonSchema,
   JSON_SCHEMA_NAME,
   normalizeForStrictMode,
-} from '../src/lib/recipe-json-schema.js'
+} from '../src/shared/recipe-json-schema.js'

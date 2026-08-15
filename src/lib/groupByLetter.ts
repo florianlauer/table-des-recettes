@@ -1,4 +1,4 @@
-import { normalizeText } from './normalize'
+import { normalizeText } from '../shared/normalize'
 
 export type LetterGroup<T> = { letter: string; items: T[] }
 

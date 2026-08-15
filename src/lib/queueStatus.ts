@@ -1,4 +1,4 @@
-import { LEASE_MS } from './queueContract'
+import { LEASE_MS } from '../shared/queueContract'
 
 export function isLeaseLive({
   leaseStartedAt,

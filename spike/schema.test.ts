@@ -4,7 +4,7 @@ import {
   extractionSchema,
   normalizeExtraction,
   repairExtraction,
-} from '../src/lib/recipe-schema.js'
+} from '../src/shared/recipe-schema.js'
 import { extractionJsonSchema } from './json-schema.js'
 
 function assertStrictObjects(value: unknown): void {

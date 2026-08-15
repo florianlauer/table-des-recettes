@@ -1,9 +1,9 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
-import { BEAUTIFY_FAILURE_KINDS } from '../src/lib/beautifyFailureKinds'
-import { FAILURE_KINDS } from '../src/lib/failureKinds'
-import { ILLUSTRATION_STAGES } from '../src/lib/illustrationStage'
-import { RECIPE_TYPES } from '../src/lib/recipeTypes'
+import { BEAUTIFY_FAILURE_KINDS } from '../src/shared/beautifyFailureKinds'
+import { FAILURE_KINDS } from '../src/shared/failureKinds'
+import { ILLUSTRATION_STAGES } from '../src/shared/illustrationStage'
+import { RECIPE_TYPES } from '../src/shared/recipeTypes'
 import { literalUnion } from './lib/validators'
 
 export const recipeType = literalUnion(RECIPE_TYPES)

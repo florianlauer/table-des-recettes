@@ -4,7 +4,7 @@ import { Link, createFileRoute, notFound } from '@tanstack/react-router'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { scaleIngredient, servingsFactor } from '../lib/scale'
-import { TYPE_LABELS } from '../lib/recipeTypes'
+import { TYPE_LABELS } from '../shared/recipeTypes'
 
 /**
  * Beyond this the `+` is answering a stuck finger, not a cook. It bounds the repeat tap the way

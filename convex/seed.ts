@@ -2,7 +2,7 @@ import { v } from 'convex/values'
 import { internalMutation } from './_generated/server'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
 import { deleteRecipeDoc, insertRecipeDoc } from './recipeDocs'
-import { resolveSlugCollision, slugify } from '../src/lib/slug'
+import { resolveSlugCollision, slugify } from '../src/shared/slug'
 
 const RECIPES = [
   {

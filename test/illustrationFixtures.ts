@@ -3,7 +3,7 @@ import { api, internal } from '../convex/_generated/api'
 import type { Id } from '../convex/_generated/dataModel'
 import { withIllustration } from '../convex/lib/recipeWrites'
 import schema from '../convex/schema'
-import { BEAUTIFY_PROMPT_VERSION } from '../src/lib/beautifyPrompt'
+import { BEAUTIFY_PROMPT_VERSION } from '../src/shared/beautifyPrompt'
 import { registerComponents } from './convexComponents'
 
 /**

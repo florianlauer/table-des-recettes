@@ -9,8 +9,8 @@ import {
   readBoundedBody,
 } from './beautify'
 import schema from './schema'
-import { bytesToBase64 } from '../src/lib/base64'
-import { BEAUTIFY_MODEL } from '../src/lib/beautifyPrompt'
+import { bytesToBase64 } from '../src/shared/base64'
+import { BEAUTIFY_MODEL } from '../src/shared/beautifyPrompt'
 import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')

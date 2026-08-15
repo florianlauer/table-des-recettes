@@ -9,8 +9,11 @@ import {
   backupManifestSchema,
   backupRecipeSchema,
   countRecipesByStatus,
-} from '../src/lib/backup-schema.js'
-import type { BackupManifest, BackupRecipe } from '../src/lib/backup-schema.js'
+} from '../src/shared/backup-schema.js'
+import type {
+  BackupManifest,
+  BackupRecipe,
+} from '../src/shared/backup-schema.js'
 
 export const BACKUP_DIRECTORY = 'backup'
 export const MANIFEST_FILE_NAME = 'LAST_RUN.json'

@@ -11,12 +11,12 @@ import { groupByDay } from '../lib/groupByDay'
 import {
   ILLUSTRATION_WORK_LISTED,
   ILLUSTRATION_WORK_MAX,
-} from '../lib/illustrationLimits'
+} from '../shared/illustrationLimits'
 import type { Outcome } from '../lib/gestureRegistry'
-import { nonEmpty } from '../lib/journalStats'
+import { nonEmpty } from '../shared/journalStats'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
-import { useServerClock } from '../lib/useServerClock'
+import { useServerClock } from '../client/useServerClock'
 import { adminHead } from './-adminHead'
 import { AdminSectionState } from './-AdminSectionState'
 import { BeautifyStats } from './-BeautifyStats'

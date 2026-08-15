@@ -17,10 +17,10 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T1**  | Spike extraction vision multi-recettes   | P1  | ✅     | PR #1 + rejeu v3 dans PR #5 | `spike/RESULTS.md`                                               |
 | **T13** | Spike embellissement d'image             | P1  | ✅     | PR #3                       | `spike13/RESULTS.md`                                             |
 | —       | Socle et vitrine publique                | P1  | ✅     | PR #2                       | `src/routes/index.tsx`, `recette.$slug.tsx`                      |
-| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/lib/recipe-schema.ts`, `convex/schema.ts`                   |
+| **T2**  | Schéma Zod source unique + pont Convex   | P1  | ✅     | PR #5                       | `src/shared/recipe-schema.ts`, `convex/schema.ts`                |
 | **T3**  | Finalisation atomique avec `attemptId`   | P1  | ✅     | PR #5                       | `convex/extract.ts`, `convex/extract.test.ts`                    |
 | **T4**  | `requireAdmin` mutations/actions/queries | P1  | ✅     | PR #5                       | `convex/auth.ts`, `convex/rateLimits.ts`                         |
-| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/lib/imageHeader.ts`                  |
+| **T5**  | Garde-fou format image + plafond octets  | P1  | ✅     | PR #5                       | `src/lib/compress.ts`, `src/shared/imageHeader.ts`               |
 | **T6**  | `raw` canonique + structure optionnelle  | P1  | ✅     | PR #2 (`scale.ts`) + PR #5  | `src/lib/scale.ts`, `spike/replay-fixtures.ts`                   |
 | **T15** | Contrôles GitHub Actions sur les PR      | P3  | ✅     | PR #4                       | `.github/workflows/ci.yml`                                       |
 | **T12** | Câbler Convex ↔ Vercel                   | P3  | ✅     | PR #7                       | `vercel.json`, `.github/workflows/preview.yml`                   |
@@ -28,7 +28,7 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 | **T8**  | Scan multi-images + écran de correction  | P2  | ✅     | PR #11                      | `convex/recipeAdmin.ts`, `src/routes/admin_.scan.$id.tsx`        |
 | **T9**  | Export automatique versionné dans git    | P2  | ✅     | PR #9                       | `convex/export.ts`, `scripts/restore.ts`                         |
 | **T10** | Compteurs de file + bouton relancer      | P2  | ✅     | PR #8                       | `convex/admin.ts`, `src/lib/queueStatus.ts`                      |
-| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/lib/attemptStats.ts`                    |
+| **T11** | Durcissement de l'appel OpenRouter       | P2  | ✅     | PR #10                      | `convex/schema.ts`, `src/shared/attemptStats.ts`                 |
 | **T14** | Photo du plat : upload, embellissement   | P2  | ✅     | PR #13                      | `convex/illustrations.ts`, `src/routes/admin_.illustrations.tsx` |
 
 **Aucune tâche restante.** Les quinze tâches du plan sont livrées.
@@ -226,7 +226,7 @@ Ce sont des choses connues, mesurées et non faites. Elles n'ont pas de tâche �
 
 - **R7 · Câblage de l'administration non testé.** Les règles de dérivation de la file sont testées
   dans `src/lib/queueStatus.test.ts`, la matrice de transitions telle que l'écran la lit dans
-  `src/lib/illustrationWork.test.ts`, et le rapport de publication dans
+  `src/shared/illustrationWork.test.ts`, et le rapport de publication dans
   `src/routes/-scanCorrection.test.ts` — mais aucun test de composant ne couvre le JSX de `/admin`
   faute d'infrastructure React dédiée. C'est ce qui oblige toute logique arbitrable à sortir en
   fonction pure : c'est le seul endroit où elle est vérifiée.

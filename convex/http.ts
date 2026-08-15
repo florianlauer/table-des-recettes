@@ -1,8 +1,8 @@
 import { httpRouter } from 'convex/server'
 import { internal } from './_generated/api'
 import { httpAction } from './_generated/server'
-import { BACKUP_FORMAT_VERSION } from '../src/lib/backup-schema'
-import type { BackupRecipe } from '../src/lib/backup-schema'
+import { BACKUP_FORMAT_VERSION } from '../src/shared/backup-schema'
+import type { BackupRecipe } from '../src/shared/backup-schema'
 
 async function digest(value: string): Promise<Uint8Array> {
   return new Uint8Array(

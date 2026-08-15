@@ -20,22 +20,22 @@ import {
 } from './schema'
 import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
-import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
+import { MAX_INPUT_BYTES } from '../src/shared/imageHeader'
 import {
   ATTEMPTS_SAMPLED,
   attemptSummary,
   summarizeAttempts,
-} from '../src/lib/attemptStats'
+} from '../src/shared/attemptStats'
 import {
   configuredExtractionIdentity,
   isCurrentAttemptGroup,
-} from '../src/lib/currentIdentity'
-import { MAX_ATTEMPTS } from '../src/lib/queueContract'
+} from '../src/shared/currentIdentity'
+import { MAX_ATTEMPTS } from '../src/shared/queueContract'
 import {
   MAX_IMAGES_PER_SCAN,
   MAX_RECIPES_PER_SCAN,
   MAX_SCAN_BYTES,
-} from '../src/lib/scanLimits'
+} from '../src/shared/scanLimits'
 
 const createScanResult = v.union(
   v.object({ ok: v.literal(true), scanId: v.id('scans') }),

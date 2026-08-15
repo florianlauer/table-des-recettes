@@ -4,7 +4,7 @@ import { api } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import schema from './schema'
 import { RETENTION_AFTER_TREATMENT_MS } from './retention'
-import { SLUG_PROBE_LIMIT } from '../src/lib/scanLimits'
+import { SLUG_PROBE_LIMIT } from '../src/shared/scanLimits'
 import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')

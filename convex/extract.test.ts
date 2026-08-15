@@ -2,7 +2,7 @@ import { convexTest } from 'convex-test'
 import { describe, expect, test, vi } from 'vitest'
 import { internal } from './_generated/api'
 import schema from './schema'
-import { bytesToBase64 } from '../src/lib/base64'
+import { bytesToBase64 } from '../src/shared/base64'
 import {
   eligibility,
   extractImages,
@@ -12,14 +12,14 @@ import {
   UNCONSUMED_TICKET_GRACE_MS,
 } from './extract'
 import type { Doc, Id } from './_generated/dataModel'
-import { PROMPT_VERSION } from '../src/lib/recipe-prompt'
-import { RECIPE_SCHEMA_VERSION } from '../src/lib/recipe-schema'
+import { PROMPT_VERSION } from '../src/shared/recipe-prompt'
+import { RECIPE_SCHEMA_VERSION } from '../src/shared/recipe-schema'
 import {
   LEASE_MS,
   MAX_ATTEMPTS,
   REQUEST_TIMEOUT_MS,
-} from '../src/lib/queueContract'
-import { MAX_IMAGES_PER_SCAN } from '../src/lib/scanLimits'
+} from '../src/shared/queueContract'
+import { MAX_IMAGES_PER_SCAN } from '../src/shared/scanLimits'
 import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')

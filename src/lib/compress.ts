@@ -1,5 +1,5 @@
-import { IMAGE_HEADER_BYTES, sniffImageHeader } from './imageHeader'
-import type { ImageRefusalKind } from './imageHeader'
+import { IMAGE_HEADER_BYTES, sniffImageHeader } from '../shared/imageHeader'
+import type { ImageRefusalKind } from '../shared/imageHeader'
 
 export const MAX_LONG_EDGE = 2000
 export const JPEG_QUALITY = 0.8
