@@ -6,7 +6,8 @@ import { uploadCompressed } from './uploadCompressed'
 import type { UploadPhase } from '../lib/uploadProgress'
 
 export type AttachResult =
-  { ok: true; scanId: Id<'scans'> } | { ok: false; error: string }
+  | { ok: true; scanId: Id<'scans'> }
+  | { ok: false; error: string }
 
 /**
  * Shared by the capture surface, which omits `scanId` and therefore creates one scan per file, and

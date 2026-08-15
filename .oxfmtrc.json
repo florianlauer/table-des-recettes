@@ -1,0 +1,38 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+
+  // Ported from `prettier.config.js` and `.prettierignore` by `oxfmt --migrate=prettier`.
+  // `printWidth` is written down because oxfmt defaults to 100 where Prettier defaulted to 80:
+  // left implicit, the whole tree would reflow.
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 80,
+
+  // Off by default in Prettier, and this repository never sorted `package.json`: turning it on here
+  // would reorder the file on the next `npm run format`.
+  "sortPackageJson": false,
+
+  "ignorePatterns": [
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+
+    // Convex codegen: reformatting these files is undone by the next `convex dev`.
+    "convex/_generated",
+
+    // Local worktrees: whole checkouts of this repository, already checked where they live.
+    ".claude",
+
+    // Spike T1 artefacts: raw harness output, compared byte for byte.
+    "spike/fixtures/runs",
+    "spike/ladder.*.json",
+
+    // Replay of prompt v3 (step 6): raw output, compared byte for byte against the v2 archive.
+    "spike/runs-v3",
+
+    // Generated backup: the order and bytes of these files are controlled by the script. Only the
+    // JSON, so that `backup/README.md` stays formatted like the rest of the prose.
+    "backup/*.json"
+  ]
+}

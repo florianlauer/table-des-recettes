@@ -61,7 +61,7 @@ describe('endpoint ranking', () => {
   ) {
     const calls: string[] = []
     const fetchImpl = vi.fn(async (input: string | URL | Request) => {
-      const url = String(input)
+      const url = input instanceof Request ? input.url : String(input)
       calls.push(url)
       if (url.endsWith('/models')) {
         return Response.json({

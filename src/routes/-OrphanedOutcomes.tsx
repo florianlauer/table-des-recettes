@@ -37,6 +37,9 @@ export function OrphanedOutcomes({
     nodes.current.get(claimingKey)?.focus()
     gestures.releaseFocusClaim(claiming.gesture)
     // Keyed by the outcome, not by the array: the effect fires for the message that asked, once.
+    // Listing `claiming` and `gestures` would fire it again on every render that rebuilds them,
+    // stealing the focus back from wherever the reader has since moved it.
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [claimingKey])
 
   if (outcomes.length === 0) return null
