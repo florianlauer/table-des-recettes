@@ -319,12 +319,17 @@ describe('recency in the section that is always open', () => {
    * remembers to grow it. What replaces it is the structural fact the module made true: no gesture
    * patches a recipe on its own, so there is nothing left to classify.
    */
-  test('no gesture patches a recipe outside the illustration write module', () => {
+  test('neither gesture module patches a recipe on its own', () => {
     const sources = import.meta.glob(['./illustrations.ts', './beautify.ts'], {
       query: '?raw',
       import: 'default',
       eager: true,
     })
+
+    // A glob whose paths match nothing returns `{}` in silence — no build error, no warning — and
+    // the check below would then report zero offenders because it read zero files. Renaming or
+    // splitting either module is enough to trigger it, so the guard asserts its own input first.
+    expect(Object.keys(sources)).toHaveLength(2)
 
     const offenders = Object.entries(sources).flatMap(([path, source]) =>
       // Matched over the whole file rather than line by line: the argument is often on the next
@@ -336,7 +341,7 @@ describe('recency in the section that is always open', () => {
     )
     expect(
       offenders,
-      'A gesture that writes a recipe illustration goes through writeIllustration: it is what derives the stage keys, the queue date, the derivatives and the journal verdict together.',
+      'These two modules patch a recipe only through writeIllustration: it is what derives the stage keys, the queue date, the derivatives and the journal verdict together. This checks the two of them, not the whole backend.',
     ).toEqual([])
   })
 

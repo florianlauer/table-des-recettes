@@ -47,8 +47,9 @@ export type IllustrationIntent = {
   noPhotoAvailable?: boolean
   generation?: GenerationIntent
   /**
-   * The verdict owed to a pending attempt. Written before the candidate is dropped, so an
-   * arbitration keeps its verdict instead of being overwritten by the drop's `discarded`.
+   * The verdict owed to a pending attempt. Always written before the candidate is dropped, so an
+   * arbitration keeps its verdict instead of being overwritten by the drop's `discarded` — the
+   * precedence is fixed here, and a gesture cannot ask for the other order.
    */
   settle?: 'accepted' | 'rejected'
 }
@@ -93,8 +94,10 @@ function generationPatch(
       beautifyError: undefined,
       beautifyStartedAt: undefined,
     }
-  if (intent === 'settled')
-    return { beautifyStatus: 'idle', beautifyAttemptId: undefined }
+  // Full rest, not just the status and the id. Arbitration is only reachable from `review`, where
+  // the error and the start date are already clear, so this is identical today — and it stays
+  // correct the day something settles from another state.
+  if (intent === 'settled') return AT_REST
   if ('start' in intent)
     return {
       beautifyStatus: 'generating',
@@ -124,8 +127,9 @@ function stageChange(intent: IllustrationIntent): Partial<{
   } = {}
   let named = false
   if (intent.photo !== undefined) {
-    // Assigned rather than spread: `imageStorageId: undefined` is what removes the field, and a
-    // conditional spread would drop the key instead of clearing it.
+    // The key has to reach the patch carrying `undefined` — that is what removes the field, where an
+    // absent key would leave the photo in place. A `...(detached ? { imageStorageId: undefined } : {})`
+    // would express it too; assigning keeps the three branches below in one shape.
     change.imageStorageId =
       intent.photo === 'detach' ? undefined : intent.photo.attach
     named = true
@@ -162,6 +166,15 @@ async function applyPhoto(
  * `discarded` keeps the money counted and says no arbitration was possible — `rejected` would claim
  * a verdict nobody gave. It is a no-op on an attempt already settled, which is what lets an
  * arbitration name its own verdict and still drop the blob.
+ *
+ * Both the clearing and the settling run whether or not the slot held a blob, where the gesture-side
+ * version returned early. Neither can reach anything live: an attempt is only journalled `pending` in
+ * the transaction that already moved the recipe to `review`, where the blob is always present, and a
+ * rendition without its source is already dead to readers through the compare-and-set on
+ * `sourceStorageId`. What they collect is an orphan.
+ *
+ * The deletion on `adopt` is defensive: `requestBeautify` empties the slot before anything can enter
+ * `generating`, so a superseded candidate is unreachable from here today.
  */
 async function applyCandidate(
   ctx: MutationCtx,
