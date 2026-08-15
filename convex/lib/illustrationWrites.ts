@@ -24,11 +24,29 @@ type CandidateIntent = { adopt: Id<'_storage'> } | 'drop'
  * to rest.
  */
 type GenerationIntent =
-  | { start: string }
-  | { failed: string }
-  | { cancel: string }
-  | 'review'
-  | 'settled'
+  { start: string } | { failed: string } | { cancel: string } | 'review'
+
+/**
+ * The three things a gesture can do to the two image slots, and never two at once. A union rather
+ * than three optional keys because the combinations are not meaningful: a photo being replaced takes
+ * the candidate with it, and an arbitration is about a candidate that is already there.
+ *
+ * `photo` therefore carries its own consequences instead of asking the caller to restate them — the
+ * candidate goes, and an attach clears the "the coupure has no photo" flag. Leaving those to be
+ * named at the call site is exactly the forgetting this module exists to end.
+ */
+type SlotIntent =
+  | { photo: PhotoIntent; candidate?: never; arbitrate?: never }
+  | { candidate: CandidateIntent; photo?: never; arbitrate?: never }
+  /**
+   * The verdict, and everything it implies: the journal row settled, the generation back at rest,
+   * the embellishment published or its candidate destroyed. One word, because a gesture that could
+   * name the verdict without the publication — or the reverse — would be a gesture that can get an
+   * arbitration half-right, silently.
+   */
+  | { arbitrate: 'accepted' | 'rejected'; photo?: never; candidate?: never }
+  /** A gesture that touches neither slot: the flag, the de-publication, the generation alone. */
+  | { photo?: never; candidate?: never; arbitrate?: never }
 
 /**
  * One gesture's effect on a recipe's illustration, said in the terms the screen says it in.
@@ -39,20 +57,12 @@ type GenerationIntent =
  * a consequence of it, which is the whole reason this type is not a patch.
  */
 export type IllustrationIntent = {
-  photo?: PhotoIntent
-  candidate?: CandidateIntent
-  /** The embellishment is published on the storefront, or it is not. */
-  accepted?: boolean
+  /** Takes the embellishment off the storefront. The candidate blob and its verdict both survive. */
+  unpublish?: true
   /** The operator's own statement about the coupure: it carries no photo. */
   noPhotoAvailable?: boolean
   generation?: GenerationIntent
-  /**
-   * The verdict owed to a pending attempt. Always written before the candidate is dropped, so an
-   * arbitration keeps its verdict instead of being overwritten by the drop's `discarded` — the
-   * precedence is fixed here, and a gesture cannot ask for the other order.
-   */
-  settle?: 'accepted' | 'rejected'
-}
+} & SlotIntent
 
 /** The four fields the generation lifecycle owns, and the only ones it may write. */
 type GenerationPatch = Partial<
@@ -94,10 +104,6 @@ function generationPatch(
       beautifyError: undefined,
       beautifyStartedAt: undefined,
     }
-  // Full rest, not just the status and the id. Arbitration is only reachable from `review`, where
-  // the error and the start date are already clear, so this is identical today — and it stays
-  // correct the day something settles from another state.
-  if (intent === 'settled') return AT_REST
   if ('start' in intent)
     return {
       beautifyStatus: 'generating',
@@ -115,34 +121,38 @@ function generationPatch(
 }
 
 /** The three fields the stage is a function of, named only when the gesture changed one. */
-function stageChange(intent: IllustrationIntent): Partial<{
+type StageChange = Partial<{
   imageStorageId: Id<'_storage'> | undefined
   beautifiedAccepted: boolean
   noPhotoAvailable: boolean
-}> | null {
-  const change: {
-    imageStorageId?: Id<'_storage'> | undefined
-    beautifiedAccepted?: boolean
-    noPhotoAvailable?: boolean
-  } = {}
-  let named = false
-  if (intent.photo !== undefined) {
-    // The key has to reach the patch carrying `undefined` — that is what removes the field, where an
-    // absent key would leave the photo in place. A `...(detached ? { imageStorageId: undefined } : {})`
-    // would express it too; assigning keeps the three branches below in one shape.
-    change.imageStorageId =
-      intent.photo === 'detach' ? undefined : intent.photo.attach
-    named = true
+}>
+
+/**
+ * What the gesture changed of the three, consequences included: attaching a photo clears the flag
+ * rather than leaving it dormant — a state that says "the coupure has no photo" next to a photo
+ * would be a state that lies — and an accepted arbitration is what publishes the embellishment.
+ *
+ * `null` when the gesture touched none of them, which is the signal to bump the queue date alone.
+ */
+function stageChange({
+  photo,
+  arbitrate,
+  unpublish,
+  noPhotoAvailable,
+}: IllustrationIntent): StageChange | null {
+  const change: StageChange = {
+    // Spread rather than assigned, and the key survives carrying `undefined`: that is what removes
+    // the field on a detach, where an absent key would leave the photo in place.
+    ...(photo === undefined
+      ? {}
+      : photo === 'detach'
+        ? { imageStorageId: undefined }
+        : { imageStorageId: photo.attach, noPhotoAvailable: false }),
+    ...(arbitrate === 'accepted' ? { beautifiedAccepted: true } : {}),
+    ...(unpublish ? { beautifiedAccepted: false } : {}),
+    ...(noPhotoAvailable === undefined ? {} : { noPhotoAvailable }),
   }
-  if (intent.accepted !== undefined) {
-    change.beautifiedAccepted = intent.accepted
-    named = true
-  }
-  if (intent.noPhotoAvailable !== undefined) {
-    change.noPhotoAvailable = intent.noPhotoAvailable
-    named = true
-  }
-  return named ? change : null
+  return Object.keys(change).length > 0 ? change : null
 }
 
 /**
@@ -164,8 +174,8 @@ async function applyPhoto(
 /**
  * The candidate slot's destructions. `drop` also settles: billed, destroyed, never judged.
  * `discarded` keeps the money counted and says no arbitration was possible — `rejected` would claim
- * a verdict nobody gave. It is a no-op on an attempt already settled, which is what lets an
- * arbitration name its own verdict and still drop the blob.
+ * a verdict nobody gave. It is a no-op on an attempt already settled, which is what lets a rejection
+ * name its own verdict and still drop the blob.
  *
  * Both the clearing and the settling run whether or not the slot held a blob, where the gesture-side
  * version returned early. Neither can reach anything live: an attempt is only journalled `pending` in
@@ -191,16 +201,14 @@ async function applyCandidate(
 }
 
 /**
- * The single writer of a recipe's illustration. Every gesture on the photo screen, and both
- * outcomes of a render, go through here.
+ * The single writer of a recipe's illustration. Every gesture on the photo screen, and both outcomes
+ * of a render, go through here.
  *
  * It exists because the consequences were spread over twelve patch sites that each had to remember
  * them: the stage keys to recompute, the date the work queue orders on, the derivative to destroy
- * with its source, the journal row to settle. None of that was checkable — the compiler can prove a
- * call that goes through a helper is complete, never that a call which should go through it does —
- * so it was held by a test listing twenty-four function names by hand, whose own comment recorded
- * that two sites had escaped review twice. A test that maintains an inventory is a module that does
- * not exist yet.
+ * with its source, the journal row to settle. The compiler can prove a call that goes through a
+ * helper is complete, never that a call which should go through it does — so the rule was held by a
+ * test maintaining an inventory of function names, which is what a missing module looks like.
  *
  * `at` is positional: spread into a patch it would become a stray key the schema rejects.
  */
@@ -210,14 +218,20 @@ export async function writeIllustration(
   intent: IllustrationIntent,
   at: number,
 ): Promise<void> {
-  // Before the drop below, whose `discarded` only writes an attempt still pending.
-  if (intent.settle)
-    await settleAttempt(ctx, recipe.beautifyAttemptId, intent.settle)
+  const { photo, candidate, arbitrate, generation } = intent
 
-  const photo = intent.photo ? await applyPhoto(ctx, recipe, intent.photo) : {}
-  const candidate = intent.candidate
-    ? await applyCandidate(ctx, recipe, intent.candidate)
-    : {}
+  // Before the drop below, whose `discarded` only writes an attempt still pending.
+  if (arbitrate) await settleAttempt(ctx, recipe.beautifyAttemptId, arbitrate)
+
+  // The original leaving takes the candidate with it: one rendered from an image that no longer
+  // exists cannot be compared against the one that replaced it, and the arbitration screen would be
+  // showing two pictures of different things and calling it a choice. A rejection destroys it for
+  // the plainer reason that it has just been refused.
+  const slot: CandidateIntent | undefined =
+    photo || arbitrate === 'rejected' ? 'drop' : candidate
+
+  const patched = photo ? await applyPhoto(ctx, recipe, photo) : {}
+  const dropped = slot ? await applyCandidate(ctx, recipe, slot) : {}
 
   const change = stageChange(intent)
   await ctx.db.patch(recipe._id, {
@@ -227,10 +241,13 @@ export async function writeIllustration(
     // still — and without the bump it would land at the bottom of a capped section, at the date its
     // photo was attached.
     ...(change ? restaged(recipe, change, at) : touchedIllustration(at)),
-    ...photo,
-    ...candidate,
-    ...(intent.generation
-      ? generationPatch(recipe, intent.generation, at)
-      : {}),
+    ...patched,
+    ...dropped,
+    // An arbitration always ends at rest, whatever its verdict.
+    ...(arbitrate
+      ? AT_REST
+      : generation
+        ? generationPatch(recipe, generation, at)
+        : {}),
   })
 }

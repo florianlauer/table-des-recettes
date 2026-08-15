@@ -159,17 +159,7 @@ export const commitIllustration = internalMutation({
     await writeIllustration(
       ctx,
       recipe,
-      {
-        photo: { attach: storageId },
-        // Attaching a photo clears the flag rather than leaving it dormant: a state that says "the
-        // source has no photo" next to a photo would be a state that lies.
-        noPhotoAvailable: false,
-        // The original leaving takes the candidate with it. A candidate rendered from an image that
-        // no longer exists cannot be compared against the one that replaced it — the arbitration
-        // screen would be showing two pictures of different things and calling it a choice.
-        candidate: 'drop',
-        generation: { cancel: REPLACED_REASON },
-      },
+      { photo: { attach: storageId }, generation: { cancel: REPLACED_REASON } },
       Date.now(),
     )
     await ctx.db.patch(ticketId, {
@@ -200,14 +190,10 @@ export const detachIllustration = recipeMutation(async (ctx, recipe) => {
   await writeIllustration(
     ctx,
     recipe,
-    {
-      // Only the photo is named, so the flag is read off the document rather than forced: a recipe
-      // whose photo is removed goes back to `missing`, and only a recipe that still carries the flag
-      // goes back to `source-has-none`.
-      photo: 'detach',
-      candidate: 'drop',
-      generation: { cancel: DETACHED_REASON },
-    },
+    // Detaching does not force the flag, it reads it off the document: a recipe whose photo is
+    // removed goes back to `missing`, and only one that already carried the flag goes back to
+    // `source-has-none`.
+    { photo: 'detach', generation: { cancel: DETACHED_REASON } },
     Date.now(),
   )
   return succeeded
@@ -264,12 +250,7 @@ export const acceptBeautified = recipeMutation(async (ctx, recipe) => {
   const blocked = await arbitrable(ctx, recipe)
   if (blocked) return blocked
 
-  await writeIllustration(
-    ctx,
-    recipe,
-    { settle: 'accepted', accepted: true, generation: 'settled' },
-    Date.now(),
-  )
+  await writeIllustration(ctx, recipe, { arbitrate: 'accepted' }, Date.now())
   return succeeded
 })
 
@@ -281,12 +262,7 @@ export const rejectPendingCandidate = recipeMutation(async (ctx, recipe) => {
   // beautification — but the recipe re-enters "À embellir". The module bumps the date for it, which
   // is what keeps it from re-entering at the date its photo was attached — in a capped section,
   // nowhere.
-  await writeIllustration(
-    ctx,
-    recipe,
-    { settle: 'rejected', candidate: 'drop', generation: 'settled' },
-    Date.now(),
-  )
+  await writeIllustration(ctx, recipe, { arbitrate: 'rejected' }, Date.now())
   return succeeded
 })
 
@@ -320,7 +296,7 @@ export const unpublishAcceptedCandidate = recipeMutation(
       return refuse('Aucun embellissement publié sur cette recette')
     // The attempt's outcome is untouched: it records what the human thought of the render, not what
     // is on the storefront today.
-    await writeIllustration(ctx, recipe, { accepted: false }, Date.now())
+    await writeIllustration(ctx, recipe, { unpublish: true }, Date.now())
     return succeeded
   },
 )

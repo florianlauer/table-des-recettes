@@ -65,3 +65,17 @@ Le passage d'une photo de plat par un modèle d'édition d'image pour en retirer
 « photo d'une photo ». Son résultat est un **candidat** tant qu'un humain ne l'a pas accepté, et
 la photo d'origine n'est jamais remplacée.
 _Avoid_: retouche, amélioration, restauration
+
+**Candidat** :
+Le rendu d'un **embellissement**, en attente d'**arbitrage**. Il occupe un emplacement d'image
+distinct de la photo d'origine, qu'il ne remplace jamais. Il disparaît entier — l'image, sa
+dérivée d'affichage, et la ligne de journal qui le facture — ou il est publié.
+_Avoid_: preview, proposition, variante
+
+**Arbitrage** :
+Le verdict humain rendu sur un **candidat** : accepté, donc publié en vitrine, ou rejeté, donc
+détruit. Il s'écrit une fois — un candidat conservé après une dépublication n'est plus
+arbitrable, son verdict est déjà donné. Un rendu facturé mais jamais soumis à un humain n'a pas
+de verdict : il est _écarté_, ce qui garde la dépense comptée sans prétendre à un jugement que
+personne n'a rendu.
+_Avoid_: validation, modération, revue
