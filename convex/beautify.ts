@@ -11,6 +11,8 @@ import {
   findAttempt,
   journalBeautifyAttempt,
 } from './lib/beautifyJournal'
+import { callOpenRouter } from './lib/openrouter'
+import type { Billing } from './lib/openrouter'
 import { literalUnion } from './lib/validators'
 import { BEAUTIFY_MODEL, BEAUTIFY_PROMPT } from '../src/lib/beautifyPrompt'
 import { beautifyFailureKind } from '../src/lib/beautifyFailureKinds'
@@ -20,8 +22,6 @@ import type {
 } from '../src/lib/beautifyFailureKinds'
 import { base64ToBytes, bytesToBase64 } from '../src/lib/base64'
 import { MAX_INPUT_BYTES, sniffImageHeader } from '../src/lib/imageHeader'
-
-export const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1'
 
 /** What became of the candidate — the only two answers a finalisation can give. */
 const finalizeOutcome = literalUnion(['adopted', 'discarded'] as const)
@@ -55,13 +55,8 @@ type OpenRouterImageResponse = {
   error?: { message?: string }
 }
 
-type Observation = {
-  model: string
-  servedProvider: string | null
-  latencyMs: number
-  costUsd: number
-  costReported: boolean
-}
+/** The billing of a call, plus the one thing the transport cannot know: which model was asked. */
+type Observation = Billing & { model: string }
 
 export type BeautifyResult =
   | ({
@@ -76,40 +71,6 @@ type Decoded =
   | { ok: false; kind: BeautifyFailureKind; error: string }
 
 const DATA_URI = /^data:(image\/[a-z0-9.+-]+);base64,(.+)$/i
-
-/**
- * Reads the response while bounding it. `response.text()` would already have the whole body in
- * memory before any ceiling could apply, which is exactly how an oversized answer takes the action
- * down instead of being refused by it.
- */
-export async function readBoundedBody(
-  response: Response,
-  maxBytes: number,
-): Promise<{ ok: true; text: string } | { ok: false }> {
-  const body = response.body
-  // No stream to bound — and nothing to fear either, since there is no body to read.
-  if (!body) return { ok: true, text: await response.text() }
-
-  const reader = body.getReader()
-  const chunks: Uint8Array[] = []
-  let total = 0
-  for (;;) {
-    const { done, value } = await reader.read()
-    if (done) break
-    total += value.byteLength
-    if (total > maxBytes) {
-      await reader.cancel()
-      return { ok: false }
-    }
-    chunks.push(value)
-  }
-  // Streamed rather than joined then decoded: a UTF-8 sequence can straddle two chunks.
-  const decoder = new TextDecoder()
-  const text = chunks
-    .map((chunk) => decoder.decode(chunk, { stream: true }))
-    .join('')
-  return { ok: true, text: text + decoder.decode() }
-}
 
 /**
  * What the answer contains, with no notion of when it arrived — hence testable without a fetch
@@ -175,12 +136,7 @@ export async function beautifyImage({
   timeoutMs?: number
 }): Promise<BeautifyResult> {
   const startedAt = performance.now()
-  const idle = {
-    model: BEAUTIFY_MODEL,
-    servedProvider: null,
-    costUsd: 0,
-    costReported: false,
-  }
+  /** Refused before anything was sent, so nothing was billed. */
   const refuse = (
     kind: BeautifyFailureKind,
     error: string,
@@ -188,7 +144,10 @@ export async function beautifyImage({
     ok: false,
     kind,
     error,
-    ...idle,
+    model: BEAUTIFY_MODEL,
+    servedProvider: null,
+    costUsd: 0,
+    costReported: false,
     latencyMs: performance.now() - startedAt,
   })
 
@@ -200,95 +159,54 @@ export async function beautifyImage({
   const header = sniffImageHeader({ bytes, fileSize: blob.size })
   if (!header.ok) return refuse('invalid_image', header.message)
 
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), timeoutMs)
-  let response: Response
-  try {
-    response = await fetchImpl(`${OPENROUTER_API_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        model: BEAUTIFY_MODEL,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: BEAUTIFY_PROMPT },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: `data:image/${header.format};base64,${bytesToBase64(bytes)}`,
-                },
+  const call = await callOpenRouter({
+    apiKey,
+    fetchImpl,
+    timeoutMs,
+    maxResponseBytes: MAX_RESPONSE_BYTES,
+    body: JSON.stringify({
+      model: BEAUTIFY_MODEL,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: BEAUTIFY_PROMPT },
+            {
+              type: 'image_url',
+              image_url: {
+                url: `data:image/${header.format};base64,${bytesToBase64(bytes)}`,
               },
-            ],
-          },
-        ],
-        // Without this an image-capable model answers in words.
-        modalities: ['image', 'text'],
-        usage: { include: true },
-      }),
-    })
-  } catch (error) {
-    const timedOut =
-      error instanceof DOMException && error.name === 'AbortError'
-    return refuse(
-      timedOut ? 'timeout' : 'transport',
-      timedOut
-        ? 'Délai OpenRouter dépassé'
-        : `Transport OpenRouter : ${String(error)}`,
-    )
-  } finally {
-    clearTimeout(timer)
-  }
+            },
+          ],
+        },
+      ],
+      // Without this an image-capable model answers in words.
+      modalities: ['image', 'text'],
+      usage: { include: true },
+    }),
+    decode: (raw) => {
+      const decoded = decodeBeautifiedImage(raw as OpenRouterImageResponse)
+      return decoded.ok
+        ? { ok: true as const, value: decoded }
+        : { ok: false as const, kind: decoded.kind, error: decoded.error }
+    },
+  })
 
-  const read = await readBoundedBody(response, MAX_RESPONSE_BYTES)
-  if (!read.ok)
-    return refuse('truncated', 'Réponse OpenRouter trop volumineuse')
-
-  let raw: OpenRouterImageResponse
-  try {
-    raw = JSON.parse(read.text) as OpenRouterImageResponse
-  } catch {
-    return refuse(
-      'transport',
-      `Réponse OpenRouter illisible : HTTP ${response.status}`,
-    )
-  }
-
-  // Billed even when the answer is unusable, so the price is read before any rejection — and the
-  // flag says whether it was reported at all, since a missing one is not a free call.
-  const reportedCost = raw.usage?.cost
-  const costReported =
-    typeof reportedCost === 'number' && Number.isFinite(reportedCost)
   const observation: Observation = {
     model: BEAUTIFY_MODEL,
-    servedProvider: raw.provider ?? null,
-    latencyMs: performance.now() - startedAt,
-    costUsd: costReported ? reportedCost : 0,
-    costReported,
+    servedProvider: call.servedProvider,
+    latencyMs: call.latencyMs,
+    costUsd: call.costUsd,
+    costReported: call.costReported,
   }
-
-  if (!response.ok) {
-    return {
-      ok: false,
-      kind: 'transport',
-      error: `OpenRouter HTTP ${response.status} : ${raw.error?.message ?? read.text.slice(0, 300)}`,
-      ...observation,
-    }
-  }
-  const decoded = decodeBeautifiedImage(raw)
-  return decoded.ok
+  return call.ok
     ? {
         ok: true,
-        bytes: decoded.bytes,
-        mediaType: decoded.mediaType,
+        bytes: call.value.bytes,
+        mediaType: call.value.mediaType,
         ...observation,
       }
-    : { ok: false, kind: decoded.kind, error: decoded.error, ...observation }
+    : { ok: false, kind: call.kind, error: call.error, ...observation }
 }
 
 export const render = internalAction({

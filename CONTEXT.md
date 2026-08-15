@@ -60,6 +60,12 @@ Un bloc de l'index rassemblant les recettes publiées partageant la même initia
 apparaît une seule fois, dans la marge.
 _Avoid_: section, catégorie
 
+**Appel facturé** :
+Un aller-retour vers le modèle, extraction ou embellissement. Il est facturé dès qu'il est servi,
+même quand sa réponse est inutilisable : son prix et son fournisseur sont donc lus avant tout
+verdict sur le contenu, et un prix absent se journalise comme non déclaré, pas comme gratuit.
+_Avoid_: requête, appel API, transaction
+
 **Embellissement** :
 Le passage d'une photo de plat par un modèle d'édition d'image pour en retirer le contexte
 « photo d'une photo ». Son résultat est un **candidat** tant qu'un humain ne l'a pas accepté, et

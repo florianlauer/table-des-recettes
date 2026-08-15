@@ -6,8 +6,8 @@ import {
   decodeBeautifiedImage,
   MAX_BASE64_CHARS,
   MAX_RESPONSE_BYTES,
-  readBoundedBody,
 } from './beautify'
+import { readBoundedBody } from './lib/openrouter'
 import schema from './schema'
 import { bytesToBase64 } from '../src/lib/base64'
 import { BEAUTIFY_MODEL } from '../src/lib/beautifyPrompt'
