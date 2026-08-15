@@ -341,6 +341,26 @@ export const rejectPendingCandidate = recipeMutation(async (ctx, recipe) => {
 })
 
 /**
+ * Whether this candidate is still owed a verdict — the one predicate the screen and the guard
+ * share. The screen used to mirror it as `beautifyStatus === 'review'` alone and offered « Accepter »
+ * on rows the guard would refuse; it reads this off the row now.
+ *
+ * `review` without an attempt is a state nothing produces: finalisation is the only writer of that
+ * status and it always keeps the id. Judging one anyway would settle a render whose billed cost has
+ * no row to be attributed to — and the attempt id is cleared precisely *by* arbitration, so its
+ * absence is the mark of a verdict already given.
+ */
+async function awaitsArbitration(
+  ctx: QueryCtx,
+  recipe: Doc<'recipes'>,
+): Promise<boolean> {
+  if (recipe.beautifyStatus !== 'review' || !recipe.beautifyAttemptId)
+    return false
+  const attempt = await findAttempt(ctx, recipe.beautifyAttemptId)
+  return !attempt || attempt.outcome === 'pending'
+}
+
+/**
  * Reserved to `review`, the only state where an attempt is still `pending` — and therefore the only
  * one where a judgement is still owed. A candidate kept after a de-publication is not arbitrable:
  * its attempt reads `accepted`, for good, and rewriting that would be a second arbitration.
@@ -351,16 +371,9 @@ async function arbitrable(
 ): Promise<Refusal | null> {
   if (recipe.beautifyStatus !== 'review')
     return refuse('Aucun candidat en attente d’arbitrage sur cette recette')
-  // `review` without an attempt is a state nothing produces: finalisation is the only writer of that
-  // status and it always keeps the id. Judging one anyway would settle a render whose billed cost
-  // has no row to be attributed to — and the attempt id is cleared precisely *by* arbitration, so
-  // its absence is the mark of a verdict already given.
-  if (!recipe.beautifyAttemptId)
-    return refuse('Cette génération a déjà été arbitrée')
-  const attempt = await findAttempt(ctx, recipe.beautifyAttemptId)
-  return attempt && attempt.outcome !== 'pending'
-    ? refuse('Cette génération a déjà été arbitrée')
-    : null
+  return (await awaitsArbitration(ctx, recipe))
+    ? null
+    : refuse('Cette génération a déjà été arbitrée')
 }
 
 /** The blob survives: the storefront falls back to the original without losing a paid render. */
@@ -486,6 +499,9 @@ const illustrationRow = v.object({
   noPhotoAvailable: v.boolean(),
   beautifyError: v.union(v.string(), v.null()),
   beautifyStartedAt: v.union(v.number(), v.null()),
+  // Whether the arbitration buttons are owed on this row. Computed by the same predicate the
+  // mutations guard with, rather than re-derived on the screen from `beautifyStatus`.
+  awaitingArbitration: v.boolean(),
   // When this recipe's photo work last moved, which is what the day separators group on. Falls back
   // to `_creationTime` for a recipe the stage backfill has not reached: those are still served by
   // `active`, which reads `by_beautify_status` and knows nothing about the migration.
@@ -555,6 +571,8 @@ async function toRow(
     noPhotoAvailable: recipe.noPhotoAvailable ?? false,
     beautifyError: recipe.beautifyError ?? null,
     beautifyStartedAt: recipe.beautifyStartedAt ?? null,
+    // One indexed read, and only for a row in `review` — the predicate returns on the status first.
+    awaitingArbitration: await awaitsArbitration(ctx, recipe),
     // The fallback is not decorative: an unmigrated recipe that is mid-generation is served by
     // `active`, and without it `updatedAt` would be `undefined` — a return-validator failure that
     // takes the whole screen down, arbitration included, for the length of the backfill.
