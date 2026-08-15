@@ -6,15 +6,10 @@ import type { MutationCtx, QueryCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
-import { findAttempt, settleAttempt } from './lib/beautifyJournal'
-import { restaged, touchedIllustration } from './lib/recipeWrites'
-import {
-  clearRendition,
-  renditionOf,
-  sourceOf,
-  usableDerivative,
-} from './lib/renditions'
-import type { RenditionPatch, RenditionSlot } from './lib/renditions'
+import { findAttempt } from './lib/beautifyJournal'
+import { writeIllustration } from './lib/illustrationWrites'
+import { renditionOf, sourceOf, usableDerivative } from './lib/renditions'
+import type { RenditionSlot } from './lib/renditions'
 import { literalUnion, okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { rateLimiter } from './rateLimits'
@@ -63,47 +58,6 @@ function recipeMutation(
       return recipe ? handler(ctx, recipe) : refuse('Recette inconnue')
     },
   })
-}
-
-/**
- * A generation still running is cancelled whole, not half. Clearing only the attempt id — as an
- * earlier design did — left the recipe `generating` until a lease expired by hand: blocked, with
- * nothing on screen saying why.
- */
-function withoutGeneration(recipe: Doc<'recipes'>, reason: string) {
-  return recipe.beautifyStatus === 'generating'
-    ? {
-        beautifyStatus: 'failed' as const,
-        beautifyError: reason,
-        beautifyAttemptId: undefined,
-        beautifyStartedAt: undefined,
-      }
-    : {
-        beautifyStatus: 'idle' as const,
-        beautifyError: undefined,
-        beautifyAttemptId: undefined,
-        beautifyStartedAt: undefined,
-      }
-}
-
-/**
- * The original leaving takes the candidate with it. A candidate rendered from an image that no
- * longer exists cannot be compared against the one that replaced it — the arbitration screen would
- * be showing two pictures of different things and calling it a choice.
- */
-async function dropCandidate(
-  ctx: MutationCtx,
-  recipe: Doc<'recipes'>,
-): Promise<RenditionPatch> {
-  if (!recipe.beautifiedStorageId) return {}
-  await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
-  // The derivative goes with its source: kept, it would be a blob nothing references, and the read
-  // path would still be pointing at a photo that no longer exists.
-  const cleared = await clearRendition(ctx, recipe, 'beautified')
-  // Billed, destroyed, never judged. `rejected` would claim a verdict nobody gave; `discarded` is
-  // the outcome that keeps the money counted and says no arbitration was possible.
-  await settleAttempt(ctx, recipe.beautifyAttemptId, 'discarded')
-  return cleared
 }
 
 /**
@@ -202,23 +156,12 @@ export const commitIllustration = internalMutation({
         'Un embellissement est publié sur cette recette : dépublie-le avant de remplacer la photo',
       )
 
-    if (recipe.imageStorageId && recipe.imageStorageId !== storageId)
-      await deleteStoredBlob(ctx, recipe.imageStorageId)
-    const clearedOriginal = await clearRendition(ctx, recipe, 'original')
-    const clearedCandidate = await dropCandidate(ctx, recipe)
-    await ctx.db.patch(recipeId, {
-      // Attaching a photo clears the flag rather than leaving it dormant: a state that says "the
-      // source has no photo" next to a photo would be a state that lies.
-      ...restaged(
-        recipe,
-        { imageStorageId: storageId, noPhotoAvailable: false },
-        Date.now(),
-      ),
-      beautifiedStorageId: undefined,
-      ...clearedOriginal,
-      ...clearedCandidate,
-      ...withoutGeneration(recipe, REPLACED_REASON),
-    })
+    await writeIllustration(
+      ctx,
+      recipe,
+      { photo: { attach: storageId }, generation: { cancel: REPLACED_REASON } },
+      Date.now(),
+    )
     await ctx.db.patch(ticketId, {
       consumedAt,
       storageId,
@@ -244,19 +187,15 @@ export const detachIllustration = recipeMutation(async (ctx, recipe) => {
     )
   if (!recipe.imageStorageId) return refuse('Cette recette n’a pas de photo')
 
-  await deleteStoredBlob(ctx, recipe.imageStorageId)
-  const clearedOriginal = await clearRendition(ctx, recipe, 'original')
-  const clearedCandidate = await dropCandidate(ctx, recipe)
-  await ctx.db.patch(recipe._id, {
-    // Only the photo is named, so the flag is read off the document rather than forced: a recipe whose
-    // photo is removed goes back to `missing`, and only a recipe that still carries the flag goes back
-    // to `source-has-none`.
-    ...restaged(recipe, { imageStorageId: undefined }, Date.now()),
-    beautifiedStorageId: undefined,
-    ...clearedOriginal,
-    ...clearedCandidate,
-    ...withoutGeneration(recipe, DETACHED_REASON),
-  })
+  await writeIllustration(
+    ctx,
+    recipe,
+    // Detaching does not force the flag, it reads it off the document: a recipe whose photo is
+    // removed goes back to `missing`, and only one that already carried the flag goes back to
+    // `source-has-none`.
+    { photo: 'detach', generation: { cancel: DETACHED_REASON } },
+    Date.now(),
+  )
   return succeeded
 })
 
@@ -283,21 +222,20 @@ export const requestBeautify = recipeMutation(async (ctx, recipe) => {
       `Trop de générations lancées : réessaie dans ${Math.ceil(limit.retryAfter / 1000)} s`,
     )
 
-  // No candidate blob survives a new generation. Without this, the one a de-publication kept was
-  // silently overwritten by the next — one orphan per regeneration.
-  await dropCandidate(ctx, recipe)
-
   const now = Date.now()
   const attemptId = `${recipe._id}:${now}`
-  await ctx.db.patch(recipe._id, {
-    beautifiedStorageId: undefined,
-    beautifyStatus: 'generating',
-    beautifyAttemptId: attemptId,
-    beautifyStartedAt: now,
-    beautifyError: undefined,
-    // Leaves "À embellir" for "À arbitrer": the section changes even though the stage does not.
-    ...touchedIllustration(now),
-  })
+  await writeIllustration(
+    ctx,
+    recipe,
+    {
+      // No candidate blob survives a new generation. Without this, the one a de-publication kept was
+      // silently overwritten by the next — one orphan per regeneration.
+      candidate: 'drop',
+      // Leaves "À embellir" for "À arbitrer": the section changes even though the stage does not.
+      generation: { start: attemptId },
+    },
+    now,
+  )
   await ctx.scheduler.runAfter(0, internal.beautify.render, {
     recipeId: recipe._id,
     attemptId,
@@ -312,12 +250,7 @@ export const acceptBeautified = recipeMutation(async (ctx, recipe) => {
   const blocked = await arbitrable(ctx, recipe)
   if (blocked) return blocked
 
-  await settleAttempt(ctx, recipe.beautifyAttemptId, 'accepted')
-  await ctx.db.patch(recipe._id, {
-    ...restaged(recipe, { beautifiedAccepted: true }, Date.now()),
-    beautifyStatus: 'idle',
-    beautifyAttemptId: undefined,
-  })
+  await writeIllustration(ctx, recipe, { arbitrate: 'accepted' }, Date.now())
   return succeeded
 })
 
@@ -325,18 +258,11 @@ export const rejectPendingCandidate = recipeMutation(async (ctx, recipe) => {
   const blocked = await arbitrable(ctx, recipe)
   if (blocked) return blocked
 
-  await settleAttempt(ctx, recipe.beautifyAttemptId, 'rejected')
-  const cleared = await dropCandidate(ctx, recipe)
-  await ctx.db.patch(recipe._id, {
-    beautifiedStorageId: undefined,
-    ...cleared,
-    beautifyStatus: 'idle',
-    beautifyAttemptId: undefined,
-    // The one that is easiest to miss: the stage is unchanged — still an original, still no accepted
-    // beautification — but the recipe re-enters "À embellir". Without this it would re-enter at the
-    // date its photo was attached, which in a capped section means nowhere.
-    ...touchedIllustration(Date.now()),
-  })
+  // The one that is easiest to miss: the stage is unchanged — still an original, still no accepted
+  // beautification — but the recipe re-enters "À embellir". The module bumps the date for it, which
+  // is what keeps it from re-entering at the date its photo was attached — in a capped section,
+  // nowhere.
+  await writeIllustration(ctx, recipe, { arbitrate: 'rejected' }, Date.now())
   return succeeded
 })
 
@@ -370,10 +296,7 @@ export const unpublishAcceptedCandidate = recipeMutation(
       return refuse('Aucun embellissement publié sur cette recette')
     // The attempt's outcome is untouched: it records what the human thought of the render, not what
     // is on the storefront today.
-    await ctx.db.patch(
-      recipe._id,
-      restaged(recipe, { beautifiedAccepted: false }, Date.now()),
-    )
+    await writeIllustration(ctx, recipe, { unpublish: true }, Date.now())
     return succeeded
   },
 )
@@ -386,15 +309,9 @@ export const deleteUnpublishedCandidate = recipeMutation(
     if (recipe.beautifyStatus !== 'idle' || !recipe.beautifiedStorageId)
       return refuse('Aucun candidat conservé à supprimer')
 
-    await deleteStoredBlob(ctx, recipe.beautifiedStorageId)
-    const cleared = await clearRendition(ctx, recipe, 'beautified')
-    await ctx.db.patch(recipe._id, {
-      beautifiedStorageId: undefined,
-      ...cleared,
-      // The section does not change, but the photo situation does — and the rule is stated on the
-      // five fields, not on the stage, so this one bumps too.
-      ...touchedIllustration(Date.now()),
-    })
+    // The section does not change, but the photo situation does — and the rule is stated on the five
+    // fields, not on the stage, so this one bumps too.
+    await writeIllustration(ctx, recipe, { candidate: 'drop' }, Date.now())
     return succeeded
   },
 )
@@ -410,13 +327,12 @@ export const abandonBeautify = recipeMutation(async (ctx, recipe) => {
   if (Date.now() - (recipe.beautifyStartedAt ?? 0) < BEAUTIFY_LEASE_MS)
     return refuse('Cette génération vient d’être lancée : laisse-lui le temps')
 
-  await ctx.db.patch(recipe._id, {
-    beautifyStatus: 'failed',
-    beautifyError: 'Génération abandonnée à la main',
-    beautifyAttemptId: undefined,
-    beautifyStartedAt: undefined,
-    ...touchedIllustration(Date.now()),
-  })
+  await writeIllustration(
+    ctx,
+    recipe,
+    { generation: { failed: 'Génération abandonnée à la main' } },
+    Date.now(),
+  )
   return succeeded
 })
 
@@ -431,10 +347,7 @@ export const markNoPhotoAvailable = recipeMutation(async (ctx, recipe) => {
     )
   if (recipe.noPhotoAvailable) return refuse('Cette recette est déjà marquée')
 
-  await ctx.db.patch(
-    recipe._id,
-    restaged(recipe, { noPhotoAvailable: true }, Date.now()),
-  )
+  await writeIllustration(ctx, recipe, { noPhotoAvailable: true }, Date.now())
   return succeeded
 })
 
@@ -444,10 +357,7 @@ export const clearNoPhotoAvailable = recipeMutation(async (ctx, recipe) => {
       'Cette recette n’est pas marquée « sans photo dans la source »',
     )
 
-  await ctx.db.patch(
-    recipe._id,
-    restaged(recipe, { noPhotoAvailable: false }, Date.now()),
-  )
+  await writeIllustration(ctx, recipe, { noPhotoAvailable: false }, Date.now())
   return succeeded
 })
 

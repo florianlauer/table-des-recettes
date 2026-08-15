@@ -311,54 +311,37 @@ describe('recency in the section that is always open', () => {
   })
 
   /**
-   * The guard the compiler cannot give: it can prove a call that goes through the helper is complete,
-   * never that a call which should go through it does. Two sites escaped review twice.
+   * The guard the compiler cannot give: it can prove a call that goes through `writeIllustration` is
+   * complete, never that a call which should go through it does.
+   *
+   * This used to be an inventory of twenty-four function names, classified by hand as bumping or
+   * not — and two sites escaped review twice anyway, because a name list only grows when someone
+   * remembers to grow it. What replaces it is the structural fact the module made true: no gesture
+   * patches a recipe on its own, so there is nothing left to classify.
    */
-  test('every function of both modules is classified as bumping or not', async () => {
-    const illustrations = await import('./illustrations')
-    const beautify = await import('./beautify')
+  test('neither gesture module patches a recipe on its own', () => {
+    const sources = import.meta.glob(['./illustrations.ts', './beautify.ts'], {
+      query: '?raw',
+      import: 'default',
+      eager: true,
+    })
 
-    const bumps = [
-      'attachIllustration',
-      'commitIllustration',
-      'detachIllustration',
-      'requestBeautify',
-      'acceptBeautified',
-      'rejectPendingCandidate',
-      'unpublishAcceptedCandidate',
-      'deleteUnpublishedCandidate',
-      'abandonBeautify',
-      'markNoPhotoAvailable',
-      'clearNoPhotoAvailable',
-      'finalizeBeautify',
-      'recordBeautifyFailure',
-    ]
-    /** Writes none of the five fields itself — reads, constants, or delegation to the two above. */
-    const writesNothingIndexed = [
-      'listIllustrationWork',
-      'beautifyStats',
-      // An action: it cannot patch. Its two outcomes are `finalizeBeautify` and
-      // `recordBeautifyFailure`, which are classified as bumping.
-      'render',
-      'beautifyImage',
-      'readBoundedBody',
-      'decodeBeautifiedImage',
-      'OPENROUTER_API_URL',
-      'BEAUTIFY_TIMEOUT_MS',
-      'MAX_BEAUTIFIED_BYTES',
-      'MAX_BASE64_CHARS',
-      'MAX_RESPONSE_BYTES',
-    ]
+    // A glob whose paths match nothing returns `{}` in silence — no build error, no warning — and
+    // the check below would then report zero offenders because it read zero files. Renaming or
+    // splitting either module is enough to trigger it, so the guard asserts its own input first.
+    expect(Object.keys(sources)).toHaveLength(2)
 
-    const classified = new Set([...bumps, ...writesNothingIndexed])
-    const exported = [
-      ...Object.keys(illustrations),
-      ...Object.keys(beautify),
-    ].sort()
-    const unclassified = exported.filter((name) => !classified.has(name))
+    const offenders = Object.entries(sources).flatMap(([path, source]) =>
+      // Matched over the whole file rather than line by line: the argument is often on the next
+      // line, and a per-line test would have passed on exactly the call it exists to catch.
+      // `ctx.db.patch(ticketId, …)` is not a recipe and stays where it is.
+      [...source.matchAll(/ctx\.db\.patch\(\s*recipe/g)].map(
+        (match) => `${path}:${source.slice(0, match.index).split('\n').length}`,
+      ),
+    )
     expect(
-      unclassified,
-      'A new export must be classified: does it write imageStorageId, beautifiedStorageId, beautifiedAccepted, noPhotoAvailable or beautifyStatus? Then it bumps illustrationUpdatedAt.',
+      offenders,
+      'These two modules patch a recipe only through writeIllustration: it is what derives the stage keys, the queue date, the derivatives and the journal verdict together. This checks the two of them, not the whole backend.',
     ).toEqual([])
   })
 

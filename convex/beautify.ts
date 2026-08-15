@@ -3,8 +3,7 @@ import { internal } from './_generated/api'
 import { internalAction, internalMutation } from './_generated/server'
 import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
-import { touchedIllustration } from './lib/recipeWrites'
-import { clearRendition } from './lib/renditions'
+import { writeIllustration } from './lib/illustrationWrites'
 import {
   beautifyFailureKind as beautifyFailureKindValidator,
   beautifyObservation,
@@ -383,16 +382,14 @@ export const finalizeBeautify = internalMutation({
       return 'discarded'
     }
 
-    // The candidate replaces whatever the slot held, so its predecessor's derivative goes too.
-    const cleared = await clearRendition(ctx, recipe, 'beautified')
-    await ctx.db.patch(recipeId, {
-      beautifiedStorageId: candidateStorageId,
-      ...cleared,
-      beautifyStatus: 'review',
-      beautifyStartedAt: undefined,
-      beautifyError: undefined,
-      ...touchedIllustration(Date.now()),
-    })
+    // The candidate replaces whatever the slot held, so its predecessor goes too — derivative
+    // included. The module is what makes that true of every adoption rather than of this one.
+    await writeIllustration(
+      ctx,
+      recipe,
+      { candidate: { adopt: candidateStorageId }, generation: 'review' },
+      Date.now(),
+    )
     await journalBeautifyAttempt(ctx, {
       ...observation,
       recipeId,
@@ -441,13 +438,12 @@ export const recordBeautifyFailure = internalMutation({
       recipe.beautifyAttemptId !== observation.attemptId
     )
       return false
-    await ctx.db.patch(recipeId, {
-      beautifyStatus: 'failed',
-      beautifyError: error,
-      beautifyAttemptId: undefined,
-      beautifyStartedAt: undefined,
-      ...touchedIllustration(Date.now()),
-    })
+    await writeIllustration(
+      ctx,
+      recipe,
+      { generation: { failed: error } },
+      Date.now(),
+    )
     return true
   },
 })
