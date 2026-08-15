@@ -1,10 +1,8 @@
-import { convexQuery } from '@convex-dev/react-query'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { api } from '../../convex/_generated/api'
-import { adminTokenState, useAdminToken } from '../lib/adminToken'
-import { dataView } from '../lib/dataView'
+import { useAdminToken } from '../lib/adminToken'
+import { readyData } from '../lib/dataView'
 import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
 import { groupByDay } from '../lib/groupByDay'
@@ -14,6 +12,7 @@ import {
 } from '../lib/illustrationLimits'
 import type { Outcome } from '../lib/gestureRegistry'
 import { nonEmpty } from '../lib/journalStats'
+import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'
@@ -95,52 +94,19 @@ function IllustrationsPage() {
         ILLUSTRATION_WORK_LISTED,
     }))
 
-  /**
-   * `limits` is part of the query key, so unfolding a section asks for a key nothing has answered yet.
-   * Without a placeholder the answer is `undefined` for one render, `dataView` reports `loading`, and
-   * the whole screen below the header unmounts: the page collapses to one line — the browser lands back
-   * at the top — and every `<details>` comes back as a **new** node, which is to say closed, because a
-   * native fold keeps its open state in the DOM and not in React. The first click on a fold did nothing,
-   * twice over.
-   *
-   * Keeping the previous answer is not a cosmetic transition here: it is what makes the fold's own state
-   * survive its own query. A cleared token still empties the screen — `dataView` reads `tokenAbsent`
-   * before it reads the data.
-   */
-  const work = useQuery({
-    ...convexQuery(
-      api.illustrations.listIllustrationWork,
-      adminToken ? { adminToken, limits } : 'skip',
-    ),
-    retry: false,
-    placeholderData: keepPreviousData,
+  // `limits` is part of the query key, so unfolding a section asks for a key nothing has answered
+  // yet. Keeping the previous answer through that is what stops the screen collapsing under its own
+  // fold — see `useAdminQuery`, which owes this screen the rule.
+  const work = useAdminQuery(token, api.illustrations.listIllustrationWork, {
+    limits,
   })
   // Hoisted out of the statistics block: the journal that reports what a generation costs is also
   // what says how long one usually takes, and every row's bar reads it.
-  const stats = useQuery({
-    ...convexQuery(
-      api.illustrations.beautifyStats,
-      adminToken ? { adminToken } : 'skip',
-    ),
-    retry: false,
-  })
-  const estimateMs = estimateFrom(stats.data ?? [])
-  const tokenAbsent = adminTokenState(token) === 'absent'
-  const statsView = dataView({
-    tokenAbsent,
-    loading: stats.isLoading,
-    error: stats.error,
-    data: stats.data,
-  })
-  const statsRows = statsView.kind === 'ready' ? nonEmpty(statsView.data) : null
-  const workView = dataView({
-    tokenAbsent,
-    loading: work.isLoading,
-    error: work.error,
-    data: work.data,
-  })
+  const stats = useAdminQuery(token, api.illustrations.beautifyStats, {})
+  const estimateMs = estimateFrom(readyData(stats) ?? [])
+  const statsRows = nonEmpty(readyData(stats) ?? [])
 
-  const data = workView.kind === 'ready' ? workView.data : null
+  const data = readyData(work)
 
   /**
    * A working row can leave the data under its own gesture — a photo attached moves the recipe out of
@@ -199,9 +165,9 @@ function IllustrationsPage() {
       <OrphanedOutcomes gestures={gestures} keep={unattached} />
 
       <AdminSectionState
-        view={workView}
+        view={work}
         absent="Saisis le jeton administrateur pour afficher la file des photos."
-        retry={() => void work.refetch()}
+        retry={work.refetch}
       />
 
       {data && (
@@ -282,9 +248,9 @@ function IllustrationsPage() {
       <section className="admin-page__stats">
         <h2>Générations d’images</h2>
         <AdminSectionState
-          view={statsView}
+          view={stats}
           absent="Saisis le jeton administrateur pour afficher le journal."
-          retry={() => void stats.refetch()}
+          retry={stats.refetch}
         />
         {estimateMs === null && statsRows && (
           <p>
@@ -292,7 +258,7 @@ function IllustrationsPage() {
             estimer une durée.
           </p>
         )}
-        {statsView.kind === 'ready' &&
+        {stats.kind === 'ready' &&
           (statsRows ? (
             <BeautifyStats rows={statsRows} />
           ) : (
