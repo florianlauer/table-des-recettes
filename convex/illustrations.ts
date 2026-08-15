@@ -23,10 +23,8 @@ import {
   beautifySummary,
   summarizeBeautifyAttempts,
 } from '../src/lib/beautifyStats'
-import {
-  configuredBeautifyIdentity,
-  isCurrentBeautifyGroup,
-} from '../src/lib/currentIdentity'
+import { configuredBeautifyIdentity } from '../src/lib/currentIdentity'
+import { markCurrent } from '../src/lib/journalStats'
 import {
   ILLUSTRATION_WORK_LISTED,
   boundedLimit,
@@ -635,10 +633,9 @@ export const beautifyStats = query({
       .take(BEAUTIFY_ATTEMPTS_SAMPLED)
     // Beautification pins no provider, so several served providers of the current model may be
     // marked; the screen averages them by call count.
-    const identity = configuredBeautifyIdentity()
-    return summarizeBeautifyAttempts(attempts).map((group) => ({
-      ...group,
-      isCurrent: isCurrentBeautifyGroup(group, identity),
-    }))
+    return markCurrent(
+      summarizeBeautifyAttempts(attempts),
+      configuredBeautifyIdentity(),
+    )
   },
 })

@@ -4,6 +4,7 @@ import { formatMs, formatRate, formatUsd } from '../lib/formatNumber'
 import type { WireBeautifySummary } from '../lib/beautifyStats'
 import type { NonEmpty } from '../lib/journalStats'
 import { AdminTable, AdminTableDetail } from './-AdminTable'
+import { JournalIdentityLine, JournalModelCell } from './-JournalCells'
 
 const COLUMNS = [
   { label: 'Modèle' },
@@ -38,12 +39,7 @@ export function BeautifyStats({
       {rows.map((group) => (
         <tbody key={beautifyGroupKey(group)}>
           <tr>
-            <th scope="row">
-              {group.model}
-              {group.isCurrent && (
-                <span className="admin-table__flag"> en service</span>
-              )}
-            </th>
+            <JournalModelCell model={group.model} isCurrent={group.isCurrent} />
             <td className="admin-table__n">{group.attempts}</td>
             <td className="admin-table__n">{group.accepted}</td>
             <td className="admin-table__n">{group.rejected}</td>
@@ -61,14 +57,7 @@ export function BeautifyStats({
             </td>
           </tr>
           <AdminTableDetail>
-            <p>
-              {group.servedProvider ?? 'provider inconnu'} · prompt{' '}
-              {group.promptVersion}
-              {group.failureKinds.length > 0 &&
-                ` · ${group.failureKinds
-                  .map(({ kind, count }) => `${kind} ${count}`)
-                  .join(', ')}`}
-            </p>
+            <JournalIdentityLine {...group} />
             {group.unreportedCostCalls > 0 && (
               <p>
                 {formatCount(group.unreportedCostCalls, 'appel')} sans coût

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { useAdminToken } from '../lib/adminToken'
 import { readyData } from '../lib/dataView'
-import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
 import { groupByDay } from '../lib/groupByDay'
 import {
@@ -11,7 +10,7 @@ import {
   ILLUSTRATION_WORK_MAX,
 } from '../lib/illustrationLimits'
 import type { Outcome } from '../lib/gestureRegistry'
-import { nonEmpty } from '../lib/journalStats'
+import { estimateFrom, nonEmpty } from '../lib/journalStats'
 import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'

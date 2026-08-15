@@ -76,4 +76,25 @@ describe('AttemptStatsTable', () => {
     const markup = renderToStaticMarkup(<AttemptStatsTable rows={rows} />)
     expect(markup).toContain('class="admin-table__flag"> en service')
   })
+
+  test('rides the rest of the identity under the model, schema included', () => {
+    // The extraction journal is the one of the two that has a schema version; the shared line prints
+    // the segment only where there is one to print.
+    const markup = renderToStaticMarkup(
+      <AttemptStatsTable rows={[group()] as NonEmpty<WireAttemptSummary>} />,
+    )
+    expect(markup).toContain('Google AI Studio')
+    expect(markup).toContain('prompt v4')
+    expect(markup).toContain('schéma v2')
+    expect(markup).toContain('timeout 1')
+  })
+
+  test('names a provider the journal never recorded', () => {
+    const markup = renderToStaticMarkup(
+      <AttemptStatsTable
+        rows={[group({ servedProvider: null })] as NonEmpty<WireAttemptSummary>}
+      />,
+    )
+    expect(markup).toContain('provider inconnu')
+  })
 })
