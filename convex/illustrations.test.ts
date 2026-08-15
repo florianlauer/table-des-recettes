@@ -388,6 +388,27 @@ describe('arbitration', () => {
         recipeId,
       }),
     ).resolves.toMatchObject({ ok: false })
+
+    // And the screen is told, rather than left to infer arbitration from `review` and offer two
+    // buttons for a certain refusal.
+    const work = await listWork(t)
+    const row = [...work.active.rows, ...work.done.rows].find(
+      (candidate) => candidate.id === recipeId,
+    )
+    expect(row?.awaitingArbitration).toBe(false)
+  })
+
+  test('tells the screen that a pending candidate is still owed a verdict', async () => {
+    const t = setup()
+    const recipeId = await newRecipe(t)
+    await attach(t, recipeId)
+    await toReview(t, recipeId)
+
+    const work = await listWork(t)
+    expect(work.active.rows[0]).toMatchObject({
+      id: recipeId,
+      awaitingArbitration: true,
+    })
   })
 
   test('unpublishing keeps the blob and the outcome, then deletion clears only the blob', async () => {
