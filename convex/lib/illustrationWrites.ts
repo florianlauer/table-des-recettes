@@ -22,9 +22,16 @@ type CandidateIntent = { adopt: Id<'_storage'> } | 'drop'
  * Where the generation stands afterwards. `cancel` is the one that reads the document: a render
  * still running is cancelled whole and says why, a recipe that was not generating simply goes back
  * to rest.
+ *
+ * The `never` siblings are what forbid `{ start, cancel }`. Excess-property checking accepts a key
+ * belonging to any member of a union, so without them that object type-checks and the ladder below
+ * silently keeps the first branch it matches — a gesture meaning to cancel would start a generation.
  */
 type GenerationIntent =
-  { start: string } | { failed: string } | { cancel: string } | 'review'
+  | { start: string; failed?: never; cancel?: never }
+  | { failed: string; start?: never; cancel?: never }
+  | { cancel: string; start?: never; failed?: never }
+  | 'review'
 
 /**
  * The three things a gesture can do to the two image slots, and never two at once. A union rather
@@ -56,7 +63,7 @@ type SlotIntent =
  * recomputed, and the date the work queue orders on. A gesture that names its effect cannot forget
  * a consequence of it, which is the whole reason this type is not a patch.
  */
-export type IllustrationIntent = {
+type IllustrationIntent = {
   /** Takes the embellishment off the storefront. The candidate blob and its verdict both survive. */
   unpublish?: true
   /** The operator's own statement about the coupure: it carries no photo. */
@@ -104,20 +111,21 @@ function generationPatch(
       beautifyError: undefined,
       beautifyStartedAt: undefined,
     }
-  if ('start' in intent)
+  // Read as values rather than with `in`: the `never` siblings that forbid `{ start, cancel }` are
+  // declared on every member, so the key is always present and only its value discriminates.
+  const { start, failed, cancel } = intent
+  if (start !== undefined)
     return {
       beautifyStatus: 'generating',
-      beautifyAttemptId: intent.start,
+      beautifyAttemptId: start,
       beautifyStartedAt: at,
       beautifyError: undefined,
     }
-  if ('failed' in intent) return failedWith(intent.failed)
+  if (failed !== undefined) return failedWith(failed)
   // A generation still running is cancelled whole, not half. Clearing only the attempt id — as an
   // earlier design did — left the recipe `generating` until a lease expired by hand: blocked, with
-  // nothing on screen saying why.
-  return recipe.beautifyStatus === 'generating'
-    ? failedWith(intent.cancel)
-    : AT_REST
+  // nothing on screen saying why. Anything else the cancel finds is already at rest.
+  return recipe.beautifyStatus === 'generating' ? failedWith(cancel) : AT_REST
 }
 
 /** The three fields the stage is a function of, named only when the gesture changed one. */
@@ -201,22 +209,18 @@ async function applyCandidate(
 }
 
 /**
- * The single writer of a recipe's illustration. Every gesture on the photo screen, and both outcomes
- * of a render, go through here.
+ * The single writer of a recipe's illustration: the stage keys, the queue date, the two image slots
+ * and the arbitration verdict move together or not at all. An ESLint rule holds the other half of
+ * that sentence — no gesture patches a recipe on its own.
  *
- * It exists because the consequences were spread over twelve patch sites that each had to remember
- * them: the stage keys to recompute, the date the work queue orders on, the derivative to destroy
- * with its source, the journal row to settle. The compiler can prove a call that goes through a
- * helper is complete, never that a call which should go through it does — so the rule was held by a
- * test maintaining an inventory of function names, which is what a missing module looks like.
- *
- * `at` is positional: spread into a patch it would become a stray key the schema rejects.
+ * `at` is positional and defaulted: only a gesture that shares its clock with something else — the
+ * attempt id of a generation — has a reason to name it.
  */
 export async function writeIllustration(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
   intent: IllustrationIntent,
-  at: number,
+  at: number = Date.now(),
 ): Promise<void> {
   const { photo, candidate, arbitrate, generation } = intent
 
@@ -236,10 +240,8 @@ export async function writeIllustration(
   const change = stageChange(intent)
   await ctx.db.patch(recipe._id, {
     // The stage is a function of three fields, so it is recomputed exactly when one of them is
-    // named. Every other gesture still moves the date: `beautifyStatus` is the second key of the
-    // work index, so a recipe coming back from arbitration changes section while its stage stands
-    // still — and without the bump it would land at the bottom of a capped section, at the date its
-    // photo was attached.
+    // named — and every other gesture still moves the date, for the reason `touchedIllustration`
+    // states.
     ...(change ? restaged(recipe, change, at) : touchedIllustration(at)),
     ...patched,
     ...dropped,

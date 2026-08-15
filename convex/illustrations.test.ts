@@ -628,7 +628,7 @@ describe('beautification journal', () => {
       }
     })
 
-    const groups = await t.query(api.illustrations.beautifyStats, {
+    const groups = await t.query(api.illustrationsList.beautifyStats, {
       adminToken,
     })
     expect(
@@ -664,7 +664,7 @@ describe('beautification journal', () => {
         createdAt: 0,
       }),
     )
-    const groups = await t.query(api.illustrations.beautifyStats, {
+    const groups = await t.query(api.illustrationsList.beautifyStats, {
       adminToken,
     })
     expect(groups.map((group) => group.isCurrent)).toEqual([false])

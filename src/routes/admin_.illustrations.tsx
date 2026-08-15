@@ -34,7 +34,7 @@ export const Route = createFileRoute('/admin_/illustrations')({
  * every shape on this screen is inferred from it. A hand-kept copy is unguarded — it typechecks
  * clean while being wrong, and it drifts weaker than the contract without saying so.
  */
-type Work = (typeof api.illustrations.listIllustrationWork)['_returnType']
+type Work = (typeof api.illustrationsList.listIllustrationWork)['_returnType']
 
 /**
  * The most counter-intuitive result of the T13 bench, and the screen is the only place where it can
@@ -109,7 +109,7 @@ function IllustrationsPage() {
    */
   const work = useQuery({
     ...convexQuery(
-      api.illustrations.listIllustrationWork,
+      api.illustrationsList.listIllustrationWork,
       adminToken ? { adminToken, limits } : 'skip',
     ),
     retry: false,
@@ -119,7 +119,7 @@ function IllustrationsPage() {
   // what says how long one usually takes, and every row's bar reads it.
   const stats = useQuery({
     ...convexQuery(
-      api.illustrations.beautifyStats,
+      api.illustrationsList.beautifyStats,
       adminToken ? { adminToken } : 'skip',
     ),
     retry: false,

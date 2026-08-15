@@ -384,12 +384,10 @@ export const finalizeBeautify = internalMutation({
 
     // The candidate replaces whatever the slot held, so its predecessor goes too — derivative
     // included. The module is what makes that true of every adoption rather than of this one.
-    await writeIllustration(
-      ctx,
-      recipe,
-      { candidate: { adopt: candidateStorageId }, generation: 'review' },
-      Date.now(),
-    )
+    await writeIllustration(ctx, recipe, {
+      candidate: { adopt: candidateStorageId },
+      generation: 'review',
+    })
     await journalBeautifyAttempt(ctx, {
       ...observation,
       recipeId,
@@ -438,12 +436,7 @@ export const recordBeautifyFailure = internalMutation({
       recipe.beautifyAttemptId !== observation.attemptId
     )
       return false
-    await writeIllustration(
-      ctx,
-      recipe,
-      { generation: { failed: error } },
-      Date.now(),
-    )
+    await writeIllustration(ctx, recipe, { generation: { failed: error } })
     return true
   },
 })

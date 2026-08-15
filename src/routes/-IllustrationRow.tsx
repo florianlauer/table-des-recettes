@@ -18,7 +18,7 @@ import { GestureProgress } from './-GestureProgress'
  * shape here is inferred from it. A hand-kept copy is unguarded — it typechecks clean while being
  * wrong, and it drifts weaker than the contract without saying so.
  */
-type Work = (typeof api.illustrations.listIllustrationWork)['_returnType']
+type Work = (typeof api.illustrationsList.listIllustrationWork)['_returnType']
 export type WorkSection = Work['active']
 export type Row = WorkSection['rows'][number]
 type Outcome = (typeof api.illustrations.acceptBeautified)['_returnType']
