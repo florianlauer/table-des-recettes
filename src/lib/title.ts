@@ -1,7 +1,8 @@
 // Magazines set titles in capitals, wrap them in guillemets and hang dashes off them. Only
 // separators and quotes are stripped at the edges: `)`, `%` and digits carry meaning and stay,
 // exactly as for an ingredient line.
-const EDGE_NOISE = /^[\s,;:.!?…·•‣▪◦*+–—\-«»"'’]+|[\s,;:.!?…·•‣▪◦*+–—\-«»"'’]+$/g
+const EDGE_NOISE =
+  /^[\s,;:.!?…·•‣▪◦*+–—\-«»"'’]+|[\s,;:.!?…·•‣▪◦*+–—\-«»"'’]+$/g
 
 const SHOUTING_RATIO = 0.8
 
