@@ -26,10 +26,8 @@ import {
   attemptSummary,
   summarizeAttempts,
 } from '../src/lib/attemptStats'
-import {
-  configuredExtractionIdentity,
-  isCurrentAttemptGroup,
-} from '../src/lib/currentIdentity'
+import { configuredExtractionIdentity } from '../src/lib/currentIdentity'
+import { markCurrent } from '../src/lib/journalStats'
 import { MAX_ATTEMPTS } from '../src/lib/queueContract'
 import {
   MAX_IMAGES_PER_SCAN,
@@ -470,11 +468,10 @@ export const attemptStats = query({
     // Marked here and nowhere else: the browser cannot know which model and provider are configured,
     // and an estimate read off a retired configuration would be wrong precisely on the day someone
     // changes it.
-    const identity = configuredExtractionIdentity(process.env)
-    return summarizeAttempts(attempts).map((group) => ({
-      ...group,
-      isCurrent: isCurrentAttemptGroup(group, identity),
-    }))
+    return markCurrent(
+      summarizeAttempts(attempts),
+      configuredExtractionIdentity(process.env),
+    )
   },
 })
 

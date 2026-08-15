@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { dataView } from '../lib/dataView'
-import { estimateFrom } from '../lib/estimate'
 import { formatCount } from '../lib/formatCount'
 import { groupByDay } from '../lib/groupByDay'
 import {
@@ -13,7 +12,7 @@ import {
   ILLUSTRATION_WORK_MAX,
 } from '../lib/illustrationLimits'
 import type { Outcome } from '../lib/gestureRegistry'
-import { nonEmpty } from '../lib/journalStats'
+import { estimateFrom, nonEmpty } from '../lib/journalStats'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../lib/useServerClock'

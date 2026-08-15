@@ -6,10 +6,9 @@ import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { adminTokenState, useAdminToken } from '../lib/adminToken'
 import { dataView } from '../lib/dataView'
-import { estimateFrom } from '../lib/estimate'
 import { extractionMessage, uploadMessage } from '../lib/gestureMessages'
 import { isolatedGesture, pageGesture } from '../lib/gestures'
-import { nonEmpty } from '../lib/journalStats'
+import { estimateFrom, nonEmpty } from '../lib/journalStats'
 import { MAX_ATTEMPTS } from '../lib/queueContract'
 import {
   deriveQueueState,
