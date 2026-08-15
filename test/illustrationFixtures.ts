@@ -126,7 +126,7 @@ export async function listWork(
 ) {
   const { stagesReady = true, ...open } = limits
   if (stagesReady) await runStageBackfill(t)
-  return t.query(api.illustrations.listIllustrationWork, {
+  return t.query(api.illustrationsList.listIllustrationWork, {
     adminToken,
     limits: { ...ALL_OPEN, ...open },
   })

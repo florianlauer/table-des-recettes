@@ -72,6 +72,13 @@ distinct de la photo d'origine, qu'il ne remplace jamais. Il disparaît entier �
 dérivée d'affichage, et la ligne de journal qui le facture — ou il est publié.
 _Avoid_: preview, proposition, variante
 
+**Étape d'illustration** :
+Où en est une recette de sa photo, en un seul mot : _sans photo_, _à embellir_, _la source n'en a
+pas_, _faite_. Elle se déduit de trois champs — la photo, l'embellissement publié, le drapeau de
+l'opérateur — et elle est stockée parce qu'un index ne sait pas interroger une absence. C'est
+elle qui partitionne la file de travail : chaque recette apparaît dans une section et une seule.
+_Avoid_: statut, état, catégorie de photo
+
 **Arbitrage** :
 Le verdict humain rendu sur un **candidat** : accepté, donc publié en vitrine, ou rejeté, donc
 détruit. Il s'écrit une fois — un candidat conservé après une dépublication n'est plus

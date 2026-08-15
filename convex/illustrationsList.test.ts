@@ -311,40 +311,10 @@ describe('recency in the section that is always open', () => {
   })
 
   /**
-   * The guard the compiler cannot give: it can prove a call that goes through `writeIllustration` is
-   * complete, never that a call which should go through it does.
-   *
-   * This used to be an inventory of twenty-four function names, classified by hand as bumping or
-   * not — and two sites escaped review twice anyway, because a name list only grows when someone
-   * remembers to grow it. What replaces it is the structural fact the module made true: no gesture
-   * patches a recipe on its own, so there is nothing left to classify.
+   * That every gesture goes through `writeIllustration` is now a lint rule, which reports at the
+   * offending line and cannot pass by reading nothing the way a test globbing its own sources can.
+   * What stays here is the half a rule cannot check: that the write really moves the date.
    */
-  test('neither gesture module patches a recipe on its own', () => {
-    const sources = import.meta.glob(['./illustrations.ts', './beautify.ts'], {
-      query: '?raw',
-      import: 'default',
-      eager: true,
-    })
-
-    // A glob whose paths match nothing returns `{}` in silence — no build error, no warning — and
-    // the check below would then report zero offenders because it read zero files. Renaming or
-    // splitting either module is enough to trigger it, so the guard asserts its own input first.
-    expect(Object.keys(sources)).toHaveLength(2)
-
-    const offenders = Object.entries(sources).flatMap(([path, source]) =>
-      // Matched over the whole file rather than line by line: the argument is often on the next
-      // line, and a per-line test would have passed on exactly the call it exists to catch.
-      // `ctx.db.patch(ticketId, …)` is not a recipe and stays where it is.
-      [...source.matchAll(/ctx\.db\.patch\(\s*recipe/g)].map(
-        (match) => `${path}:${source.slice(0, match.index).split('\n').length}`,
-      ),
-    )
-    expect(
-      offenders,
-      'These two modules patch a recipe only through writeIllustration: it is what derives the stage keys, the queue date, the derivatives and the journal verdict together. This checks the two of them, not the whole backend.',
-    ).toEqual([])
-  })
-
   test('each bumping gesture actually moves the date', async () => {
     const t = setup()
     const recipeId = await newRecipe(t)
@@ -401,7 +371,7 @@ describe('the section ceiling', () => {
     await newRecipe(t)
     await runStageBackfill(t)
 
-    const work = await t.query(api.illustrations.listIllustrationWork, {
+    const work = await t.query(api.illustrationsList.listIllustrationWork, {
       adminToken,
       limits: {
         toBeautify: 10_000,
