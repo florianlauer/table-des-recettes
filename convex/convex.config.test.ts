@@ -37,6 +37,18 @@ function named(match: RegExpMatchArray): [string, string | null] {
 }
 
 /**
+ * Both halves order the comparison, joined by a byte neither can contain. Left implicit, `.sort()`
+ * would order the pairs by `String(pair)` — the two halves joined by a comma, which a name may hold.
+ */
+function byIdentity(
+  a: [string, string | null],
+  b: [string, string | null],
+): number {
+  const key = (pair: [string, string | null]) => pair.join('\u0000')
+  return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0
+}
+
+/**
  * The drift this catches, and the reason it is a source scan rather than a call to `defineApp`: a
  * component added to the app and forgotten in the harness does not fail here, it fails as
  * `Component "x" is not registered` in whichever of the eleven Convex test files happens to touch the
@@ -47,7 +59,7 @@ function named(match: RegExpMatchArray): [string, string | null] {
  * to write every time a component was mounted.
  */
 test('every mounted component is registered in the test harness, under the same name', () => {
-  expect(registered().sort()).toEqual(mounted().sort())
+  expect(registered().sort(byIdentity)).toEqual(mounted().sort(byIdentity))
   // The regexes are the load-bearing part: zero matches on either side would make the line above pass.
   expect(mounted().length).toBeGreaterThanOrEqual(4)
 })

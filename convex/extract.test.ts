@@ -90,7 +90,7 @@ describe('extraction transport', () => {
   test('sends every page of the scan in one message, in order', async () => {
     let sentBody = ''
     const fetchImpl = vi.fn(async (_url: unknown, init?: RequestInit) => {
-      sentBody = String(init?.body)
+      sentBody = init?.body as string
       return new Response(
         JSON.stringify({
           provider: 'test',

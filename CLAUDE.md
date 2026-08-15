@@ -67,7 +67,7 @@ pastille de filtre, rien de centré.
 
 ### Où vit un module — trois répertoires, une règle chacun
 
-Le chemin dit ce qui exécute le module. La règle est tenue par ESLint, pas par la prose.
+Le chemin dit ce qui exécute le module. La règle est tenue par oxlint, pas par la prose.
 
 - **`src/shared`** — le noyau isomorphe : le code que les deux côtés exécutent. Les fonctions
   Convex l'importent, le navigateur aussi. Ni React, ni `convex/_generated`, ni rien de `src/lib`

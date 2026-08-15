@@ -37,11 +37,11 @@ jobs:
       # Every check below runs even when an earlier one fails, so one run reports all seven results
       # instead of stopping at the first. They are skipped only when the install itself failed —
       # their output would be noise about missing modules, not about the code.
-      - name: Format (prettier)
+      - name: Format (oxfmt)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm run check
 
-      - name: Lint (eslint)
+      - name: Lint (oxlint)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm run lint
 

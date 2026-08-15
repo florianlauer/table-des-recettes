@@ -20,7 +20,8 @@ export type TransportFailure = 'timeout' | 'transport' | 'truncated'
 
 /** What a caller's decoder says of the parsed answer. `TKind` is its own failure taxonomy. */
 export type Decoded<T, TKind extends string> =
-  { ok: true; value: T } | { ok: false; kind: TKind; error: string }
+  | { ok: true; value: T }
+  | { ok: false; kind: TKind; error: string }
 
 export type BilledCall<T, TKind extends string> = Billing &
   (

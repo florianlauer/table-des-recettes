@@ -24,7 +24,10 @@ type CandidateIntent = { adopt: Id<'_storage'> } | 'drop'
  * to rest.
  */
 type GenerationIntent =
-  { start: string } | { failed: string } | { cancel: string } | 'review'
+  | { start: string }
+  | { failed: string }
+  | { cancel: string }
+  | 'review'
 
 /**
  * The three things a gesture can do to the two image slots, and never two at once. A union rather

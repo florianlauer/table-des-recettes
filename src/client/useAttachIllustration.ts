@@ -6,7 +6,8 @@ import { uploadCompressed } from './uploadCompressed'
 import type { UploadPhase } from '../lib/uploadProgress'
 
 export type AttachIllustrationResult =
-  { ok: true } | { ok: false; error: string }
+  | { ok: true }
+  | { ok: false; error: string }
 
 /**
  * The illustration counterpart of `useAttachImage`. Two things differ, and both matter: the ticket

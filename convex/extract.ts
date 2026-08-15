@@ -360,7 +360,8 @@ export const reserve = internalMutation({
     if (liveLease) return { status: 'lease_held' as const }
 
     let selection:
-      { scan: Doc<'scans'>; storageIds: Id<'_storage'>[] } | undefined
+      | { scan: Doc<'scans'>; storageIds: Id<'_storage'>[] }
+      | undefined
     for (const scan of candidates) {
       const verdict = eligibility(scan)
       if (!verdict.eligible) {

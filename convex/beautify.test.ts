@@ -141,7 +141,7 @@ describe('one billed call', () => {
   test('sends the image modality, without which the model answers in words', async () => {
     let sent: Record<string, unknown> = {}
     const fetchImpl = vi.fn(async (_url: unknown, init?: RequestInit) => {
-      sent = JSON.parse(String(init?.body)) as Record<string, unknown>
+      sent = JSON.parse(init?.body as string) as Record<string, unknown>
       return new Response(JSON.stringify(imageAnswer()))
     })
     const result = await beautifyImage({

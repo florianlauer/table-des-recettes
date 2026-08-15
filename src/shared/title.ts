@@ -7,6 +7,9 @@ const EDGE_NOISE =
 const SHOUTING_RATIO = 0.8
 
 function isShouted(value: string): boolean {
+  // Code points and not graphemes, deliberately: half a split emoji has no case and drops out of
+  // the filter, which is the only thing this function reads.
+  // oxlint-disable-next-line typescript/no-misused-spread
   const cased = [...value].filter(
     (char) => char.toLowerCase() !== char.toUpperCase(),
   )
