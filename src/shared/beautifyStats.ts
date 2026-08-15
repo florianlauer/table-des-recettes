@@ -9,7 +9,7 @@
  */
 import { v } from 'convex/values'
 import type { Infer } from 'convex/values'
-import { costLooksExcessive } from './beautifyPrompt'
+import { costLooksExcessive } from './beautifyCost'
 import {
   costAndLatency,
   countFailureKinds,

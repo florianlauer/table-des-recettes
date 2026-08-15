@@ -12,27 +12,27 @@ import { literalUnion } from './lib/validators'
 import { rateLimiter } from './rateLimits'
 import { withIllustration, withSearchText } from './lib/recipeWrites'
 import { insertRecipeDoc } from './recipeDocs'
-import { FAILURE_KINDS, isTerminalFailure } from '../src/lib/failureKinds'
-import type { FailureKind } from '../src/lib/failureKinds'
+import { FAILURE_KINDS, isTerminalFailure } from '../src/shared/failureKinds'
+import type { FailureKind } from '../src/shared/failureKinds'
 import {
   extractionJsonSchema,
   JSON_SCHEMA_NAME,
-} from '../src/lib/recipe-json-schema'
-import { EXTRACTION_PROMPT, PROMPT_VERSION } from '../src/lib/recipe-prompt'
+} from '../src/shared/recipe-json-schema'
+import { EXTRACTION_PROMPT, PROMPT_VERSION } from '../src/shared/recipe-prompt'
 import {
   extractionSchema,
   normalizeExtraction,
   RECIPE_SCHEMA_VERSION,
   repairExtraction,
-} from '../src/lib/recipe-schema'
-import { bytesToBase64 } from '../src/lib/base64'
-import { sniffImageHeader } from '../src/lib/imageHeader'
-import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/lib/scanLimits'
+} from '../src/shared/recipe-schema'
+import { bytesToBase64 } from '../src/shared/base64'
+import { sniffImageHeader } from '../src/shared/imageHeader'
+import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/shared/scanLimits'
 import {
   LEASE_MS,
   MAX_ATTEMPTS,
   REQUEST_TIMEOUT_MS,
-} from '../src/lib/queueContract'
+} from '../src/shared/queueContract'
 
 export const MAX_OUTPUT_TOKENS = 8000
 // The answer is at most `MAX_OUTPUT_TOKENS` of JSON plus its envelope — a megabyte over any of it.

@@ -5,8 +5,11 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { extractionSchema, repairExtraction } from '../src/lib/recipe-schema.js'
-import type { Extraction } from '../src/lib/recipe-schema.js'
+import {
+  extractionSchema,
+  repairExtraction,
+} from '../src/shared/recipe-schema.js'
+import type { Extraction } from '../src/shared/recipe-schema.js'
 import { BudgetCounter } from './budget.js'
 import { askEndpoint, requireOpenRouterApiKey } from './openrouter.js'
 import type { EndpointCall } from './openrouter.js'

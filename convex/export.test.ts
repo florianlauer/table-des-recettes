@@ -2,7 +2,7 @@
 import { convexTest } from 'convex-test'
 import { expect, test } from 'vitest'
 import { z } from 'zod'
-import { backupRecipeSchema } from '../src/lib/backup-schema'
+import { backupRecipeSchema } from '../src/shared/backup-schema'
 import { internal } from './_generated/api'
 import schema from './schema'
 import { registerComponents } from '../test/convexComponents'

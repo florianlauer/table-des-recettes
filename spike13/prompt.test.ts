@@ -12,7 +12,7 @@ import { PROMPT_VERSION, RESTORATION_PROMPT } from './prompt.js'
  * Read from disk rather than imported, for the same reason in reverse: the bench's `tsconfig` cannot
  * resolve the application's modules either.
  */
-const PRODUCTION_MODULE = 'src/lib/beautifyPrompt.ts'
+const PRODUCTION_MODULE = 'src/shared/beautifyPrompt.ts'
 
 async function productionModule(): Promise<string> {
   return readFile(PRODUCTION_MODULE, 'utf8')

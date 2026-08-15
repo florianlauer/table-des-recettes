@@ -3,10 +3,13 @@ import { useEffect, useId, useRef } from 'react'
 import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
-import { BEAUTIFY_LEASE_MS, illustrationActions } from '../lib/illustrationWork'
+import {
+  BEAUTIFY_LEASE_MS,
+  illustrationActions,
+} from '../shared/illustrationWork'
 import { recipeStatusLabel } from '../lib/recipeStatus'
-import { TYPE_LABELS } from '../lib/recipeTypes'
-import { useAttachIllustration } from '../lib/useAttachIllustration'
+import { TYPE_LABELS } from '../shared/recipeTypes'
+import { useAttachIllustration } from '../client/useAttachIllustration'
 import type { Gestures } from '../lib/useGestures'
 import { uploadProgress } from '../lib/uploadProgress'
 import { AdminButton } from './-AdminButton'

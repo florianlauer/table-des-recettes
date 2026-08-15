@@ -4,8 +4,8 @@ import {
   extractionSchema,
   repairExtraction,
   RECIPE_SCHEMA_VERSION,
-} from '../src/lib/recipe-schema.js'
-import type { Extraction, SchemaRepair } from '../src/lib/recipe-schema.js'
+} from '../src/shared/recipe-schema.js'
+import type { Extraction, SchemaRepair } from '../src/shared/recipe-schema.js'
 import type { BudgetCounter } from './budget.js'
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from './json-schema.js'
 import { EXTRACTION_PROMPT, PROMPT_VERSION } from './prompt.js'

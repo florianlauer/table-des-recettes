@@ -1,6 +1,6 @@
 import { formatCount } from './formatCount'
-import { TYPE_FILTER_LABELS } from './recipeTypes'
-import type { RecipeType } from './recipeTypes'
+import { TYPE_FILTER_LABELS } from '../shared/recipeTypes'
+import type { RecipeType } from '../shared/recipeTypes'
 
 /**
  * The one line that says what the index is restricted to, and what the restriction produced.

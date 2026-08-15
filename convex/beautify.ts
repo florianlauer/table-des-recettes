@@ -13,14 +13,14 @@ import {
 import { callOpenRouter } from './lib/openrouter'
 import type { Billing } from './lib/openrouter'
 import { literalUnion } from './lib/validators'
-import { BEAUTIFY_MODEL, BEAUTIFY_PROMPT } from '../src/lib/beautifyPrompt'
-import { beautifyFailureKind } from '../src/lib/beautifyFailureKinds'
+import { BEAUTIFY_MODEL, BEAUTIFY_PROMPT } from '../src/shared/beautifyPrompt'
+import { beautifyFailureKind } from '../src/shared/beautifyFailureKinds'
 import type {
   BeautifyFailureKind,
   DecodeFailureReason,
-} from '../src/lib/beautifyFailureKinds'
-import { base64ToBytes, bytesToBase64 } from '../src/lib/base64'
-import { MAX_INPUT_BYTES, sniffImageHeader } from '../src/lib/imageHeader'
+} from '../src/shared/beautifyFailureKinds'
+import { base64ToBytes, bytesToBase64 } from '../src/shared/base64'
+import { MAX_INPUT_BYTES, sniffImageHeader } from '../src/shared/imageHeader'
 
 /** What became of the candidate — the only two answers a finalisation can give. */
 const finalizeOutcome = literalUnion(['adopted', 'discarded'] as const)

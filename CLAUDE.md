@@ -65,6 +65,25 @@ pastille de filtre, rien de centré.
   commit ni dans les corps de PR.
 - Supprimer des fichiers avec `trash`, pas `rm`.
 
+### Où vit un module — trois répertoires, une règle chacun
+
+Le chemin dit ce qui exécute le module. La règle est tenue par ESLint, pas par la prose.
+
+- **`src/shared`** — le noyau isomorphe : le code que les deux côtés exécutent. Les fonctions
+  Convex l'importent, le navigateur aussi. Ni React, ni `convex/_generated`, ni rien de `src/lib`
+  ou `src/client`.
+- **`src/lib`** — navigateur seulement. Peut importer React et `src/shared`.
+- **`src/client`** — les modules qui touchent l'API Convex générée (`convex/_generated`). Un
+  module Convex ne peut importer ni celui-ci ni `src/lib` : il n'a droit qu'au noyau.
+
+Une clause échappe au linter parce qu'elle porte sur un **chemin dans le graphe** plutôt que sur un
+import : un module que le navigateur ne demande pas peut quand même être tiré par un module qu'il
+demande. C'est ce que faisait le journal des générations, qui lisait son seuil de coût dans
+`beautifyPrompt`. `src/routes/-bundle.test.ts` tient cette clause : aucun prompt n'est joignable
+depuis les routes, par aucun chemin. La règle porte sur le graphe, pas sur les octets livrés —
+Rollup élimine le prompt du bundle dans les deux cas, mais une règle qui ne tient que parce que le
+bundler sait prouver la chaîne inutile n'est pas une règle que nous tenons.
+
 ### Composants Convex avant toute mécanique maison
 
 Avant d'écrire une mécanique d'infrastructure côté Convex — lotissement, curseur, file d'attente,

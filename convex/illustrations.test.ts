@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
-import { bytesToBase64 } from '../src/lib/base64'
+import { bytesToBase64 } from '../src/shared/base64'
 import {
   BEAUTIFY_MODEL,
   BEAUTIFY_PROMPT_VERSION,
-} from '../src/lib/beautifyPrompt'
+} from '../src/shared/beautifyPrompt'
 import {
   adminToken,
   attach,

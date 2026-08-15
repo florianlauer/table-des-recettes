@@ -1,7 +1,7 @@
 import {
   extractionSchemaV1,
   extractionSchemaV2,
-} from '../src/lib/recipe-schema.js'
+} from '../src/shared/recipe-schema.js'
 import {
   diffLines,
   INFERRED_PAGES,

@@ -6,18 +6,18 @@ import { useAdminToken } from '../lib/adminToken'
 import { readyData } from '../lib/dataView'
 import { extractionMessage, uploadMessage } from '../lib/gestureMessages'
 import { isolatedGesture, pageGesture } from '../lib/gestures'
-import { estimateFrom, nonEmpty } from '../lib/journalStats'
-import { MAX_ATTEMPTS } from '../lib/queueContract'
+import { estimateFrom, nonEmpty } from '../shared/journalStats'
+import { MAX_ATTEMPTS } from '../shared/queueContract'
 import {
   deriveQueueState,
   formatAge,
   formatRemaining,
 } from '../lib/queueStatus'
-import { useAttachImage } from '../lib/useAttachImage'
+import { useAttachImage } from '../client/useAttachImage'
 import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
-import { useServerClock } from '../lib/useServerClock'
+import { useServerClock } from '../client/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
 import { adminHead } from './-adminHead'
 import { AdminButton } from './-AdminButton'

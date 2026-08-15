@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { api } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import schema from './schema'
-import { MAX_INPUT_BYTES } from '../src/lib/imageHeader'
-import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/lib/scanLimits'
+import { MAX_INPUT_BYTES } from '../src/shared/imageHeader'
+import { MAX_IMAGES_PER_SCAN, MAX_SCAN_BYTES } from '../src/shared/scanLimits'
 import { registerComponents } from '../test/convexComponents'
 
 const modules = import.meta.glob('./**/*.ts')

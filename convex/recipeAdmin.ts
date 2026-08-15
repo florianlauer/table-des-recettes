@@ -15,8 +15,11 @@ import { okOrError, refuse, succeeded } from './lib/validators'
 import type { Refusal } from './lib/validators'
 import { reconcileRetention } from './retention'
 import { ingredient, recipeType } from './schema'
-import { slugify } from '../src/lib/slug'
-import { MAX_RECIPES_PER_SCAN, SLUG_PROBE_LIMIT } from '../src/lib/scanLimits'
+import { slugify } from '../src/shared/slug'
+import {
+  MAX_RECIPES_PER_SCAN,
+  SLUG_PROBE_LIMIT,
+} from '../src/shared/scanLimits'
 
 /** The fields the correction screen owns. Status, slug and scan parentage are not among them. */
 const editableRecipe = {

@@ -12,8 +12,8 @@ import {
   RECIPE_TYPES,
   TYPE_FILTER_LABELS,
   TYPE_LABELS,
-} from '../lib/recipeTypes'
-import type { RecipeType } from '../lib/recipeTypes'
+} from '../shared/recipeTypes'
+import type { RecipeType } from '../shared/recipeTypes'
 import { useSearchDraft } from '../lib/useSearchDraft'
 
 /**

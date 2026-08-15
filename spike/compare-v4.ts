@@ -1,5 +1,5 @@
-import { extractionSchemaV2 } from '../src/lib/recipe-schema.js'
-import { normalizeText, stemToken } from '../src/lib/normalize.js'
+import { extractionSchemaV2 } from '../src/shared/recipe-schema.js'
+import { normalizeText, stemToken } from '../src/shared/normalize.js'
 import {
   diffLines,
   INFERRED_PAGES,

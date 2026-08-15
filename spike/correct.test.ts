@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { Extraction } from '../src/lib/recipe-schema.js'
+import type { Extraction } from '../src/shared/recipe-schema.js'
 import { BudgetCounter } from './budget.js'
 import { acceptText, mergeCorrection, runCorrectionPass } from './correct.js'
 

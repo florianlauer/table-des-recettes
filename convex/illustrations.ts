@@ -22,16 +22,16 @@ import {
   BEAUTIFY_ATTEMPTS_SAMPLED,
   beautifySummary,
   summarizeBeautifyAttempts,
-} from '../src/lib/beautifyStats'
-import { configuredBeautifyIdentity } from '../src/lib/currentIdentity'
-import { markCurrent } from '../src/lib/journalStats'
+} from '../src/shared/beautifyStats'
+import { configuredBeautifyIdentity } from '../src/shared/currentIdentity'
+import { markCurrent } from '../src/shared/journalStats'
 import {
   ILLUSTRATION_WORK_LISTED,
   boundedLimit,
-} from '../src/lib/illustrationLimits'
-import type { IllustrationStage } from '../src/lib/illustrationStage'
-import { BEAUTIFY_LEASE_MS } from '../src/lib/illustrationWork'
-import { IMAGE_HEADER_BYTES, sniffImageHeader } from '../src/lib/imageHeader'
+} from '../src/shared/illustrationLimits'
+import type { IllustrationStage } from '../src/shared/illustrationStage'
+import { BEAUTIFY_LEASE_MS } from '../src/shared/illustrationWork'
+import { IMAGE_HEADER_BYTES, sniffImageHeader } from '../src/shared/imageHeader'
 
 const REPLACED_REASON = 'Génération annulée : l’image source a été remplacée'
 const DETACHED_REASON = 'Génération annulée : la photo a été retirée'

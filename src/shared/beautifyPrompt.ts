@@ -23,17 +23,6 @@
 export const BEAUTIFY_MODEL = 'google/gemini-2.5-flash-image'
 export const BEAUTIFY_PROMPT_VERSION = 'v4'
 
-// Per-call cost measured by the bench, unchanged between v2 and v4 — 0,03936 to 0,03959 across the
-// twelve v4 cells. The alert compares against a multiple of it; it never prevents a call, since the
-// price is only known once the answer is billed. Two calls of this campaign crossed the threshold,
-// one at 0,233 USD, so the alert is not a precaution against a hypothesis.
-export const BEAUTIFY_EXPECTED_COST_USD = 0.03944
-export const BEAUTIFY_COST_ALERT_FACTOR = 3
-
-export function costLooksExcessive(costUsd: number): boolean {
-  return costUsd > BEAUTIFY_EXPECTED_COST_USD * BEAUTIFY_COST_ALERT_FACTOR
-}
-
 export const BEAUTIFY_PROMPT = `Cette image est la photographie d'une page de magazine imprimée. On y voit une photo de plat, parfois entourée de texte, de titres, de légendes ou d'une colonne voisine. La page a pu être photographiée à travers une pochette plastique transparente.
 
 Refais entièrement la photographie du plat, telle qu'elle aurait été prise en studio. Ce n'est pas une retouche : produis une vraie photographie, et non une version nettoyée du scan. Applique cette consigne même si l'entrée ne montre que le plat, sans aucun texte autour — dans ce cas aussi, refais la photographie au lieu de renvoyer l'entrée.

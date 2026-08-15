@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
 import { describe, expect, test } from 'vitest'
-import type { WireAttemptSummary } from '../lib/attemptStats'
-import type { NonEmpty } from '../lib/journalStats'
+import type { WireAttemptSummary } from '../shared/attemptStats'
+import type { NonEmpty } from '../shared/journalStats'
 import { AttemptStatsTable } from './-AttemptStats'
 
 function group(over: Partial<WireAttemptSummary> = {}): WireAttemptSummary {

@@ -21,8 +21,11 @@ import {
   compareBackupIds,
   countRecipesByStatus,
   restorableProjection,
-} from '../src/lib/backup-schema.js'
-import type { BackupManifest, BackupRecipe } from '../src/lib/backup-schema.js'
+} from '../src/shared/backup-schema.js'
+import type {
+  BackupManifest,
+  BackupRecipe,
+} from '../src/shared/backup-schema.js'
 import {
   BACKUP_DIRECTORY,
   MANIFEST_FILE_NAME,

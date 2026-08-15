@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, test, vi } from 'vitest'
 import { createBackupResponse } from './http'
-import { completeBackupRecipe } from '../src/lib/backup-schema.fixture'
+import { completeBackupRecipe } from '../src/shared/backup-schema.fixture'
 
 function request(token?: string): Request {
   return new Request('https://example.convex.site/backup', {

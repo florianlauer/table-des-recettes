@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
 import { describe, expect, test } from 'vitest'
-import type { WireBeautifySummary } from '../lib/beautifyStats'
-import type { NonEmpty } from '../lib/journalStats'
+import type { WireBeautifySummary } from '../shared/beautifyStats'
+import type { NonEmpty } from '../shared/journalStats'
 import { BeautifyStats } from './-BeautifyStats'
 
 function group(over: Partial<WireBeautifySummary> = {}): WireBeautifySummary {

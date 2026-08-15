@@ -4,7 +4,7 @@ import type { Id } from './_generated/dataModel'
 import { internalMutation } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { literalUnion } from './lib/validators'
-import { LEASE_MS } from '../src/lib/queueContract'
+import { LEASE_MS } from '../src/shared/queueContract'
 
 export const RETENTION_AFTER_TREATMENT_MS = 7 * 24 * 60 * 60 * 1000
 export const RETENTION_CEILING_MS = 90 * 24 * 60 * 60 * 1000
