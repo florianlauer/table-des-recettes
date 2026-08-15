@@ -184,7 +184,7 @@ describe('the illustrationStage backfill', () => {
     expect(
       rows.filter((row) => row.illustrationStage === 'missing'),
     ).toHaveLength(DEFAULT_BATCH_SIZE + 4)
-    // The scan date, not the backfill's clock: it is the date the operator looks for in "Sans photo".
+    // The scan date, not the backfill's clock: it is the date the operator looks for in "À traiter".
     expect(
       rows.every((row) => row.illustrationUpdatedAt === row._creationTime),
     ).toBe(true)

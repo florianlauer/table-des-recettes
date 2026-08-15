@@ -144,7 +144,7 @@ function IllustrationsPage() {
 
   /**
    * A working row can leave the data under its own gesture — a photo attached moves the recipe out of
-   * "Sans photo". Its run is kept until it resolves and its message resurfaces at section level;
+   * "À traiter". Its run is kept until it resolves and its message resurfaces at section level;
    * dropping it here would discard the completion instead.
    */
   const liveRowIds = data
@@ -242,7 +242,7 @@ function IllustrationsPage() {
           </section>
 
           <FoldedSection
-            title="Sans photo"
+            title="À traiter"
             section={data.missing}
             limit={limits.missing}
             ready={data.stagesReady}
