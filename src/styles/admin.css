@@ -408,13 +408,14 @@
   font-size: var(--type-section);
 }
 /* A typographic chevron, not a pictogram: the only decoration DESIGN.md § Anti-slop leaves available
-   is a character. It rotates because the same glyph has to say both states. */
+   is a character. It rotates because the same glyph has to say both states — and it rotates without
+   a transition: § Mouvement grants movement to one thing only, a block the reader did not replace by
+   hand, and a fold is opened by hand. A transition here also escaped the `no-preference` guard. */
 .illustrations__fold-title::before {
   content: '›';
   display: inline-block;
   padding-right: 0.5rem;
   color: var(--ochre);
-  transition: transform 120ms ease;
 }
 .illustrations__fold[open] .illustrations__fold-title::before {
   transform: rotate(90deg);
@@ -432,6 +433,15 @@
    storefront, ruled in ochre, and it sticks: the name stays on screen for as long as its own rows do.
    The ochre stem down the left holds the block, and the title stays out in the margin — the list
    visibly hangs from the word that names it. */
+/* The ochre replaces the fold's own rule rather than sitting under it — otherwise the band opened on
+   a grey hairline the document does not describe, and the summary gained 2px of border that nothing
+   gave back: the title dropped two pixels at every toggle. A repli qui s'ouvre ne déplace pas son
+   propre titre, and that holds for two pixels as much as for the left margin. The padding returns the
+   1px the swap of a 1px rule for a 2px one costs, so the block above the title is 0.8rem + 1px in
+   both states. */
+.illustrations__fold[open] {
+  border-top: 0;
+}
 .illustrations__fold[open] > .illustrations__fold-summary {
   position: sticky;
   top: 0;
@@ -439,6 +449,7 @@
   background: var(--surface);
   border-top: 2px solid var(--ochre);
   border-bottom: 1px solid var(--rule-strong);
+  padding-block-start: calc(0.8rem - 1px);
   /* Equal and opposite, so the band bleeds past the text on both sides while the title stays on the
      page's own left edge: an open fold must not shift its own heading. The bleed is smaller than the
      1.5rem gutter of `.page`, so nothing can overflow sideways. */
@@ -555,16 +566,31 @@
   font-family: var(--serif);
   margin: 0 0 0.3rem;
 }
+/* `min-inline-size: 0` fights the browser's own stylesheet: a `fieldset` ships with
+   `min-inline-size: min-content`, so it grew to the width of the ingredient grid instead of letting
+   it overflow. The scroll box below then had nothing to scroll — it was as wide as its content — and
+   the page went sideways instead, which is the one thing § _registre de tri_ forbids. */
 .scan-page__ingredients {
   border: none;
   border-left: 1px solid var(--rule);
   padding: 0 0 0 0.8rem;
   margin: 1rem 0;
+  min-inline-size: 0;
 }
 .scan-page__ingredients legend {
   padding: 0;
   color: var(--ink-muted);
 }
+/* The columns survive the phone by scrolling in their own box, never by folding: the page itself
+   still never moves sideways. The vertical padding is the room a focus ring needs — `overflow-x`
+   forces the other axis to `auto`, which would otherwise clip the outline of the top and bottom
+   fields — and the negative margin gives that room back to the layout. */
+.scan-page__ingredients-scroll {
+  overflow-x: auto;
+  padding-block: 4px;
+  margin-block: -4px;
+}
+
 /* The raw line carries the text; the three parsed fields stay narrow so the eye reads the line
    first and the parse second. */
 .scan-page__ingredient {
@@ -601,13 +627,5 @@
   .illustrations__fold[open] .illustrations__fold-body {
     margin-left: 0;
     padding-left: 0.9rem;
-  }
-  .scan-page__ingredient {
-    grid-template-columns: 1fr 1fr;
-  }
-  /* The header cannot describe two columns that hold five fields; the placeholders carry the names
-     at this width. */
-  .scan-page__ingredient--head {
-    display: none;
   }
 }

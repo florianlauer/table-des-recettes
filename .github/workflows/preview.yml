@@ -253,10 +253,15 @@ jobs:
   # Trusted: no checkout, and the only job allowed to write to the pull request. That permission
   # therefore never passes through the job running unreviewed code.
   #
-  # No condition of its own: it runs exactly when `publish` succeeded, which only happens when the
-  # gate allowed the deployment in the first place.
+  # Same `!cancelled()` as `publish`, and for the same reason one step further down: skipping is
+  # transmitted through the whole graph, not just to a job's direct dependents. `publish` bought its
+  # way past a skipped `data` and succeeded, but having a skipped ancestor at all was enough to skip
+  # this job — so every push after the first deployed a preview and told nobody, leaving the reader
+  # on the URL of the first commit. A `gate` term stays redundant: if the gate refused, `publish`
+  # never succeeded.
   comment:
     needs: [gate, publish]
+    if: "!cancelled() && needs.publish.result == 'success'"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
