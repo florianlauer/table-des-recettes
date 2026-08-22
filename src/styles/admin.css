@@ -566,6 +566,28 @@
   font-family: var(--serif);
   margin: 0 0 0.3rem;
 }
+/* The status line is metadata — « Brouillon · /recette/… · ingrédients déduits » — and it was set in
+   body ink, so the warning below it had nothing to stand out against but its own weight. Muted here,
+   like every other caption on this page (`figcaption`, the ingredient column heads).
+
+   Colour only, not the size: shrinking a line that is already on screen changes the form of the
+   screen, and the warning needs the contrast, not the reduction.
+
+   A class and not `p:first-of-type`: the block comment above the warning argues it belongs at the
+   top of the form, and that is exactly the edit a positional selector would betray — it would mute
+   the warning and un-mute the caption, with nothing but a colour to say so. */
+.scan-page__status {
+  color: var(--ink-muted);
+}
+/* Body ink and 600 against that muted caption: two channels, which is what § _l'échelle des filets_
+   asks of weight — the second one, never the only one. No panel, no rule, no glyph: § _registre de
+   tri_ forbids the card and the pictogram, and the sentence is already the whole warning. */
+.scan-page__duplicate {
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+  max-width: 42rem;
+}
 /* `min-inline-size: 0` fights the browser's own stylesheet: a `fieldset` ships with
    `min-inline-size: min-content`, so it grew to the width of the ingredient grid instead of letting
    it overflow. The scroll box below then had nothing to scroll — it was as wide as its content — and

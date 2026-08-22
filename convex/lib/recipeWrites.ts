@@ -1,18 +1,25 @@
 import type { Id } from '../_generated/dataModel'
 import { buildSearchText } from '../../src/shared/normalize'
+import { slugify } from '../../src/shared/slug'
 import { stageOf } from '../../src/shared/illustrationStage'
 import type { IllustrationStage } from '../../src/shared/illustrationStage'
 
 /**
  * The only authorised entry point for writing the (title, ingredients) pair.
- * Always derives `searchText`: never insert or patch without going through here.
+ * Always derives `searchText` **and** `titleKey`: never insert or patch without going through here.
+ *
+ * The two are not the same fold and cannot share one field. `searchText` stems and mixes the
+ * ingredients in, which is what makes the storefront's search tolerant — and which is also why two
+ * different recipes routinely share it. `titleKey` is the title alone, unstemmed, so it means « the
+ * same title » and nothing looser.
  */
 export function withSearchText<
   T extends { title: string; ingredients: readonly { raw: string }[] },
->(fields: T): T & { searchText: string } {
+>(fields: T): T & { searchText: string; titleKey: string } {
   return {
     ...fields,
     searchText: buildSearchText(fields.title, fields.ingredients),
+    titleKey: slugify(fields.title),
   }
 }
 

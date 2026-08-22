@@ -6,6 +6,7 @@ import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
 import { deleteStoredBlob } from './lib/blobs'
+import { findTitleTwin, titleTwin } from './lib/duplicates'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
 import { deleteRecipeDoc } from './recipeDocs'
@@ -575,6 +576,10 @@ export const getScanForCorrection = query({
           status: literalUnion(['review', 'published'] as const),
           slug: v.union(v.string(), v.null()),
           revision: v.number(),
+          // The recipe already scanned under this title, when there is one. Only computed for a
+          // draft: it means « publishing this would put a second one online », which is a fact
+          // about publication and says nothing once the recipe is published.
+          duplicateOf: v.union(titleTwin, v.null()),
         }),
       ),
       recipesTruncated: v.boolean(),
@@ -603,18 +608,27 @@ export const getScanForCorrection = query({
       totalCostUsd: scan.totalCostUsd ?? null,
       createdAt: scan.createdAt,
       startedAt: scan.status === 'extracting' ? (scan.startedAt ?? null) : null,
-      recipes: recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map((recipe) => ({
-        id: recipe._id,
-        title: recipe.title,
-        type: recipe.type,
-        servings: recipe.servings ?? null,
-        ingredients: recipe.ingredients,
-        ingredientsInferred: recipe.ingredientsInferred,
-        steps: recipe.steps,
-        status: recipe.status,
-        slug: recipe.slug ?? null,
-        revision: revisionOf(recipe),
-      })),
+      recipes: await Promise.all(
+        recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map(async (recipe) => {
+          // Asked only of a draft: publication is the gesture the answer is about, and a recipe
+          // already online has passed it. That is also what bounds the extra reads to the drafts.
+          const duplicateOf =
+            recipe.status === 'review' ? await findTitleTwin(ctx, recipe) : null
+          return {
+            id: recipe._id,
+            title: recipe.title,
+            type: recipe.type,
+            servings: recipe.servings ?? null,
+            ingredients: recipe.ingredients,
+            ingredientsInferred: recipe.ingredientsInferred,
+            steps: recipe.steps,
+            status: recipe.status,
+            slug: recipe.slug ?? null,
+            revision: revisionOf(recipe),
+            duplicateOf,
+          }
+        }),
+      ),
       recipesTruncated: recipes.length > DRAFTS_LISTED_PER_SCAN,
     }
   },

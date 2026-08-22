@@ -141,6 +141,15 @@ export default defineSchema({
     ingredientsInferred: v.boolean(),
     steps: v.array(v.string()),
     searchText: v.string(),
+    // The title folded to its canonical form, so « ai-je déjà scanné celle-là » is an indexed read.
+    // Not the slug: a slug only exists once a recipe has been published, and it carries a collision
+    // suffix — so `gateau-2` is both « the second Gateau » and « the recipe titled Gateau 2 », which
+    // is a warning that fires on a recipe that is not a homonym. This key is neither frozen nor
+    // suffixed: it follows the title, and two documents share it exactly when they share a title.
+    // Optional because a required field would reject every existing recipe. `withSearchText` is the
+    // only *live* writer — the one place a title write derives it — and `backfillTitleKey` is the
+    // second and last, which is what catches the rows written before the field existed.
+    titleKey: v.optional(v.string()),
     status: literalUnion(['review', 'published'] as const),
     publishedAt: v.optional(v.number()),
     imageStorageId: v.optional(v.id('_storage')),
@@ -177,6 +186,12 @@ export default defineSchema({
   })
     .index('by_status_type', ['status', 'type'])
     .index('by_slug', ['slug'])
+    // Compound, and `status` is what the second key buys: with three recipes under one title the
+    // twin worth naming is the **published** one, and index order is creation order — so a probe on
+    // the key alone handed back the two oldest, which could both be drafts while a copy sat on the
+    // storefront. The screen then asserted « attend en relecture » about a recipe that was online.
+    // The key alone is still a prefix of this index, which is what `backfillTitleKey` ranges over.
+    .index('by_title_key_and_status', ['titleKey', 'status'])
     .index('by_scan', ['scanId'])
     .index('by_illustration', ['hasIllustration'])
     // The work screen's partition. `beautifyStatus` is the second key because a recipe being

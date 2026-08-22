@@ -71,8 +71,13 @@ describe('editing a draft', () => {
     const recipeId = await draft(t, scanId, 'Crêpes de sarrasin')
     // Title and ingredients folded together, accents and plurals removed: the pair has to cross
     // `withSearchText` on every write or the recipe stops being findable, silently.
+    //
+    // `titleKey` is the second thing that write derives, and it is not the same fold: the title
+    // alone, unstemmed, so it means « the same title » where `searchText` means « findable by ».
+    // Asserted together because they have one writer and one chance to drift.
     expect(await read(t, recipeId)).toMatchObject({
       searchText: 'crepe de sarrasin 4 pomme',
+      titleKey: 'crepes-de-sarrasin',
       revision: 1,
     })
   })
@@ -297,6 +302,253 @@ describe('deleting', () => {
     await expect(
       t.mutation(api.recipeAdmin.deleteRecipe, { adminToken, recipeId }),
     ).resolves.toEqual({ ok: true })
+  })
+})
+
+describe('a title already scanned', () => {
+  const duplicateOf = async (
+    t: Harness,
+    scanId: Id<'scans'>,
+    recipeId: Id<'recipes'>,
+  ) => {
+    const scan = await t.query(api.admin.getScanForCorrection, {
+      adminToken,
+      scanId,
+    })
+    return scan?.recipes.find((recipe) => recipe.id === recipeId)?.duplicateOf
+  }
+
+  test('warns on two drafts of the same page, neither ever published', async () => {
+    const t = setup()
+    const first = await newScan(t)
+    const firstDraft = await draft(t, first, 'Soupe de courge')
+    const second = await newScan(t)
+    const secondDraft = await draft(t, second, 'Soupe de courge')
+
+    // The case the screen exists for, and the one the slug could not see: a slug is minted at
+    // publication, so neither draft had one and neither was warned — while « Tout publier » put
+    // both on the shelf without asking anything.
+    expect(await duplicateOf(t, second, secondDraft)).toMatchObject({
+      title: 'Soupe de courge',
+      status: 'review',
+      slug: null,
+      scanId: first,
+    })
+    // Symmetrical, deliberately: whichever of the two the operator opens first says so.
+    expect(await duplicateOf(t, first, firstDraft)).toMatchObject({
+      status: 'review',
+    })
+  })
+
+  test('names the published recipe a draft would duplicate', async () => {
+    const t = setup()
+    const first = await newScan(t)
+    const online = await draft(t, first, 'Tarte Tatin')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: online,
+    })
+
+    // Accents and case fold into the same key, which is the whole reason the oracle is the folded
+    // title and not the raw string: « TARTE TATIN » is not a second recipe.
+    const second = await newScan(t)
+    const shouted = await draft(t, second, 'TARTE TATIN')
+    expect(await duplicateOf(t, second, shouted)).toEqual({
+      title: 'Tarte Tatin',
+      status: 'published',
+      slug: 'tarte-tatin',
+      scanId: first,
+    })
+  })
+
+  test('does not mistake a numbered title for a collision suffix', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const numbered = await draft(t, scanId, 'Gateau 2')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: numbered,
+    })
+
+    // « Gateau 2 » publishes to the slug `gateau-2`, which is also what a second « Gateau » would
+    // be given. Walking the slug family therefore reported « Gateau 2 » as a homonym of « Gateau ».
+    // The folded title cannot conflate the two: `gateau` and `gateau-2` are different keys.
+    const plain = await draft(t, scanId, 'Gateau')
+    expect(await duplicateOf(t, scanId, plain)).toBeNull()
+  })
+
+  test('reports a twin taken offline as being in review, not online', async () => {
+    const t = setup()
+    const first = await newScan(t)
+    const recipeId = await draft(t, first, 'Clafoutis')
+    await t.mutation(api.recipeAdmin.publishRecipe, { adminToken, recipeId })
+    // The slug survives unpublication (ADR 0001), so it is still there to be reported — but sending
+    // the operator to a page the storefront no longer serves would be a dead link, which is why the
+    // status, and not the presence of a slug, is what the form reads.
+    await t.mutation(api.recipeAdmin.unpublishRecipe, { adminToken, recipeId })
+
+    const second = await newScan(t)
+    const again = await draft(t, second, 'Clafoutis')
+    expect(await duplicateOf(t, second, again)).toMatchObject({
+      status: 'review',
+      slug: 'clafoutis',
+    })
+  })
+
+  test('stays silent for a lone draft and for a published recipe', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const alone = await draft(t, scanId, 'Blanquette')
+    expect(await duplicateOf(t, scanId, alone)).toBeNull()
+
+    // Once online the flag says nothing: it answers « publier ceci ferait un doublon », a question
+    // an already published recipe has passed.
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: alone,
+    })
+    expect(await duplicateOf(t, scanId, alone)).toBeNull()
+  })
+
+  test('does not mistake a recipe for its own twin', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const recipeId = await draft(t, scanId, 'Ratatouille')
+    await t.mutation(api.recipeAdmin.publishRecipe, { adminToken, recipeId })
+    await t.mutation(api.recipeAdmin.unpublishRecipe, { adminToken, recipeId })
+
+    // Back in review and still the only holder of its key: the index answers with the recipe asking
+    // the question, which is not a duplicate. `take(2)` is what makes that decidable.
+    expect(await duplicateOf(t, scanId, recipeId)).toBeNull()
+  })
+
+  test('does not pair up two untitled drafts', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const first = await draft(t, scanId, '!!!')
+    await draft(t, scanId, '???')
+
+    // Both fold to the empty key. Matching on it would make every untitled draft the twin of every
+    // other, and publication refuses these two anyway — so the empty key is not a title.
+    expect(await duplicateOf(t, scanId, first)).toBeNull()
+  })
+
+  test('follows a title that is corrected', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const online = await draft(t, scanId, 'Gratin dauphinois')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: online,
+    })
+    const other = await draft(t, scanId, 'Autre chose')
+    expect(await duplicateOf(t, scanId, other)).toBeNull()
+
+    // The key is derived on every write of the pair, never frozen like a slug: retyping the title
+    // during correction is exactly how an operator discovers the recipe was already scanned.
+    await t.mutation(api.recipeAdmin.saveRecipe, {
+      adminToken,
+      recipeId: other,
+      expectedRevision: 1,
+      title: 'Gratin dauphinois',
+      type: 'plat',
+      ingredients: [],
+      ingredientsInferred: false,
+      steps: [],
+    })
+    expect(await duplicateOf(t, scanId, other)).toMatchObject({
+      title: 'Gratin dauphinois',
+      status: 'published',
+    })
+  })
+
+  test('names the published copy, not the oldest one', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    // Two drafts first, the published copy last — index order is creation order, so a single probe
+    // on the key would return these two and report « attend en relecture » about a title that is on
+    // the storefront. The `status` key of the index is what makes the published one findable first.
+    const olderDraft = await draft(t, scanId, 'Chili')
+    await draft(t, scanId, 'Chili')
+    const online = await draft(t, scanId, 'Chili')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: online,
+    })
+
+    expect(await duplicateOf(t, scanId, olderDraft)).toMatchObject({
+      status: 'published',
+      slug: 'chili',
+    })
+  })
+
+  test('says nothing while the asking recipe is itself un-backfilled', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    // Two rows as they stand before the migration, sharing nothing but the absence of a key. Convex
+    // indexes that absence, so without the `undefined` guard each would be handed the other as its
+    // twin — an unrelated recipe, named with confidence, right in the deploy window.
+    const asking = await t.run(async (ctx) => {
+      const id = await ctx.db.insert('recipes', {
+        scanId,
+        title: 'Hachis parmentier',
+        type: 'plat',
+        ingredients: [],
+        ingredientsInferred: false,
+        steps: [],
+        searchText: 'hachi parmentier',
+        status: 'review',
+        beautifiedAccepted: false,
+        beautifyStatus: 'idle',
+      })
+      await ctx.db.insert('recipes', {
+        scanId,
+        title: 'Pot-au-feu',
+        type: 'plat',
+        ingredients: [],
+        ingredientsInferred: false,
+        steps: [],
+        searchText: 'pot au feu',
+        status: 'published',
+        slug: 'pot-au-feu',
+        beautifiedAccepted: false,
+        beautifyStatus: 'idle',
+      })
+      return id
+    })
+
+    expect(await duplicateOf(t, scanId, asking)).toBeNull()
+  })
+
+  test('finds a recipe the backfill has reached, and nothing before that', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    // A row as it stands before the migration: written without `titleKey`, the way every recipe in
+    // the corpus was. The absent field *is* indexed — it is the range `backfillTitleKey` walks — so
+    // what keeps it out is the guard: matching on `undefined` would make every un-walked recipe the
+    // twin of every other.
+    const legacyId = await t.run((ctx) =>
+      ctx.db.insert('recipes', {
+        title: 'Pot-au-feu',
+        type: 'plat',
+        ingredients: [],
+        ingredientsInferred: false,
+        steps: [],
+        searchText: 'pot au feu',
+        status: 'published',
+        slug: 'pot-au-feu',
+        beautifiedAccepted: false,
+        beautifyStatus: 'idle',
+      }),
+    )
+    const fresh = await draft(t, scanId, 'Pot-au-feu')
+    expect(await duplicateOf(t, scanId, fresh)).toBeNull()
+
+    await t.run((ctx) => ctx.db.patch(legacyId, { titleKey: 'pot-au-feu' }))
+    expect(await duplicateOf(t, scanId, fresh)).toMatchObject({
+      title: 'Pot-au-feu',
+      status: 'published',
+    })
   })
 })
 
