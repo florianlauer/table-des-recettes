@@ -6,6 +6,7 @@ import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { readQueueWork } from './extract'
 import { deleteStoredBlob } from './lib/blobs'
+import { findTitleTwin, titleTwin } from './lib/duplicates'
 import { revisionOf } from './lib/recipeWrites'
 import { rateLimiter } from './rateLimits'
 import { deleteRecipeDoc } from './recipeDocs'
@@ -28,6 +29,7 @@ import {
 } from '../src/shared/attemptStats'
 import { configuredExtractionIdentity } from '../src/shared/currentIdentity'
 import { markCurrent } from '../src/shared/journalStats'
+import { slugify } from '../src/shared/slug'
 import { MAX_ATTEMPTS } from '../src/shared/queueContract'
 import {
   MAX_IMAGES_PER_SCAN,
@@ -575,6 +577,10 @@ export const getScanForCorrection = query({
           status: literalUnion(['review', 'published'] as const),
           slug: v.union(v.string(), v.null()),
           revision: v.number(),
+          // The recipe already scanned under this title, when there is one. Only computed for a
+          // draft: it means « publishing this would put a second one online », which is a fact
+          // about publication and says nothing once the recipe is published.
+          duplicateOf: v.union(titleTwin, v.null()),
         }),
       ),
       recipesTruncated: v.boolean(),
@@ -603,19 +609,64 @@ export const getScanForCorrection = query({
       totalCostUsd: scan.totalCostUsd ?? null,
       createdAt: scan.createdAt,
       startedAt: scan.status === 'extracting' ? (scan.startedAt ?? null) : null,
-      recipes: recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map((recipe) => ({
-        id: recipe._id,
-        title: recipe.title,
-        type: recipe.type,
-        servings: recipe.servings ?? null,
-        ingredients: recipe.ingredients,
-        ingredientsInferred: recipe.ingredientsInferred,
-        steps: recipe.steps,
-        status: recipe.status,
-        slug: recipe.slug ?? null,
-        revision: revisionOf(recipe),
-      })),
+      recipes: await Promise.all(
+        recipes.slice(0, DRAFTS_LISTED_PER_SCAN).map(async (recipe) => {
+          // Asked only of a draft: publication is the gesture the answer is about, and a recipe
+          // already online has passed it. That is also what bounds the extra reads to the drafts.
+          const duplicateOf =
+            recipe.status === 'review'
+              ? await findTitleTwin(ctx, {
+                  id: recipe._id,
+                  titleKey: recipe.titleKey,
+                })
+              : null
+          return {
+            id: recipe._id,
+            title: recipe.title,
+            type: recipe.type,
+            servings: recipe.servings ?? null,
+            ingredients: recipe.ingredients,
+            ingredientsInferred: recipe.ingredientsInferred,
+            steps: recipe.steps,
+            status: recipe.status,
+            slug: recipe.slug ?? null,
+            revision: revisionOf(recipe),
+            duplicateOf,
+          }
+        }),
+      ),
       recipesTruncated: recipes.length > DRAFTS_LISTED_PER_SCAN,
     }
+  },
+})
+
+/**
+ * The same question as `duplicateOf`, asked about a title that has not been saved.
+ *
+ * `duplicateOf` travels with the scan and answers about the title on file, which is the right answer
+ * for a screen that has just opened and the wrong one the moment the operator types: a recipe added by
+ * hand starts untitled, so its key is empty and nothing could be reported until a save, and a title
+ * typed over another kept accusing the recipe of a collision it no longer had.
+ *
+ * Deliberately keyed on the recipe and a raw title rather than on a key: folding is `slugify`, it is
+ * the same fold `withSearchText` will apply when the title is eventually written, and letting a
+ * caller pass a key would be letting the client decide what « the same title » means.
+ *
+ * `review` only, like `duplicateOf`: the answer is about publishing, and a published recipe has
+ * already been through it. A recipe that no longer exists answers `null` rather than throwing — a
+ * form left open while its row is deleted elsewhere must not turn the screen into an error.
+ */
+export const twinForTitle = query({
+  args: {
+    adminToken: v.string(),
+    recipeId: v.id('recipes'),
+    title: v.string(),
+  },
+  returns: v.union(titleTwin, v.null()),
+  handler: async (ctx, { adminToken, recipeId, title }) => {
+    requireAdmin(adminToken)
+    const recipe = await ctx.db.get('recipes', recipeId)
+    if (!recipe || recipe.status !== 'review') return null
+    return findTitleTwin(ctx, { id: recipeId, titleKey: slugify(title) })
   },
 })

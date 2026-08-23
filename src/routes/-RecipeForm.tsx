@@ -1,9 +1,13 @@
 import { useMutation } from 'convex/react'
 import { useId, useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import { duplicateNote } from '../lib/duplicateMessages'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import { RECIPE_STATUS_LABELS } from '../lib/recipeStatus'
+import { readyData } from '../lib/dataView'
+import { useAdminQuery } from '../lib/useAdminQuery'
+import { useDebounced } from '../lib/useDebounced'
 import { RECIPE_TYPES, TYPE_LABELS } from '../shared/recipeTypes'
 import type { RecipeType } from '../shared/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
@@ -38,6 +42,12 @@ export function toDraft(recipe: RecipeView): Draft {
     steps: recipe.steps.join('\n'),
   }
 }
+
+/**
+ * Long enough that typing a title is one Convex subscription rather than one per keystroke — the
+ * same quarter second the index's search field waits, and for the same reason.
+ */
+const TITLE_PROBE_DEBOUNCE_MS = 250
 
 /** The columns of the parsed line, in the order the grid lays them out. */
 const INGREDIENT_COLUMNS = ['Ligne', 'Quantité', 'Unité', 'Libellé'] as const
@@ -75,6 +85,22 @@ export function RecipeForm({
   } | null>(null)
   const draft = edited ?? toDraft(recipe)
   const dirty = edited !== null
+  // `duplicateOf` came with the scan and answers about the *saved* title, so a title being typed
+  // needs its own answer: without it the warning kept accusing a recipe just renamed to something
+  // unique, and a recipe added by hand — which starts untitled — said nothing until a first save.
+  // The probe replaces that answer rather than adding to it, and only while the two differ, so an
+  // untouched form still costs no subscription at all.
+  const typedTitle = useDebounced(draft.title, TITLE_PROBE_DEBOUNCE_MS)
+  const probing = recipe.status === 'review' && typedTitle !== recipe.title
+  const probed = useAdminQuery(
+    adminToken,
+    api.admin.twinForTitle,
+    probing ? { recipeId: recipe.id, title: typedTitle } : 'skip',
+  )
+  // `readyData` and not `.data`: a probe still in flight, or one that failed, must not be read as
+  // « aucun doublon » — and a failure has nowhere to go here, the form is not the place to report
+  // that a background question did not get through.
+  const twin = probing ? readyData(probed) : recipe.duplicateOf
   const save = rowGesture(recipe.id, 'save')
   const publish = rowGesture(recipe.id, 'publish')
   const unpublish = rowGesture(recipe.id, 'unpublish')
@@ -107,11 +133,53 @@ export function RecipeForm({
       aria-busy={busy}
     >
       <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
-      <p>
+      <p className="scan-page__status">
         {RECIPE_STATUS_LABELS[recipe.status]}
         {recipe.slug && ` · /recette/${recipe.slug}`}
         {recipe.ingredientsInferred && ' · ingrédients déduits'}
       </p>
+
+      {/* At the top, not next to « Publier » at the foot of the form: the answer to « celle-là, je
+          l'ai déjà scannée ? » has to arrive before the transcription is checked line by line, and
+          the recourse is « Supprimer » — the last control of the same block.
+
+          `role="status"` and not `alert`: nothing is blocked and « Publier » carries its own
+          confirmation, so interrupting an operator mid-transcription would be the wrong register —
+          which is what `alert` does. Same choice as the undo offer below.
+
+          Both links open a new tab, deliberately: comparing the two recipes must not navigate away
+          from corrections that are not saved. */}
+      {twin && (
+        <p className="scan-page__duplicate" role="status">
+          {duplicateNote(twin)}
+          {twin.slug !== null && twin.status === 'published' && (
+            <>
+              {' '}
+              <a
+                href={`/recette/${twin.slug}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ouvrir /recette/{twin.slug}
+              </a>
+            </>
+          )}
+          {/* A twin still in review has no page on the storefront. Its scan's correction screen is
+              the only place it can be read — and deleted. */}
+          {twin.status === 'review' && twin.scanId !== null && (
+            <>
+              {' '}
+              <a
+                href={`/admin/scan/${twin.scanId}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ouvrir son scan
+              </a>
+            </>
+          )}
+        </p>
+      )}
 
       <label className="admin-page__field">
         Titre
@@ -301,6 +369,14 @@ export function RecipeForm({
           gesture={publish}
           label="Publier"
           pendingLabel="Publication…"
+          // A warning, not a refusal: two « Tarte aux pommes » from two different books are both
+          // legitimate, and `resolveSlug` already gives the second one its own address. What the
+          // duplicate cannot be is *silent*, so the click has to be confirmed once.
+          confirm={
+            twin
+              ? `${duplicateNote(twin)} Publier ce doublon quand même ?`
+              : undefined
+          }
           // Publishing a form the operator has already edited would put the stale server value
           // online — a wrong page, not a lost keystroke.
           disabled={dirty || publishBlocked}

@@ -22,6 +22,13 @@ describe('adminQueryArgs', () => {
     expect(adminQueryArgs('', {})).toBe('skip')
   })
 
+  test('passes a caller’s own skip through, token or not', () => {
+    // A section with nothing to ask yet routes through the same gate rather than growing a second
+    // way not to subscribe — `enabled: false` was that second way, and it subscribed anyway.
+    expect(adminQueryArgs('secret', 'skip')).toBe('skip')
+    expect(adminQueryArgs(null, 'skip')).toBe('skip')
+  })
+
   test('never lets a caller’s argument overwrite the token', () => {
     // The token is spread last on purpose: a query that happens to name an argument `adminToken`
     // would otherwise decide what it is authenticated with.

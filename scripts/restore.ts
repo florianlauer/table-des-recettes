@@ -56,6 +56,8 @@ type RestoredRecipe = {
   ingredientsInferred: boolean
   steps: string[]
   searchText: string
+  // Both derived by `withSearchText` below, so neither is carried by the backup.
+  titleKey: string
   status: BackupRecipe['status']
   slug?: string
   publishedAt?: number

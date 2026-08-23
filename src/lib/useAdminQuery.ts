@@ -25,12 +25,16 @@ type OwnArgs<TQuery extends AdminQuery> = Omit<
  * `enabled: false` does not stop `@convex-dev/react-query` from subscribing — it watches the cache
  * "added" event and only honours a literal `'skip'`. Gating with `enabled` sent an empty token to
  * the server, which answered with an opaque « Server Error » in production. There is one gate now,
- * and it is this one.
+ * and it is this one — which is why a caller with its own reason not to ask routes it through here
+ * too, instead of growing a second way to not subscribe.
  */
 export function adminQueryArgs<TQuery extends AdminQuery>(
   token: string | null,
-  args: OwnArgs<TQuery>,
+  args: OwnArgs<TQuery> | 'skip',
 ): FunctionArgs<TQuery> | 'skip' {
+  // A caller that has nothing to ask yet passes its own `'skip'` through the same gate rather than
+  // faking an absent token, which would earn the screen a `tokenAbsent` view it must then ignore.
+  if (args === 'skip') return 'skip'
   // `null` is the token still being read out of browser storage, and it skips like an empty one:
   // asking with no token would only earn an error the operator cannot act on.
   // The token is spread last: a query that happens to name an argument `adminToken` does not get to
@@ -61,7 +65,7 @@ export type AdminQueryView<T> = DataView<T> & { refetch: () => Promise<void> }
 export function useAdminQuery<TQuery extends AdminQuery>(
   token: string | null,
   query: TQuery,
-  args: OwnArgs<TQuery>,
+  args: OwnArgs<TQuery> | 'skip',
 ): AdminQueryView<FunctionReturnType<TQuery>> {
   const result = useQuery({
     ...convexQuery(query, adminQueryArgs<TQuery>(token, args)),

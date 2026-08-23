@@ -5,6 +5,31 @@ import { publishedRecipes } from './recipeCounts'
 type RecipeFields = Omit<Doc<'recipes'>, '_id' | '_creationTime'>
 
 /**
+ * The three keys `withSearchText` mints together. `titleKey` is spelled out rather than picked from
+ * `RecipeFields`, where the schema makes it optional — optional in the *document* because the rows
+ * that predate the field are legitimate, never optional in a *write*.
+ */
+type TitleDerivations = Pick<RecipeFields, 'title' | 'searchText'> & {
+  titleKey: string
+}
+
+/** An insert always writes a title, so it always owes the pair. */
+type RecipeInsert = RecipeFields & TitleDerivations
+
+/**
+ * A patch either leaves the title alone or brings both derived keys with it — the compiler decides
+ * which, and there is no third option. `patchRecipeDoc(ctx, recipe, { title })` used to type-check:
+ * the aggregate stayed right, while `searchText` and `titleKey` silently described the old title, so
+ * the recipe stopped being findable and its twin stopped being reported. Neither failure shows on
+ * screen. The source scan in `recipeDocs.test.ts` guards the *other* door — a direct `ctx.db.patch`
+ * from outside this module — because a regex is all that can reach a call this module never sees.
+ */
+type RecipePatch = Partial<
+  Omit<RecipeFields, 'title' | 'searchText' | 'titleKey'>
+> &
+  (TitleDerivations | { title?: never; searchText?: never; titleKey?: never })
+
+/**
  * The three authorised ways to write the `recipes` table. Same discipline as `withSearchText` and
  * `restaged` in `lib/recipeWrites.ts`: the derived value has one writer.
  *
@@ -24,7 +49,7 @@ type RecipeFields = Omit<Doc<'recipes'>, '_id' | '_creationTime'>
  */
 export async function insertRecipeDoc(
   ctx: MutationCtx,
-  fields: RecipeFields,
+  fields: RecipeInsert,
 ): Promise<Id<'recipes'>> {
   const recipeId = await ctx.db.insert('recipes', fields)
   await publishedRecipes.insertIfDoesNotExist(ctx, await reread(ctx, recipeId))
@@ -34,7 +59,7 @@ export async function insertRecipeDoc(
 export async function patchRecipeDoc(
   ctx: MutationCtx,
   recipe: Doc<'recipes'>,
-  patch: Partial<RecipeFields>,
+  patch: RecipePatch,
 ): Promise<void> {
   await ctx.db.patch(recipe._id, patch)
   // `replaceOrInsert` across namespaces is what a publication is: the document leaves `review:plat`

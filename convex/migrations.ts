@@ -10,6 +10,7 @@ import { internalMutation } from './_generated/server'
 import type { MutationCtx, QueryCtx } from './_generated/server'
 import { pendingSlotsOf, renditionPool } from './derivations'
 import { restaged } from './lib/recipeWrites'
+import { slugify } from '../src/shared/slug'
 import { publishedRecipes } from './recipeCounts'
 import { ceilingFor } from './retention'
 import schema from './schema'
@@ -67,6 +68,28 @@ export const backfillPurgeAfter = migrations.define({
   migrateOne: (_ctx, scan) => ({
     purgeAfter: ceilingFor({ createdAt: scan.createdAt, now: Date.now() }),
   }),
+})
+
+/**
+ * Gives every recipe the canonical form of its title, which is what the correction screen reads to
+ * warn that a page has already been scanned. `customRange` on the key prefix of `by_title_key_and_status` walks only the rows that
+ * have none, same trick as `backfillPurgeAfter`: a resumed run does not revisit what is done.
+ *
+ * Derived, so it is recomputed rather than restored — `withSearchText` is the single writer and the
+ * backup does not carry the field. What this costs, stated rather than hidden: between the function
+ * push and the last batch of this backfill, a recipe not yet walked cannot be found as a twin, so a
+ * duplicate goes unwarned during that window. Unlike `backfillRecipeCounts` there is no read-side
+ * gate for it, and deliberately: a missing warning on the operator's own screen is not a wrong
+ * number on a public page, and a gate would put a « detection not ready » sentence in front of a
+ * deploy that lasts a minute.
+ */
+export const backfillTitleKey = migrations.define({
+  table: 'recipes',
+  customRange: (query) =>
+    query.withIndex('by_title_key_and_status', (q) =>
+      q.eq('titleKey', undefined),
+    ),
+  migrateOne: (_ctx, recipe) => ({ titleKey: slugify(recipe.title) }),
 })
 
 /**
@@ -140,6 +163,7 @@ export const backfillRecipeCounts = migrations.define({
 export const runAll = migrations.runner([
   internal.migrations.backfillIllustrationStage,
   internal.migrations.backfillPurgeAfter,
+  internal.migrations.backfillTitleKey,
   internal.migrations.backfillRenditions,
   internal.migrations.backfillRecipeCounts,
 ])

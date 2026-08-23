@@ -261,6 +261,31 @@ describe('the single-writer inventory', () => {
     expect(found).toEqual(expected)
   })
 
+  /**
+   * The same risk, one derivation over: `title` has two derived companions — `searchText`, which the
+   * storefront's search reads, and `titleKey`, which the correction screen reads to warn that a page
+   * has already been scanned. Both are written by `withSearchText` and by nothing else.
+   *
+   * A `db.patch` that sets `title` on its own would leave both stale, and neither failure announces
+   * itself: the recipe simply stops being findable, and its twin stops being reported.
+   *
+   * The *sanctioned* door is shut by the compiler, not by this scan: `RecipePatch` in `recipeDocs.ts`
+   * admits a title only alongside its two derived keys. What no type can reach is a `ctx.db.patch`
+   * written straight against the table from another module, which is what the regex is for — and its
+   * reach is `modulesOf()`, `convex/*.ts` and not `convex/lib/`, exactly like the three clauses
+   * around it. Stated rather than implied: the rule held here is « no top-level Convex module patches
+   * a title », and a writer added under `lib/` would escape it.
+   */
+  test('nothing writes a recipe title without deriving its pair', () => {
+    for (const { name, source } of modulesOf()) {
+      for (const call of dbCalls(source, 'patch')) {
+        // `title:` inside a patch argument list. `withSearchText` is not called through `db.patch`,
+        // so a legitimate write cannot look like this — it goes through `patchRecipeDoc`.
+        expect(call, name).not.toMatch(/\btitle:/)
+      }
+    }
+  })
+
   test('nothing but recipeDocs.ts patches status or type', () => {
     for (const { name, source } of modulesOf()) {
       for (const call of dbCalls(source, 'patch')) {

@@ -5,6 +5,7 @@ import { api } from '../../convex/_generated/api'
 import type { Id } from '../../convex/_generated/dataModel'
 import { useAdminToken } from '../lib/adminToken'
 import { readyData } from '../lib/dataView'
+import { bulkDuplicateConfirm } from '../lib/duplicateMessages'
 import { formatCount } from '../lib/formatCount'
 import { formatUsd } from '../lib/formatNumber'
 import { estimateFrom } from '../shared/journalStats'
@@ -84,6 +85,14 @@ function ScanCorrectionPage() {
     ? new Set<string>(data.recipes.map((recipe) => recipe.id))
     : null
   useOrphanedRows({ gestures, liveRowIds: liveRecipeIds })
+
+  // Bulk publication is the one path that never passes in front of a recipe's own warning, so the
+  // list of duplicates is rebuilt here and asked for once. One entry per *row*, not per name: the
+  // count belongs to the rows, and it is the message that folds the repeated names.
+  const duplicateTitles =
+    data?.recipes
+      .filter((recipe) => recipe.duplicateOf !== null)
+      .map((recipe) => recipe.title) ?? []
 
   const publishBlockedReason = imagesChanged
     ? 'Les images ont changé : relis les recettes avant de publier.'
@@ -252,6 +261,11 @@ function ScanCorrectionPage() {
               gesture={pageGesture('publishScan')}
               label="Tout publier"
               pendingLabel="Publication…"
+              confirm={
+                duplicateTitles.length > 0
+                  ? bulkDuplicateConfirm(duplicateTitles)
+                  : undefined
+              }
               disabled={anyDirty || imagesChanged}
               blockedReason={publishBlockedReason}
               run={async () => {
