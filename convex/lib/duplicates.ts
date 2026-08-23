@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
 import type { Infer } from 'convex/values'
-import type { Doc } from '../_generated/dataModel'
+import type { Id } from '../_generated/dataModel'
 import type { QueryCtx } from '../_generated/server'
 import { literalUnion } from './validators'
 
@@ -55,12 +55,16 @@ export type TitleTwin = Infer<typeof titleTwin>
  *
  * `take(2)`, not `first()`: this recipe is itself in the index under its own key, so the first row
  * back is as likely to be the recipe asking the question.
+ *
+ * The asking side is a key and an id rather than the document, because the title being asked about is
+ * not always the one on file: `twinForTitle` folds a title the operator is still typing. One oracle
+ * either way — the stored key and a typed one are the same question, and a second copy of this walk
+ * for the live case is how the two answers start disagreeing.
  */
 export async function findTitleTwin(
   ctx: QueryCtx,
-  recipe: Doc<'recipes'>,
+  { id, titleKey: key }: { id: Id<'recipes'>; titleKey: string | undefined },
 ): Promise<TitleTwin | null> {
-  const key = recipe.titleKey
   // Neither of these two states is a title, and both are shared. `''` is what every untitled draft
   // folds to — publication refuses them anyway — and `undefined` is every row the backfill has not
   // reached yet. Convex does index an absent field (that is how `backfillTitleKey` selects its
@@ -71,7 +75,7 @@ export async function findTitleTwin(
     .query('recipes')
     .withIndex('by_title_key_and_status', (q) => q.eq('titleKey', key))
     .take(2)
-  const twin = holders.find((holder) => holder._id !== recipe._id)
+  const twin = holders.find((holder) => holder._id !== id)
   if (twin === undefined) return null
   return {
     title: twin.title,

@@ -1,6 +1,6 @@
 import { convexTest } from 'convex-test'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
-import { api } from './_generated/api'
+import { api, internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import schema from './schema'
 import { RETENTION_AFTER_TREATMENT_MS } from './retention'
@@ -549,6 +549,161 @@ describe('a title already scanned', () => {
       title: 'Pot-au-feu',
       status: 'published',
     })
+  })
+
+  /**
+   * The operator's own question: does the warning wait for a save? It must not — the screen opens on
+   * what the extraction wrote, and that is the moment the answer is worth having.
+   *
+   * Which holds because `extract.finalize` inserts through `withSearchText` like every other title
+   * write, so the key exists before anyone has typed anything. Asserted through the real
+   * finalisation rather than through `draft`, whose `saveRecipe` would hide exactly the dependency
+   * in question.
+   */
+  test('warns on a recipe straight out of the extraction, saved by nobody', async () => {
+    const t = setup()
+    const published = await newScan(t)
+    const online = await draft(t, published, 'Blanquette de veau')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: online,
+    })
+
+    const attemptId = 'scan:1:1'
+    const scanId = await t.run(async (ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [
+          await ctx.storage.store(new Blob(['image'], { type: 'image/jpeg' })),
+        ],
+        status: 'extracting',
+        attemptId,
+        startedAt: Date.now(),
+        attempts: 1,
+        createdAt: Date.now(),
+      }),
+    )
+    expect(
+      await t.mutation(internal.extract.finalize, {
+        scanId,
+        attemptId,
+        model: 'model',
+        servedProvider: null,
+        latencyMs: 10,
+        costUsd: 0.01,
+        repairCount: 0,
+        recipes: [
+          {
+            title: 'Blanquette de veau',
+            type: 'plat' as const,
+            ingredients: [],
+            ingredientsInferred: false,
+            steps: [],
+          },
+        ],
+      }),
+    ).toBe(true)
+
+    const scan = await t.query(api.admin.getScanForCorrection, {
+      adminToken,
+      scanId,
+    })
+    expect(scan?.recipes).toHaveLength(1)
+    expect(scan?.recipes[0]?.duplicateOf).toMatchObject({
+      title: 'Blanquette de veau',
+      status: 'published',
+      slug: 'blanquette-de-veau',
+    })
+  })
+})
+
+/**
+ * `duplicateOf` answers about the title on file, which is silence for a title being typed — and a
+ * recipe added by hand starts untitled, so that silence lasted until a first save. These are the same
+ * oracle asked about a string instead of a row.
+ */
+describe('a title being typed', () => {
+  const twinFor = (t: Harness, recipeId: Id<'recipes'>, title: string) =>
+    t.query(api.admin.twinForTitle, { adminToken, recipeId, title })
+
+  async function published(t: Harness, title: string) {
+    const scanId = await newScan(t)
+    const recipeId = await draft(t, scanId, title)
+    await t.mutation(api.recipeAdmin.publishRecipe, { adminToken, recipeId })
+    return recipeId
+  }
+
+  test('warns before the title is saved, on a recipe added by hand', async () => {
+    const t = setup()
+    await published(t, 'Blanquette de veau')
+    // Straight out of « Ajouter une recette »: no title, so no key, so nothing `duplicateOf` could
+    // ever have reported. This is the case the question was about.
+    const added = await t.mutation(api.recipeAdmin.addRecipe, {
+      adminToken,
+      scanId: await newScan(t),
+    })
+    if (!added.ok) throw new Error(added.error)
+
+    expect(
+      await twinFor(t, added.recipeId, 'blanquette de VEAU'),
+    ).toMatchObject({
+      title: 'Blanquette de veau',
+      status: 'published',
+      slug: 'blanquette-de-veau',
+    })
+    // The same recipe, mid-keystroke. A prefix is not the title, and a warning on one would fire on
+    // every recipe whose name starts like another's.
+    expect(await twinFor(t, added.recipeId, 'blanq')).toBeNull()
+    expect(await twinFor(t, added.recipeId, '')).toBeNull()
+  })
+
+  test('never reports the recipe to itself', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const alone = await draft(t, scanId, 'Soupe au pistou')
+
+    // Typing its own saved title back is the commonest edit there is — a corrected accent, an undone
+    // keystroke — and it must not accuse the recipe of duplicating itself.
+    expect(await twinFor(t, alone, 'Soupe au pistou')).toBeNull()
+    expect(await twinFor(t, alone, 'Gratin de courgettes')).toBeNull()
+  })
+
+  test('says nothing once the recipe is published', async () => {
+    const t = setup()
+    const online = await published(t, 'Tarte aux pommes')
+    await published(t, 'Poulet rôti')
+
+    // Same gate as `duplicateOf`: the answer is about the act of publishing, and this recipe has
+    // already been through it. Retitling it onto a taken title is a different problem — the slug is
+    // what guards that one, at the write.
+    expect(await twinFor(t, online, 'Poulet rôti')).toBeNull()
+  })
+
+  test('answers null for a recipe that no longer exists', async () => {
+    const t = setup()
+    await published(t, 'Ratatouille')
+    const scanId = await newScan(t)
+    const doomed = await draft(t, scanId, 'À jeter')
+    await t.mutation(api.recipeAdmin.deleteRecipe, {
+      adminToken,
+      recipeId: doomed,
+    })
+
+    // A form left open while its row is deleted from another tab. The probe is a background
+    // question; turning the screen into an error over it would be the wrong trade.
+    expect(await twinFor(t, doomed, 'Ratatouille')).toBeNull()
+  })
+
+  test('refuses without the admin token', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const recipeId = await draft(t, scanId, 'Chou farci')
+    await expect(
+      t.query(api.admin.twinForTitle, {
+        adminToken: 'wrong',
+        recipeId,
+        title: 'Chou farci',
+      }),
+    ).rejects.toThrow()
   })
 })
 

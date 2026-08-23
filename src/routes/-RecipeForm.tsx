@@ -5,6 +5,9 @@ import { duplicateNote } from '../lib/duplicateMessages'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import { RECIPE_STATUS_LABELS } from '../lib/recipeStatus'
+import { readyData } from '../lib/dataView'
+import { useAdminQuery } from '../lib/useAdminQuery'
+import { useDebounced } from '../lib/useDebounced'
 import { RECIPE_TYPES, TYPE_LABELS } from '../shared/recipeTypes'
 import type { RecipeType } from '../shared/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
@@ -39,6 +42,12 @@ export function toDraft(recipe: RecipeView): Draft {
     steps: recipe.steps.join('\n'),
   }
 }
+
+/**
+ * Long enough that typing a title is one Convex subscription rather than one per keystroke — the
+ * same quarter second the index's search field waits, and for the same reason.
+ */
+const TITLE_PROBE_DEBOUNCE_MS = 250
 
 /** The columns of the parsed line, in the order the grid lays them out. */
 const INGREDIENT_COLUMNS = ['Ligne', 'Quantité', 'Unité', 'Libellé'] as const
@@ -76,7 +85,22 @@ export function RecipeForm({
   } | null>(null)
   const draft = edited ?? toDraft(recipe)
   const dirty = edited !== null
-  const twin = recipe.duplicateOf
+  // `duplicateOf` came with the scan and answers about the *saved* title, so a title being typed
+  // needs its own answer: without it the warning kept accusing a recipe just renamed to something
+  // unique, and a recipe added by hand — which starts untitled — said nothing until a first save.
+  // The probe replaces that answer rather than adding to it, and only while the two differ, so an
+  // untouched form still costs no subscription at all.
+  const typedTitle = useDebounced(draft.title, TITLE_PROBE_DEBOUNCE_MS)
+  const probing = recipe.status === 'review' && typedTitle !== recipe.title
+  const probed = useAdminQuery(
+    adminToken,
+    api.admin.twinForTitle,
+    probing ? { recipeId: recipe.id, title: typedTitle } : 'skip',
+  )
+  // `readyData` and not `.data`: a probe still in flight, or one that failed, must not be read as
+  // « aucun doublon » — and a failure has nowhere to go here, the form is not the place to report
+  // that a background question did not get through.
+  const twin = probing ? readyData(probed) : recipe.duplicateOf
   const save = rowGesture(recipe.id, 'save')
   const publish = rowGesture(recipe.id, 'publish')
   const unpublish = rowGesture(recipe.id, 'unpublish')

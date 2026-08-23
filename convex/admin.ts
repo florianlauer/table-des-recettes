@@ -29,6 +29,7 @@ import {
 } from '../src/shared/attemptStats'
 import { configuredExtractionIdentity } from '../src/shared/currentIdentity'
 import { markCurrent } from '../src/shared/journalStats'
+import { slugify } from '../src/shared/slug'
 import { MAX_ATTEMPTS } from '../src/shared/queueContract'
 import {
   MAX_IMAGES_PER_SCAN,
@@ -613,7 +614,12 @@ export const getScanForCorrection = query({
           // Asked only of a draft: publication is the gesture the answer is about, and a recipe
           // already online has passed it. That is also what bounds the extra reads to the drafts.
           const duplicateOf =
-            recipe.status === 'review' ? await findTitleTwin(ctx, recipe) : null
+            recipe.status === 'review'
+              ? await findTitleTwin(ctx, {
+                  id: recipe._id,
+                  titleKey: recipe.titleKey,
+                })
+              : null
           return {
             id: recipe._id,
             title: recipe.title,
@@ -631,5 +637,36 @@ export const getScanForCorrection = query({
       ),
       recipesTruncated: recipes.length > DRAFTS_LISTED_PER_SCAN,
     }
+  },
+})
+
+/**
+ * The same question as `duplicateOf`, asked about a title that has not been saved.
+ *
+ * `duplicateOf` travels with the scan and answers about the title on file, which is the right answer
+ * for a screen that has just opened and the wrong one the moment the operator types: a recipe added by
+ * hand starts untitled, so its key is empty and nothing could be reported until a save, and a title
+ * typed over another kept accusing the recipe of a collision it no longer had.
+ *
+ * Deliberately keyed on the recipe and a raw title rather than on a key: folding is `slugify`, it is
+ * the same fold `withSearchText` will apply when the title is eventually written, and letting a
+ * caller pass a key would be letting the client decide what « the same title » means.
+ *
+ * `review` only, like `duplicateOf`: the answer is about publishing, and a published recipe has
+ * already been through it. A recipe that no longer exists answers `null` rather than throwing — a
+ * form left open while its row is deleted elsewhere must not turn the screen into an error.
+ */
+export const twinForTitle = query({
+  args: {
+    adminToken: v.string(),
+    recipeId: v.id('recipes'),
+    title: v.string(),
+  },
+  returns: v.union(titleTwin, v.null()),
+  handler: async (ctx, { adminToken, recipeId, title }) => {
+    requireAdmin(adminToken)
+    const recipe = await ctx.db.get('recipes', recipeId)
+    if (!recipe || recipe.status !== 'review') return null
+    return findTitleTwin(ctx, { id: recipeId, titleKey: slugify(title) })
   },
 })
