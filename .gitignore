@@ -28,8 +28,6 @@ dist-ssr
 # devenv
 .devenv.flake.nix
 .devenv
-.direnv
-!.envrc
 .gstack/
 
 # Page de revue du spike : 5,6 Mo, régénérable par `node spike/build-review.mjs`. Elle réencode en
