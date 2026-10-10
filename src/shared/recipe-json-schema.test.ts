@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { extractionJsonSchema, JSON_SCHEMA_NAME } from './recipe-json-schema'
 
 describe('recipe JSON schema', () => {

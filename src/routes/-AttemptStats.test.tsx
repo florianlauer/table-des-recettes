@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import type { WireAttemptSummary } from '../shared/attemptStats'
 import type { NonEmpty } from '../shared/journalStats'
 import { AttemptStatsTable } from './-AttemptStats'

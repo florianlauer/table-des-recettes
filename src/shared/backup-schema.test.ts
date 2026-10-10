@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { backupRecipeSchema, restorableProjection } from './backup-schema'
 import { completeBackupRecipe } from './backup-schema.fixture'
 

@@ -49,7 +49,7 @@ Quinze constats, verdict `VERDICT: REVISE`. Résumé fidèle, dans l'ordre rendu
 2. **Routage HTTP sous-spécifié** : ni `httpRouter()` ni `export default http` ne sont mentionnés,
    alors qu'ils sont obligatoires.
 3. **Le raccord `httpAction` → `internalQuery` manque** : `ctx.runQuery(internal.export.backupPayload,
-{})` n'est pas écrit, ce qui laisse planer une fausse incompatibilité.
+   {})` n'est pas écrit, ce qui laisse planer une fausse incompatibilité.
 4. **Validateurs Convex absents** : `args` et `returns` doivent être déclarés, et le validateur de
    recette sauvegardée factorisé.
 5. **`recipeSchema` ne peut pas valider ce format** : `strictObject`, refuse `id`, `status`, `slug`,

@@ -435,7 +435,7 @@ poser le drapeau retire la ligne de sa section.
   - **inventaire des écrivains.** Énumérer `api.illustrations` ne marche pas : `_generated/api.js:11`
     exporte `anyApi`, un proxy dynamique dont les fonctions ne sont pas visibles par `Object.keys`.
     Le test énumère donc les **exports des modules sources** — `import * as illustrations from
-'./illustrations'` et `import * as beautify from './beautify'`, dont les exports sont des objets
+    './illustrations'` et `import * as beautify from './beautify'`, dont les exports sont des objets
     réels — et les confronte à une liste déclarée dans le test, chaque nom classé « bumpe » ou « ne
     touche pas au travail photo ». Les deux modules, pas seulement `illustrations` : la finalisation
     vit dans `beautify.ts` et écrit deux des cinq champs protégés, donc un inventaire qui l'exclut

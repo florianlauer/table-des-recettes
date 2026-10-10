@@ -174,7 +174,7 @@ async function main(): Promise<void> {
   const { run, model, provider } = parseNamedArguments(process.argv.slice(2))
   if (!run || !model || !provider) {
     throw new Error(
-      'Usage : npm run correct -- --run <fichier.json> --model <id> --provider <slug>.',
+      'Usage : pnpm run correct -- --run <fichier.json> --model <id> --provider <slug>.',
     )
   }
   const artefact = JSON.parse(await readFile(resolve(run), 'utf8')) as {

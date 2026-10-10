@@ -319,7 +319,7 @@ async function latestLadder(): Promise<LadderFile> {
     .sort()
     .at(-1)
   if (!filename)
-    throw new Error("Aucune échelle figée. Exécutez d'abord npm run rank.")
+    throw new Error("Aucune échelle figée. Exécutez d'abord pnpm run rank.")
   return JSON.parse(
     await readFile(resolve('spike', filename), 'utf8'),
   ) as LadderFile
@@ -334,7 +334,7 @@ async function main(): Promise<void> {
   } = parseNamedArguments(process.argv.slice(2))
   if (!model || !provider) {
     throw new Error(
-      'Usage : npm run accept -- --model <id> --provider <slug> [--page d] [--truth <fichier>].',
+      'Usage : pnpm run accept -- --model <id> --provider <slug> [--page d] [--truth <fichier>].',
     )
   }
   const apiKey = requireOpenRouterApiKey()

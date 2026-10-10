@@ -1,5 +1,5 @@
 import { convexTest } from 'convex-test'
-import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from 'vite-plus/test'
 import { DRAFTS_LISTED_PER_SCAN, QUEUE_COUNT_CAP } from './admin'
 import { api, internal } from './_generated/api'
 import { rateLimiter } from './rateLimits'

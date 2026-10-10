@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import {
   BEAUTIFY_EXPECTED_COST_USD,
   BEAUTIFY_COST_ALERT_FACTOR,

@@ -45,7 +45,7 @@ Modes d'échec observés :
   déjà retenu et la mesure n'aurait rien changé au choix.
 - Les deux modèles `-thinking` (`qwen3-vl-8b-thinking` @alibaba,
   `qwen3-vl-30b-a3b-thinking` @siliconflow) refusent la coupure : `400 — Reasoning is mandatory for
-this endpoint and cannot be disabled`, et `effort: "low"` est mesurablement inopérant (615 tokens
+  this endpoint and cannot be disabled`, et `effort: "low"` est mesurablement inopérant (615 tokens
   de raisonnement avec, 518 sans). Leurs 5 000 à 9 000 tokens de réflexion par appel, leurs
   0,013–0,022 USD et leurs 48–93 s sont leur nature. Non retenus, sans reproche de qualité : seule
   la page A a été jouée.

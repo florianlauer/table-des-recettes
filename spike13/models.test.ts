@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 import { BEAUTIFY_MODEL, LADDER, modelSlug } from './models.js'
 import { PROMPT_V3, PROMPT_VERSION, RESTORATION_PROMPT } from './prompt.js'

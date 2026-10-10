@@ -1,5 +1,5 @@
 import type { Infer } from 'convex/values'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import type { recipeType } from '../../convex/schema'
 import { ingredient } from '../../convex/schema'
 import {

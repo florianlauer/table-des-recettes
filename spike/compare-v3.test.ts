@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { compareV3Extraction } from './compare-v3.js'
 import { PAGE_E_EXPECTED_INGREDIENTS } from './compare-runs.js'
 

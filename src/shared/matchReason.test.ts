@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { toSearchTokens } from './normalize'
 import { findMatchingIngredient } from './matchReason'
 

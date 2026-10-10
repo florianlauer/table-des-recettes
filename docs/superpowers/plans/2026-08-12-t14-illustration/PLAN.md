@@ -63,7 +63,7 @@ La vitrine n'a rien à apprendre : elle sait déjà rendre les trois cas.
    sous-estimer les coûts et gonfler la file d'attente.
 
    **`failureKind` est explicitement nullable** — `v.union(literalUnion(BEAUTIFY_FAILURE_KINDS),
-v.null())` — et l'invariant est posé et testé : `pending | accepted | rejected` ⇒ `failureKind`
+   v.null())` — et l'invariant est posé et testé : `pending | accepted | rejected` ⇒ `failureKind`
    nul, un `discarded` **technique** ⇒ `failureKind` non nul. Un `discarded` peut aussi être non
    technique (l'appel a réussi, la finalisation était périmée) : dans ce cas `failureKind` reste nul
    et c'est l'`outcome` seul qui raconte.

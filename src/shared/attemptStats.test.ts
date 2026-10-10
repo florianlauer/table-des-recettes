@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import type { JournalledAttempt } from './attemptStats'
 import { attemptTotals, summarizeAttempts } from './attemptStats'
 import { nonEmpty } from './journalStats'

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import {
   ILLUSTRATION_WORK_LISTED,
   ILLUSTRATION_WORK_MAX,

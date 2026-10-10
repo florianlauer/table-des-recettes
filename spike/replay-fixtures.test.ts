@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { resolve } from 'node:path'
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { replayFixtures } from './replay-fixtures.js'
 
 test('replays the archived corpus and keeps scaling coverage above its measured floor', async () => {

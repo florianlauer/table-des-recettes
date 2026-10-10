@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite-plus'
 
 // The repository root config is the application's: `environment: "edge-runtime"` and an `include`
 // covering only `src/**` and `convex/**`. Left to resolve on its own, vitest loaded it and collected

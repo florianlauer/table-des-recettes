@@ -34,7 +34,7 @@ export async function latestLadder(): Promise<LadderFile> {
     .sort()
   const latest = entries.at(-1)
   if (!latest) {
-    throw new Error("Aucune échelle figée. Exécutez d'abord npm run rank.")
+    throw new Error("Aucune échelle figée. Exécutez d'abord pnpm run rank.")
   }
   return JSON.parse(
     await readFile(resolve('spike', latest), 'utf8'),
@@ -144,7 +144,7 @@ async function main(): Promise<void> {
   } = parseNamedArguments(process.argv.slice(2))
   if (!model || !provider) {
     throw new Error(
-      'Usage : npm run run:spike -- --model <id> --provider <slug> [--pages a,b,c] [--out <dir>].',
+      'Usage : pnpm run run:spike -- --model <id> --provider <slug> [--pages a,b,c] [--out <dir>].',
     )
   }
   // Les trois pages du protocole restent le défaut ; `--pages` sert à passer la réserve, qui mesure

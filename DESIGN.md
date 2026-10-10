@@ -263,7 +263,7 @@ Le masthead reste purement typographique :
 4. Recherche : uniquement le texte « Rechercher une recette » posé sur un filet fort pleine
    largeur. **Pas de carte, pas d'ombre, pas de loupe, pas de bordure de champ.**
 5. Filtres sur une seule ligne typographique : `Toutes 203  Entrées 31  Plats 94  Desserts 52
-Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
+   Apéro 26`. L'actif est imprimé dans **l'encre de son type** et en graisse 600 ; « Toutes »
    actif reste en ocre. **Aucune pastille, aucun bouton.**
 6. L'index commence avant le milieu de l'écran. Huit recettes visibles au premier écran sur
    desktop, quatre titres au minimum sur mobile — voir l'amendement du 2026-08-13, qui mesure
@@ -447,7 +447,7 @@ elles. C'est l'espace blanc qui isole les différences plutôt que de prétendre
 >
 > Sur la fiche, la photo prend donc **toute la largeur de sa colonne** et sa hauteur suit le ratio
 > (`width: 100%; height: auto`), **sans jamais dépasser ses propres pixels** (`max-width:
-max-content`). Conséquence assumée : un portrait devient haut. C'est le prix de « aucun recadrage
+> max-content`). Conséquence assumée : un portrait devient haut. C'est le prix de « aucun recadrage
 > automatique du plat », qui ne bouge pas.
 >
 > Le plafond n'est pas une précaution abstraite : la dérivée d'affichage fait 400 px de haut, donc un

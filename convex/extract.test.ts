@@ -1,5 +1,5 @@
 import { convexTest } from 'convex-test'
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vite-plus/test'
 import { internal } from './_generated/api'
 import schema from './schema'
 import { bytesToBase64 } from '../src/shared/base64'

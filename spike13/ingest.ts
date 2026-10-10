@@ -105,7 +105,7 @@ async function main(): Promise<void> {
   const dish = process.argv[2]
   if (!dish || !/^[a-z][a-z0-9-]*$/i.test(dish)) {
     throw new Error(
-      'Usage : npm run ingest13 -- <role> [source] (ex. « recadre1 img_4312 »).',
+      'Usage : pnpm run ingest13 -- <role> [source] (ex. « recadre1 img_4312 »).',
     )
   }
   const inputPath = await findInboxImage(process.argv[3] ?? dish)

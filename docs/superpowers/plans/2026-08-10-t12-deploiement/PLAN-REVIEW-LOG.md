@@ -149,7 +149,7 @@ Quatre constats, tous retenus.
 3. **Moyen — `publish` n'attendait pas l'import.** Un échec de `data` laissait quand même une
    preview publique en ligne. _Fix_ : `needs: [build, data]`.
 4. **Moyen — le CLI Convex du job `data` n'était pas reproductible.** _Fix_ : `npm ci
---ignore-scripts` dans le checkout de confiance.
+   --ignore-scripts` dans le checkout de confiance.
 
 ### Réponse de Claude
 

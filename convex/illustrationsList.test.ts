@@ -1,5 +1,5 @@
 import { DEFAULT_BATCH_SIZE } from '@convex-dev/migrations'
-import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from 'vite-plus/test'
 import { api } from './_generated/api'
 import {
   adminToken,

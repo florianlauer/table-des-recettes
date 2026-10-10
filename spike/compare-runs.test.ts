@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { diffLines, normalizeTypography } from './compare-runs.js'
 
 describe('typographic normalization', () => {

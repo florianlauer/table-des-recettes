@@ -3,8 +3,8 @@
 A minimal TanStack Start app with one route and plain CSS.
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Edit `src/routes/index.tsx` to get started. Add route files under
@@ -13,7 +13,7 @@ Edit `src/routes/index.tsx` to get started. Add route files under
 Build the production app with:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ## Déploiement
@@ -22,7 +22,7 @@ La production vit sur Vercel, le backend sur Convex, et les deux sont poussés p
 commande. C'est `vercel.json` qui la porte :
 
 ```
-npx convex deploy --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
+pnpm exec convex deploy --cmd 'pnpm run build' --cmd-url-env-var-name VITE_CONVEX_URL
 ```
 
 `convex deploy` pousse les fonctions sur le déploiement Convex désigné par `CONVEX_DEPLOY_KEY`,
@@ -30,7 +30,7 @@ injecte son URL dans `VITE_CONVEX_URL`, puis lance le build du frontend. Un push
 déclenche la production.
 
 Nitro n'a **pas** de preset épinglé : il reconnaît Vercel tout seul. Hors Vercel, le même
-`npm run build` produit donc un serveur Node autonome, lançable par `node dist/server/index.mjs`
+`pnpm build` produit donc un serveur Node autonome, lançable par `node dist/server/index.mjs`
 sur n'importe quel hébergeur compatible. Voir https://v3.nitro.build/deploy pour les autres
 presets.
 

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 
 const REPO = normalize(join(dirname(fileURLToPath(import.meta.url)), '../..'))
 

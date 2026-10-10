@@ -21,37 +21,42 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Reads the pnpm version from `packageManager` in package.json, so CI installs with the same
+      # pnpm as everyone else. It must come before setup-node, whose `cache: pnpm` calls it.
+      - uses: pnpm/action-setup@v6
+
       # Node 22 to match devenv.nix (`nodejs_22`), which is the project's source of truth for the
       # local toolchain. Bumping one without the other is how CI stops reproducing local results.
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
-      # `npm ci` and not `npm install`: the lockfile is committed, and a CI that resolves fresh
-      # versions is not testing the tree under review.
+      # `--frozen-lockfile`: the lockfile is committed, and a CI that resolves fresh versions is not
+      # testing the tree under review. pnpm already defaults to it on CI; spelled out so nobody has to
+      # know that.
       - name: Install
         id: install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # Every check below runs even when an earlier one fails, so one run reports all seven results
       # instead of stopping at the first. They are skipped only when the install itself failed —
       # their output would be noise about missing modules, not about the code.
-      - name: Format (oxfmt)
+      - name: Format (vp fmt)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run check
+        run: pnpm run check
 
-      - name: Lint (oxlint)
+      - name: Lint (vp lint)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Typecheck (application)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Tests (application)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm test
+        run: pnpm test
 
       # The only check that assembles the browser bundle, and therefore the only one that can catch
       # a server module reaching the client: the other six were green while the bundle carried the
@@ -59,7 +64,7 @@ jobs:
       # read when a request is served, not when the bundle is built.
       - name: Build (application)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run build
+        run: pnpm run build
 
       # The two spike benches keep their own tsconfig and vitest config, so they need their own
       # commands. `verify*` are the only bench scripts that touch no network: the `ingest*`, `rank`,
@@ -67,8 +72,8 @@ jobs:
       # belongs in CI, and consequently no API key has to exist as a repository secret.
       - name: Tests (bench T1 — extraction)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run verify
+        run: pnpm run verify
 
       - name: Tests (bench T13 — beautification)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run verify13
+        run: pnpm run verify13

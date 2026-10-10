@@ -26,7 +26,7 @@ l'œil et **confirmées** par l'auteur le 2026-08-09.
 - **« Le conseil de Danone » n'est ni ingrédient ni étape** : de l'éditorial en fin de bloc. Le
   verser dans `steps` est une invention silencieuse, difficile à voir à l'œil.
 - **Les ingrédients sont un flux inline** (`Marché. 2 filets de dinde de 500 g • 20 g de cacao
-brut • …`) et non une liste verticale : c'est le test du découpage ligne à ligne de `raw`, avec un
+  brut • …`) et non une liste verticale : c'est le test du découpage ligne à ligne de `raw`, avec un
   vrai risque de fusion.
 - **« Pour 6 à 8 personnes »** alors que `servings` est un `number | null`. Tranché depuis : le prompt
   v2 impose la **borne basse**, donc `6`. Transcris la vérité terrain avec cette même règle ; la
