@@ -83,7 +83,7 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   données. Pas de bouton « Lancer la migration » : le flux principal de l'écran ne peut pas dépendre
   de quelqu'un qui se souvient d'appuyer. Rejouer la série est sans effet quand elle est terminée, et
   reprend au curseur quand elle a été interrompue, donc chaque déploiement peut l'appeler. À la main :
-  `npm run migrate` (dev) ou `npm run migrate:prod`. Tant qu'elle n'est pas finie, les quatre sections
+  `pnpm run migrate` (dev) ou `pnpm run migrate:prod`. Tant qu'elle n'est pas finie, les quatre sections
   d'étape ne sont **pas lues** plutôt que servies partielles — une file partielle demande à
   l'opérateur de se souvenir d'une bannière en lisant des lignes, et il conclura qu'un lot est fini.
   L'arbitrage, qui lit `by_beautify_status`, reste entier pendant toute la migration.

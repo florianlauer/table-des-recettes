@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite-plus'
 
 // `node_modules` is a symlink to the main checkout, so vitest resolves the workspace through the
 // symlink's real path and would load the app config — which runs in `edge-runtime` (no `node:fs`)

@@ -5,7 +5,7 @@
 // edge runtime `vitest.config.ts` sets globally for everything else.
 import { convexTest } from 'convex-test'
 import sharp from 'sharp'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vite-plus/test'
 import { internal } from './_generated/api'
 import type { Doc, Id } from './_generated/dataModel'
 import { MAX_DERIVATION_ATTEMPTS, pendingSlotsOf } from './derivations'

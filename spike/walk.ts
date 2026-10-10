@@ -103,7 +103,7 @@ async function latestLadder(): Promise<LadderFile> {
     .sort()
     .at(-1)
   if (!latest)
-    throw new Error("Aucune échelle figée. Exécutez d'abord npm run rank.")
+    throw new Error("Aucune échelle figée. Exécutez d'abord pnpm run rank.")
   return JSON.parse(
     await readFile(resolve('spike', latest), 'utf8'),
   ) as LadderFile
@@ -256,7 +256,7 @@ async function main(): Promise<void> {
         `${label} — RETENU en ${decision.latencySeconds.toFixed(1)} s (${result?.actualCostUsd ?? 0} USD).`,
       )
       console.log(
-        `\nLance l'échelon complet :\n  npm run run:spike -- --model ${endpoint.model} --provider ${endpoint.providerSlug}`,
+        `\nLance l'échelon complet :\n  pnpm run run:spike --model ${endpoint.model} --provider ${endpoint.providerSlug}`,
       )
       console.log(`Dépensé : ${budget.spent.toFixed(6)} USD.`)
       return

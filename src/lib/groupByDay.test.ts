@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { dayKey, groupByDay } from './groupByDay'
 
 /** 2026-08-14 12:00 Paris, the reference "now" for every year-elision assertion below. */

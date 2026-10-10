@@ -25,13 +25,13 @@ avant de lire les recettes, puis vérifie que les fichiers correspondent exactem
 La cible par défaut est le déploiement de développement :
 
 ```sh
-npm run restore
+pnpm run restore
 ```
 
 La production exige deux options et conserve la confirmation interactive de Convex :
 
 ```sh
-npm run restore -- --prod --confirm-replace
+pnpm run restore --prod --confirm-replace
 ```
 
 La commande reconstruit un JSONL, recalcule `searchText`, remet `beautifiedAccepted` à `false` et

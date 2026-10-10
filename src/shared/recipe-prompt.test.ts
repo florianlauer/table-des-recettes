@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { EXTRACTION_PROMPT, PROMPT_VERSION } from './recipe-prompt'
 
 describe('recipe prompt', () => {

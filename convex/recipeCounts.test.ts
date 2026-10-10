@@ -1,5 +1,5 @@
 import { convexTest } from 'convex-test'
-import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from 'vite-plus/test'
 import { api, internal } from './_generated/api'
 import { countPublishedByType } from './recipeCounts'
 import schema from './schema'

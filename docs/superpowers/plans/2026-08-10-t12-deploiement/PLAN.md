@@ -182,7 +182,7 @@ mappé sur **`CONVEX_DEPLOY_KEY`** — le CLI Convex ne lit que ce nom-là.
 
 1. `npm ci`.
 2. `npx convex deploy --preview-create "pr-$PR" --cmd 'npm run build'
---cmd-url-env-var-name VITE_CONVEX_URL`, avec `NITRO_PRESET=vercel` dans l'environnement.
+   --cmd-url-env-var-name VITE_CONVEX_URL`, avec `NITRO_PRESET=vercel` dans l'environnement.
    Une seule commande crée le backend de preview, y pousse les fonctions, et construit le frontend
    en lui injectant l'URL de **ce** backend. `--preview-create` supprime et recrée le backend à
    chaque passage : c'est ce qui garantit qu'une preview ne peut jamais contenir le reliquat d'une

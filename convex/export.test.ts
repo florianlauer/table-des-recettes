@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { z } from 'zod'
 import { backupRecipeSchema } from '../src/shared/backup-schema'
 import { internal } from './_generated/api'

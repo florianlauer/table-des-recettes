@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { rowGesture } from '../lib/gestures'
 import type { Outcome, Run } from '../lib/gestureRegistry'
 import type { Gestures } from '../lib/useGestures'

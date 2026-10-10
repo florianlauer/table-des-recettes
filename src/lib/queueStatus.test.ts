@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { LEASE_MS } from '../shared/queueContract'
 import { deriveQueueState, formatAge, isLeaseLive } from './queueStatus'
 

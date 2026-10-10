@@ -108,13 +108,15 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
 
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # One command deploys the preview backend, pushes the functions to it, and builds the frontend
       # against that backend's URL. `NITRO_PRESET` is an environment variable rather than a pin in
@@ -128,8 +130,8 @@ jobs:
           NITRO_PRESET: vercel
           PREVIEW_FLAG: ${{ needs.gate.outputs.flag }}
         run: >-
-          npx convex deploy "$PREVIEW_FLAG" "$PREVIEW_NAME"
-          --cmd 'npm run build' --cmd-url-env-var-name VITE_CONVEX_URL
+          pnpm exec convex deploy "$PREVIEW_FLAG" "$PREVIEW_NAME"
+          --cmd 'pnpm run build' --cmd-url-env-var-name VITE_CONVEX_URL
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -156,16 +158,18 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
           persist-credentials: false
 
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
       # `--ignore-scripts`: this job holds the production backup key, and it needs the Convex CLI,
       # not any package's install hook. Installing from the lockfile rather than calling a bare
       # `npx convex` also pins the CLI to the version the repository was verified against.
       - name: Install (no install scripts)
-        run: npm ci --ignore-scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       # Two steps, one secret each, both mapped onto CONVEX_DEPLOY_KEY — the only name the CLI
       # reads. The backup key can create and download a backup and nothing else; it must never be
@@ -175,7 +179,7 @@ jobs:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_BACKUP_KEY_PROD }}
         # `--include-file-storage` is required: the export leaves stored files out by default, and
         # without them every `_storage` reference would land dangling in the preview.
-        run: npx convex export --prod --include-file-storage --path snapshot.zip
+        run: pnpm exec convex export --prod --include-file-storage --path snapshot.zip
 
       - name: Import into the preview backend
         shell: bash
@@ -183,7 +187,7 @@ jobs:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
         run: |
           if unzip -Z1 snapshot.zip | grep -q 'documents\.jsonl$'; then
-            npx convex import --deployment "preview/$PREVIEW_NAME" --replace-all --yes snapshot.zip
+            pnpm exec convex import --deployment "preview/$PREVIEW_NAME" --replace-all --yes snapshot.zip
           else
             # Production has no table yet — the case until a draft can be published. Skipping is
             # only safe because the build job just recreated the backend: it is already empty, so
@@ -199,7 +203,7 @@ jobs:
         env:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
         run: >-
-          npx convex run --deployment "preview/$PREVIEW_NAME"
+          pnpm exec convex run --deployment "preview/$PREVIEW_NAME"
           convex/migrations.ts:runAll
 
       # Separates an import that technically succeeded from a backend that is actually usable.
@@ -207,7 +211,7 @@ jobs:
       - name: Smoke check
         env:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY_PREVIEW }}
-        run: npx convex run --deployment "preview/$PREVIEW_NAME" recipes:countsByType
+        run: pnpm exec convex run --deployment "preview/$PREVIEW_NAME" recipes:countsByType
 
   # Trusted: no checkout at all, and the sole holder of the Vercel token — `VERCEL_PROJECT_ID` does
   # not restrict what that token can do, it is valid for the whole team. Waiting on `data` as well

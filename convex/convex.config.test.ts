@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 
 function read(path: string): string {
   return readFileSync(fileURLToPath(new URL(path, import.meta.url)), 'utf8')

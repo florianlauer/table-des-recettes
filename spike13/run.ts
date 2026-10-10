@@ -264,7 +264,7 @@ async function main(): Promise<void> {
   }
 
   console.log(
-    `Terminé. Dépense totale : ${budget.spent.toFixed(4)} USD. Lance « npm run review13 ».`,
+    `Terminé. Dépense totale : ${budget.spent.toFixed(4)} USD. Lance « pnpm run review13 ».`,
   )
 }
 

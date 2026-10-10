@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vite-plus/test'
 import { compressImage, MAX_LONG_EDGE } from './compress'
 
 function png({ width, height }: { width: number; height: number }): Blob {

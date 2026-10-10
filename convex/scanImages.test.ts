@@ -1,5 +1,5 @@
 import { convexTest } from 'convex-test'
-import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from 'vite-plus/test'
 import { api } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import schema from './schema'

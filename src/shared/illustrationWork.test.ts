@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { BEAUTIFY_LEASE_MS, illustrationActions } from './illustrationWork'
 import type { IllustrationState } from './illustrationWork'
 

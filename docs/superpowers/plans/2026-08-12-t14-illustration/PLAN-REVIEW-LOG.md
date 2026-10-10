@@ -65,14 +65,14 @@ VERDICT: REVISE
 **Accepté (12 sur 14).**
 
 - **1 — taxonomie d'échec.** Vérifié : `FAILURE_KINDS` vaut `refusal, truncated, invalid_json,
-invalid_schema, timeout, transport, no_recipes, invalid_image`. `no_image` en est absent,
+  invalid_schema, timeout, transport, no_recipes, invalid_image`. `no_image` en est absent,
   `truncation` diffère de `truncated`, et trois membres sont propres à l'extraction. Je ne convertis
   pas vers `FAILURE_KINDS` comme Codex le proposait en premier choix : je pose
   `BEAUTIFY_FAILURE_KINDS`, source unique sur le modèle exact de l'existante, plus une conversion
   testée depuis les `DecodeFailure` du banc.
 - **2 — agrégateur.** Vérifié : `attemptSummary` exige bien `schemaVersion`, qui n'existe pas ici, et
   ne mesure aucune acceptation. `summarizeBeautifyAttempts` distinct, identité `{model,
-promptVersion}`, métriques acceptés / rejetés / en attente.
+  promptVersion}`, métriques acceptés / rejetés / en attente.
 - **3 — index d'arbitrage.** `by_attempt_id` ajouté, `beautifyAttemptId` conservé jusqu'à
   l'arbitrage.
 - **4 — usage du ticket.** Constat juste et c'est le plus sérieux du lot : deux seaux sans marquage
