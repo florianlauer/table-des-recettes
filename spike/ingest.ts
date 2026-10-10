@@ -82,7 +82,7 @@ async function main(): Promise<void> {
   const page = process.argv[2]
   if (!page || !/^[a-z][a-z0-9-]*$/i.test(page)) {
     throw new Error(
-      "Usage : pnpm run ingest -- <role> [source] (ex. « B duo1 », ou « A » si le fichier s'appelle déjà A).",
+      "Usage : pnpm run ingest <role> [source] (ex. « B duo1 », ou « A » si le fichier s'appelle déjà A).",
     )
   }
   const inputPath = await findInboxImage(process.argv[3] ?? page)

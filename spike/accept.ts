@@ -334,7 +334,7 @@ async function main(): Promise<void> {
   } = parseNamedArguments(process.argv.slice(2))
   if (!model || !provider) {
     throw new Error(
-      'Usage : pnpm run accept -- --model <id> --provider <slug> [--page d] [--truth <fichier>].',
+      'Usage : pnpm run accept --model <id> --provider <slug> [--page d] [--truth <fichier>].',
     )
   }
   const apiKey = requireOpenRouterApiKey()

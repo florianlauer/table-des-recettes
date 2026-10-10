@@ -256,7 +256,7 @@ async function main(): Promise<void> {
         `${label} — RETENU en ${decision.latencySeconds.toFixed(1)} s (${result?.actualCostUsd ?? 0} USD).`,
       )
       console.log(
-        `\nLance l'échelon complet :\n  pnpm run run:spike -- --model ${endpoint.model} --provider ${endpoint.providerSlug}`,
+        `\nLance l'échelon complet :\n  pnpm run run:spike --model ${endpoint.model} --provider ${endpoint.providerSlug}`,
       )
       console.log(`Dépensé : ${budget.spent.toFixed(6)} USD.`)
       return

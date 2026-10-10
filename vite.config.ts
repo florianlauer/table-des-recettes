@@ -3,11 +3,6 @@ import { resolve } from 'node:path'
 
 import { defineConfig, searchForWorkspaceRoot, lazyPlugins } from 'vite-plus'
 
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
-import viteReact from '@vitejs/plugin-react'
-import { nitro } from 'nitro/vite'
-
 const projectRoot = process.cwd()
 const nodeModules = resolve(projectRoot, 'node_modules')
 
@@ -259,12 +254,22 @@ const config = defineConfig({
   },
   resolve: { tsconfigPaths: true },
   server: { fs: { allow: fsAllow } },
-  plugins: lazyPlugins(() => [
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+  // Imported here rather than at the top: `vp fmt`, `vp lint` and the editor load this file only
+  // for its `fmt` and `lint` blocks, and should not pay for Nitro and TanStack Start to do it.
+  plugins: lazyPlugins(async () => {
+    const [{ nitro }, { tanstackStart }, { default: viteReact }] =
+      await Promise.all([
+        import('nitro/vite'),
+        import('@tanstack/react-start/plugin/vite'),
+        import('@vitejs/plugin-react'),
+      ])
+    return [
+      nitro({ rollupConfig: { external: [/^@sentry\//] } }),
 
-    tanstackStart(),
-    viteReact(),
-  ]),
+      tanstackStart(),
+      viteReact(),
+    ]
+  }),
 })
 
 export default config

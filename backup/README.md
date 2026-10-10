@@ -31,7 +31,7 @@ pnpm run restore
 La production exige deux options et conserve la confirmation interactive de Convex :
 
 ```sh
-pnpm run restore -- --prod --confirm-replace
+pnpm run restore --prod --confirm-replace
 ```
 
 La commande reconstruit un JSONL, recalcule `searchText`, remet `beautifiedAccepted` à `false` et

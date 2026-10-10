@@ -16,7 +16,7 @@
     "lint": "vp lint",
     "typecheck": "tsc --noEmit",
     "test": "vp test run",
-    "test:watch": "vp test",
+    "test:watch": "vp test watch",
     "format": "vp check --fix",
     "check": "vp fmt --check",
     "migrate": "convex run convex/migrations.ts:runAll",

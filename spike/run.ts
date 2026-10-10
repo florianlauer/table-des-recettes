@@ -144,7 +144,7 @@ async function main(): Promise<void> {
   } = parseNamedArguments(process.argv.slice(2))
   if (!model || !provider) {
     throw new Error(
-      'Usage : pnpm run run:spike -- --model <id> --provider <slug> [--pages a,b,c] [--out <dir>].',
+      'Usage : pnpm run run:spike --model <id> --provider <slug> [--pages a,b,c] [--out <dir>].',
     )
   }
   // Les trois pages du protocole restent le défaut ; `--pages` sert à passer la réserve, qui mesure
