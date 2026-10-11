@@ -48,6 +48,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="fr">
       <head>
         <HeadContent />
+        {/* Umami, proxied through the /u route rule in vite.config.ts so ad blockers see a first-party script. */}
+        <script
+          defer
+          src="/u/p.js"
+          data-website-id="f452e55e-edd5-4c79-903f-1262bd8996a5"
+          data-domains="table-des-recettes.flauercase.dev"
+        />
       </head>
       <body>
         {children}
