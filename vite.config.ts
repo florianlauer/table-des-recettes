@@ -264,7 +264,11 @@ const config = defineConfig({
         import('@vitejs/plugin-react'),
       ])
     return [
-      nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+      nitro({
+        rollupConfig: { external: [/^@sentry\//] },
+        // Umami, served first-party: Nitro emits this as a Vercel CDN rewrite.
+        routeRules: { '/u/**': { proxy: 'https://stats.flauercase.dev/**' } },
+      }),
 
       tanstackStart(),
       viteReact(),
