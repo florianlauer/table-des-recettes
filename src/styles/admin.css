@@ -29,7 +29,8 @@
 /* Text fields only. Left unqualified, this framed a checkbox like a text field and gave it the
    padding of one — the box drifted away from the sentence it commands. The file input is hidden
    behind its own label, so a frame around it would only frame a clipped pixel. */
-.admin-page__field input:not([type='checkbox']):not([type='file']) {
+.admin-page__field input:not([type='checkbox']):not([type='file']),
+.scan-page__summary-title input {
   border: 1px solid var(--rule-strong);
   background: var(--surface);
   color: var(--ink);
@@ -524,6 +525,7 @@
   align-items: flex-start;
 }
 .scan-page__images h2,
+.scan-page__summary h2,
 .scan-page__recipes h2 {
   font-family: var(--serif);
   flex-basis: 100%;
@@ -532,9 +534,14 @@
   margin: 0;
   max-width: 22rem;
 }
+/* Capped in height, not width: the page only has to be recognised here, and a full-width print pushed
+   the summary below the fold on a phone. The link opens it at full size. */
 .scan-page__image img {
   display: block;
-  width: 100%;
+  /* A ceiling, not a fixed height: with `max-width` also set, a fixed height squashed a wide page. */
+  max-height: 12rem;
+  width: auto;
+  max-width: 100%;
   border: 1px solid var(--rule);
 }
 .scan-page__image figcaption {
@@ -561,6 +568,24 @@
 .scan-page__recipe {
   border-top: 1px solid var(--rule);
   padding: 1.5rem 0;
+}
+/* The summary's rows reuse `.illustrations__recipe`; only their title line is new. */
+.scan-page__summary .illustrations__recipe {
+  padding: 1rem 0;
+}
+.scan-page__summary-title {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+/* The field and its save feedback, stacked, so « Fait. » sits under the title it answers. */
+.scan-page__summary-field {
+  flex: 1 1 16rem;
+  min-width: 0;
+  display: grid;
+  gap: 0.4rem;
 }
 .scan-page__recipe h3 {
   font-family: var(--serif);

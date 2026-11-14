@@ -185,16 +185,8 @@ export const saveRecipe = mutation({
     requireAdmin(adminToken)
     const recipe = await loadRecipe(ctx, recipeId)
     if (!recipe) return refuse('Recette inconnue')
-    if (revisionOf(recipe) !== expectedRevision) {
-      return refuse(
-        'Cette recette a changé depuis le chargement de l’écran : recharge avant d’enregistrer',
-      )
-    }
-    if (recipe.status === 'published' && !publishableTitle(fields.title)) {
-      return refuse(
-        'Une recette publiée doit garder un titre : dépublie-la d’abord',
-      )
-    }
+    const refusal = editRefusal(recipe, expectedRevision, fields.title)
+    if (refusal) return refusal
 
     // `fields` carries `type`, one of the two keys the counts aggregate is namespaced on.
     await patchRecipeDoc(
@@ -205,6 +197,59 @@ export const saveRecipe = mutation({
     return succeeded
   },
 })
+
+/**
+ * The title alone, for the scan summary, which saves it as soon as the field is left. A whole-form
+ * save from there would also send whatever was half-typed in the form below.
+ */
+export const renameRecipe = mutation({
+  args: {
+    adminToken: v.string(),
+    recipeId: v.id('recipes'),
+    expectedRevision: v.number(),
+    title: v.string(),
+  },
+  // The new revision is returned so the screen can move its other unsaved corrections onto it,
+  // rather than guess the server's numbering.
+  returns: v.union(
+    v.object({ ok: v.literal(true), revision: v.number() }),
+    v.object({ ok: v.literal(false), error: v.string() }),
+  ),
+  handler: async (ctx, { adminToken, recipeId, expectedRevision, title }) => {
+    requireAdmin(adminToken)
+    const recipe = await loadRecipe(ctx, recipeId)
+    if (!recipe) return refuse('Recette inconnue')
+    const refusal = editRefusal(recipe, expectedRevision, title)
+    if (refusal) return refusal
+
+    const revision = expectedRevision + 1
+    await patchRecipeDoc(
+      ctx,
+      recipe,
+      withSearchText({ title, ingredients: recipe.ingredients, revision }),
+    )
+    return { ok: true as const, revision }
+  },
+})
+
+/** What both saves refuse: a stale screen, and a published recipe losing its title. */
+function editRefusal(
+  recipe: Doc<'recipes'>,
+  expectedRevision: number,
+  title: string,
+) {
+  if (revisionOf(recipe) !== expectedRevision) {
+    return refuse(
+      'Cette recette a changé depuis le chargement de l’écran : recharge avant d’enregistrer',
+    )
+  }
+  if (recipe.status === 'published' && !publishableTitle(title)) {
+    return refuse(
+      'Une recette publiée doit garder un titre : dépublie-la d’abord',
+    )
+  }
+  return null
+}
 
 export const deleteRecipe = mutation({
   args: { adminToken: v.string(), recipeId: v.id('recipes') },

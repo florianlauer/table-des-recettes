@@ -262,6 +262,28 @@ describe('answer interpretation', () => {
     ).toMatchObject({ ok: false, kind: 'truncated' })
   })
 
+  // « Réponse tronquée (error) » was all a failed scan said: the provider's reason and OpenRouter's
+  // message were in the answer and dropped.
+  test('names why a generation failed midway', () => {
+    expect(
+      interpretResponse({
+        choices: [
+          {
+            finish_reason: 'error',
+            native_finish_reason: 'RECITATION',
+            error: { message: 'Provider stopped the generation' },
+            message: {},
+          },
+        ],
+      }),
+    ).toEqual({
+      ok: false,
+      kind: 'truncated',
+      error:
+        'Réponse tronquée (error / RECITATION) : Provider stopped the generation',
+    })
+  })
+
   test('reports an answer that misses the schema', () => {
     expect(
       interpretResponse(content({ recipes: [{ title: 'Soup' }] })),

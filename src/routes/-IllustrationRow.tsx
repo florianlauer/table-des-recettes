@@ -1,5 +1,6 @@
 import { useMutation } from 'convex/react'
 import { useEffect, useId, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
@@ -37,12 +38,18 @@ export function IllustrationRow({
   gestures,
   now,
   estimateMs,
+  heading,
 }: {
   row: Row
   adminToken: string
   gestures: Gestures
   now: number
   estimateMs: number | null
+  /**
+   * Replaces the title line. Handed the id every bar and button is labelled by, so the caller puts it
+   * on whatever names the recipe — the scan summary's title field.
+   */
+  heading?: (titleId: string) => ReactNode
 }) {
   const attachIllustration = useAttachIllustration(adminToken)
   const detachIllustration = useMutation(api.illustrations.detachIllustration)
@@ -123,7 +130,9 @@ export function IllustrationRow({
     },
     {
       offered: can.unpublish,
-      action: 'unpublish',
+      // Not 'unpublish': the scan page also mounts the recipe form, whose own « Dépublier » holds that
+      // key on the same row.
+      action: 'unpublishBeautified',
       label: 'Dépublier l’embellissement',
       pendingLabel: 'Dépublication…',
       run: () => unpublishAccepted(args),
@@ -201,7 +210,11 @@ export function IllustrationRow({
       data-row-id={row.id}
       aria-busy={busy}
     >
-      <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
+      {heading ? (
+        heading(titleId)
+      ) : (
+        <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
+      )}
       <p>
         {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}

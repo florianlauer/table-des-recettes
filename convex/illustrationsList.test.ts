@@ -414,3 +414,35 @@ describe('the section ceiling', () => {
     expect(work.missing.truncated).toBe(false)
   })
 })
+
+describe('a scan’s photos', () => {
+  test('lists only that scan’s recipes, with full plates where there is a candidate to judge', async () => {
+    const t = setup()
+    const newScan = () =>
+      t.run((ctx) =>
+        ctx.db.insert('scans', {
+          imageStorageIds: [],
+          status: 'done',
+          attempts: 1,
+          createdAt: 1,
+        }),
+      )
+    const scanId = await newScan()
+    const otherScanId = await newScan()
+    const plain = await newRecipe(t, { title: 'Porc à l’orange', scanId })
+    const judged = await newRecipe(t, { title: 'Filet de porc', scanId })
+    await newRecipe(t, { title: 'Ailleurs', scanId: otherScanId })
+    await attach(t, judged)
+    await toReview(t, judged)
+
+    const rows = await t.query(api.illustrations.scanIllustrations, {
+      adminToken,
+      scanId,
+    })
+    expect(rows.map((row) => [row.id, row.thumbnails])).toEqual([
+      [plain, true],
+      [judged, false],
+    ])
+    expect(rows[1]).toMatchObject({ hasOriginal: true, hasCandidate: true })
+  })
+})

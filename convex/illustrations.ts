@@ -3,6 +3,7 @@ import { internal } from './_generated/api'
 import type { Doc } from './_generated/dataModel'
 import { action, internalMutation, mutation, query } from './_generated/server'
 import type { MutationCtx, QueryCtx } from './_generated/server'
+import { DRAFTS_LISTED_PER_SCAN } from './admin'
 import { requireAdmin } from './auth'
 import { renditionPool } from './derivations'
 import { deleteStoredBlob } from './lib/blobs'
@@ -618,6 +619,30 @@ export const listIllustrationWork = query({
       stagesReady,
       migration,
     }
+  },
+})
+
+/**
+ * The photo state of one scan's recipes, for the correction screen's summary: photographing and
+ * beautifying a recipe right after correcting its title, without going through the work screen.
+ * Same index and same cap as `getScanForCorrection`, so every recipe the screen lists has its row.
+ */
+export const scanIllustrations = query({
+  args: { adminToken: v.string(), scanId: v.id('scans') },
+  returns: v.array(illustrationRow),
+  handler: async (ctx, { adminToken, scanId }) => {
+    requireAdmin(adminToken)
+    const recipes = await ctx.db
+      .query('recipes')
+      .withIndex('by_scan', (q) => q.eq('scanId', scanId))
+      .take(DRAFTS_LISTED_PER_SCAN)
+    // Full plates exactly where the work screen gives them: its `active` section is every recipe whose
+    // beautification is not idle.
+    return Promise.all(
+      recipes.map((recipe) =>
+        toRow(ctx, recipe, recipe.beautifyStatus === 'idle'),
+      ),
+    )
   },
 })
 
