@@ -68,6 +68,10 @@ export type ExtractionResult =
 type OpenRouterResponse = {
   choices?: Array<{
     finish_reason?: string | null
+    // The provider's own reason, and OpenRouter's account of a generation that failed midway: the
+    // normalised `finish_reason` alone says « error » and nothing about which one.
+    native_finish_reason?: string | null
+    error?: { message?: string | null } | null
     message?: { content?: string | null; refusal?: string | null }
   }>
 }
@@ -153,11 +157,16 @@ export function interpretResponse(answer: unknown): ExtractionReading {
 
   const choice = raw.choices?.[0]
   if (choice?.message?.refusal) return refuse('refusal', choice.message.refusal)
-  if (choice?.finish_reason !== 'stop')
+  if (choice?.finish_reason !== 'stop') {
+    const reasons = [choice?.finish_reason, choice?.native_finish_reason]
+      .filter(Boolean)
+      .join(' / ')
+    const detail = choice?.error?.message ? ` : ${choice.error.message}` : ''
     return refuse(
       'truncated',
-      `Réponse tronquée (${String(choice?.finish_reason)})`,
+      `Réponse tronquée (${reasons || 'undefined'})${detail}`,
     )
+  }
   let parsed: unknown
   try {
     parsed = JSON.parse(choice.message?.content ?? '')

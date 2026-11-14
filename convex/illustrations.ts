@@ -30,6 +30,7 @@ import {
   boundedLimit,
 } from '../src/shared/illustrationLimits'
 import type { IllustrationStage } from '../src/shared/illustrationStage'
+import { MAX_RECIPES_PER_SCAN } from '../src/shared/scanLimits'
 import { BEAUTIFY_LEASE_MS } from '../src/shared/illustrationWork'
 import { IMAGE_HEADER_BYTES, sniffImageHeader } from '../src/shared/imageHeader'
 
@@ -618,6 +619,29 @@ export const listIllustrationWork = query({
       stagesReady,
       migration,
     }
+  },
+})
+
+/**
+ * The photo state of one scan's recipes, for the correction screen's summary: photographing and
+ * beautifying a recipe right after correcting its title, without going through the work screen.
+ * Same cap and same order as `getScanForCorrection`, so the two lists line up row for row.
+ */
+export const scanIllustrations = query({
+  args: { adminToken: v.string(), scanId: v.id('scans') },
+  returns: v.array(illustrationRow),
+  handler: async (ctx, { adminToken, scanId }) => {
+    requireAdmin(adminToken)
+    const recipes = await ctx.db
+      .query('recipes')
+      .withIndex('by_scan', (q) => q.eq('scanId', scanId))
+      .take(MAX_RECIPES_PER_SCAN)
+    // Full plates only where there is something to judge, as in the work screen's `active` section.
+    return Promise.all(
+      recipes.map((recipe) =>
+        toRow(ctx, recipe, recipe.beautifyStatus === 'idle'),
+      ),
+    )
   },
 })
 

@@ -130,6 +130,31 @@ describe('editing a draft', () => {
       error: 'Une recette publiée doit garder un titre : dépublie-la d’abord',
     })
   })
+
+  test('renames without touching the rest of the recipe', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const recipeId = await draft(t, scanId, 'Crêpes')
+    const rename = (expectedRevision: number) =>
+      t.mutation(api.recipeAdmin.renameRecipe, {
+        adminToken,
+        recipeId,
+        expectedRevision,
+        title: 'Galettes de sarrasin',
+      })
+
+    await expect(rename(1)).resolves.toMatchObject({ ok: true })
+    expect(await read(t, recipeId)).toMatchObject({
+      title: 'Galettes de sarrasin',
+      type: 'dessert',
+      steps: ['Cuire.'],
+      searchText: 'galette de sarrasin 4 pomme',
+      titleKey: 'galettes-de-sarrasin',
+      revision: 2,
+    })
+    // Same guard as the whole-form save: a screen behind the server does not overwrite it.
+    await expect(rename(1)).resolves.toMatchObject({ ok: false })
+  })
 })
 
 describe('publishing', () => {

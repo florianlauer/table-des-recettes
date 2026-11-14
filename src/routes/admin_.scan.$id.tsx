@@ -9,7 +9,7 @@ import { bulkDuplicateConfirm } from '../lib/duplicateMessages'
 import { formatCount } from '../lib/formatCount'
 import { formatUsd } from '../lib/formatNumber'
 import { estimateFrom } from '../shared/journalStats'
-import { outcomeMessage } from '../lib/gestureMessages'
+import { extractionMessage, outcomeMessage } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../shared/scanLimits'
@@ -24,7 +24,8 @@ import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
-import { RecipeForm } from './-RecipeForm'
+import { RecipeForm, toDraft } from './-RecipeForm'
+import { ScanSummary } from './-ScanSummary'
 import type { Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
@@ -33,7 +34,7 @@ export const Route = createFileRoute('/admin_/scan/$id')({
 })
 
 /** A draft, and the revision it answers. */
-type Edit = { revision: number; draft: Draft }
+export type Edit = { revision: number; draft: Draft }
 
 function ScanCorrectionPage() {
   const { id } = Route.useParams()
@@ -49,11 +50,12 @@ function ScanCorrectionPage() {
   // locking the controls of the next.
   const gestures = useGestures({ epoch: `scan:${scanId}:${adminToken}` })
   // Read for its correction of the shared clock, which every bar on this page hangs on.
-  useServerClock(adminToken)
+  const { now } = useServerClock(adminToken)
 
   const attachImage = useAttachImage(adminToken)
   const detachImage = useMutation(api.admin.detachImage)
   const rescan = useMutation(api.admin.rescan)
+  const startExtraction = useMutation(api.admin.startExtraction)
   const addRecipe = useMutation(api.recipeAdmin.addRecipe)
   const publishScan = useMutation(api.recipeAdmin.publishScan)
   const acknowledgeImageChange = useMutation(
@@ -65,6 +67,17 @@ function ScanCorrectionPage() {
   // says how long it usually takes.
   const stats = useAdminQuery(token, api.admin.attemptStats, {})
   const estimateMs = estimateFrom(readyData(stats) ?? [])
+  const illustrations = useAdminQuery(
+    token,
+    api.illustrations.scanIllustrations,
+    { scanId },
+  )
+  const beautifyStats = useAdminQuery(
+    token,
+    api.illustrations.beautifyStats,
+    {},
+  )
+  const beautifyEstimateMs = estimateFrom(readyData(beautifyStats) ?? [])
 
   // Not `readyData`: this query answers `null` for a scan that does not exist, and that answer is
   // the one below saying « Scan introuvable ». Folding it into « nothing yet » would print the
@@ -137,13 +150,17 @@ function ScanCorrectionPage() {
                 {data.images.length === 0 && <p>Aucune image.</p>}
                 {data.images.map((image, index) => (
                   <figure key={image.storageId} className="scan-page__image">
+                    {/* A thumbnail now, so the titles below come up on the first screen; the page
+                        itself is one tap away, in a new tab so the drafts survive. */}
                     {image.url && (
-                      <img
-                        src={image.url}
-                        alt={`Page ${index + 1}`}
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <a href={image.url} target="_blank" rel="noreferrer">
+                        <img
+                          src={image.url}
+                          alt={`Page ${index + 1}, agrandir`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </a>
                     )}
                     <figcaption>
                       Page {index + 1} / {data.images.length}
@@ -231,22 +248,39 @@ function ScanCorrectionPage() {
                 token={data.startedAt}
               />
             )}
-            <AdminButton
-              gestures={gestures}
-              gesture={pageGesture('rescan')}
-              label="Relancer l’extraction"
-              pendingLabel="Relance…"
-              confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
-              disabled={purged || data.images.length === 0}
-              blockedReason={
-                purged
-                  ? 'Les photos de ce scan sont purgées.'
-                  : 'Ce scan ne porte aucune image.'
-              }
-              run={async () =>
-                outcomeMessage(await rescan({ adminToken, scanId }))
-              }
-            />
+            {/* A scan arriving straight from the capture is still pending, and the queue only starts
+                from a button: without this one, adding its second page meant going back to /admin
+                to launch it. */}
+            {data.status === 'pending' ? (
+              <AdminButton
+                gestures={gestures}
+                gesture={pageGesture('extract')}
+                label="Lancer l’extraction"
+                pendingLabel="Lancement…"
+                run={async () =>
+                  extractionMessage(await startExtraction({ adminToken }), {
+                    now,
+                  })
+                }
+              />
+            ) : (
+              <AdminButton
+                gestures={gestures}
+                gesture={pageGesture('rescan')}
+                label="Relancer l’extraction"
+                pendingLabel="Relance…"
+                confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
+                disabled={purged || data.images.length === 0}
+                blockedReason={
+                  purged
+                    ? 'Les photos de ce scan sont purgées.'
+                    : 'Ce scan ne porte aucune image.'
+                }
+                run={async () =>
+                  outcomeMessage(await rescan({ adminToken, scanId }))
+                }
+              />
+            )}
             <AdminButton
               gestures={gestures}
               gesture={pageGesture('addRecipe')}
@@ -283,6 +317,27 @@ function ScanCorrectionPage() {
             </p>
           )}
 
+          {data.recipes.length > 0 && (
+            <ScanSummary
+              recipes={data.recipes}
+              rows={readyData(illustrations)}
+              edited={liveEdit}
+              onChange={(recipe, draft) =>
+                setEdits((current) => ({
+                  ...current,
+                  [recipe.id]: { revision: recipe.revision, draft },
+                }))
+              }
+              onRenamed={(recipe, title) =>
+                setEdits((current) => carryOverRename(current, recipe, title))
+              }
+              adminToken={adminToken}
+              gestures={gestures}
+              now={now}
+              estimateMs={beautifyEstimateMs}
+            />
+          )}
+
           <section className="scan-page__recipes">
             <h2>Recettes</h2>
             {data.recipes.length === 0 && (
@@ -311,6 +366,24 @@ function ScanCorrectionPage() {
       )}
     </main>
   )
+}
+
+/**
+ * A rename bumps the revision, and a draft on the old revision stops counting: the corrections typed in
+ * the form below would go with it. They are moved onto the next revision, unless the title was all the
+ * draft held — then it is left to lapse, and the form reads clean.
+ */
+export function carryOverRename(
+  edits: Record<string, Edit>,
+  recipe: RecipeView,
+  title: string,
+): Record<string, Edit> {
+  const edit = edits[recipe.id]
+  if (edit?.revision !== recipe.revision) return edits
+  const draft = { ...edit.draft, title }
+  const server = { ...toDraft(recipe), title }
+  if (JSON.stringify(draft) === JSON.stringify(server)) return edits
+  return { ...edits, [recipe.id]: { revision: recipe.revision + 1, draft } }
 }
 
 /** Names the drafts that stayed behind: a count alone would not tell the operator what to fix. */

@@ -43,6 +43,11 @@ export function toDraft(recipe: RecipeView): Draft {
   }
 }
 
+/** The form's fragment id, so the scan summary can link down to it. */
+export function recipeAnchor(recipeId: string): string {
+  return `recette-${recipeId}`
+}
+
 /**
  * Long enough that typing a title is one Convex subscription rather than one per keystroke — the
  * same quarter second the index's search field waits, and for the same reason.
@@ -129,6 +134,7 @@ export function RecipeForm({
   return (
     <article
       className="scan-page__recipe"
+      id={recipeAnchor(recipe.id)}
       data-row-id={recipe.id}
       aria-busy={busy}
     >

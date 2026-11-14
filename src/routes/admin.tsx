@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
+import type { Id } from '../../convex/_generated/dataModel'
 import { useAdminToken } from '../lib/adminToken'
 import { readyData } from '../lib/dataView'
 import { extractionMessage, uploadMessage } from '../lib/gestureMessages'
@@ -37,6 +38,7 @@ function AdminPage() {
   const [revealToken, setRevealToken] = useState(false)
   const adminToken = token ?? ''
   const attachImage = useAttachImage(adminToken)
+  const navigate = useNavigate()
   const gestures = useGestures({ epoch: `admin:${adminToken}` })
   const { now } = useServerClock(adminToken)
 
@@ -96,6 +98,7 @@ function AdminPage() {
         disabled={!adminToken}
         onFiles={async (files, report) => {
           const failures: string[] = []
+          let created: Id<'scans'> | null = null
           for (const [index, file] of files.entries()) {
             const result = await attachImage(file, {
               onPhase: (phase) =>
@@ -103,7 +106,13 @@ function AdminPage() {
                   uploadProgress({ done: index, total: files.length, phase }),
                 ),
             })
-            if (!result.ok) failures.push(`${file.name} : ${result.error}`)
+            if (result.ok) created = result.scanId
+            else failures.push(`${file.name} : ${result.error}`)
+          }
+          // A single page is usually the first of a recipe that runs on: its scan is where the next
+          // page gets added. A batch is the backlog, one scan per file, and stays on the list.
+          if (files.length === 1 && created) {
+            await navigate({ to: '/admin/scan/$id', params: { id: created } })
           }
           await scans.refetch()
           return uploadMessage({ total: files.length, failures })
