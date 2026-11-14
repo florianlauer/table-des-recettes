@@ -278,7 +278,7 @@ describe('answer interpretation', () => {
       }),
     ).toEqual({
       ok: false,
-      kind: 'truncated',
+      kind: 'recitation',
       error:
         'Réponse tronquée (error / RECITATION) : Provider stopped the generation',
     })
@@ -394,32 +394,44 @@ describe('recitation fallback', () => {
       }
       return [body.model, body.provider.only[0]]
     })
+  const primaryCall = {
+    model: 'model',
+    servedProvider: 'primary-provider',
+    costUsd: 0.002,
+  }
+
+  test('covers two calls with the lease', () => {
+    expect(LEASE_MS).toBeGreaterThan(2 * REQUEST_TIMEOUT_MS)
+  })
 
   test('asks the fallback model once when the primary recites', async () => {
     const fetchImpl = vi
       .fn()
       .mockResolvedValueOnce(recited())
       .mockResolvedValueOnce(answered())
+    const takeFallbackQuota = vi.fn(() => Promise.resolve(true))
     const result = await extractImages({
       blobs: [jpeg()],
       environment: fallbackEnvironment,
       fetchImpl,
+      takeFallbackQuota,
     })
     expect(sentModels(fetchImpl)).toEqual([
       ['model', 'provider'],
       ['fallback-model', 'fallback-provider'],
     ])
+    expect(takeFallbackQuota).toHaveBeenCalledTimes(1)
+    // Each call keeps its own figures: the fallback answered, the primary is reported apart.
     expect(result).toMatchObject({
       ok: true,
       model: 'fallback-model',
       servedProvider: 'fallback-served',
-      recitationFallback: true,
+      costUsd: 0.006,
+      recited: primaryCall,
     })
-    // Both calls were billed.
-    expect(result.costUsd).toBeCloseTo(0.008)
   })
 
-  test('keeps both costs when the fallback fails too', async () => {
+  test('reports both calls when the fallback fails too', async () => {
     const fetchImpl = vi
       .fn()
       .mockResolvedValueOnce(recited())
@@ -432,11 +444,11 @@ describe('recitation fallback', () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2)
     expect(result).toMatchObject({
       ok: false,
-      kind: 'truncated',
+      kind: 'recitation',
       model: 'fallback-model',
-      recitationFallback: true,
+      costUsd: 0.002,
+      recited: primaryCall,
     })
-    expect(result.costUsd).toBeCloseTo(0.004)
   })
 
   test('stays on the primary model without both fallback variables', async () => {
@@ -453,32 +465,49 @@ describe('recitation fallback', () => {
       expect(fetchImpl).toHaveBeenCalledTimes(1)
       expect(result).toMatchObject({
         ok: false,
-        kind: 'truncated',
+        kind: 'recitation',
         error: expect.stringContaining('RECITATION'),
         model: 'model',
         costUsd: 0.002,
-        recitationFallback: false,
+        recited: null,
       })
     }
   })
 
-  test('does not fall back on any other truncation', async () => {
-    const fetchImpl = vi.fn().mockResolvedValueOnce(recited('MAX_TOKENS'))
+  test('skips the fallback when the extraction quota is spent', async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(recited())
     await expect(
       extractImages({
         blobs: [jpeg()],
         environment: fallbackEnvironment,
         fetchImpl,
+        takeFallbackQuota: () => Promise.resolve(false),
       }),
     ).resolves.toMatchObject({
       ok: false,
-      kind: 'truncated',
-      recitationFallback: false,
+      kind: 'recitation',
+      model: 'model',
+      recited: null,
     })
     expect(fetchImpl).toHaveBeenCalledTimes(1)
   })
 
-  test('records the fallback model on the scan and in the journal', async () => {
+  test('does not fall back on any other truncation', async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(recited('MAX_TOKENS'))
+    const takeFallbackQuota = vi.fn(() => Promise.resolve(true))
+    await expect(
+      extractImages({
+        blobs: [jpeg()],
+        environment: fallbackEnvironment,
+        fetchImpl,
+        takeFallbackQuota,
+      }),
+    ).resolves.toMatchObject({ ok: false, kind: 'truncated', recited: null })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+    expect(takeFallbackQuota).not.toHaveBeenCalled()
+  })
+
+  test('records the fallback model and journals each call apart', async () => {
     const t = setup()
     const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
     const scanId = await t.run((ctx) =>
@@ -497,10 +526,10 @@ describe('recitation fallback', () => {
       attemptId: 'attempt-1',
       model: 'fallback-model',
       servedProvider: 'fallback-served',
-      latencyMs: 30000,
-      costUsd: 0.008,
+      latencyMs: 28000,
+      costUsd: 0.006,
       repairCount: 0,
-      recitationFallback: true,
+      recited: { ...primaryCall, latencyMs: 9000 },
       recipes: [],
     })
 
@@ -514,7 +543,21 @@ describe('recitation fallback', () => {
       ctx.db.query('extractionAttempts').collect(),
     )
     expect(journal).toMatchObject([
-      { model: 'fallback-model', costUsd: 0.008, recitationFallback: true },
+      {
+        attemptId: 'attempt-1',
+        model: 'model',
+        costUsd: 0.002,
+        latencyMs: 9000,
+        failureKind: 'recitation',
+      },
+      {
+        attemptId: 'attempt-1',
+        model: 'fallback-model',
+        costUsd: 0.006,
+        latencyMs: 28000,
+        failureKind: null,
+        recitationFallback: true,
+      },
     ])
   })
 })
@@ -678,6 +721,7 @@ describe('extraction state machine', () => {
       latencyMs: 7500,
       costUsd: 0.0051,
       repairCount: 0,
+      recited: null,
     }
     await t.mutation(internal.extract.recordFailure, {
       ...observation,
@@ -740,6 +784,7 @@ describe('extraction state machine', () => {
         latencyMs: 1,
         costUsd: 0,
         repairCount: 0,
+        recited: null,
         failureKind: 'transport',
         error: 'failed',
       }),
@@ -770,6 +815,7 @@ describe('extraction state machine', () => {
       latencyMs: 1,
       costUsd: 0,
       repairCount: 0,
+      recited: null,
       error: 'failed',
     }
     expect(
@@ -846,6 +892,7 @@ describe('finalization consumes its attempt', () => {
       latencyMs: 10,
       costUsd: 0.01,
       repairCount: 0,
+      recited: null,
       recipes: [
         {
           title: 'Tarte',

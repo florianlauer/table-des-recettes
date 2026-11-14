@@ -53,14 +53,19 @@ type ExtractionEnvironment = {
   OPENROUTER_FALLBACK_PROVIDER?: string
 }
 
-type AttemptObservation = {
+/** What one billed call cost and who served it. */
+type CallObservation = {
   model: string
   servedProvider: string | null
   latencyMs: number
   costUsd: number
+}
+
+type AttemptObservation = CallObservation & {
   repairCount: number
-  // The primary model cut its answer for recitation and `model` is the fallback that answered.
-  recitationFallback: boolean
+  // The primary call cut for recitation, when the fallback model then answered: journaled as its own
+  // row, so each model's figures stay its own.
+  recited: CallObservation | null
 }
 
 type Extraction = ReturnType<typeof normalizeExtraction>
@@ -105,7 +110,7 @@ function failure({
     latencyMs: performance.now() - startedAt,
     costUsd: 0,
     repairCount: 0,
-    recitationFallback: false,
+    recited: null,
   }
 }
 
@@ -152,17 +157,6 @@ export function requestBody({
   })
 }
 
-/**
- * Google's filter on verbatim reproduction of published text. It fires on the words the model writes,
- * so the same model cuts at the same place on every retry: only another model gets past it.
- */
-function isRecitation(answer: unknown): boolean {
-  return (
-    (answer as OpenRouterResponse).choices?.[0]?.native_finish_reason ===
-    'RECITATION'
-  )
-}
-
 export function interpretResponse(answer: unknown): ExtractionReading {
   const raw = answer as OpenRouterResponse
   const refuse = (kind: FailureKind, error: string): ExtractionReading => ({
@@ -179,7 +173,9 @@ export function interpretResponse(answer: unknown): ExtractionReading {
       .join(' / ')
     const detail = choice?.error?.message ? ` : ${choice.error.message}` : ''
     return refuse(
-      'truncated',
+      choice?.native_finish_reason === 'RECITATION'
+        ? 'recitation'
+        : 'truncated',
       `Réponse tronquée (${reasons || 'motif inconnu'})${detail}`,
     )
   }
@@ -206,15 +202,27 @@ export async function extractImages({
   blobs,
   environment = process.env,
   fetchImpl = fetch,
+  takeFallbackQuota = () => Promise.resolve(true),
 }: {
   blobs: readonly (Blob | null)[]
   environment?: ExtractionEnvironment
   fetchImpl?: typeof fetch
+  // The fallback is a second billed call, so it spends its own unit of the extraction quota.
+  takeFallbackQuota?: () => Promise<boolean>
 }): Promise<ExtractionResult> {
   const startedAt = performance.now()
   const model = environment.OPENROUTER_MODEL ?? ''
   const provider = environment.OPENROUTER_PROVIDER ?? ''
   const apiKey = environment.OPENROUTER_API_KEY ?? ''
+  // Both or nothing: without the pair, a recitation fails as it always did.
+  const fallback =
+    environment.OPENROUTER_FALLBACK_MODEL &&
+    environment.OPENROUTER_FALLBACK_PROVIDER
+      ? {
+          model: environment.OPENROUTER_FALLBACK_MODEL,
+          provider: environment.OPENROUTER_FALLBACK_PROVIDER,
+        }
+      : null
   if (!model || !provider || !apiKey) {
     return failure({
       kind: 'transport',
@@ -277,37 +285,35 @@ export async function extractImages({
       body: requestBody({ ...target, dataUris }),
       decode: (raw) => {
         const reading = interpretResponse(raw)
-        if (reading.ok) return { ok: true as const, value: reading }
-        return {
-          ok: false as const,
-          kind: isRecitation(raw) ? ('recitation' as const) : reading.kind,
-          error: reading.error,
-        }
+        return reading.ok
+          ? { ok: true as const, value: reading }
+          : { ok: false as const, kind: reading.kind, error: reading.error }
       },
     })
 
   const first = await ask({ model, provider })
-  const fallbackModel = environment.OPENROUTER_FALLBACK_MODEL ?? ''
-  const fallbackProvider = environment.OPENROUTER_FALLBACK_PROVIDER ?? ''
-  const recitationFallback =
+  const target =
     !first.ok &&
     first.kind === 'recitation' &&
-    fallbackModel !== '' &&
-    fallbackProvider !== ''
-  const call = recitationFallback
-    ? await ask({ model: fallbackModel, provider: fallbackProvider })
-    : first
+    fallback &&
+    (await takeFallbackQuota())
+      ? fallback
+      : null
+  const call = target ? await ask(target) : first
 
-  // Both calls were billed and waited for, so the attempt carries their sum; the model is the one
-  // whose answer the attempt kept.
   const observation = {
-    model: recitationFallback ? fallbackModel : model,
+    model: target ? target.model : model,
     servedProvider: call.servedProvider,
-    latencyMs: recitationFallback
-      ? first.latencyMs + call.latencyMs
-      : call.latencyMs,
-    costUsd: recitationFallback ? first.costUsd + call.costUsd : call.costUsd,
-    recitationFallback,
+    latencyMs: call.latencyMs,
+    costUsd: call.costUsd,
+    recited: target
+      ? {
+          model,
+          servedProvider: first.servedProvider,
+          latencyMs: first.latencyMs,
+          costUsd: first.costUsd,
+        }
+      : null,
   }
   return call.ok
     ? {
@@ -318,7 +324,7 @@ export async function extractImages({
       }
     : {
         ok: false,
-        kind: call.kind === 'recitation' ? 'truncated' : call.kind,
+        kind: call.kind,
         error: call.error,
         repairCount: 0,
         ...observation,
@@ -457,6 +463,13 @@ export const reserve = internalMutation({
   },
 })
 
+const callObservation = v.object({
+  model: v.string(),
+  servedProvider: v.union(v.string(), v.null()),
+  latencyMs: v.number(),
+  costUsd: v.number(),
+})
+
 const observationArgs = {
   attemptId: v.string(),
   model: v.string(),
@@ -464,7 +477,7 @@ const observationArgs = {
   latencyMs: v.number(),
   costUsd: v.number(),
   repairCount: v.number(),
-  recitationFallback: v.optional(v.boolean()),
+  recited: v.union(callObservation, v.null()),
 }
 
 /**
@@ -488,6 +501,43 @@ async function journalAttempt(
   })
 }
 
+/**
+ * One journal row per billed call, the recited primary first: a row carrying two calls would charge
+ * the primary's cost and wait to the fallback model and hide the primary's failure from its stats.
+ */
+async function journalCalls(
+  ctx: MutationCtx,
+  {
+    scanId,
+    attempt,
+    recited,
+  }: {
+    scanId: Id<'scans'>
+    attempt: Infer<typeof attemptRecord>
+    recited: Infer<typeof callObservation> | null
+  },
+): Promise<void> {
+  if (recited) {
+    await journalAttempt(ctx, {
+      scanId,
+      attempt: {
+        ...recited,
+        attemptId: attempt.attemptId,
+        failureKind: 'recitation',
+        repairCount: 0,
+        recitationFallback: false,
+      },
+    })
+  }
+  await journalAttempt(ctx, { scanId, attempt })
+}
+
+export const takeFallbackQuota = internalMutation({
+  args: {},
+  returns: v.boolean(),
+  handler: async (ctx) => (await rateLimiter.limit(ctx, 'extraction')).ok,
+})
+
 export const finalize = internalMutation({
   args: {
     scanId: v.id('scans'),
@@ -504,7 +554,7 @@ export const finalize = internalMutation({
     ),
   },
   returns: v.boolean(),
-  handler: async (ctx, { scanId, recipes, ...observation }) => {
+  handler: async (ctx, { scanId, recipes, recited, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
     // The attempt id alone would not do: it survives the write, so a second identical call would
     // pass the guard and insert a second set of recipes. Requiring `extracting` and clearing the id
@@ -533,7 +583,11 @@ export const finalize = internalMutation({
         ),
       )
     }
-    const attempt = { ...observation, failureKind: null }
+    const attempt = {
+      ...observation,
+      failureKind: null,
+      recitationFallback: recited !== null,
+    }
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
@@ -541,9 +595,12 @@ export const finalize = internalMutation({
       startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: attempt,
-      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
+      totalCostUsd:
+        (scan.totalCostUsd ?? 0) +
+        observation.costUsd +
+        (recited?.costUsd ?? 0),
     })
-    await journalAttempt(ctx, { scanId, attempt })
+    await journalCalls(ctx, { scanId, attempt, recited })
     return true
   },
 })
@@ -556,7 +613,10 @@ export const recordFailure = internalMutation({
     error: v.string(),
   },
   returns: v.boolean(),
-  handler: async (ctx, { scanId, failureKind, error, ...observation }) => {
+  handler: async (
+    ctx,
+    { scanId, failureKind, error, recited, ...observation },
+  ) => {
     const scan = await ctx.db.get('scans', scanId)
     if (
       !scan ||
@@ -566,7 +626,11 @@ export const recordFailure = internalMutation({
       return false
     const terminal =
       isTerminalFailure(failureKind) || scan.attempts >= MAX_ATTEMPTS
-    const attempt = { ...observation, failureKind }
+    const attempt = {
+      ...observation,
+      failureKind,
+      recitationFallback: recited !== null,
+    }
     await ctx.db.patch(scanId, {
       status: terminal ? 'failed' : 'pending',
       error,
@@ -574,9 +638,12 @@ export const recordFailure = internalMutation({
       startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: attempt,
-      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
+      totalCostUsd:
+        (scan.totalCostUsd ?? 0) +
+        observation.costUsd +
+        (recited?.costUsd ?? 0),
     })
-    await journalAttempt(ctx, { scanId, attempt })
+    await journalCalls(ctx, { scanId, attempt, recited })
     return true
   },
 })
@@ -638,7 +705,11 @@ export const drain = internalAction({
     const blobs = await Promise.all(
       reservation.storageIds.map((storageId) => ctx.storage.get(storageId)),
     )
-    const result = await extractImages({ blobs })
+    const result = await extractImages({
+      blobs,
+      takeFallbackQuota: () =>
+        ctx.runMutation(internal.extract.takeFallbackQuota, {}),
+    })
     const observation = {
       scanId: reservation.scanId,
       attemptId: reservation.attemptId,
@@ -647,7 +718,7 @@ export const drain = internalAction({
       latencyMs: result.latencyMs,
       costUsd: result.costUsd,
       repairCount: result.repairCount,
-      recitationFallback: result.recitationFallback,
+      recited: result.recited,
     }
     if (result.ok) {
       await ctx.runMutation(internal.extract.finalize, {
