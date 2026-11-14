@@ -57,6 +57,8 @@ export const attemptFields = {
   costUsd: v.number(),
   failureKind: v.union(literalUnion(FAILURE_KINDS), v.null()),
   repairCount: v.number(),
+  // Optional, against the rule above: every row journaled before the fallback existed lacks it.
+  recitationFallback: v.optional(v.boolean()),
 }
 
 export const attemptRecord = v.object(attemptFields)

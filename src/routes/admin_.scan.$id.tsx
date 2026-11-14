@@ -348,6 +348,13 @@ function ScanCorrectionPage() {
             />
           </section>
 
+          {data.extractedByFallback && (
+            <p>
+              Recettes extraites par le modèle de repli : relis les quantités et
+              les durées de près.
+            </p>
+          )}
+
           {data.recipesTruncated && (
             <p role="alert">
               Ce scan porte plus de recettes que l’écran n’en affiche :

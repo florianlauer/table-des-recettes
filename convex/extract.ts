@@ -49,6 +49,8 @@ type ExtractionEnvironment = {
   OPENROUTER_API_KEY?: string
   OPENROUTER_MODEL?: string
   OPENROUTER_PROVIDER?: string
+  OPENROUTER_FALLBACK_MODEL?: string
+  OPENROUTER_FALLBACK_PROVIDER?: string
 }
 
 type AttemptObservation = {
@@ -57,6 +59,8 @@ type AttemptObservation = {
   latencyMs: number
   costUsd: number
   repairCount: number
+  // The primary model cut its answer for recitation and `model` is the fallback that answered.
+  recitationFallback: boolean
 }
 
 type Extraction = ReturnType<typeof normalizeExtraction>
@@ -101,6 +105,7 @@ function failure({
     latencyMs: performance.now() - startedAt,
     costUsd: 0,
     repairCount: 0,
+    recitationFallback: false,
   }
 }
 
@@ -145,6 +150,17 @@ export function requestBody({
     },
     usage: { include: true },
   })
+}
+
+/**
+ * Google's filter on verbatim reproduction of published text. It fires on the words the model writes,
+ * so the same model cuts at the same place on every retry: only another model gets past it.
+ */
+function isRecitation(answer: unknown): boolean {
+  return (
+    (answer as OpenRouterResponse).choices?.[0]?.native_finish_reason ===
+    'RECITATION'
+  )
 }
 
 export function interpretResponse(answer: unknown): ExtractionReading {
@@ -252,25 +268,46 @@ export async function extractImages({
     dataUris.push(`data:image/${header.format};base64,${bytesToBase64(bytes)}`)
   }
 
-  const call = await callOpenRouter({
-    apiKey,
-    fetchImpl,
-    timeoutMs: REQUEST_TIMEOUT_MS,
-    maxResponseBytes: MAX_RESPONSE_BYTES,
-    body: requestBody({ model, provider, dataUris }),
-    decode: (raw) => {
-      const reading = interpretResponse(raw)
-      return reading.ok
-        ? { ok: true as const, value: reading }
-        : { ok: false as const, kind: reading.kind, error: reading.error }
-    },
-  })
+  const ask = (target: { model: string; provider: string }) =>
+    callOpenRouter({
+      apiKey,
+      fetchImpl,
+      timeoutMs: REQUEST_TIMEOUT_MS,
+      maxResponseBytes: MAX_RESPONSE_BYTES,
+      body: requestBody({ ...target, dataUris }),
+      decode: (raw) => {
+        const reading = interpretResponse(raw)
+        if (reading.ok) return { ok: true as const, value: reading }
+        return {
+          ok: false as const,
+          kind: isRecitation(raw) ? ('recitation' as const) : reading.kind,
+          error: reading.error,
+        }
+      },
+    })
 
+  const first = await ask({ model, provider })
+  const fallbackModel = environment.OPENROUTER_FALLBACK_MODEL ?? ''
+  const fallbackProvider = environment.OPENROUTER_FALLBACK_PROVIDER ?? ''
+  const recitationFallback =
+    !first.ok &&
+    first.kind === 'recitation' &&
+    fallbackModel !== '' &&
+    fallbackProvider !== ''
+  const call = recitationFallback
+    ? await ask({ model: fallbackModel, provider: fallbackProvider })
+    : first
+
+  // Both calls were billed and waited for, so the attempt carries their sum; the model is the one
+  // whose answer the attempt kept.
   const observation = {
-    model,
+    model: recitationFallback ? fallbackModel : model,
     servedProvider: call.servedProvider,
-    latencyMs: call.latencyMs,
-    costUsd: call.costUsd,
+    latencyMs: recitationFallback
+      ? first.latencyMs + call.latencyMs
+      : call.latencyMs,
+    costUsd: recitationFallback ? first.costUsd + call.costUsd : call.costUsd,
+    recitationFallback,
   }
   return call.ok
     ? {
@@ -281,7 +318,7 @@ export async function extractImages({
       }
     : {
         ok: false,
-        kind: call.kind,
+        kind: call.kind === 'recitation' ? 'truncated' : call.kind,
         error: call.error,
         repairCount: 0,
         ...observation,
@@ -427,6 +464,7 @@ const observationArgs = {
   latencyMs: v.number(),
   costUsd: v.number(),
   repairCount: v.number(),
+  recitationFallback: v.optional(v.boolean()),
 }
 
 /**
@@ -609,6 +647,7 @@ export const drain = internalAction({
       latencyMs: result.latencyMs,
       costUsd: result.costUsd,
       repairCount: result.repairCount,
+      recitationFallback: result.recitationFallback,
     }
     if (result.ok) {
       await ctx.runMutation(internal.extract.finalize, {
