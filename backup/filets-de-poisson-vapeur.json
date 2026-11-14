@@ -1,0 +1,63 @@
+{
+  "id": "j57a4ncryy6qqc5rrjnsrxnhp18d9pwy",
+  "creationTime": 1787830494864.6665,
+  "title": "Filets de poisson vapeur",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "4 filets de poisson de 150 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de poisson de 150 g"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "citron",
+      "quantity": null,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "persil haché",
+      "quantity": null,
+      "unit": null,
+      "label": "persil haché"
+    },
+    {
+      "raw": "1 sachet de sauce CHAMPIGNONS KNORR",
+      "quantity": 1,
+      "unit": "sachet",
+      "label": "sauce CHAMPIGNONS KNORR"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettez les filets à plat dans une assiette à soupe posée sur une casserole d'eau en train de bouillir.",
+    "Salez, poivrez, arrosez d'un jus de citron, couvrez. Au bout de 8 mn les filets sont cuits.",
+    "Préparez la sauce CHAMPIGNONS. Hors du feu ajoutez une cuillerée à soupe de crème.",
+    "Nappez les filets et servez-les avec des brocolis ou des petits légumes printaniers."
+  ],
+  "status": "published",
+  "slug": "filets-de-poisson-vapeur",
+  "publishedAt": 1787830509951,
+  "imageStorageId": "kg2ab3gkdj7qmv0s3b77snzdkd8d9hzn",
+  "beautifiedStorageId": "kg292x9fdg72cvsnydr4dk66p18d8a4p"
+}

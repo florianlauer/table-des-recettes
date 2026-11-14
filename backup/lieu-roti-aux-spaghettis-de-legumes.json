@@ -1,0 +1,62 @@
+{
+  "id": "j57bk9eqmfvp7zsdjrjwjdyrms8db6t7",
+  "creationTime": 1787909230877.5767,
+  "title": "Lieu rôti aux spaghettis de légumes",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 pavés de lieu jaune de 150 g chacun",
+      "quantity": 6,
+      "unit": null,
+      "label": "pavés de lieu jaune de 150 g chacun"
+    },
+    {
+      "raw": "3 bulbes de fenouil",
+      "quantity": 3,
+      "unit": null,
+      "label": "bulbes de fenouil"
+    },
+    {
+      "raw": "4 courgettes moyennes et fermes",
+      "quantity": 4,
+      "unit": null,
+      "label": "courgettes moyennes et fermes"
+    },
+    {
+      "raw": "1 cuil. à café de vanille en poudre",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "vanille en poudre"
+    },
+    {
+      "raw": "3 cuil. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four à th. 6 (180 °C).",
+    "Mélangez la vanille avec l'huile d'olive.",
+    "Otez les premières feuilles des fenouils, puis rincez-les. Lavez aussi les courgettes.",
+    "Râpez-les comme des carottes et mélangez-les avec 1 cuil. à soupe d'huile d'olive que vous aurez parfumée à la vanille.",
+    "Passez les pavés de lieu sous l'eau et essuyez-les avec du papier absorbant.",
+    "Faites-les dorer 3 min dans une poêle antiadhésive, côté peau, avec 1 cuil. à soupe d'huile parfumée.",
+    "Glissez-les ensuite dans un plat à four, salez, poivrez et poursuivez la cuisson au four 15 min.",
+    "Au moment de servir, assaisonnez les légumes de sel et de poivre et faites-les cuire 1 min au micro-ondes, puissance maximale. Mélangez bien.",
+    "Avant de servir, arrosez les légumes et les pavés avec le reste d'huile."
+  ],
+  "status": "published",
+  "slug": "lieu-roti-aux-spaghettis-de-legumes",
+  "publishedAt": 1787909240282,
+  "imageStorageId": "kg2c4fhn0agbf3yep6na7s50w98da51y",
+  "beautifiedStorageId": "kg2dz574ej6q0482kepyd5mkqn8dbd1s"
+}

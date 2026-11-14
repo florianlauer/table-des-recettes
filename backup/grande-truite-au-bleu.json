@@ -1,0 +1,60 @@
+{
+  "id": "j57dr19p4gawsnc1sn8zhqt6xx8cz6qc",
+  "creationTime": 1787419381225.312,
+  "title": "Grande truite au bleu",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 grande truite de 1 kg (vidée)",
+      "quantity": 1,
+      "unit": null,
+      "label": "grande truite de 1 kg (vidée)"
+    },
+    {
+      "raw": "1/2 citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1 gousse d'ail, 1 oignon, 2 échalotes",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail, 1 oignon, 2 échalotes"
+    },
+    {
+      "raw": "2 carottes, 1 poireau",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes, 1 poireau"
+    },
+    {
+      "raw": "3 brins de persil, 1 bouquet garni",
+      "quantity": 3,
+      "unit": "brins",
+      "label": "persil, 1 bouquet garni"
+    },
+    {
+      "raw": "1/4 l de vinaigre d'alcool",
+      "quantity": 0.25,
+      "unit": "l",
+      "label": "vinaigre d'alcool"
+    },
+    {
+      "raw": "sel marin, poivre en grains",
+      "quantity": null,
+      "unit": null,
+      "label": "sel marin, poivre en grains"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Limonez la truite parée et débarrassée de ses ouïes avec le jus de citron. Coupez en rondelles l'ail, l'oignon, les échalotes et les carottes. Emincez le poireau en julienne. Mettez tous les légumes dans une casserole avec 3/4 l d'eau, le vinaigre, le persil, le bouquet garni et quelques grains de poivre. Salez, faites cuire 15 min et laissez refroidir. Remettez le court-bouillon à chauffer, lorsqu'il commence à bouillir, déposez la truite, baissez le feu et laissez cuire 30 min à petits frémissements. Servez la truite avec son court-bouillon et ses légumes."
+  ],
+  "status": "published",
+  "slug": "grande-truite-au-bleu",
+  "publishedAt": 1787419415960,
+  "imageStorageId": "kg2dbvn6vpbkrg1yc5wqx1mwth8cz935",
+  "beautifiedStorageId": "kg25se6ca2f9ac3zfbcyv32mys8czsyc"
+}

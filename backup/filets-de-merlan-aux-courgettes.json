@@ -1,0 +1,63 @@
+{
+  "id": "j57an13f65bgzprgvqx31gykc98cy75g",
+  "creationTime": 1787415246944.7837,
+  "title": "Filets de merlan aux courgettes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 morceaux de filet",
+      "quantity": 4,
+      "unit": null,
+      "label": "morceaux de filet"
+    },
+    {
+      "raw": "2 petites courgettes",
+      "quantity": 2,
+      "unit": null,
+      "label": "petites courgettes"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "50 g de parmesan râpé",
+      "quantity": 50,
+      "unit": "g",
+      "label": "parmesan râpé"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    },
+    {
+      "raw": "Persil",
+      "quantity": null,
+      "unit": null,
+      "label": "Persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Beurrez grassement le plat à gratin",
+    "Déposez-y les filets",
+    "Saupoudrez-le avec la moitié du parmesan.",
+    "Essuyez les courgettes avec un torchon râpeux.",
+    "Ne les pelez pas et coupez-les en très fines rondelles après en avoir ôté les deux extrémités.",
+    "Disposez les rondelles de courgettes autour du poisson.",
+    "Saupoudrez-les avec la fin du parmesan",
+    "Hachez le persil",
+    "Saupoudrez-le sur le tout.",
+    "Dispersez la fin du beurre en petites noisettes sur le poisson et les courgettes."
+  ],
+  "status": "published",
+  "slug": "filets-de-merlan-aux-courgettes",
+  "publishedAt": 1787415262232,
+  "imageStorageId": "kg2d2aqtdpbzpk5gyxf2h8c8wh8cyecp",
+  "beautifiedStorageId": "kg2fr7gssdn80vh2cra37dgjqx8cytyh"
+}

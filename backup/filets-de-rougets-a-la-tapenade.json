@@ -1,0 +1,68 @@
+{
+  "id": "j5767cnee2jqmzyqf2phhbhp058dbkkj",
+  "creationTime": 1787908639281.5215,
+  "title": "Filets de rougets à la tapenade",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 filets de rougets",
+      "quantity": 8,
+      "unit": null,
+      "label": "filets de rougets"
+    },
+    {
+      "raw": "2 bulbes de fenouil",
+      "quantity": 2,
+      "unit": "bulbes",
+      "label": "fenouil"
+    },
+    {
+      "raw": "4 tomates séchées",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates séchées"
+    },
+    {
+      "raw": "4 cuil. à café de tapenade",
+      "quantity": 4,
+      "unit": "cuil. à café",
+      "label": "tapenade"
+    },
+    {
+      "raw": "4 belles feuilles de basilic",
+      "quantity": 4,
+      "unit": "belles feuilles",
+      "label": "basilic"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1/2 citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Lavez les fenouils, ôtez les premières feuilles épaisses et dures et émincez-les finement. Faites-les cuire 3 min à la vapeur, égouttez-les et assaisonnez-les d'huile d'olive, de jus de citron, de sel et de poivre.",
+    "Préchauffez le four à th.6 (180 °C). Découpez 4 feuilles de papier cuisson de 24 x 24 cm. Disposez au centre un lit de fenouil, et par-dessus 2 filets de rouget.",
+    "Etalez un peu de tapenade sur chaque filet, recouvrez avec 1 tomate séchée, 1 feuille de basilic et poivrez. Fermez les papillotes et passez au four 10 min."
+  ],
+  "status": "published",
+  "slug": "filets-de-rougets-a-la-tapenade",
+  "publishedAt": 1787908653736,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

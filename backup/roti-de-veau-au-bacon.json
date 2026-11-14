@@ -1,0 +1,55 @@
+{
+  "id": "j57f969vn427yt94vz3fnm7j458haj4s",
+  "creationTime": 1793442851385.5103,
+  "title": "Rôti de veau au bacon",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg de rôti de veau",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "de rôti de veau"
+    },
+    {
+      "raw": "6 tranches de bacon",
+      "quantity": 6,
+      "unit": "tranches",
+      "label": "de bacon"
+    },
+    {
+      "raw": "6 tranches de gruyère ou de gouda",
+      "quantity": 6,
+      "unit": "tranches",
+      "label": "de gruyère ou de gouda"
+    },
+    {
+      "raw": "100 g de crème fraîche. 50 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de crème fraîche. 50 g de beurre"
+    },
+    {
+      "raw": "1 ou 2 verres de vin blanc sec",
+      "quantity": 1,
+      "unit": "verres",
+      "label": "de vin blanc sec"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez le rôti de veau sans détacher complètement les tranches (arrêtez-vous à 2 cm environ de la planche à découper).",
+    "Intercalez entre chaque tranche ainsi formée 1 tranche de bacon et 1 tranche de gruyère (ou de gouda).",
+    "Ficelez bien le tout pour maintenir les différents éléments pendant la cuisson.",
+    "Déposez dans un plat allant au four, salez, poivrez et surmontez d'un morceau de beurre.",
+    "Faitez cuire à four moyen 1 h environ en arrosant de temps en temps avec du vin blanc (il ne faut surtout pas laisser la viande se dessécher).",
+    "10 mn environ avant la fin de la cuisson, ajoutez la crème fraîche.",
+    "Découpez à table et servez à chacun des invités une tranche de veau surmontée du bacon et du gruyère.",
+    "Présentez la sauce crème fraîche/vin blanc en saucière."
+  ],
+  "status": "published",
+  "slug": "roti-de-veau-au-bacon",
+  "publishedAt": 1793442880234,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

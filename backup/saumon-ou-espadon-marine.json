@@ -1,0 +1,64 @@
+{
+  "id": "j57dtqsr5z9q5dkexkzj6k4shh8cv1rm",
+  "creationTime": 1787248686630.3662,
+  "title": "Saumon ou espadon mariné",
+  "type": "entree",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "500 g de saumon ou d'espadon",
+      "quantity": 500,
+      "unit": "g",
+      "label": "saumon ou d'espadon"
+    },
+    {
+      "raw": "25 cl de vinaigre de vin blanc",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "vinaigre de vin blanc"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "2 c. à soupe de baies roses",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "baies roses"
+    },
+    {
+      "raw": "3 c. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire couper par le poissonnier des tranches très fines de saumon ou d'espadon. Sinon prendre un morceau de saumon ou d'espadon, le placer 15 mn dans le congélateur, puis à l'aide d'une machine à couper le jambon ou d'un bon couteau, découper de fines tranches.",
+    "Rincer les tranches de poisson dans du vinaigre, les placer dans un plat.",
+    "Saler.",
+    "Arroser de jus de citron; laisser mariner pendant 1 h.",
+    "Egoutter, essuyer avec du papier absorbant; arroser d'huile d'olive, poivrer et ajouter les baies roses au moment de servir."
+  ],
+  "status": "published",
+  "slug": "saumon-ou-espadon-marine",
+  "publishedAt": 1787248714473,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

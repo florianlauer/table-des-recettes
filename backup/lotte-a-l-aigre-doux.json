@@ -1,0 +1,105 @@
+{
+  "id": "j5725vghmxtxbc1v0t9w2e2fvd8cvdby",
+  "creationTime": 1787248575320.7134,
+  "title": "Lotte à l'aigre-doux",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de lotte coupée en tronçons",
+      "quantity": 800,
+      "unit": "g",
+      "label": "lotte coupée en tronçons"
+    },
+    {
+      "raw": "1 petit ananas",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit ananas"
+    },
+    {
+      "raw": "2 branches de céleri",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "céleri"
+    },
+    {
+      "raw": "4 tomates",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 cuil. à soupe d'huile",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "1 citron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron vert"
+    },
+    {
+      "raw": "1 cuil. à café de Maïzena",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "Maïzena"
+    },
+    {
+      "raw": "2 cuil. à soupe de sauce de soja",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "sauce de soja"
+    },
+    {
+      "raw": "2 cuil. à soupe de sauce Worcestershire",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "sauce Worcestershire"
+    },
+    {
+      "raw": "1 cuil. à soupe de vinaigre de cidre",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre de cidre"
+    },
+    {
+      "raw": "2 cuil. à soupe de miel",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "5 cl de jus d'ananas",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "jus d'ananas"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez la marinade : râpez le zeste du citron, pressez-le. Délayez la Maïzena avec les sauces de soja et Worcestershire, le vinaigre, le miel, le jus d'ananas, le jus de citron et le zeste. Versez ce mélange dans un plat. Roulez-y les morceaux de lotte, puis laissez mariner 30 mn au frais.",
+    "Pendant ce temps, pelez, émincez l'oignon. Effilez le céleri, coupez-le en tranches. Ébouillantez, pelez et épépinez les tomates. Coupez l'ananas en 4 dans la hauteur. Pelez-le et ôtez la partie dure du centre. Détaillez-le en rondelles. Réservez.",
+    "Égouttez les morceaux de lotte. Faites-les colorer à sec dans une poêle antiadhésive, 5 min. Réservez. Faites revenir à l'huile l'oignon émincé, 2 min. Ajoutez la lotte, les rondelles d'ananas, les tomates, le céleri. Salez, poivrez. Laissez cuire 10 min, en remuant de temps en temps.",
+    "Faites réduire le jus de la marinade, 5 min à feu moyen, jusqu'à ce qu'il soit sirupeux. Rectifiez l'assaisonnement. Servez la sauce à part."
+  ],
+  "status": "published",
+  "slug": "lotte-a-l-aigre-doux",
+  "publishedAt": 1787248600457,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

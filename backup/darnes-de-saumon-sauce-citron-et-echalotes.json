@@ -1,0 +1,63 @@
+{
+  "id": "j57258vajg21sjtppnt8qx66h18dbznm",
+  "creationTime": 1787907964746.565,
+  "title": "Darnes de saumon sauce citron et échalotes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 darnes de saumon",
+      "quantity": 4,
+      "unit": "darnes",
+      "label": "saumon"
+    },
+    {
+      "raw": "250 g d'échalotes",
+      "quantity": 250,
+      "unit": "g",
+      "label": "échalotes"
+    },
+    {
+      "raw": "3 citrons",
+      "quantity": 3,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "2 c. à soupe de cassonade",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "cassonade"
+    },
+    {
+      "raw": "deux noisettes de beurre",
+      "quantity": 2,
+      "unit": "noisettes",
+      "label": "beurre"
+    },
+    {
+      "raw": "un peu d'huile",
+      "quantity": null,
+      "unit": null,
+      "label": "un peu d'huile"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Après les avoir épluchées, coupez très finement les échalotes. Faites-les fondre à feu doux avec une noisette de beurre et un filet d'huile pendant 10 minutes.",
+    "Salez, poivrez, ajoutez le jus des citrons et le sucre. Continuez la cuisson 2 minutes, ajoutez la crème fraîche, laissez chauffer 1 minute et gardez au chaud.",
+    "Dans une poêle, faite fondre la noisette de beurre restante et faites cuire sur feu moyen les darnes de saumon 4 minutes de chaque côté.",
+    "Disposez les darnes individuellement dans des assiettes chaudes, nappez avec la sauce et servez avec du riz thaï."
+  ],
+  "status": "published",
+  "slug": "darnes-de-saumon-sauce-citron-et-echalotes",
+  "publishedAt": 1787908104028,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

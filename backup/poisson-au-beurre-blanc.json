@@ -1,0 +1,62 @@
+{
+  "id": "j5756re919w0wdzrxwzghs49158czsjt",
+  "creationTime": 1787415862361.2388,
+  "title": "Poisson au beurre blanc",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 poisson de 2,5kg env. vidé, paré et prêt pour la cuisson",
+      "quantity": 1,
+      "unit": null,
+      "label": "poisson de 2,5kg env. vidé, paré et prêt pour la cuisson"
+    },
+    {
+      "raw": "d'un bouquet de persil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "2dl de vinaigre d'alcool blanc ou de vin blanc très sec",
+      "quantity": 2,
+      "unit": "dl",
+      "label": "vinaigre d'alcool blanc ou de vin blanc très sec"
+    },
+    {
+      "raw": "2 cuill. à café de poivre blanc concassé",
+      "quantity": 2,
+      "unit": "cuill. à café",
+      "label": "poivre blanc concassé"
+    },
+    {
+      "raw": "3 cuill. à soupe d'échalote grise",
+      "quantity": 3,
+      "unit": "cuill. à soupe",
+      "label": "échalote grise"
+    },
+    {
+      "raw": "1 pincée de gros sel",
+      "quantity": 1,
+      "unit": "pincée",
+      "label": "gros sel"
+    },
+    {
+      "raw": "700g de beurre très frais, coupé en morceaux",
+      "quantity": 700,
+      "unit": "g",
+      "label": "beurre très frais, coupé en morceaux"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Le pocher, le griller, ou le faire rôtir au four puis le dresser sur un plat oval garni d'un bouquet de persil.",
+    "Dans une petite casserole (émaillée, ou inox, éviter l'aluminium), mettre l'échalote, le poivre, le sel et le vinaigre. Faire réduire presque à sec sur feu assez soutenu. Puis sur feu très modéré \"monter\" le beurre blanc en ajoutant le beurre par morceaux qu'on renouvelle au fur et à mesure qu'ils fondent.",
+    "Procédez rapidement, sans nervosité, sans cesser de battre au fouet jusqu'à ce que tout le beurre soit incorporé. Il devra se présenter mousseux, onctueux et opaque. Le passer rapidement au tamis pour éliminer la mousse. Ajuster l'assaisonnement : sel, poivre et ajouter en tout cas un filet de citron. Servir le beurre blanc en saucière pour accompagner le poisson."
+  ],
+  "status": "published",
+  "slug": "poisson-au-beurre-blanc",
+  "publishedAt": 1787415871810,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,56 @@
+{
+  "id": "j576vkhn5zh823kq8tmx5tgjen8d9f6h",
+  "creationTime": 1787830816550.306,
+  "title": "Sandre aux échalotes confites",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 sandre de 1,5 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "sandre de 1,5 kg"
+    },
+    {
+      "raw": "3 carottes, 400 g d'échalotes",
+      "quantity": 3,
+      "unit": null,
+      "label": "carottes, 400 g d'échalotes"
+    },
+    {
+      "raw": "250 g de beurre, 3 cuil. à soupe d'huile",
+      "quantity": 250,
+      "unit": "g",
+      "label": "de beurre, 3 cuil. à soupe d'huile"
+    },
+    {
+      "raw": "75 cl de vin rouge corsé (Corbières)",
+      "quantity": 75,
+      "unit": "cl",
+      "label": "de vin rouge corsé (Corbières)"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites écailler le sandre et lever les filets.",
+    "Faites cuire les carottes à l'eau bouillante salée (1 cuil. à soupe par litre) pendant 25 min.",
+    "Egouttez et mixez.",
+    "Faites cuire très doucement dans 125 g de beurre les échalotes émincées en fines rondelles pendant 25 min, en remuant régulièrement pour qu'elles n'attachent pas.",
+    "Faites bouillir le vin, flambez et laissez réduire d'1/3 sur feu vif.",
+    "Ajoutez la purée de carotte, passez au chinois, remettez sur feu doux et incorporez le reste de beurre par morceaux en fouettant.",
+    "Ajustez l'assaisonnement.",
+    "Posez les filets salés et poivrés dans une poêle antiadhésive contenant l'huile chaude, côté peau dessous. Laissez cuire 5 min.",
+    "Versez la purée de carotte au vin dans un plat, répartissez les échalotes confites et dressez les filets. Puis servez."
+  ],
+  "status": "published",
+  "slug": "sandre-aux-echalotes-confites",
+  "publishedAt": 1787830867062,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

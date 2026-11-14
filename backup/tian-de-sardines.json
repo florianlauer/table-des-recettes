@@ -1,0 +1,51 @@
+{
+  "id": "j573g293v8054phdvmnj7tnhds8cthzp",
+  "creationTime": 1787248435175.4666,
+  "title": "Tian de sardines",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "12 sardines",
+      "quantity": 12,
+      "unit": null,
+      "label": "sardines"
+    },
+    {
+      "raw": "3 pommes de terre, 3 tomates",
+      "quantity": 3,
+      "unit": null,
+      "label": "pommes de terre, 3 tomates"
+    },
+    {
+      "raw": "1 citron, 4 cuil. à soupe d'huile d'olive",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron, 4 cuil. à soupe d'huile d'olive"
+    },
+    {
+      "raw": "2 gousses d'ail, 1 bouquet de persil, 2 cuil. à soupe d'origan",
+      "quantity": 2,
+      "unit": null,
+      "label": "gousses d'ail, 1 bouquet de persil, 2 cuil. à soupe d'origan"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Etalez les pommes de terre préalablement cuites à la vapeur et coupées en rondelles dans un plat beurré.",
+    "Disposez dessus les tomates émincées et les sardines étêtées, vidées, écaillées, salées et poivrées.",
+    "Mélangez le jus de citron, l'huile, l'ail et le persil hachés, l'origan, sel et poivre.",
+    "Arrosez les sardines et enfournez (th.7/210°C) pendant 20 min."
+  ],
+  "status": "published",
+  "slug": "tian-de-sardines",
+  "publishedAt": 1787248507729,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

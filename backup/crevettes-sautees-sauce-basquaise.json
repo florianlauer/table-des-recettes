@@ -1,0 +1,45 @@
+{
+  "id": "j574sy74fnna2tt5h3qkfm4vw98cmn4p",
+  "creationTime": 1786983803388.328,
+  "title": "Crevettes sautées sauce basquaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de crevettes cuites",
+      "quantity": 800,
+      "unit": "g",
+      "label": "crevettes cuites"
+    },
+    {
+      "raw": "1 bocal de sauce Basquaise Amora",
+      "quantity": 1,
+      "unit": "bocal",
+      "label": "sauce Basquaise Amora"
+    },
+    {
+      "raw": "160 g de riz",
+      "quantity": 160,
+      "unit": "g",
+      "label": "riz"
+    },
+    {
+      "raw": "Huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "Huile d'olive"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites revenir les crevettes décortiquées dans une poêle avec une cuillère à soupe d'huile d'olive pendant 2 minutes.",
+    "Ajoutez la sauce Basquaise Amora.",
+    "Laissez mijoter environ 5 minutes.",
+    "Servez avec du riz blanc."
+  ],
+  "status": "published",
+  "slug": "crevettes-sautees-sauce-basquaise",
+  "publishedAt": 1786983896875,
+  "imageStorageId": "kg26ejd5ck6wvp002mh8wz237x8cna3h",
+  "beautifiedStorageId": "kg2fefst04hmek1z6xj8k83bc98cncbw"
+}

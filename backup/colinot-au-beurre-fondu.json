@@ -1,0 +1,87 @@
+{
+  "id": "j579kbk0yz5cgwwdrm6ym5wx8s8cvrmn",
+  "creationTime": 1787248435175.4658,
+  "title": "Colinot au beurre fondu",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "un ou deux colinots suivant grosseur",
+      "quantity": 1,
+      "unit": null,
+      "label": "colinots"
+    },
+    {
+      "raw": "Court-bouillon",
+      "quantity": null,
+      "unit": null,
+      "label": "Court-bouillon"
+    },
+    {
+      "raw": "eau",
+      "quantity": null,
+      "unit": null,
+      "label": "eau"
+    },
+    {
+      "raw": "2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 oignon piqué d'un clou de girofle",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon piqué d'un clou de girofle"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "gros sel, poivre en grains",
+      "quantity": null,
+      "unit": null,
+      "label": "gros sel, poivre en grains"
+    },
+    {
+      "raw": "Sauce",
+      "quantity": null,
+      "unit": null,
+      "label": "Sauce"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez le court-bouillon. Mettez de l'eau en quantité suffisante pour que le poisson baigne en entier. Ajoutez les aromates et un demi-verre de vinaigre de vin. Laissez bouillir 30 mn. Vous pouvez utiliser un court-bouillon tout préparé, acheté dans le commerce.",
+    "Mettez le colinot, reprenez l'ébullition et laissez 20 mn à feu doux.",
+    "Préparez la sauce. Pressez le citron dans une casserole, ajoutez le beurre, sel, poivre. Faites fondre ce mélange au bain-marie en le fouettant.",
+    "Dressez le poisson sur un plat, décorez de branches de persil, servez accompagné du beurre fondu."
+  ],
+  "status": "published",
+  "slug": "colinot-au-beurre-fondu",
+  "publishedAt": 1787248484231,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,45 @@
+{
+  "id": "j571j31bjf9w2rs8w9hnpytkhd8d9zms",
+  "creationTime": 1787830816550.3057,
+  "title": "Lotte en marinade au curry",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de lotte",
+      "quantity": 800,
+      "unit": "g",
+      "label": "de lotte"
+    },
+    {
+      "raw": "20 cl d'huile d'olive, 3 citrons",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "d'huile d'olive, 3 citrons"
+    },
+    {
+      "raw": "100 g de pois gourmands, 100 g de salades mélangées, 6 olives noires dénoyautées",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de pois gourmands, 100 g de salades mélangées, 6 olives noires dénoyautées"
+    },
+    {
+      "raw": "aneth, curry, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "aneth, curry, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez huile, jus de citron, sel et poivre.",
+    "Tranchez finement la lotte, badigeonnez de vinaigrette, saupoudrez d'1 cuil. à soupe d'aneth et d'1 pincée de curry.",
+    "Faites cuire les pois gourmands à la vapeur 4 min, taillez-les en lamelles ainsi que les olives.",
+    "Assaisonnez salade, pois et olives avec le reste de vinaigrette, dressez sur une assiette avec la lotte."
+  ],
+  "status": "published",
+  "slug": "lotte-en-marinade-au-curry",
+  "publishedAt": 1787830863859,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

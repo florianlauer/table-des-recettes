@@ -1,0 +1,85 @@
+{
+  "id": "j57caydz7ep61fkb5mp14782x98dbsbb",
+  "creationTime": 1787908398999.0466,
+  "title": "Filets de sole à la normande",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 filets de sole de 75 g",
+      "quantity": 8,
+      "unit": "filets",
+      "label": "de sole de 75 g"
+    },
+    {
+      "raw": "1 l de moules",
+      "quantity": 1,
+      "unit": "l",
+      "label": "de moules"
+    },
+    {
+      "raw": "2 échalotes",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 blancs de poireaux",
+      "quantity": 2,
+      "unit": "blancs",
+      "label": "de poireaux"
+    },
+    {
+      "raw": "1 carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "1/2 bouteille de cidre brut",
+      "quantity": 0.5,
+      "unit": "bouteille",
+      "label": "de cidre brut"
+    },
+    {
+      "raw": "25 cl de crème fraîche",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "5 brins de persil plat",
+      "quantity": 5,
+      "unit": "brins",
+      "label": "de persil plat"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez un fumet : faites cuire pendant 15 min les têtes et les arêtes des soles avec le cidre, du sel et du poivre, puis filtrez.",
+    "Coupez les poireaux en petits tronçons et taillez la carotte en bâtonnets.",
+    "Émincez les échalotes et mettez-les à fondre dans une sauteuse avec le beurre. Ajoutez les carottes et les poireaux, faites-les revenir en remuant pendant 2 min.",
+    "Versez le fumet de poisson, mettez la crème et laissez frémir 10 min.",
+    "Entretemps, lavez les moules et faites-les ouvrir dans une casserole sur feu vif. Dès qu'elles ont un peu refroidi, sortez-les de leur coquille.",
+    "Filtrez le jus et versez-le dans la sauteuse.",
+    "Roulez les filets de sole en les maintenant avec une pique en bois. Placez-les dans la sauteuse avec les moules et le persil ciselé. Couvrez et laissez cuire à feu très doux 10 min.",
+    "Dressez les filets sur le plat de service et nappez-les de sauce."
+  ],
+  "status": "published",
+  "slug": "filets-de-sole-a-la-normande",
+  "publishedAt": 1787908541585,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

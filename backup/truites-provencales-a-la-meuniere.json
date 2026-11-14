@@ -1,0 +1,85 @@
+{
+  "id": "j572qsx2d6pwe9yfrmmem5yhnd8d9x18",
+  "creationTime": 1787830359704.4536,
+  "title": "Truites provençales à la meunière",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "2 truites de 200 à 250 g pièce",
+      "quantity": 2,
+      "unit": null,
+      "label": "truites de 200 à 250 g pièce"
+    },
+    {
+      "raw": "4 carottes nouvelles",
+      "quantity": 4,
+      "unit": null,
+      "label": "carottes nouvelles"
+    },
+    {
+      "raw": "2 jeunes poireaux",
+      "quantity": 2,
+      "unit": null,
+      "label": "jeunes poireaux"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "d'ail"
+    },
+    {
+      "raw": "1 bouquet de persil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "le jus de 1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "jus de 1 citron"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites vider les truites par votre poissonnier.",
+    "Essuyez soigneusement les poissons. Salez, poivrez. Farinez-les en les introduisant dans un sac.",
+    "Pelez les carottes, coupez-les en fines rondelles. Blanchissez-les 7 minutes dans l'eau bouillante salée. Egouttez-les.",
+    "Lavez et émincez les poireaux. Hachez grossièrement échalote et ail.",
+    "Dans une poêle, mettez 50 g de beurre. Faites sauter sur feu doux les légumes (carottes, poireaux, ail et échalote) pendant 5 minutes. Salez et poivrez. Réservez au chaud.",
+    "Dans la même poêle avec le même beurre, faites cuire les truites à feu moyen, 5 minutes, en les retournant au bout de 2 minutes.",
+    "Dressez les truites bien dorées sur des assiettes chaudes. Garnissez avec les légumes.",
+    "Faites fondre le reste du beurre. Salez-le, poivrez-le et ajoutez le jus de citron ainsi qu'un hachis de persil. Parsemez-en les truites."
+  ],
+  "status": "published",
+  "slug": "truites-provencales-a-la-meuniere",
+  "publishedAt": 1787830379668,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,68 @@
+{
+  "id": "j5723d62rqb35t3fq3v41a22b58cbr3r",
+  "creationTime": 1786539014840.8042,
+  "title": "Chaud-froid de prunes",
+  "type": "dessert",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "500 g de quetsches",
+      "quantity": 500,
+      "unit": "g",
+      "label": "de quetsches"
+    },
+    {
+      "raw": "100 g de sucre cristallisé",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de sucre cristallisé"
+    },
+    {
+      "raw": "1 gousse de vanille",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "de vanille"
+    },
+    {
+      "raw": "le zeste et le jus d'un citron non traité",
+      "quantity": 1,
+      "unit": "citron",
+      "label": "le zeste et le jus d'un citron non traité"
+    },
+    {
+      "raw": "10 cl d'alcool de prunes",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "d'alcool de prunes"
+    },
+    {
+      "raw": "1 kiwi",
+      "quantity": 1,
+      "unit": null,
+      "label": "kiwi"
+    },
+    {
+      "raw": "glace à la vanille",
+      "quantity": null,
+      "unit": null,
+      "label": "glace à la vanille"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer les quetsches : les laver, les équeuter et les ouvrir en deux pour les dénoyauter.",
+    "Les mettre dans une casserole avec le sucre, la gousse de vanille fendue en deux, 1 zeste finement râpé et le jus de citron.",
+    "Porter sur feu très doux et faire cuire entre 15 et 20 min. à couvert en mélangeant de temps en temps.",
+    "Laisser cuire jusqu'à consistance de compote.",
+    "Parfumer la compote avec l'alcool de prunes.",
+    "Laisser cuire encore quelques minutes.",
+    "Retirer du feu et répartir dans quatre coupelles.",
+    "Servir aussitôt en disposant une boule de glace à la vanille au centre de la compotée.",
+    "Surmonter d'une lamelle de kiwi."
+  ],
+  "status": "published",
+  "slug": "chaud-froid-de-prunes",
+  "publishedAt": 1786539193652,
+  "imageStorageId": "kg21xt30gxh554tfnb6frxafq18ca9jg",
+  "beautifiedStorageId": "kg24gazrtc0paq76t0pdtehw6n8ca7wh"
+}

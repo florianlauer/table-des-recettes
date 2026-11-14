@@ -1,0 +1,57 @@
+{
+  "id": "j57358es0zdfejsx3yhn7t8qx18gph5x",
+  "creationTime": 1792583846404.086,
+  "title": "Brochettes de porc aux pruneaux",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "800 g de filet de porc",
+      "quantity": 800,
+      "unit": "g",
+      "label": "filet de porc"
+    },
+    {
+      "raw": "18 pruneaux",
+      "quantity": 18,
+      "unit": null,
+      "label": "pruneaux"
+    },
+    {
+      "raw": "18 fines tranches de lard fumé",
+      "quantity": 18,
+      "unit": "fines tranches",
+      "label": "lard fumé"
+    },
+    {
+      "raw": "18 petits oignons blancs",
+      "quantity": 18,
+      "unit": "petits",
+      "label": "oignons blancs"
+    },
+    {
+      "raw": "1 verre d'huile",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "huile"
+    },
+    {
+      "raw": "2 branches de thym",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "thym"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez le filet de porc en cubes et faites-le mariner dans l'huile avec le thym et les oignons entiers.",
+    "Dénoyautez les pruneaux et enroulez-les chacun dans une tranche de lard.",
+    "Sur les brochettes, enfilez alternativement un cube de porc, un pruneau au lard, un oignon, etc.",
+    "Faites griller au barbecue et servez avec une salade."
+  ],
+  "status": "published",
+  "slug": "brochettes-de-porc-aux-pruneaux",
+  "publishedAt": 1792583899323,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

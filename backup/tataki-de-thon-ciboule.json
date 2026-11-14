@@ -1,0 +1,60 @@
+{
+  "id": "j57f6k7k8q0zegsw4p2b54e3kn8dbzjf",
+  "creationTime": 1787908863334.3794,
+  "title": "Tataki de thon ciboule",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 pavés de thon",
+      "quantity": 4,
+      "unit": null,
+      "label": "pavés de thon"
+    },
+    {
+      "raw": "3 cuil. à soupe d'huile de sésame",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "huile de sésame"
+    },
+    {
+      "raw": "1 morceau de gingembre de 3 cm",
+      "quantity": 1,
+      "unit": "morceau",
+      "label": "gingembre de 3 cm"
+    },
+    {
+      "raw": "1 cuil. à soupe de jus de citron",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "3 cuil. à soupe de sauce de soja",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "sauce de soja"
+    },
+    {
+      "raw": "1 oignon nouveau",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon nouveau"
+    },
+    {
+      "raw": "graines de sésame",
+      "quantity": null,
+      "unit": null,
+      "label": "graines de sésame"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un bol, mélangez l'huile de sésame, le gingembre râpé, le jus de citron et la sauce de soja. Ajoutez les pavés de thon et laissez mariner pendant au moins 30 min. Chauffez la plancha à feu vif, puis faites-y cuire les pavés de thon 5 min en les retournant une fois – le poisson doit rester cru à l'intérieur. Détaillez le thon en tranches et servez-le avec la marinade en guise de sauce, parsemé de graines de sésame et d'oignon nouveau ciselé."
+  ],
+  "status": "published",
+  "slug": "tataki-de-thon-ciboule",
+  "publishedAt": 1787908881642,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

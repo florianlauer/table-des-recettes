@@ -1,0 +1,87 @@
+{
+  "id": "j57e6prj6vn7ae8wn69gmarj558j6edw",
+  "creationTime": 1794661466651.376,
+  "title": "Rôti de veau à l'emmental",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 rôti de veau de 1 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "rôti de veau de 1 kg"
+    },
+    {
+      "raw": "1 crépine de porc",
+      "quantity": 1,
+      "unit": null,
+      "label": "crépine de porc"
+    },
+    {
+      "raw": "8 tranches de bacon",
+      "quantity": 8,
+      "unit": null,
+      "label": "tranches de bacon"
+    },
+    {
+      "raw": "100 g d'emmental",
+      "quantity": 100,
+      "unit": "g",
+      "label": "emmental"
+    },
+    {
+      "raw": "1 c. à s. de moutarde",
+      "quantity": 1,
+      "unit": "c. à s.",
+      "label": "moutarde"
+    },
+    {
+      "raw": "6 échalotes",
+      "quantity": 6,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 c. à s. d'huile",
+      "quantity": 1,
+      "unit": "c. à s.",
+      "label": "huile"
+    },
+    {
+      "raw": "15 cl de vin blanc sec",
+      "quantity": 15,
+      "unit": "cl",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites tremper la crépine dans un bol d'eau tiède. Coupez le rôti en 8 tranches sans les séparer complètement à la base. Retirez la couenne du bacon et coupez l'emmental en lamelles. Tartinez l'intérieur des tranches du rôti avec la moutarde.",
+    "Glissez une tranche de bacon et quelques lamelles de fromage dans chaque intervalle du rôti. Piquez celui-ci avec une longue brochette. Égouttez la crépine et étalez-la sur un torchon.",
+    "Disposez le rôti au centre de la crépine et enveloppez-le. Pelez et émincez les échalotes. Dans une cocotte, faites chauffer l'huile et faites-y dorer le rôti de tous les côtés. Jetez la graisse de cuisson.",
+    "Dans la même cocotte, mettez les échalotes à revenir dans le beurre et ajoutez le rôti. Mouillez avec le vin blanc, salez et poivrez. Ajoutez le bouquet garni, couvrez et laissez mijoter 1 h. Retournez le rôti à mi-cuisson. Retirez la brochette et la crépine, disposez le rôti sur le plat de service et nappez-le de sauce. Servez immédiatement."
+  ],
+  "status": "published",
+  "slug": "roti-de-veau-a-l-emmental",
+  "publishedAt": 1794661494565,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

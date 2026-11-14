@@ -1,0 +1,70 @@
+{
+  "id": "j57d6v74zhgrbdpjymv2h8abp58j7m14",
+  "creationTime": 1794658778892.4707,
+  "title": "Côte de veau au jus truffé",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 côtes de 400 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "côtes de 400 g"
+    },
+    {
+      "raw": "100 g de truffes hachées",
+      "quantity": 100,
+      "unit": "g",
+      "label": "truffes hachées"
+    },
+    {
+      "raw": "4 belles tranches de truffes",
+      "quantity": 4,
+      "unit": null,
+      "label": "belles tranches de truffes"
+    },
+    {
+      "raw": "5 cl de Banyuls rouge",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "Banyuls rouge"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "25 cl de jus de veau",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "jus de veau"
+    },
+    {
+      "raw": "5 cl de jus de truffes",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "jus de truffes"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Salez et poivrez la veille les côtes de veau.",
+    "Flambez le Banyuls, puis ajoutez simultanément le jus de veau, le jus de truffes et, pour finir, les truffes hachées.",
+    "Faites réduire, montez au beurre et rectifiez le goût, si nécessaire.",
+    "Faites cuire le veau 10 min de chaque côté (cuisson légèrement rosée).",
+    "Déposez sur chaque côté une tranche de truffe, mettez le jus truffé autour de la viande, puis servez."
+  ],
+  "status": "published",
+  "slug": "cote-de-veau-au-jus-truffe",
+  "publishedAt": 1794658906639,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

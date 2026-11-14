@@ -1,0 +1,52 @@
+{
+  "id": "j574516re4vq359d23ng990gj58czest",
+  "creationTime": 1787416321259.911,
+  "title": "Morue parisienne",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "800 g de morue",
+      "quantity": 800,
+      "unit": "g",
+      "label": "morue"
+    },
+    {
+      "raw": "6 pommes de terre",
+      "quantity": 6,
+      "unit": null,
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "3 gousses d'ail",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites dessaler la morue. Pour cela, laissez-la tremper 24 h dans de l'eau froide que vous aurez soin de changer 3 ou 4 fois.",
+    "Mettez-la à cuire dans une assez grande quantité d'eau froide. Dès le début de l'ébullition, écumez, couvrez, éteignez le feu et laissez pocher 10 mn.",
+    "Faites cuire les pommes de terre dans leur peau, à la vapeur. Laissez-les tiédir, épluchez-les, coupez-les en dés.",
+    "Egouttez la morue, épongez-la, coupez-la en morceaux que vous ajouterez aux pommes de terre.",
+    "Faites sauter le tout dans 4 cuillerées d'huile, jusqu'à ce que l'ensemble soit doré. Ajoutez l'ail, le persil haché. Laissez cuire encore une minute à feu vif et servez."
+  ],
+  "status": "published",
+  "slug": "morue-parisienne",
+  "publishedAt": 1787416331324,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

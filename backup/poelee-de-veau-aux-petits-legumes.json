@@ -1,0 +1,57 @@
+{
+  "id": "j57339zbssd0wmpky04ke3fk2d8j7d0e",
+  "creationTime": 1794661368720.2124,
+  "title": "Poêlée de veau aux petits légumes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 pommes de terre (200g)",
+      "quantity": 2,
+      "unit": null,
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "400 g d'escalopes de veau",
+      "quantity": 400,
+      "unit": "g",
+      "label": "d'escalopes de veau"
+    },
+    {
+      "raw": "1 Noix de saveur bouquet garni MAGGI",
+      "quantity": 1,
+      "unit": null,
+      "label": "Noix de saveur bouquet garni MAGGI"
+    },
+    {
+      "raw": "100 g de petits pois frais ou surgelés",
+      "quantity": 100,
+      "unit": "g",
+      "label": "petits pois frais ou surgelés"
+    },
+    {
+      "raw": "3 petits navets",
+      "quantity": 3,
+      "unit": null,
+      "label": "petits navets"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuillerées à soupe",
+      "label": "d'huile"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Epluchez, lavez et coupez en petits dés les pommes de terre et les navets.",
+    "Dans une poêle bien chaude, faites-les revenir avec 1 cuillerée à soupe d'huile pendant 10 minutes à feu moyen. Ajoutez les petits pois. Poursuivez la cuisson environ 5 minutes. Réservez les légumes.",
+    "Dans la même poêle, faites dorer avec 1 cuillerée à soupe d'huile le veau coupé en fines lanières.",
+    "Ajoutez les légumes, la Noix de saveur et mélangez bien jusqu'à ce qu'elle fonde complètement."
+  ],
+  "status": "published",
+  "slug": "poelee-de-veau-aux-petits-legumes",
+  "publishedAt": 1794661403733,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

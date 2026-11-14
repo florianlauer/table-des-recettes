@@ -1,0 +1,54 @@
+{
+  "id": "j5772hc51y1k3gphdbj5j0vdbn8fcap2",
+  "creationTime": 1790758916432.7422,
+  "title": "Gigot aux pleurottes et aux girolles",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 gigot d'agneau",
+      "quantity": 1,
+      "unit": null,
+      "label": "gigot d'agneau"
+    },
+    {
+      "raw": "250 g de girolles et de pleurottes",
+      "quantity": 250,
+      "unit": "g",
+      "label": "de girolles et de pleurottes"
+    },
+    {
+      "raw": "1 gousse d'ail finement hachée",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "d'ail finement hachée"
+    },
+    {
+      "raw": "1 cuillère de persil grossièrement haché",
+      "quantity": 1,
+      "unit": "cuillère",
+      "label": "de persil grossièrement haché"
+    },
+    {
+      "raw": "1 petit verre de vin blanc",
+      "quantity": 1,
+      "unit": "petit verre",
+      "label": "de vin blanc"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettez le gigot dans un plat à four, badigeonnez-le légèrement d'huile d'olive et faites-le cuire à four chaud 220-240° C (8 au thermostat) pendant 45 minutes. Pendant ce temps, dans une poêle, faites sauter dans l'huile d'olive les girolles et les pleurottes. Après 4 minutes, ajoutez le persil et l'ail. Laissez cuire encore 2 minutes puis ajoutez le verre de vin blanc. Quand le vin est évaporé, salez et poivrez. Coupez le gigot sur le plat de service, entourez-le des champignons et servez très chaud."
+  ],
+  "status": "published",
+  "slug": "gigot-aux-pleurottes-et-aux-girolles",
+  "publishedAt": 1790758958432,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,62 @@
+{
+  "id": "j57e2zbgxgbf1qmwbc1jjy43xh8cv96q",
+  "creationTime": 1787248435175.466,
+  "title": "Coquilles de poisson",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "Restes de poisson",
+      "quantity": null,
+      "unit": null,
+      "label": "Restes de poisson"
+    },
+    {
+      "raw": "quelques moules ou crevettes",
+      "quantity": null,
+      "unit": null,
+      "label": "moules ou crevettes"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuillère à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "1 verre de lait",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "lait"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "chapelure",
+      "quantity": null,
+      "unit": null,
+      "label": "chapelure"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites une sauce béchamel. Faites fondre le beurre, ajoutez la farine, laissez légèrement roussir, versez le lait, remuez jusqu'à épaississement, salez et poivrez.",
+    "Mettez-y les restes de poisson. Garnissez des coquilles Saint-Jacques et ajoutez moules ou crevettes.",
+    "Saupoudrez de chapelure, posez une noisette de beurre et faites dorer à four chaud."
+  ],
+  "status": "published",
+  "slug": "coquilles-de-poisson",
+  "publishedAt": 1787248491761,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

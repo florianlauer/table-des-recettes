@@ -1,0 +1,66 @@
+{
+  "id": "j575q3ec8qdc9536tt56q5rwj18cz7br",
+  "creationTime": 1787411982703.3118,
+  "title": "Poulpe grillé",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 tentacules de poulpe",
+      "quantity": 8,
+      "unit": null,
+      "label": "tentacules de poulpe"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "3 feuilles de laurier",
+      "quantity": 3,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "1 branche de thym",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "thym"
+    },
+    {
+      "raw": "1 cuil. à café de curcuma (facultatif)",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "curcuma"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Rincez bien les tentacules à l'eau froide. Portez à ébullition une casserole d'eau salée à 15 g au litre (1 cuil. à soupe). Faites cuire les tentacules à l'eau bouillante 35 min. Préchauffez le four à 230 °C (th. 7-8). Pelez et émincez l'ail et les oignons. Dans la lèchefrite, versez 2 cuil. à soupe d'huile d'olive, ajoutez l'ail, les oignons, le laurier et le thym. Saupoudrez de curcuma. Quand le poulpe est cuit, laissez reposer dans la casserole une dizaine de min. Egouttez et déposez-le dans la lèchefrite. Enfournez de 12 à 15 min pour les petits tentacules et de 18 à 22 min pour les plus gros, jusqu'à une jolie coloration."
+  ],
+  "status": "published",
+  "slug": "poulpe-grille",
+  "publishedAt": 1787411996553,
+  "imageStorageId": "kg20db18cqvrhwt23g5fmh0xhd8czfgq",
+  "beautifiedStorageId": "kg20a8c9g5da96a9dsn8g449qn8cz1fn"
+}

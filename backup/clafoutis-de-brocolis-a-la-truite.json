@@ -1,0 +1,90 @@
+{
+  "id": "j5728ja5e32dcfqfvkdykvm3x98dbt6a",
+  "creationTime": 1787908863334.3796,
+  "title": "Clafoutis de brocolis à la truite",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de filets de truite",
+      "quantity": 400,
+      "unit": "g",
+      "label": "filets de truite"
+    },
+    {
+      "raw": "1/2 citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "2 c. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 bouquet de brocolis frais",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "brocolis frais"
+    },
+    {
+      "raw": "4 œufs",
+      "quantity": 4,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "125 g de farine",
+      "quantity": 125,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "30 cl de lait",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "20 cl de crème liquide",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "90 g de beurre",
+      "quantity": 90,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Salez et poivrez les filets de truite. Arrosez-les du jus du 1/2 citron et de l'huile d'olive et laissez mariner au frais 1/2 heure.",
+    "Faites cuire les brocolis 5 minutes à la vapeur.",
+    "Préchauffez votre four th 7.",
+    "Dans un récipient, mélangez les œufs, la farine, le lait et 2 pincées de sel. Ajoutez la crème liquide, 75 g de beurre fondu et poivrez.",
+    "Répartissez dans un moule beurré les brocolis et les filets de truite coupés en dés, puis recouvrez de la pâte.",
+    "Faites cuire au four 25 minutes.",
+    "Servez chaud."
+  ],
+  "status": "published",
+  "slug": "clafoutis-de-brocolis-a-la-truite",
+  "publishedAt": 1787908889114,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

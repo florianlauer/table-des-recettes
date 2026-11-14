@@ -1,0 +1,45 @@
+{
+  "id": "j57das6hwe9v1cmcz6xvmvpnvx8d80d1",
+  "creationTime": 1787830816550.3054,
+  "title": "Escaïxada de morue",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "300 g de morue",
+      "quantity": 300,
+      "unit": "g",
+      "label": "de morue"
+    },
+    {
+      "raw": "1/2 oignon, 1 tomate, 1/2 poivron rouge, 1/2 poivron vert",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "oignon, 1 tomate, 1/2 poivron rouge, 1/2 poivron vert"
+    },
+    {
+      "raw": "60 g d'olives",
+      "quantity": 60,
+      "unit": "g",
+      "label": "d'olives"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile d'olive, vinaigre de xérès, sel, poivre blanc",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "d'huile d'olive, vinaigre de xérès, sel, poivre blanc"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La veille, vous avez mis la morue à dessaler.",
+    "Egouttez et effeuillez la chair.",
+    "Mélangez avec oignon et poivrons émincés, tomate épépinée et coupée en dés, olives.",
+    "Assaisonnez ensuite d'huile et de quelques gouttes de vinaigre, salez peu et poivrez."
+  ],
+  "status": "published",
+  "slug": "escaixada-de-morue",
+  "publishedAt": 1787830860968,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

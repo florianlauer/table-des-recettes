@@ -1,0 +1,89 @@
+{
+  "id": "j576bgwaehjsvm8xngteygpbn18j7veg",
+  "creationTime": 1794662700395.445,
+  "title": "Côtes de porc aux pommes sauce curry",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 côtes de porc",
+      "quantity": 6,
+      "unit": null,
+      "label": "côtes de porc"
+    },
+    {
+      "raw": "6 pommes",
+      "quantity": 6,
+      "unit": null,
+      "label": "pommes"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 c. à soupe d'huile",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "8 échalotes",
+      "quantity": 8,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 c. à soupe de vinaigre de vin blanc",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "vinaigre de vin blanc"
+    },
+    {
+      "raw": "4 c. à soupe de vin blanc sec",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "250 g de beurre bien froid",
+      "quantity": 250,
+      "unit": "g",
+      "label": "beurre bien froid"
+    },
+    {
+      "raw": "1 c. à soupe de curry en poudre",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "curry en poudre"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "1 Pelez et hachez finement les échalotes. Mettez-les dans une casserole avec le vinaigre et le vin blanc sec. Faites cuire en remuant jusqu'à consistance d'une purée.",
+    "2 Passez au travers d'une passoire fine afin de récupérer une cuillère à soupe de liquide. Remettez sur feu doux et ajoutez le beurre en lamelles en fouettant sans arrêt. Ajoutez le curry et salez, fouettez bien et réservez au chaud au bain-marie.",
+    "3 Pelez les pommes et coupez-les en quartiers. Retirez le cœur et les pépins.",
+    "4 Faites fondre 50 g de beurre dans une poêle. Posez les quartiers de pommes et faites-les cuire à feu moyen 5 minutes de chaque côté.",
+    "5 Faites chauffer le reste de beurre et l'huile dans une autre poêle. Posez les côtes de porc et faites-les cuire 8 minutes de chaque côté à feu vif. Salez et poivrez.",
+    "6 Servez les côtes de porc avec les pommes et la sauce accompagnées de tagliatelles."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

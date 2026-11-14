@@ -1,0 +1,67 @@
+{
+  "id": "j57cmyrjx7dte0krys9wb0r3wn8fdphp",
+  "creationTime": 1790750970400.597,
+  "title": "Bœuf à la chinoise",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 boîte 4/4 de pousses de soja BONDUELLE",
+      "quantity": 1,
+      "unit": "boîte 4/4",
+      "label": "pousses de soja BONDUELLE"
+    },
+    {
+      "raw": "300 g de viande de bœuf (tranche)",
+      "quantity": 300,
+      "unit": "g",
+      "label": "viande de bœuf (tranche)"
+    },
+    {
+      "raw": "1 poivron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "poivron vert"
+    },
+    {
+      "raw": "6 cuillères à soupe d'huile",
+      "quantity": 6,
+      "unit": "cuillères à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "2 cuillères à soupe de sauce de soja",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "sauce de soja"
+    },
+    {
+      "raw": "1 cuillère à soupe de madère",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "madère"
+    },
+    {
+      "raw": "1 gros oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "gros oignon"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper la viande en bâtonnets ainsi que le poivron, émincer l'oignon.",
+    "Faire revenir dans l'huile à feu doux l'oignon et le poivron, puis la viande. Saler modérément et faire sauter 5 minutes. Incorporer les pousses de soja et le madère. Cuire l'ensemble à feu doux pendant 5 minutes. Rectifier l'assaisonnement et servir chaud."
+  ],
+  "status": "published",
+  "slug": "boeuf-a-la-chinoise",
+  "publishedAt": 1790751036911,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

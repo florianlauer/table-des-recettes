@@ -1,0 +1,57 @@
+{
+  "id": "j5732cbc5m4qybxjq788c2eq958cd4ez",
+  "creationTime": 1786649078242.6948,
+  "title": "Le Tempura de crevettes",
+  "type": "entree",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "crevettes",
+      "quantity": null,
+      "unit": null,
+      "label": "crevettes"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "pâte à beignets",
+      "quantity": null,
+      "unit": null,
+      "label": "pâte à beignets"
+    },
+    {
+      "raw": "l'huile",
+      "quantity": null,
+      "unit": null,
+      "label": "l'huile"
+    },
+    {
+      "raw": "différents petits légumes",
+      "quantity": null,
+      "unit": null,
+      "label": "différents petits légumes"
+    },
+    {
+      "raw": "beignets de calamar",
+      "quantity": null,
+      "unit": null,
+      "label": "beignets de calamar"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Décortiquez les crevettes en ne conservant que la queue.",
+    "Passez ces queues dans la farine, puis dans une pâte à beignets très légère que vous aurez préparée.",
+    "Plongez-les 3 mn dans l'huile très chaude.",
+    "Faites de même avec différents petits légumes coupés fin et servez éventuellement avec des beignets de calamar."
+  ],
+  "status": "published",
+  "slug": "le-tempura-de-crevettes",
+  "publishedAt": 1786649182016,
+  "imageStorageId": "kg2fwrm7bc667q4bmjhfvttk6x8cd1mh",
+  "beautifiedStorageId": "kg26kj0pxpbgv33gh3eramvymn8cdth1"
+}

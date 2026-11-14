@@ -1,0 +1,67 @@
+{
+  "id": "j573xfx36232f9jhgdjvdnma6s8gqrys",
+  "creationTime": 1792583551471.662,
+  "title": "Ragoût de gombos",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg de bœuf",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "bœuf"
+    },
+    {
+      "raw": "3 oignons",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "1 boîte de sauce tomate",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "sauce tomate"
+    },
+    {
+      "raw": "250 g de gombos",
+      "quantity": 250,
+      "unit": "g",
+      "label": "gombos"
+    },
+    {
+      "raw": "2 cuillères à café de harissa",
+      "quantity": 2,
+      "unit": "cuillères à café",
+      "label": "harissa"
+    },
+    {
+      "raw": "1 cuillère à café de paprika",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "paprika"
+    },
+    {
+      "raw": "3 cuillères à soupe d'huile",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Epluchez les oignons, coupez-les en lamelles. Coupez la viande en lanières. Versez l'huile dans une cocotte. Mettez-y les oignons à blondir, ajoutez la viande, faites-la dorer sur feu vif. Baissez le feu, ajoutez les gombos coupés en dés ainsi que la sauce tomate. Mélangez bien. Saupoudrez de paprika, salez et poivrez. Versez de l'eau jusqu'à hauteur de la viande, puis ajoutez la harissa. Mélangez à nouveau, couvrez et laissez mijoter sur feu doux pendant environ 2 h 30.",
+    "Servez chaud, accompagné de semoule ou de riz."
+  ],
+  "status": "published",
+  "slug": "ragout-de-gombos",
+  "publishedAt": 1792583607952,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

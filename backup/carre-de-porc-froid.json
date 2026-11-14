@@ -1,0 +1,39 @@
+{
+  "id": "j577qgbhv8rq544dz6pes5qwch8fdwra",
+  "creationTime": 1790750970400.5964,
+  "title": "Carré de porc froid",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kg 500 de carré avec os",
+      "quantity": 1.5,
+      "unit": "kg",
+      "label": "carré avec os"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 verre de vin blanc",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettre le carré dans un plat allant au four. Inciser la noix avec un couteau et mettre un quart de gousse d'ail. Répéter l'opération une dizaine de fois.",
+    "Saler. Poivrer. Beurrer légèrement. Faire dorer.",
+    "Arroser d'un verre de vin blanc. Laisser cuire lentement.",
+    "Bien refroidi, c'est un régal avec une salade."
+  ],
+  "status": "published",
+  "slug": "carre-de-porc-froid",
+  "publishedAt": 1790751023510,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,68 @@
+{
+  "id": "j576vabmx6cxbbyqqqrbspj46h8cc5sg",
+  "creationTime": 1786649078242.695,
+  "title": "Le Homard \"Duc de Bretagne\"",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "cœurs d'artichaut",
+      "quantity": null,
+      "unit": null,
+      "label": "cœurs d'artichaut"
+    },
+    {
+      "raw": "eau citronnée",
+      "quantity": null,
+      "unit": null,
+      "label": "eau citronnée"
+    },
+    {
+      "raw": "Homard",
+      "quantity": null,
+      "unit": null,
+      "label": "Homard"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "vinaigre de Xérès",
+      "quantity": null,
+      "unit": null,
+      "label": "vinaigre de Xérès"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Prélevez les cœurs d'artichaut et faites-les cuire dans une eau citronnée. Coupez-les en lamelles.",
+    "Retirez la carapace du Homard. Coupez la queue en rondelles que vous ferez revenir avec les lamelles d'artichaut dans du beurre.",
+    "Pour la sauce, mixez l'intérieur de la tête avec huile d'olive, vinaigre de Xérès, sel et poivre."
+  ],
+  "status": "published",
+  "slug": "le-homard-duc-de-bretagne",
+  "publishedAt": 1786649191175,
+  "imageStorageId": "kg2an8hg0asn5pweg673zt3k4s8ccw8t",
+  "beautifiedStorageId": "kg2fzd2024bq0j9q8zbfq5zsc98cdjrs"
+}

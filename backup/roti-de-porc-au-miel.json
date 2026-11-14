@@ -1,0 +1,58 @@
+{
+  "id": "j57f9em8adav1aphj3f542y4ch8j6kvc",
+  "creationTime": 1794658778892.471,
+  "title": "Rôti de porc au miel",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 rôti de porc (1,2 kg)",
+      "quantity": 1,
+      "unit": null,
+      "label": "rôti de porc (1,2 kg)"
+    },
+    {
+      "raw": "3 brins de romarin, 3 brins de sauge",
+      "quantity": 3,
+      "unit": "brins",
+      "label": "romarin, 3 brins de sauge"
+    },
+    {
+      "raw": "3 gousses d'ail, 2 échalotes",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail, 2 échalotes"
+    },
+    {
+      "raw": "2 cuil. à soupe de miel liquide",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "miel liquide"
+    },
+    {
+      "raw": "150 g de crème, 20 g de beurre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "crème, 20 g de beurre"
+    },
+    {
+      "raw": "cannelle, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "cannelle, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez les herbes hachées avec 1/2 cuil. à c. de sel, 1 de poivre et 1 pincée de cannelle.",
+    "Faites des incisions dans la viande, farcissez-les du mélange et badigeonnez le rôti d'1 cuil. de miel.",
+    "Posez les demi-gousses d'ail au fond du panier perforé, mettez dessus le rôti, poivrez et faites cuire 50 min à couvert puis 10 min couvercle ouvert.",
+    "Faites réduire de moitié 20 cl de liquide de cuisson avec les échalotes hachées, ajoutez le reste de miel, la crème, 1 pincée de cannelle, faites frémir 3 min.",
+    "Filtrez, liez au beurre, servez avec le rôti et des salsifis."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-au-miel",
+  "publishedAt": 1794658906639,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

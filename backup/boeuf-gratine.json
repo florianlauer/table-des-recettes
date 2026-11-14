@@ -1,0 +1,62 @@
+{
+  "id": "j578zgvfa7bay2yypjjg27p6p98gqatf",
+  "creationTime": 1792583551471.6616,
+  "title": "Bœuf gratiné",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "reste de bœuf bouilli coupé en tranches",
+      "quantity": null,
+      "unit": null,
+      "label": "reste de bœuf bouilli coupé en tranches"
+    },
+    {
+      "raw": "100 g de lard maigre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "lard maigre"
+    },
+    {
+      "raw": "150 g de champignons",
+      "quantity": 150,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "3 ou 4 oignons",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "1 verre de vin blanc",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "ail, persil, chapelure",
+      "quantity": null,
+      "unit": null,
+      "label": "ail, persil, chapelure"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un peu de beurre, faites revenir le lard coupé en dés. Versez dans un plat allant au four.",
+    "Hachez ail et persil, émincez les oignons, coupez les champignons. Prélevez-en la moitié pour garnir le fond du plat.",
+    "Posez les tranches de viande, recouvrez avec le reste des aromates et des champignons, mouillez avec un verre de vin blanc. Saupoudrez de chapelure et mettez 20 mn à four chaud."
+  ],
+  "status": "published",
+  "slug": "boeuf-gratine",
+  "publishedAt": 1792583595099,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

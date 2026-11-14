@@ -1,0 +1,91 @@
+{
+  "id": "j573s111g2kewgcq21er90j9n18ctb9v",
+  "creationTime": 1787248575320.7139,
+  "title": "Merlu à la vapeur d'estragon",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kg de merlu coupé en tronçons",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "merlu coupé en tronçons"
+    },
+    {
+      "raw": "2 blancs de poireaux",
+      "quantity": 2,
+      "unit": "blancs",
+      "label": "poireaux"
+    },
+    {
+      "raw": "1 petit oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit oignon"
+    },
+    {
+      "raw": "4 carottes",
+      "quantity": 4,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 bouquet d'estragon",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "estragon"
+    },
+    {
+      "raw": "2 cuil. à soupe de persil",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "persil"
+    },
+    {
+      "raw": "1 cuil. à soupe de Maïzena",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "Maïzena"
+    },
+    {
+      "raw": "25 cl de crème fraîche",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 jaunes d'œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "jaunes d'œufs"
+    },
+    {
+      "raw": "Le jus de 1/2 citron",
+      "quantity": 0.5,
+      "unit": "jus de",
+      "label": "citron"
+    },
+    {
+      "raw": "Sel, poivre en grains",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre en grains"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Rincer l'estragon, l'effeuiller, réserver les queues. Dans le réservoir d'un cuit-vapeur, verser 1,5 l d'eau, ajouter les queues d'estragon, l'oignon pelé, 10 grains de poivre. Laisser cuire à couvert 15 min sur feu très doux. Émincer les carottes et les blancs de poireaux en longueur en longs filaments. Dans les paniers de cuisson, répartir les légumes et déposer le poisson au-dessus. Couvrir et laisser cuire 20 à 25 min. Dans une casserole, filtrer 1/2 l de bouillon et mélanger la Maïzena délayée auparavant dans un peu de bouillon refroidi. Faire épaissir 2 min sur feu doux.",
+    "Battez les jaunes d'oeufs et la crème fraîche, les ajouter à la sauce en fouettant, puis incorporer le beurre fractionné et le jus de citron. Mélanger 2 cuil. à soupe de persil ciselé. Dresser le poisson sur des assiettes, entouré des légumes, napper de sauce et présenter le reste de sauce à part."
+  ],
+  "status": "published",
+  "slug": "merlu-a-la-vapeur-d-estragon",
+  "publishedAt": 1787248612257,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

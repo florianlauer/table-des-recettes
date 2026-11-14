@@ -1,0 +1,78 @@
+{
+  "id": "j572h9nr166yzk081rx5n0dcsh8dazkg",
+  "creationTime": 1787908262116.041,
+  "title": "Papillote marine au thé et à l'avocat",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 sachets de thé parfumé Lipton Agrumes",
+      "quantity": 2,
+      "unit": "sachets",
+      "label": "thé parfumé Lipton Agrumes"
+    },
+    {
+      "raw": "4 pavés de lieu jaune de 150 g chacun",
+      "quantity": 4,
+      "unit": "pavés",
+      "label": "lieu jaune de 150 g chacun"
+    },
+    {
+      "raw": "2 avocats",
+      "quantity": 2,
+      "unit": null,
+      "label": "avocats"
+    },
+    {
+      "raw": "1 jus de citron jaune",
+      "quantity": 1,
+      "unit": null,
+      "label": "jus de citron jaune"
+    },
+    {
+      "raw": "1 citron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron vert"
+    },
+    {
+      "raw": "5 pincées de piment doux en poudre",
+      "quantity": 5,
+      "unit": "pincées",
+      "label": "piment doux en poudre"
+    },
+    {
+      "raw": "1 piment doux frais (facultatif)",
+      "quantity": 1,
+      "unit": null,
+      "label": "piment doux frais (facultatif)"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": null,
+      "label": "gousse d'ail"
+    },
+    {
+      "raw": "1 c. à s. d'huile d'olive",
+      "quantity": 1,
+      "unit": "c. à s.",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pelez la gousse d'ail et plongez-la 3 min. dans l'eau bouillante. Pelez et dénoyautez les avocats, mixez-les avec le jus de citron jaune, l'ail, une pincée de piment en poudre et l'huile d'olive. Lavez le citron vert, coupez-le en fines rondelles. Préparez 4 grandes feuilles de papier sulfurisé. Préchauffez le four th. 7 (210° C). Faites infuser un sachet de thé parfumé Lipton Agrumes dans 10 cl d'eau bouillante. Epépinez et émincez finement le piment frais. Répartissez la purée d'avocat au centre de chaque feuille de papier. Posez dessus un pavé de lieu. Ajoutez quelques rondelles de citron vert, une pincée de thé du second sachet, du sel, une pincée de piment en poudre et quelques lamelles de piments frais. Terminez par 1 c. à s. de thé infusé. Refermez la papillote et enfournez 10 min."
+  ],
+  "status": "published",
+  "slug": "papillote-marine-au-the-et-a-l-avocat",
+  "publishedAt": 1787908280173,
+  "imageStorageId": "kg283hrhk1jg68ttc0s3vkm95d8dbv7c",
+  "beautifiedStorageId": "kg20822ynf0pyb7wyzqngzjfgn8dbghk"
+}

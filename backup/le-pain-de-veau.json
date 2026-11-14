@@ -1,0 +1,82 @@
+{
+  "id": "j575x4h85wt8hgmjpnb7bfn4h58fdswp",
+  "creationTime": 1790750970400.5967,
+  "title": "Le pain de veau",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg de veau",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "veau"
+    },
+    {
+      "raw": "200 g de lard maigre",
+      "quantity": 200,
+      "unit": "g",
+      "label": "lard maigre"
+    },
+    {
+      "raw": "150 g de champignons",
+      "quantity": 150,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 bol de mie de pain trempée dans du lait et pressée",
+      "quantity": 1,
+      "unit": "bol",
+      "label": "mie de pain trempée dans du lait et pressée"
+    },
+    {
+      "raw": "2 œufs",
+      "quantity": 2,
+      "unit": "œufs",
+      "label": "œufs"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "noix de muscade",
+      "quantity": null,
+      "unit": null,
+      "label": "noix de muscade"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Passez le veau et le lard, coupés en petits morceaux, au hachoir électrique, lavez les champignons et émincez-les. Faites-les revenir pendant 10 mn dans le beurre en remuant.",
+    "Hachez les champignons et ajoutez-les à la viande. Incorporez les œufs à la mie de pain avec une fourchette.",
+    "Versez cette préparation sur la viande et travaillez bien pour obtenir un mélange homogène. Assaisonnez de sel, poivre et d'une pincée de noix de muscade râpée.",
+    "Façonnez à la main un «pain», allongé en tassant bien. Tartinez généreusement le dessus de beurre.",
+    "Faites cuire à four assez chaud pendant 1 h environ, en arrosant souvent avec le jus de cuisson."
+  ],
+  "status": "published",
+  "slug": "le-pain-de-veau",
+  "publishedAt": 1790751030704,
+  "imageStorageId": "kg29ssmzhvrj73sedg8tekp66s8fdn7p",
+  "beautifiedStorageId": "kg28gpsc9tktns45ee75k30rts8fdmfa"
+}

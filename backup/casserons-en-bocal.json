@@ -1,0 +1,56 @@
+{
+  "id": "j57cxq0b8eq5sn4dbr76scxtqh8cgptv",
+  "creationTime": 1786815656232.1074,
+  "title": "Casserons en bocal",
+  "type": "apero",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "300 g de casserons (ou chipirons, supions, petites seiches)",
+      "quantity": 300,
+      "unit": "g",
+      "label": "de casserons (ou chipirons, supions, petites seiches)"
+    },
+    {
+      "raw": "4 gousses d'ail",
+      "quantity": 4,
+      "unit": "gousses",
+      "label": "d'ail"
+    },
+    {
+      "raw": "1 poivron rouge",
+      "quantity": 1,
+      "unit": null,
+      "label": "poivron rouge"
+    },
+    {
+      "raw": "40 cl d'huile d'olive",
+      "quantity": 40,
+      "unit": "cl",
+      "label": "d'huile d'olive"
+    },
+    {
+      "raw": "1 bocal en verre de 50 cl avec joint hermétique",
+      "quantity": 1,
+      "unit": null,
+      "label": "bocal en verre de 50 cl avec joint hermétique"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Rincez soigneusement les casserons et séchez-les. Videz-les s'ils mesurent plus de 5 cm.",
+    "Pelez l'ail et ciselez-le finement.",
+    "Retirez la queue et les graines du poivron et émincez-le.",
+    "Dans une poêle sur feu vif, chauffez un filet d'huile d'olive et faites-y revenir le poivron et les casserons 10 min, le temps que ces derniers soient dorés de chaque côté. Réservez.",
+    "Préchauffez le four à 100 °C (th. 3-4).",
+    "Remplissez d'eau aux trois quarts un plat à four.",
+    "Dans le bocal, versez 40 cl d'huile d'olive puis ajoutez les casserons, l'ail et le poivron.",
+    "Fermez hermétiquement et enfournez 1 h 45 au bain-marie.",
+    "Laissez refroidir, puis placez-le une nuit au réfrigérateur. Les casserons se conservent six mois dans le bocal hermétiquement fermé."
+  ],
+  "status": "published",
+  "slug": "casserons-en-bocal",
+  "publishedAt": 1786815749275,
+  "imageStorageId": "kg21x3yxzhsm0v9xnsc54mrw5h8ch3n9",
+  "beautifiedStorageId": "kg26m1aw651zgt9srb97h5547n8cg4p4"
+}

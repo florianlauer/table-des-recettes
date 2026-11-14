@@ -1,0 +1,61 @@
+{
+  "id": "j578ynkapjrndvvwycexbr7c918dawnr",
+  "creationTime": 1787907776085.131,
+  "title": "Curry de cabillaud",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600g de cabillaud",
+      "quantity": 600,
+      "unit": "g",
+      "label": "cabillaud"
+    },
+    {
+      "raw": "4 Fjord natures de Danone",
+      "quantity": 4,
+      "unit": null,
+      "label": "Fjord natures de Danone"
+    },
+    {
+      "raw": "2 citron",
+      "quantity": 2,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "6 cuillères à café de curry",
+      "quantity": 6,
+      "unit": "cuillères à café",
+      "label": "curry"
+    },
+    {
+      "raw": "4 cuillères à café de thym",
+      "quantity": 4,
+      "unit": "cuillères à café",
+      "label": "thym"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer le curry : mélanger le jus d'un demi citron, les Fjord, le sel, le poivre et le curry dans un bol. Réserver au frais.",
+    "Faire cuire le poisson à la vapeur avec un filet d'huile d'olive et le thym. Finir la cuisson en y rajoutant le jus du demi citron. Saler. Emietter le poisson et le rajouter à la sauce."
+  ],
+  "status": "published",
+  "slug": "curry-de-cabillaud",
+  "publishedAt": 1787907815839,
+  "imageStorageId": "kg23a3z9w4vztv6hf6qa99pq3d8db9ty",
+  "beautifiedStorageId": "kg2a2aqfjyy4v3fk9nthxppa158dab7m"
+}

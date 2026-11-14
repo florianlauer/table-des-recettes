@@ -1,0 +1,56 @@
+{
+  "id": "j57ddpyvx865qv2vzqajfs92f58db8ev",
+  "creationTime": 1787909071463.6423,
+  "title": "Rouget au fromage bleu",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 rouleau de 280 g de pâte feuilletée",
+      "quantity": 280,
+      "unit": "g",
+      "label": "rouleau de pâte feuilletée"
+    },
+    {
+      "raw": "1 fromage bresse bleu de 250g",
+      "quantity": 250,
+      "unit": "g",
+      "label": "fromage bresse bleu"
+    },
+    {
+      "raw": "8 filets de rouget",
+      "quantity": 8,
+      "unit": null,
+      "label": "filets de rouget"
+    },
+    {
+      "raw": "1 petit bulbe de fenouil",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit bulbe de fenouil"
+    },
+    {
+      "raw": "1 jaune d'œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "jaune d'œuf"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffer le four thermostat n° 6 (180°C). Découper 4 rectangles de pâte feuilletée de 5 x 10 cm. Les badigeonner au pinceau avec le jaune d'œuf sur une face. Les disposer sur la tôle du four graissée et enfourner à mi-hauteur. Laisser cuire environ 15 mn. Pendant ce temps, laver le fenouil, le râper puis le faire revenir à feu vif dans une sauteuse avec un peu d'huile. Ajouter 5 cl d'eau, couvrir et cuire 10 mn.",
+    "Couper le fromage en fines tranches. Retirer les feuilletés et, à leur place, disposer le poisson sur la plaque en l'assaisonnant d'un filet d'huile d'olive. Saler et laisser cuire 5 mn.",
+    "Couper les feuilletés en deux dans l'épaisseur. Mettre les quatre chapeaux de côté et garnir les dessous des feuilletés de fenouil cuit, de deux filets de poisson et de tranches de bresse bleu. Disposer dans un plat allant au four et enfourner à mi-hauteur. Laisser cuire 8 à 10 minutes, jusqu'à ce que le fromage soit fondu. Couvrir les feuilletés quelques minutes avant la fin de la cuisson pour les réchauffer. Servir tout de suite."
+  ],
+  "status": "published",
+  "slug": "rouget-au-fromage-bleu",
+  "publishedAt": 1787909087114,
+  "imageStorageId": "kg264beqzh57n83nzgey4fx0wx8dbgbw",
+  "beautifiedStorageId": "kg2f3b34d8yx6f2z2h4z59me0n8darrv"
+}

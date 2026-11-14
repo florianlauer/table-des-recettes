@@ -1,0 +1,70 @@
+{
+  "id": "j577pk406d7phd9ecs67t4wzzx8dby3p",
+  "creationTime": 1787907776085.1309,
+  "title": "Papillote de cabillaud au Fjord et safran",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de cabillaud de 150 g chacun",
+      "quantity": 4,
+      "unit": "filets",
+      "label": "filets de cabillaud de 150 g chacun"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1 dose de safran",
+      "quantity": 1,
+      "unit": "dose",
+      "label": "safran"
+    },
+    {
+      "raw": "2 pots de 125 g de Fjord",
+      "quantity": 2,
+      "unit": "pots",
+      "label": "pots de 125 g de Fjord"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "quelques olives noires",
+      "quantity": null,
+      "unit": null,
+      "label": "quelques olives noires"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez la dose de safran avec le Fjord.",
+    "Découpez 4 feuilles de papier sulfurisé. Au centre, déposez une fine tranche de citron. Posez le filet de cabillaud dessus.",
+    "Faites fondre l'oignon et ajoutez-le à la papillote avec deux ou trois olives.",
+    "Arrosez d'une bonne cuillère de sauce au Fjord safranée. Salez, poivrez.",
+    "Fermez les papillotes et faites cuire au four préchauffé th. 7-210° C pendant 20 min."
+  ],
+  "status": "published",
+  "slug": "papillote-de-cabillaud-au-fjord-et-safran",
+  "publishedAt": 1787907807518,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

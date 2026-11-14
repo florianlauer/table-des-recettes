@@ -1,0 +1,98 @@
+{
+  "id": "j575k63hgfzq3vx1htksc116558cbxwc",
+  "creationTime": 1786539014840.804,
+  "title": "Nectarines farcies à la pistache",
+  "type": "dessert",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "12 petites pêches nectarines",
+      "quantity": 12,
+      "unit": null,
+      "label": "petites pêches nectarines"
+    },
+    {
+      "raw": "100 g de sucre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de sucre"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "1 bouquet de menthe fraîche",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "de menthe fraîche"
+    },
+    {
+      "raw": "50 g de pistaches hachées",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de pistaches hachées"
+    },
+    {
+      "raw": "1/2 litre de glace à la vanille",
+      "quantity": 0.5,
+      "unit": "litre",
+      "label": "de glace à la vanille"
+    },
+    {
+      "raw": "125 g d'amande en poudre",
+      "quantity": 125,
+      "unit": "g",
+      "label": "d'amande en poudre"
+    },
+    {
+      "raw": "125 g de sucre glace",
+      "quantity": 125,
+      "unit": "g",
+      "label": "de sucre glace"
+    },
+    {
+      "raw": "125 g de beurre en pommade",
+      "quantity": 125,
+      "unit": "g",
+      "label": "de beurre en pommade"
+    },
+    {
+      "raw": "3 œufs",
+      "quantity": 3,
+      "unit": "œufs",
+      "label": null
+    },
+    {
+      "raw": "un trait de kirsch",
+      "quantity": null,
+      "unit": "un trait",
+      "label": "de kirsch"
+    },
+    {
+      "raw": "60 g de pâte de pistaches vertes (ou des pistaches, vertes natures mixées)",
+      "quantity": 60,
+      "unit": "g",
+      "label": "de pâte de pistaches vertes (ou des pistaches, vertes natures mixées)"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Tremper les fruits 30 secondes dans l'eau bouillante puis ensuite dans une eau glacée pour retirer la peau plus facilement.",
+    "Les fendre par le milieu puis les entrouvrir pour retirer le noyau sans détacher les oreillons.",
+    "Bien mélanger ensemble tous les ingrédients de la crème amandes-pistaches.",
+    "Farcir les nectarines de cette crème.",
+    "Bien refermer les fruits en plantant dans la chair une pique en bois.",
+    "Dans une poêle, faire fondre le beurre, ajouter le sucre, chauffer jusqu'à l'obtention d'un caramel, mettre ensuite les nectarines à cuire dedans pendant 7 mn, les retourner régulièrement pour les rôtir de tous côtés puis les égoutter sur une grille.",
+    "Ajouter un peu d'eau dans le sirop, bien remuer et parfumer de feuilles de menthe hachées, retirer du feu ce sirop épais.",
+    "Enlever les piques en bois, dresser les nectarines sur les assiettes à dessert, les napper du sirop, les poudrer de pistaches hachées.",
+    "Servir accompagné de glace à la vanille et de biscuits secs."
+  ],
+  "status": "published",
+  "slug": "nectarines-farcies-a-la-pistache",
+  "publishedAt": 1786539189989,
+  "imageStorageId": "kg26hh6tw5r55tkmww4y9kj4218cbcg9",
+  "beautifiedStorageId": "kg2ev9t306dtekt2wpn6qfp1518ca0ac"
+}

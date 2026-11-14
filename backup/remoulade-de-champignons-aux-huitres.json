@@ -1,0 +1,73 @@
+{
+  "id": "j579r257k632vgkmn3cxk8318s8carky",
+  "creationTime": 1786564368744.985,
+  "title": "Rémoulade de champignons aux huîtres",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "24 huîtres",
+      "quantity": 24,
+      "unit": null,
+      "label": "huîtres (Claires nº2)"
+    },
+    {
+      "raw": "500 g de champignons de Paris",
+      "quantity": 500,
+      "unit": "g",
+      "label": "champignons de Paris"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1 cuil. à café de moutarde",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "moutarde"
+    },
+    {
+      "raw": "20 cl de crème fleurette",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème fleurette"
+    },
+    {
+      "raw": "250 g de farine",
+      "quantity": 250,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "1 cuil. à soupe de sésame",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "sésame"
+    },
+    {
+      "raw": "ciboulette, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "ciboulette, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Ouvrez les huîtres, réservez et filtrez l'eau de mer.",
+    "Taillez les champignons en très fine julienne, citronnez-les.",
+    "Ajoutez la moutarde, la crème, l'eau des huîtres, assaisonnez et mélangez délicatement.",
+    "Mélangez la farine et le sésame avec 10 cl d'eau.",
+    "Pétrissez, étalez la pâte, puis coupez-la en fines baguettes.",
+    "Faites cuire sur la plaque du four beurrée et farinée (th. 7/210° C) 15 min.",
+    "Dressez les huîtres sur les assiettes en intercalant rémoulade de champignons et baguettes au sésame.",
+    "Parsemez de ciboulette ciselée."
+  ],
+  "status": "published",
+  "slug": "remoulade-de-champignons-aux-huitres",
+  "publishedAt": 1786564442758,
+  "imageStorageId": "kg24yek9spx5d8apfxpc0wcfrn8cbtr4",
+  "beautifiedStorageId": "kg21at6afz97y6mxe2xx5y0thh8ca7pb"
+}

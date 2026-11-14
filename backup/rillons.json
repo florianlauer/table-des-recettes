@@ -1,0 +1,48 @@
+{
+  "id": "j5792a3nxhbqwc8nsez1xcwgax8fd6z7",
+  "creationTime": 1790758916432.7417,
+  "title": "Rillons",
+  "type": "apero",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "500 g de porc mi-maigre, mi-gras",
+      "quantity": 500,
+      "unit": "g",
+      "label": "de porc mi-maigre, mi-gras"
+    },
+    {
+      "raw": "500 g de collet de porc",
+      "quantity": 500,
+      "unit": "g",
+      "label": "de collet de porc"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "2 feuilles de sauge",
+      "quantity": 2,
+      "unit": "feuilles",
+      "label": "de sauge"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper les viandes en dés et les faire cuire dans une cocotte remplie d'eau aux 3/4 avec les aromates et l'assaisonnement. Couvrir et laisser mijoter pendant environ 4 heures. Remuer et mettre la viande dans un pot de grès. Le couvrir de graisse chaude, puis fermer le pot et le placer au frais."
+  ],
+  "status": "published",
+  "slug": "rillons",
+  "publishedAt": 1790758940010,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,136 @@
+{
+  "id": "j5718tczzfdkcj1dt1gpzde1nn8d0qzr",
+  "creationTime": 1787475715568.7612,
+  "title": "Quiche à la betterave avec streusel noix-fromage",
+  "type": "plat",
+  "servings": 12,
+  "ingredients": [
+    {
+      "raw": "POUR LA PÂTE",
+      "quantity": null,
+      "unit": null,
+      "label": "POUR LA PÂTE"
+    },
+    {
+      "raw": "125 g de beurre",
+      "quantity": 125,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "250 g de farine",
+      "quantity": 250,
+      "unit": "g",
+      "label": "de farine"
+    },
+    {
+      "raw": "1 œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    },
+    {
+      "raw": "1 c.c. de zeste râpé de 1 citron non traité",
+      "quantity": 1,
+      "unit": "c.c.",
+      "label": "de zeste râpé de 1 citron non traité"
+    },
+    {
+      "raw": "1/2 c.c. de sel",
+      "quantity": 0.5,
+      "unit": "c.c.",
+      "label": "de sel"
+    },
+    {
+      "raw": "POUR LA GARNITURE",
+      "quantity": null,
+      "unit": null,
+      "label": "POUR LA GARNITURE"
+    },
+    {
+      "raw": "700 g de betteraves rouges",
+      "quantity": 700,
+      "unit": "g",
+      "label": "de betteraves rouges"
+    },
+    {
+      "raw": "2 bottes de ciboulette",
+      "quantity": 2,
+      "unit": "bottes",
+      "label": "de ciboulette"
+    },
+    {
+      "raw": "1 c.c. de zeste râpé de 1 citron non traité",
+      "quantity": 1,
+      "unit": "c.c.",
+      "label": "de zeste râpé de 1 citron non traité"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    },
+    {
+      "raw": "Cumin",
+      "quantity": null,
+      "unit": null,
+      "label": "Cumin"
+    },
+    {
+      "raw": "100 g de cerneaux de noix concassés",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de cerneaux de noix concassés"
+    },
+    {
+      "raw": "200 g de crème fraîche",
+      "quantity": 200,
+      "unit": "g",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "3 œufs",
+      "quantity": 3,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "125 g de fromage de brebis",
+      "quantity": 125,
+      "unit": "g",
+      "label": "de fromage de brebis"
+    },
+    {
+      "raw": "Farine pour le plan de travail",
+      "quantity": null,
+      "unit": null,
+      "label": "Farine pour le plan de travail"
+    },
+    {
+      "raw": "Beurre pour la tourtière",
+      "quantity": null,
+      "unit": null,
+      "label": "Beurre pour la tourtière"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pour la pâte, malaxer tous les ingrédients env. 2 minutes à vitesse 5 avec 1 c.s. d'eau glacée dans le bol mixeur. Envelopper la pâte dans du film alimentaire et la laisser reposer 1 heure au réfrigérateur. Préchauffer le four à 180 °C.",
+    "Pour la garniture, peler les betteraves avec des gants de ménage, les couper en quatre et les hacher env. 35 secondes à vitesse 5.",
+    "Rincer, sécher et ciseler la ciboulette, puis l'ajouter dans le bol. Ajouter le zeste de citron, du sel, du poivre, du cumin et la moitié des cerneaux de noix et mixer env. 20 secondes à vitesse 2. Réserver dans un saladier.",
+    "Battre la crème fraîche, la crème épaisse et les œufs env. 50 secondes à vitesse 2, saler et poivrer. Pour le streusel, mixer le reste de cerneaux de noix avec le fromage de brebis.",
+    "Étaler la pâte sur un plan de travail fariné et beurrer la tourtière. Déposer la pâte dans la tourtière et la piquer à la fourchette. Étaler dessus le mélange à la betterave, couvrir avec la crème aux œufs, puis parsemer de streusel au fromage. Enfourner pour 50 minutes à mi-hauteur. Au bout d'env. 35 minutes de cuisson, recouvrir la quiche d'une feuille de papier d'aluminium pour éviter que le streusel ne brûle."
+  ],
+  "status": "published",
+  "slug": "quiche-a-la-betterave-avec-streusel-noix-fromage",
+  "publishedAt": 1787475727713,
+  "imageStorageId": "kg2bj5twdmbfnk5crp8nps3fcn8d1jgg",
+  "beautifiedStorageId": "kg28agkzsag1cqa4z3xajbdvdn8d05s6"
+}

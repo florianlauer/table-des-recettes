@@ -1,0 +1,44 @@
+{
+  "id": "j57byb2da8pypy422pf1s00xdx8dayrk",
+  "creationTime": 1787908398999.0464,
+  "title": "Cabillaud gratiné à l'ail et au persil",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 pavés de cabillaud",
+      "quantity": 4,
+      "unit": "pavés",
+      "label": "de cabillaud"
+    },
+    {
+      "raw": "1/2 gousse d'ail",
+      "quantity": 0.5,
+      "unit": "gousse",
+      "label": "d'ail"
+    },
+    {
+      "raw": "2c. à soupe de mayonnaise Amora® sans conservateur",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "de mayonnaise Amora® sans conservateur"
+    },
+    {
+      "raw": "Quelques brins de persil",
+      "quantity": null,
+      "unit": "quelques brins",
+      "label": "de persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Tailler finement le persil plat. Écraser l'ail sur le plat d'un couteau, puis hacher très finement. Dans un bol, mélanger le persil et l'ail à la mayonnaise Amora® sans conservateur.",
+    "Préchauffer le four puis napper les pavés de cabillaud de ce mélange, et enfourner 12 à 15 min à 180 °C.",
+    "Servir accompagné d'une délicieuse julienne de légumes."
+  ],
+  "status": "published",
+  "slug": "cabillaud-gratine-a-l-ail-et-au-persil",
+  "publishedAt": 1787908537169,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,38 @@
+{
+  "id": "j576qh5rvpzqvx1x2d5bacc3s18ha161",
+  "creationTime": 1793442851385.5105,
+  "title": "Pavé de porc",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "les pavés",
+      "quantity": null,
+      "unit": null,
+      "label": "les pavés de porc"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faire fondre dans une poêle, beurre et huile.",
+    "Mettre les pavés dans cette matière grasse pas trop chaude.",
+    "Cuire doucement pendant 3 mn de chaque côté."
+  ],
+  "status": "published",
+  "slug": "pave-de-porc",
+  "publishedAt": 1793442895620,
+  "imageStorageId": "kg20hrx5fgpz360pzr6r12ettd8hb7rr",
+  "beautifiedStorageId": "kg29g548f61syk0tmt287fcrdn8hbaj5"
+}

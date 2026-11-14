@@ -1,0 +1,105 @@
+{
+  "id": "j577m0939s19darq71xpr002q18j7cmg",
+  "creationTime": 1794658783766.9773,
+  "title": "Citronnée de veau",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "750 g d'épaule de veau désossée",
+      "quantity": 750,
+      "unit": "g",
+      "label": "épaule de veau désossée"
+    },
+    {
+      "raw": "6 citrons",
+      "quantity": 6,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "4 tomates",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 brin de thym",
+      "quantity": 1,
+      "unit": "brin",
+      "label": "thym"
+    },
+    {
+      "raw": "1 feuille de laurier",
+      "quantity": 1,
+      "unit": "feuille",
+      "label": "laurier"
+    },
+    {
+      "raw": "15 petits oignons",
+      "quantity": 15,
+      "unit": null,
+      "label": "petits oignons"
+    },
+    {
+      "raw": "2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "quelques feuilles de menthe fraîche",
+      "quantity": null,
+      "unit": null,
+      "label": "feuilles de menthe fraîche"
+    },
+    {
+      "raw": "3 clous de girofle",
+      "quantity": 3,
+      "unit": "clous",
+      "label": "girofle"
+    },
+    {
+      "raw": "3 cuil. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "75 g de beurre",
+      "quantity": 75,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuil. à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pelez un citron à vif, coupez-le en dés ; réservez. Epluchez les carottes et détaillez-les en fins bâtonnets avec un couteau bien aiguisé. Pelez les oignons ; piquez de girofle 3 d'entre eux. Passez les tomates quelques instants à l'eau bouillante, pelez-les et épépinez-les. Pelez l'ail et hachez-le. Détaillez le veau en petits morceaux réguliers de 5 cm de côté environ.",
+    "Faites chauffer le four réglé à 200 °C - thermostat 6. Mettez à chauffer 2 cuillerées à soupe d'huile et la moitié du beurre dans une cocotte, sans laisser roussir, puis faites-y dorer les morceaux de veau, préalablement salés et poivrés, de tous côtés, à feu vif. Recueillez-les, réservez-les sur une assiette et dégraissez la cocotte.",
+    "Remettez le veau dans la cocotte. Saupoudrez de farine et mettez dans le four à découvert jusqu'à ce que la farine dore. Mettez à chauffer le restant d'huile et de beurre dans une poêle. Faites-y sauter les oignons 5 minutes. Pressez 4 citrons, retirez la cocotte du four et versez-y le jus des citrons. Mélangez avec une cuillère en bois en raclant le fond qui a dû « pincer » un peu.",
+    "Mouillez avec 2 verres d'eau. Ajoutez les bâtonnets de carotte, les oignons, les tomates, l'ail, le thym et le laurier. Salez, poivrez et mettez au four réglé à 260 °C - th 8. Laissez cuire 1 heure, en remuant plusieurs fois en cours de cuisson. Au moment de servir, ajoutez le citron pelé à vif et coupé en dés, quelques fines rondelles de citron et des feuilles de menthe ciselées."
+  ],
+  "status": "published",
+  "slug": "citronnee-de-veau",
+  "publishedAt": 1794659007624,
+  "imageStorageId": "kg241fs4m2szmyzh0z9gdabmv18j7hbs",
+  "beautifiedStorageId": "kg21k8tdne2qf6p2wzsbk3yedx8j6zne"
+}

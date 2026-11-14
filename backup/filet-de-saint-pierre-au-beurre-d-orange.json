@@ -1,0 +1,86 @@
+{
+  "id": "j5728a52djjtwpb1rajaxyhg658dbpnk",
+  "creationTime": 1787908639281.5217,
+  "title": "Filet de Saint-Pierre au beurre d'orange",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 courgettes",
+      "quantity": 2,
+      "unit": null,
+      "label": "courgettes"
+    },
+    {
+      "raw": "2,5 c. à soupe d'huile d'olive",
+      "quantity": 2.5,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "2 oranges",
+      "quantity": 2,
+      "unit": null,
+      "label": "oranges"
+    },
+    {
+      "raw": "4 filets de saint-pierre sans peau",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de saint-pierre sans peau"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "1 c. à café de thym",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "thym"
+    },
+    {
+      "raw": "1 orange",
+      "quantity": 1,
+      "unit": null,
+      "label": "orange"
+    },
+    {
+      "raw": "2 échalotes",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "7 cl de vin blanc doux",
+      "quantity": 7,
+      "unit": "cl",
+      "label": "vin blanc doux"
+    },
+    {
+      "raw": "10 cl de crème liquide",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "150 g de beurre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Le beurre. Mettez les échalotes pelées et émincées à bouillir avec le vin, le zeste de l'orange coupé en fins bâtonnets et son jus, jusqu'à évaporation presque totale. Ajoutez la crème et portez à ébullition. Incorporez le beurre froid en parcelles tout en fouettant la préparation. Réservez dans un bain-marie tiède.",
+    "La garniture. Découpez des rubans de courgettes lavées non pelées à l'aide d'un économe, et faites-les cuire 3 min dans l'eau bouillante salée. Egouttez-les et arrosez-les d'une cuillerée à soupe d'huile d'olive. Pelez les oranges à vif.",
+    "Les filets. Faites cuire 2 à 3 min sur chaque face les filets salés, poivrés, huilés et saupoudrés de thym. Passez le beurre au mixeur afin de le rendre mousseux. Nappez-en le fond de 4 assiettes, déposez un filet dessus et répartissez les rubans de courgettes et les quartiers d'oranges réchauffées. Servez de suite."
+  ],
+  "status": "published",
+  "slug": "filet-de-saint-pierre-au-beurre-d-orange",
+  "publishedAt": 1787908659379,
+  "imageStorageId": "kg2ezawnv1e7q66qt2aab9pyfh8da6vg",
+  "beautifiedStorageId": "kg2bdz54qpy6jkvchwjq0shx458db80b"
+}

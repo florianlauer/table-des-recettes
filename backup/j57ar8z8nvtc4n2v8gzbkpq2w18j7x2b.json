@@ -1,0 +1,66 @@
+{
+  "id": "j57ar8z8nvtc4n2v8gzbkpq2w18j7x2b",
+  "creationTime": 1794662700395.4448,
+  "title": "Rôti de porc aux abricots secs et au gingembre",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 rôti de porc de 1,2 kg",
+      "quantity": 1.2,
+      "unit": "kg",
+      "label": "rôti de porc"
+    },
+    {
+      "raw": "500 g d'abricots secs",
+      "quantity": 500,
+      "unit": "g",
+      "label": "abricots secs"
+    },
+    {
+      "raw": "1 noix de gingembre frais",
+      "quantity": 1,
+      "unit": "noix",
+      "label": "gingembre frais"
+    },
+    {
+      "raw": "3 oignons violets",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons violets"
+    },
+    {
+      "raw": "1 verre de porto",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "porto"
+    },
+    {
+      "raw": "2 feuilles de laurier",
+      "quantity": 2,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Epluchez et hachez les oignons. Lavez les abricots secs à l'eau chaude, puis faites-les mariner dans le porto. Dans une cocotte, faites dorer le rôti de porc de tous côtés avec l'huile. Sortez le rôti, jetez l'huile puis replacez le rôti dans la cocotte en l'entourant des oignons hachés. Commencez la cuisson sur feu doux. Ajoutez le gingembre épluché et râpé, le laurier, salez et poivrez. Couvrez et faites cuire à feu très doux durant 40 min. Otez le couvercle, ajoutez les abricots et le porto et mélangez. Recouvrez et laissez mijoter encore 10 min. Rectifiez l'assaisonnement, puis sortez le rôti. Gardez-le au chaud et faites réduire le jus s'il est trop liquide. Découpez le rôti et entourez-le des abricots avec leur sauce."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

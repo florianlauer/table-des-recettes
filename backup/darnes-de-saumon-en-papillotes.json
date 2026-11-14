@@ -1,0 +1,71 @@
+{
+  "id": "j573xhfk5q20ek5yt7ycwbezzh8cz6c1",
+  "creationTime": 1787415862361.239,
+  "title": "Darnes de saumon en papillotes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 darnes de saumon",
+      "quantity": 4,
+      "unit": null,
+      "label": "darnes de saumon"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "200 g de carottes",
+      "quantity": 200,
+      "unit": "g",
+      "label": "carottes"
+    },
+    {
+      "raw": "200 g de champignons",
+      "quantity": 200,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "100 g de blanc de poireau",
+      "quantity": 100,
+      "unit": "g",
+      "label": "blanc de poireau"
+    },
+    {
+      "raw": "10 cl de vin blanc sec",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 bouquet d'estragon",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "estragon"
+    },
+    {
+      "raw": "60 g de beurre",
+      "quantity": 60,
+      "unit": "g",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez 4 grandes feuilles d'aluminium et beurrez-les.",
+    "Epluchez tous les légumes, lavez-les et coupez-les en julienne. Faites revenir le tout 3 minutes dans le beurre.",
+    "Ajoutez l'estragon préalablement haché puis laissez cuire 2 minutes. Salez, poivrez.",
+    "Répartissez la préparation sur les feuilles d'aluminium, posez les darnes de saumon par dessus, salez, poivrez et parsemez d'échalotes hachées. Ajoutez dans chaque papillote un morceau de beurre, 2,5 cl de vin blanc sec et 2 feuilles d'estragon.",
+    "Fermez les papillotes hermétiquement. Faites cuire pendant 7 à 8 minutes dans un four chaud à 230°C (ther.8).",
+    "Ouvrez les papillotes dans l'assiette."
+  ],
+  "status": "published",
+  "slug": "darnes-de-saumon-en-papillotes",
+  "publishedAt": 1787415876277,
+  "imageStorageId": "kg22m43gqqcp2hk74m2d401z7n8cz149",
+  "beautifiedStorageId": "kg27cvz9bez8prst3k1snc8z3x8cydph"
+}

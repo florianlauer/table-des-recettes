@@ -1,0 +1,74 @@
+{
+  "id": "j577yhmtm1kkyqrd5p7g3fx8fd8czbhw",
+  "creationTime": 1787415246944.7844,
+  "title": "Cotriade bretonne",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "2,5 kilos de poissons (maquereau, merlan, lotte, merlu, grondin, congre, etc...)",
+      "quantity": 2.5,
+      "unit": "kilos",
+      "label": "poissons (maquereau, merlan, lotte, merlu, grondin, congre, etc...)"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 kilo de pommes de terre",
+      "quantity": 1,
+      "unit": "kilo",
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "100 g d'oignons",
+      "quantity": 100,
+      "unit": "g",
+      "label": "oignons"
+    },
+    {
+      "raw": "50 g d'échalottes",
+      "quantity": 50,
+      "unit": "g",
+      "label": "échalottes"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": "bouquet garni",
+      "label": null
+    },
+    {
+      "raw": "6 tranches de pain grillé",
+      "quantity": 6,
+      "unit": "tranches",
+      "label": "pain grillé"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper les poissons en tronçons.",
+    "Eplucher, laver les pommes de terre et les couper en grosses tranches.",
+    "Faire colorer les oignons et les échalotes dans le beurre.",
+    "Ajouter deux litres d'eau.",
+    "Saler, poivrer.",
+    "Ajouter aromates et pommes de terre.",
+    "Faire cuire une demi-heure en plongeant les poissons à mi-cuisson.",
+    "Disposer les tranches de pain dans les assiettes et verser le bouillon dessus.",
+    "Présenter à part le poisson et les pommes de terre."
+  ],
+  "status": "published",
+  "slug": "cotriade-bretonne",
+  "publishedAt": 1787415281267,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

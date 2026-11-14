@@ -1,0 +1,51 @@
+{
+  "id": "j57dr9td12nvz79za4ycq4tbbn8haxk0",
+  "creationTime": 1793443069989.0488,
+  "title": "Poitrine farcie",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1,2 kg de poitrine de porc avec sa couenne",
+      "quantity": 1.2,
+      "unit": "kg",
+      "label": "poitrine de porc avec sa couenne"
+    },
+    {
+      "raw": "3 pommes (reinettes), 200 g de pruneaux, 1 citron",
+      "quantity": 3,
+      "unit": null,
+      "label": "pommes (reinettes), 200 g de pruneaux, 1 citron"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile, 3 de miel liquide, 2 de calvados",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "d'huile, 3 de miel liquide, 2 de calvados"
+    },
+    {
+      "raw": "150 g de crème",
+      "quantity": 150,
+      "unit": "g",
+      "label": "crème"
+    },
+    {
+      "raw": "romarin, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "romarin, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Fendez la poitrine dans l'épaisseur, farcissez-la des pommes émincées et citronnées, mélangées aux pruneaux gonflés à l'eau tiède et dénoyautés, et à 1 brin de romarin effeuillé.",
+    "Cousez l'ouverture, incisez la couenne en croisillon, salez, poivrez, huilez, enfournez (th.7/200°C) 1 h, passez sur th.6, ajoutez 1 verre d'eau, cuisez 1 h, badigeonnez de miel, cuisez 30 min.",
+    "Déglacez les sucs avec le calvados et 1 verre d'eau, ajoutez la crème, faites bouillir 5 min.",
+    "Servez la sauce à part."
+  ],
+  "status": "published",
+  "slug": "poitrine-farcie",
+  "publishedAt": 1793443095315,
+  "imageStorageId": "kg2a52cpqraj0szdfbh13dqk798haqgq",
+  "beautifiedStorageId": "kg2eak8t48h532r9hc8q6ftctd8hbt13"
+}

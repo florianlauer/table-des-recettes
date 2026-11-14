@@ -1,0 +1,48 @@
+{
+  "id": "j57e994ce4z5w7zk6fa79wjqr98czdsv",
+  "creationTime": 1787419381225.3118,
+  "title": "Truite à la niçoise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 truites portions de 250 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "truites portions de 250 g"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile d'olive, 50 g de beurre",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive, 50 g de beurre"
+    },
+    {
+      "raw": "4 pommes de terre, 500 g de tomates, 1 poivron rouge",
+      "quantity": 4,
+      "unit": null,
+      "label": "pommes de terre, 500 g de tomates, 1 poivron rouge"
+    },
+    {
+      "raw": "1/4 l de vin blanc sec",
+      "quantity": 0.25,
+      "unit": "l",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "safran, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "safran, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire 10 min avec le vin blanc 1/2 l d'eau, 1 pincée de safran et de sel, les pommes de terre pelées et coupées en rondelles. Pelez et épépinez poivron et tomates. Coupez le poivron en lanières, la tomate en dés. Mettez les morceaux dans une casserole, faites-les raidir sur le feu jusqu'à ce que le jus soit évaporé. Ajoutez le beurre et réservez au chaud. Faites cuire les truites dans l'huile d'olive 5 min de chaque côté. Disposez-les sur les tomates concassées, entourez-les de rondelles de pommes de terre, zébrez-les de lanières de poivron."
+  ],
+  "status": "published",
+  "slug": "truite-a-la-nicoise",
+  "publishedAt": 1787419411998,
+  "imageStorageId": "kg28g27cp8y04pv13qmrxfyxt58czt5f",
+  "beautifiedStorageId": "kg2dnnrc0wnr06t9xxw2qw4p4x8czma9"
+}

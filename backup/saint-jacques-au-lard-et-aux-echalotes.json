@@ -1,0 +1,85 @@
+{
+  "id": "j57ark346hryx2xrtkze10kkw98cvdtq",
+  "creationTime": 1787247978807.0298,
+  "title": "Saint-Jacques au lard et aux échalotes",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2,5 kg de coquilles Saint-Jacques",
+      "quantity": 2.5,
+      "unit": "kg",
+      "label": "coquilles Saint-Jacques"
+    },
+    {
+      "raw": "9 échalotes roses",
+      "quantity": 9,
+      "unit": null,
+      "label": "échalotes roses"
+    },
+    {
+      "raw": "1,5 cl de monbazillac",
+      "quantity": 1.5,
+      "unit": "cl",
+      "label": "monbazillac"
+    },
+    {
+      "raw": "75 g de beurre + une noix",
+      "quantity": 75,
+      "unit": "g",
+      "label": "beurre + une noix"
+    },
+    {
+      "raw": "1,5 cl de fumet de poisson",
+      "quantity": 1.5,
+      "unit": "cl",
+      "label": "fumet de poisson"
+    },
+    {
+      "raw": "quelques bouquets de chou-fleur",
+      "quantity": null,
+      "unit": "quelques bouquets",
+      "label": "chou-fleur"
+    },
+    {
+      "raw": "3 pommes de terre",
+      "quantity": 3,
+      "unit": null,
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "8 tranches fines de lard fumé",
+      "quantity": 8,
+      "unit": "tranches fines",
+      "label": "lard fumé"
+    },
+    {
+      "raw": "4 fonds d'artichaut en boîte",
+      "quantity": 4,
+      "unit": null,
+      "label": "fonds d'artichaut en boîte"
+    },
+    {
+      "raw": "vinaigre de vin",
+      "quantity": null,
+      "unit": null,
+      "label": "vinaigre de vin"
+    },
+    {
+      "raw": "sucre",
+      "quantity": null,
+      "unit": null,
+      "label": "sucre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Ouvrir les Saint-Jacques, séparer la noix du couvercle, enlever toutes les parties noirées et les barbes. Laver les noix et les coquilles à l'eau claire, laver les barbes. Peler les échalotes, en hacher une finement, la réserver, faire cuire les autres entières 10 mn couvertes d'eau aux trois quarts avec une noix de beurre, 2 cuil. à café de sucre, 1 cuil. à café de vinaigre de vin. Lorsque l'eau est évaporée, écraser la moitié des échalotes à la fourchette, saler et poivrer la purée obtenue. Faire cuire à l'eau bouillante salée les pommes de terre et le chou-fleur, égoutter et réduire en purée, saler et poivrer. Réserver au chaud.",
+    "Mettre les barbes de Saint-Jacques dans le fumet avec l'échalote hachée et le monbazillac. Faire cuire à feu doux jusqu'à évaporation du liquide et obtention d'un aspect liquoreux, passer au chinois, lier la sauce avec le beurre ramolli. Couper les fonds d'artichaut, les dresser sur les assiettes, déposer la compotée d'échalotes, les échalotes entières puis la purée de pommes de terre et chou-fleur. Couper le lard en deux par le milieu, en entourer les noix de Saint-Jacques. Sur un gril, faire griller les saint-Jacques au lard 2 mn, répartir le tout dans les assiettes. Napper de la sauce au monbazillac. Servir bien chaud."
+  ],
+  "status": "published",
+  "slug": "saint-jacques-au-lard-et-aux-echalotes",
+  "publishedAt": 1787248183676,
+  "imageStorageId": "kg239fn2nszazrhnwp0t6h26w98cve3e",
+  "beautifiedStorageId": "kg25sr1cc4mp5fn06kn4s2v9ys8cvgrq"
+}

@@ -1,0 +1,73 @@
+{
+  "id": "j5768t1v5wng86bgv0kqjm95r18hbr9p",
+  "creationTime": 1793443069989.0493,
+  "title": "Le rôti de faux-filet de bœuf vigneronne",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "25 cl de vin rouge",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "vin rouge"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "6 tomates pelées",
+      "quantity": 6,
+      "unit": null,
+      "label": "tomates pelées"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "le rôti",
+      "quantity": null,
+      "unit": null,
+      "label": "rôti de faux-filet de bœuf"
+    },
+    {
+      "raw": "eau",
+      "quantity": null,
+      "unit": null,
+      "label": "eau"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une cocotte, placez huile d'olive, 25 cl de vin rouge, 2 gousses d'ail et 6 tomates pelées, 1 bouquet garni, sel, poivre et le rôti (cuisson 1/4 heure/livre).",
+    "Surveillez la sauce en cours de cuisson, trop courte : ajoutez de l'eau, trop longue : retirez la viande et laissez un peu s'évaporer avant de la remettre."
+  ],
+  "status": "published",
+  "slug": "le-roti-de-faux-filet-de-boeuf-vigneronne",
+  "publishedAt": 1793443109000,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

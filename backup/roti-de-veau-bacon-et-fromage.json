@@ -1,0 +1,72 @@
+{
+  "id": "j572pw88s43x2efrtbzdnnaqr58hamnj",
+  "creationTime": 1793442851385.5107,
+  "title": "Rôti de veau bacon et fromage",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "le rôti",
+      "quantity": null,
+      "unit": null,
+      "label": "le rôti de veau"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "une carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "une carotte"
+    },
+    {
+      "raw": "un oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "un oignon"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Enlever le rôti du sachet.",
+    "Préchauffer le four à 180°C, thermostat 6, pendant 10 mn.",
+    "Mettre à cuire 1 h avec huile, beurre, poivre, thym et laurier.",
+    "Ne pas saler.",
+    "À mi-cuisson, ajouter une carotte et un oignon coupés en morceaux.",
+    "Retourner et arroser le rôti de temps en temps.",
+    "Servir bien chaud avec le jus de cuisson passé."
+  ],
+  "status": "published",
+  "slug": "roti-de-veau-bacon-et-fromage",
+  "publishedAt": 1793442904211,
+  "imageStorageId": "kg2cws4zm5radnxq8rk3hxpgnd8hacay",
+  "beautifiedStorageId": "kg291bcdtjvbzydwchyxqhkpb98ha80m"
+}

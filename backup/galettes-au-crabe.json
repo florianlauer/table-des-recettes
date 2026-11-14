@@ -1,0 +1,86 @@
+{
+  "id": "j5779qkxnsd5rxzzg3nrwbctzn8cmqw2",
+  "creationTime": 1786983289159.1843,
+  "title": "Galettes au crabe",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "80 g de fécule de pomme de terre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "fécule de pomme de terre"
+    },
+    {
+      "raw": "10 bâtonnets de surimi goût crabe",
+      "quantity": 10,
+      "unit": "bâtonnets",
+      "label": "surimi goût crabe"
+    },
+    {
+      "raw": "80 g de farine",
+      "quantity": 80,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "10 cl de bière",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "bière"
+    },
+    {
+      "raw": "1 œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    },
+    {
+      "raw": "1 blanc d'œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "blanc d'œuf"
+    },
+    {
+      "raw": "3 cuil. à soupe de ciboulette hachée",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "ciboulette hachée"
+    },
+    {
+      "raw": "1 cuil. à café de câpres",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "câpres"
+    },
+    {
+      "raw": "1 cuil. à soupe d'huile",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer la pâte : mélanger la fécule de pomme de terre avec la farine. Creuser un puits au centre et y casser l'œuf entier. Ajouter la bière et une pincée de sel. Bien mélanger puis ajouter une cuillerée d'huile. Réserver.",
+    "Effilocher le surimi puis l'ajouter à la pâte avec les câpres et la ciboulette hachée. Incorporer le blanc d'œuf battu en neige avec une pincée de sel. Réserver.",
+    "Faire fondre le beurre dans une poêle antiadhésive. Cuire les galettes l'une après l'autre 3 mn environ de chaque côté. Servir avec de la salade."
+  ],
+  "status": "published",
+  "slug": "galettes-au-crabe",
+  "publishedAt": 1786983320089,
+  "imageStorageId": "kg2cn8h4033brkamp1q6ef4e758cnx89",
+  "beautifiedStorageId": "kg2fp3etaz3cytv26ycxe69mcn8cnbna"
+}

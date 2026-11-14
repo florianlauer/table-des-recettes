@@ -1,0 +1,96 @@
+{
+  "id": "j5707pk26azah1sm9pt2c9f8j98cynhc",
+  "creationTime": 1787416321259.9111,
+  "title": "Gratin de poisson",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 petits filets de poisson (cabillaud, limande ou merlan...)",
+      "quantity": 6,
+      "unit": "petits filets",
+      "label": "poisson (cabillaud, limande ou merlan...)"
+    },
+    {
+      "raw": "6 quenelles de brochet",
+      "quantity": 6,
+      "unit": null,
+      "label": "quenelles de brochet"
+    },
+    {
+      "raw": "6 coquilles Saint-Jacques",
+      "quantity": 6,
+      "unit": null,
+      "label": "coquilles Saint-Jacques"
+    },
+    {
+      "raw": "24 moules décortiquées",
+      "quantity": 24,
+      "unit": null,
+      "label": "moules décortiquées"
+    },
+    {
+      "raw": "1 boîte de champignons de Paris",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "champignons de Paris"
+    },
+    {
+      "raw": "1 boîte de bisque de homard",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "bisque de homard"
+    },
+    {
+      "raw": "150 g de gruyère râpé",
+      "quantity": 150,
+      "unit": "g",
+      "label": "gruyère râpé"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "3 cuillerées à soupe de farine",
+      "quantity": 3,
+      "unit": "cuillerées à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "poivre de Cayenne",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre de Cayenne"
+    },
+    {
+      "raw": "1 sachet de court-bouillon pour poisson",
+      "quantity": 1,
+      "unit": "sachet",
+      "label": "court-bouillon pour poisson"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites pocher au court-bouillon les filets de poisson, les quenelles et les coquilles Saint-Jacques.",
+    "Faites fondre le beurre dans une casserole, ajoutez la farine hors du feu, mélangez bien, puis mouillez avec la bisque de homard délayée avec la quantité d'eau chaude indiquée sur la boîte + 1 verre de vin blanc.",
+    "Ajoutez sel, poivre de Cayenne, et faites épaissir à feu moyen en remuant sans arrêt.",
+    "Dans un plat à gratin, disposez les filets de poisson et les quenelles coupés en morceaux, les coquilles Saint-Jacques, les moules, les crevettes, les champignons en les répartissant uniformément.",
+    "Recouvrez avec la sauce et saupoudrez de gruyère râpé.",
+    "Faites gratiner au four 20 mn environ.",
+    "Servez bien chaud... et dégustez!"
+  ],
+  "status": "published",
+  "slug": "gratin-de-poisson",
+  "publishedAt": 1787416338937,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

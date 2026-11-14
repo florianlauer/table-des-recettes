@@ -1,0 +1,60 @@
+{
+  "id": "j5743p4hfwqb8hvg1bmb0mdjmn8da44w",
+  "creationTime": 1787907964746.5645,
+  "title": "Effeuillée de morue au beurre blanc",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g de morue séchée",
+      "quantity": 600,
+      "unit": "g",
+      "label": "morue séchée"
+    },
+    {
+      "raw": "4 artichauts, 4 tomates",
+      "quantity": 4,
+      "unit": null,
+      "label": "artichauts, 4 tomates"
+    },
+    {
+      "raw": "2 échalotes",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "10 cl de vin blanc",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "2 cuil à soupe de vinaigre",
+      "quantity": 2,
+      "unit": "cuil à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "5 cl de crème, 150 g de beurre",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "crème, 150 g de beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Placez la morue dans un égouttoir puis dans une bassine d'eau froide, laissez dessaler pendant 24 h en changeant l'eau régulièrement. Faites cuire les artichauts à l'eau bouillante salée 45 min. Otez les feuilles (que vous mangerez en vinaigrette) et le foin, émincez les cœurs. Mettez les tomates pelées et coupées en dés dans une poêle anti-adhésive sur feu vif pour faire s'évaporer l'eau de végétation. Faites cuire la morue à la vapeur 10 min. Pendant ce temps, faites réduire de 3/4 le vin blanc avec le vinaigre et l'échalote hachée. Ajoutez la crème, donnez un bouillon puis incorporez en fouettant le beurre en morceaux, assaisonnez. Nappez le plat de sauce, dressez la morue effeuillée, les tomates concassées et les artichauts."
+  ],
+  "status": "published",
+  "slug": "effeuillee-de-morue-au-beurre-blanc",
+  "publishedAt": 1787908091286,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

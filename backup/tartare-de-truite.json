@@ -1,0 +1,48 @@
+{
+  "id": "j573wfbw6pwdtqpwhdsx8q6tcn8cysgt",
+  "creationTime": 1787419381225.311,
+  "title": "Tartare de truite",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "500 g de filets de truite",
+      "quantity": 500,
+      "unit": "g",
+      "label": "filets de truite"
+    },
+    {
+      "raw": "2 échalotes, 1 citron",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes, 1 citron"
+    },
+    {
+      "raw": "2 c. à café de ciboulette",
+      "quantity": 2,
+      "unit": "c. à café",
+      "label": "ciboulette"
+    },
+    {
+      "raw": "2 c. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel, poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre du moulin"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Retirez la peau et les arêtes des filets. Hachez la chair au couteau. Ajoutez les échalotes hachées, la ciboulette, le jus de citron et l'huile d'olive. Mélangez bien, salez et poivrez. Moulez en forme de quenelles à l'aide de 2 cuillères à soupe, dressez sur un lit de salade et servez avec du pain grillé."
+  ],
+  "status": "published",
+  "slug": "tartare-de-truite",
+  "publishedAt": 1787419394330,
+  "imageStorageId": "kg2ake27zwa9ptqjz82k8q86418cy9wb",
+  "beautifiedStorageId": "kg2fmhwsrykh2sq9d2xchtxhv98czhwr"
+}

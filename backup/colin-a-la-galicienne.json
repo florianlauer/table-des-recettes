@@ -1,0 +1,47 @@
+{
+  "id": "j573e52avpsvdf45hmx1wp7w5s8d91pm",
+  "creationTime": 1787830816550.3052,
+  "title": "Colin à la galicienne",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de colin, 2 citrons",
+      "quantity": 800,
+      "unit": "g",
+      "label": "de colin, 2 citrons"
+    },
+    {
+      "raw": "2 oignons, 3 tomates, 2 grosses pommes de terre",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons, 3 tomates, 2 grosses pommes de terre"
+    },
+    {
+      "raw": "5 cuil. à soupe d'huile d'olive",
+      "quantity": 5,
+      "unit": "cuil. à soupe",
+      "label": "d'huile d'olive"
+    },
+    {
+      "raw": "3 cuil. à soupe de chapelure, 1 de persil, sel, poivre",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "de chapelure, 1 de persil, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites macérer le colin dans le jus de citron 45 min.",
+    "Faites fondre les oignons émincés dans 2 cuil. d'huile.",
+    "Ajoutez les tomates pelées et épépinées, assaisonnez et laissez cuire pendant 20 min.",
+    "Etalez les pommes de terre cuites à l'eau 10 min, pelées et coupées en rondelles, dans un plat allant au four.",
+    "Assaisonnez, arrosez d'un filet d'huile et de la moitié de la sauce, posez le colin, salez et poivrez, nappez du reste de la sauce.",
+    "Versez 10 cl d'eau autour, saupoudrez de chapelure et de persil, arrosez d'huile et enfournez (th. 7/210° C) pendant environ 30 min."
+  ],
+  "status": "published",
+  "slug": "colin-a-la-galicienne",
+  "publishedAt": 1787830858132,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

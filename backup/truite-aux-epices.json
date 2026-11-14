@@ -1,0 +1,54 @@
+{
+  "id": "j575cx6jq2852f6gqm5x2740dh8czr4x",
+  "creationTime": 1787419381225.3113,
+  "title": "Truite aux épices",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 truites portions de 250 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "truites portions de 250 g"
+    },
+    {
+      "raw": "4 c. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 gousse d'ail, 2 échalotes, 2 citrons",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail, 2 échalotes, 2 citrons"
+    },
+    {
+      "raw": "1/2 l de vin blanc sec",
+      "quantity": 0.5,
+      "unit": "l",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 botillon de coriandre",
+      "quantity": 1,
+      "unit": "botillon",
+      "label": "coriandre"
+    },
+    {
+      "raw": "1 c. à café de graines de cumin, safran, cayenne, sel, poivre",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "graines de cumin, safran, cayenne, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites parer les truites par le poissonnier. Lavez, salez et poivrez-les. Dans un plat antiadhésif contenant l'huile chaude, faites rapidement dorer les poissons de chaque côté, réservez au chaud. À la place, faites revenir l'ail, les échalotes et la peau d'un citron émincés. Ajoutez le vin, le jus d'un citron, le cumin, 1 pincée de safran et de cayenne, laissez cuire 15 min et assaisonnez. Déposez les truites sur ce lit d'aromates et d'épices, enfournez 10 min (th. 8/240 °C) en arrosant de temps en temps. Parsemez avec les feuilles de coriandre et servez."
+  ],
+  "status": "published",
+  "slug": "truite-aux-epices",
+  "publishedAt": 1787419399643,
+  "imageStorageId": "kg2ef90dcgfdmcgky04cq1h2q18cy6xe",
+  "beautifiedStorageId": "kg29141163kh9rnfk98dxw27x58cz95z"
+}

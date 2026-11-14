@@ -1,0 +1,67 @@
+{
+  "id": "j575nj5vhk61437nkbf1v18kzs8cywaq",
+  "creationTime": 1787416321259.912,
+  "title": "Poissons marinés",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg d'anchois",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "anchois"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1/2 verre de vinaigre de vin blanc",
+      "quantity": 0.5,
+      "unit": "verre",
+      "label": "vinaigre de vin blanc"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "3 c. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "persil plat",
+      "quantity": null,
+      "unit": null,
+      "label": "persil plat"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyer les anchois, ôter la tête, l'arête centrale, les ouvrir en deux et bien les laver sous le robinet d'eau froide; les essuyer avec du papier absorbant et les placer dans un plat, saler et arroser du mélange vin blanc-vinaigre-jus de citron; laisser mariner 4 à 5 h.",
+    "Jeter la marinade, essuyer à nouveau les anchois, les arroser d'huile d'olive, puis: poivre et persil ciselé."
+  ],
+  "status": "published",
+  "slug": "poissons-marines",
+  "publishedAt": 1787416362201,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

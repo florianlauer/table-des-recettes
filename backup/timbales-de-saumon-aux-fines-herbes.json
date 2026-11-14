@@ -1,0 +1,56 @@
+{
+  "id": "j575cdy2zg6e4j4s6nrwnx4ymd8czff7",
+  "creationTime": 1787414767746.3848,
+  "title": "Timbales de saumon aux fines herbes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 boîtes de filet de saumon (environ 150 g)",
+      "quantity": 2,
+      "unit": "boîtes",
+      "label": "de filet de saumon (environ 150 g)"
+    },
+    {
+      "raw": "1 fromage frais ail et fines herbes (type Boursin)",
+      "quantity": 1,
+      "unit": null,
+      "label": "fromage frais ail et fines herbes (type Boursin)"
+    },
+    {
+      "raw": "10 cl de crème fraîche",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "5 brins de ciboulette",
+      "quantity": 5,
+      "unit": "brins",
+      "label": "de ciboulette"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    },
+    {
+      "raw": "beurre pour les ramequins",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre pour les ramequins"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez votre four à th. 6 (180 °C). Égouttez bien le saumon.",
+    "Beurrez quatre ramequins. Mélangez le fromage frais avec le saumon et la crème fraîche à la fourchette ou passez-les au mixeur quelques instants. Salez et poivrez. Ciselez et ajoutez la ciboulette. Faites chauffer un récipient d'eau",
+    "Répartissez la préparation dans les ramequins et posez-les dans un plat à four. Versez de l'eau bouillante dans le fond, au tiers de la hauteur des ramequins. Enfournez et faites cuire 20 minutes. Servez avec une salade."
+  ],
+  "status": "published",
+  "slug": "timbales-de-saumon-aux-fines-herbes",
+  "publishedAt": 1787414816102,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

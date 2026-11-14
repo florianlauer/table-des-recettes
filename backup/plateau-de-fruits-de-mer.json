@@ -1,0 +1,82 @@
+{
+  "id": "j57cgrwzxs4bqa8dh5xvf94b898ch53a",
+  "creationTime": 1786815656232.1084,
+  "title": "Plateau de fruits de mer",
+  "type": "plat",
+  "servings": 3,
+  "ingredients": [
+    {
+      "raw": "1 tourteau",
+      "quantity": 1,
+      "unit": null,
+      "label": "tourteau"
+    },
+    {
+      "raw": "100 g de crevettes grises",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de crevettes grises"
+    },
+    {
+      "raw": "1 homard",
+      "quantity": 1,
+      "unit": null,
+      "label": "homard"
+    },
+    {
+      "raw": "6 amandes",
+      "quantity": 6,
+      "unit": null,
+      "label": "amandes"
+    },
+    {
+      "raw": "8 langoustines cuites",
+      "quantity": 8,
+      "unit": null,
+      "label": "langoustines cuites"
+    },
+    {
+      "raw": "200 g de bulots cuits",
+      "quantity": 200,
+      "unit": "g",
+      "label": "de bulots cuits"
+    },
+    {
+      "raw": "12 huîtres Marennes-Oléron",
+      "quantity": 12,
+      "unit": null,
+      "label": "huîtres Marennes-Oléron"
+    },
+    {
+      "raw": "100 g de vignots cuits",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de vignots cuits"
+    },
+    {
+      "raw": "200 g de crevettes roses cuites",
+      "quantity": 200,
+      "unit": "g",
+      "label": "de crevettes roses cuites"
+    },
+    {
+      "raw": "200 g de crevettes roses décongelées",
+      "quantity": 200,
+      "unit": "g",
+      "label": "de crevettes roses décongelées"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La plupart des bivalves se mangent crus : les coques, couteaux, praires, vénus, huîtres, palourdes. Les bigorneaux et les buccins sont bouillis avec leurs coquilles : 10 minutes de cuisson au court-bouillon pour les buccins et 5 minutes pour les bigorneaux. Les crustacés se mangent cuits au court-bouillon : langouste, homard, araignées, gambas, tourteaux, langoustines, crevettes.",
+    "Sur un grand plateau, disposer les algues que le poissonnier peut vous donner. Poser de la glace pilée puis répartir harmonieusement tous les coquillages et crustacés, crus ou cuits, selon votre choix.",
+    "Décorer le plateau de demi-citrons et de persil.",
+    "A part, servir des toasts chauds, des tranches fines de pain de seigle, du beurre frais, une saucière de vinaigre additionné de 3 échalotes hachées.",
+    "Servir à part un rince-doigts par convive : dans un petit bol plein d'eau tiède, ajouter une rondelle de citron."
+  ],
+  "status": "published",
+  "slug": "plateau-de-fruits-de-mer",
+  "publishedAt": 1786815790145,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

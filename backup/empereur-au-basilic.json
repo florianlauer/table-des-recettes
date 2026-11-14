@@ -1,0 +1,81 @@
+{
+  "id": "j5709h92hknzmyk00f7j503jfx8cv5y8",
+  "creationTime": 1787248575320.7131,
+  "title": "Empereur au basilic",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 pavés épais de filet d'empereur (ou saumon)",
+      "quantity": 6,
+      "unit": null,
+      "label": "pavés épais de filet d'empereur (ou saumon)"
+    },
+    {
+      "raw": "6 oignons roses émincés en fines rondelles",
+      "quantity": 6,
+      "unit": null,
+      "label": "oignons roses émincés en fines rondelles"
+    },
+    {
+      "raw": "1 bouquet de basilic",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "basilic"
+    },
+    {
+      "raw": "2 brins de thym",
+      "quantity": 2,
+      "unit": "brins",
+      "label": "thym"
+    },
+    {
+      "raw": "2 pincées de piment d'Espelette en poudre",
+      "quantity": 2,
+      "unit": "pincées",
+      "label": "piment d'Espelette en poudre"
+    },
+    {
+      "raw": "1 c. à café de baies roses",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "baies roses"
+    },
+    {
+      "raw": "6 c. à soupe de crème fraîche liquide",
+      "quantity": 6,
+      "unit": "c. à soupe",
+      "label": "crème fraîche liquide"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel et poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre du moulin"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une sauteuse, faites fondre les oignons avec 30 g de beurre et 3 c. à café d'huile. Salez, poivrez et ajoutez le piment, le thym effeuillé et les baies roses. Mélangez. Laissez cuire 10 mn, sur feu très doux, en mélangeant régulièrement. Retirez de la sauteuse et réservez au chaud dans le four, chauffé à th. 3 (90 °C).",
+    "Huilez les pavés de poisson. Faites-les griller 3 mn d'un côté et 2 mn de l'autre (plus ou moins selon l'épaisseur).",
+    "Faites fondre 50 g de beurre dans la sauteuse ayant servi pour la cuisson des oignons, puis ajoutez le basilic finement ciselé ainsi que la crème fraîche. Salez et poivrez. Mélangez jusqu'à ce que la sauce épaississe.",
+    "Répartissez les oignons dans les assiettes et posez les filets de poisson dessus. Nappez de crème au basilic et servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "empereur-au-basilic",
+  "publishedAt": 1787248592353,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

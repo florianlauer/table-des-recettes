@@ -1,0 +1,71 @@
+{
+  "id": "j57da4ya43b62hsppx791ycf1x8dbdjd",
+  "creationTime": 1787907964746.5637,
+  "title": "Filets de grenadier au citron et aux brocolis",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de filets de grenadier Agrigel",
+      "quantity": 400,
+      "unit": "g",
+      "label": "filets de grenadier Agrigel"
+    },
+    {
+      "raw": "1 sachet de brocolis Agrigel (1 kg)",
+      "quantity": 1,
+      "unit": "sachet",
+      "label": "brocolis Agrigel (1 kg)"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "2 jaunes d'œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "jaunes d'œufs"
+    },
+    {
+      "raw": "20 cl de vin blanc sec",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "10 cl de crème fraîche",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites décongeler vos filets de grenadier 2 à 3 h dans un mélange de 9/10 d'eau et 1/10 de lait.",
+    "Faites cuire les brocolis 10 mn à la vapeur, sans décongélation préalable.",
+    "Egouttez et séchez les filets dans du papier absorbant. Faites les revenir 4 mn de chaque côté dans le beurre chaud. Salez, poivrez. Réservez.",
+    "Versez le vin blanc dans la poêle pour déglacer. Incorporez les jaunes d'œufs mélangés au jus de citron sur feu doux. Fouettez cette préparation sans la faire bouillir 8 à 10 mn.",
+    "Liez le tout avec la crème fraîche hors du feu.",
+    "Présentez vos filets sur un lit de brocolis, le tout nappé de la sauce citron."
+  ],
+  "status": "published",
+  "slug": "filets-de-grenadier-au-citron-et-aux-brocolis",
+  "publishedAt": 1787907976087,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

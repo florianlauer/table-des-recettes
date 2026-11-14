@@ -1,0 +1,57 @@
+{
+  "id": "j577d9s7vev790qf1313hptcnn8db54t",
+  "creationTime": 1787907964746.564,
+  "title": "Truites de mer en papillote",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de truite saumonée de 250 g chacun",
+      "quantity": 4,
+      "unit": "filets",
+      "label": "truite saumonée de 250 g chacun"
+    },
+    {
+      "raw": "80 g de beurre ramolli",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre ramolli"
+    },
+    {
+      "raw": "250 g de lardons fumés",
+      "quantity": 250,
+      "unit": "g",
+      "label": "lardons fumés"
+    },
+    {
+      "raw": "4 poireaux",
+      "quantity": 4,
+      "unit": null,
+      "label": "poireaux"
+    },
+    {
+      "raw": "1 bouquet de ciboulette",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "ciboulette"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four à 230° C (th. 7 1/2-8). Ebarbez les poireaux et coupez-les en rondelles après avoir enlevé les 3/4 des tiges vertes. Lavez-les et égouttez-les.",
+    "Portez à ébullition 2 l d'eau. Faites-y blanchir les lardons pendant 10 min., puis ajoutez les poireaux. Egouttez le tout 5 min après. Faites fondre la moitié du beurre dans une petite casserole. Réservez.",
+    "Découpez 4 rectangles de papier sulfurisé de 25 cm de large sur 30 de long. Déposez au milieu de chacun d'eux une couche de poireaux et de lardons. Arrosez-les de beurre fondu. Ajoutez les filets de truite de truite partagés en deux. Salez-les et poivrez-les. Complétez avec les poireaux et les lardons restants. Parsemez le tout du beurre restant coupé en morceaux.",
+    "Fermez, puis rangez les papillotes aux extrémités. Posez-les sur un plat et enfournez pour 15 min. A la fin de la cuisson, déposez les papillotes dans des assiettes. Ouvrez-les et parsemez-les de ciboulette ciselée. Servez avec du riz sauvage."
+  ],
+  "status": "published",
+  "slug": "truites-de-mer-en-papillote",
+  "publishedAt": 1787908037480,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

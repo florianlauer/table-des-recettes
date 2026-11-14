@@ -1,0 +1,75 @@
+{
+  "id": "j574ytqg0q4ae1prjajjzp4w8x8ct62z",
+  "creationTime": 1787248686630.367,
+  "title": "Maquereaux au bacon",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 maquereaux de 300 g",
+      "quantity": 6,
+      "unit": null,
+      "label": "maquereaux de 300 g"
+    },
+    {
+      "raw": "18 tranches fines de poitrine fumée",
+      "quantity": 18,
+      "unit": "tranches",
+      "label": "poitrine fumée"
+    },
+    {
+      "raw": "1 bouquet de persil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "1 cuil. à café de graines de cumin",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "graines de cumin"
+    },
+    {
+      "raw": "20 cl de crème épaisse",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème épaisse"
+    },
+    {
+      "raw": "2 cuil. à soupe de moutarde de Meaux",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "moutarde de Meaux"
+    },
+    {
+      "raw": "chapelure",
+      "quantity": null,
+      "unit": null,
+      "label": "chapelure"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Essuyez les poissons dans du papier absorbant.",
+    "Salez et poivrez l'intérieur, ajoutez persil haché et cumin.",
+    "Enroulez-les dans les tranches de poitrine fumée et disposez dans un plat huilé.",
+    "Nappez de crème battue avec moutarde, sel et poivre, poudrez de chapelure et enfournez (th.6/180°C) 30 min."
+  ],
+  "status": "published",
+  "slug": "maquereaux-au-bacon",
+  "publishedAt": 1787248735199,
+  "imageStorageId": "kg20k5dvwp6z7d92cwb9yqvcn98cvrsn",
+  "beautifiedStorageId": "kg2abqezpbpe5xe3esz7nqp79d8cvd5c"
+}

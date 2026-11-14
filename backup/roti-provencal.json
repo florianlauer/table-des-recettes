@@ -1,0 +1,65 @@
+{
+  "id": "j57f459bnxz1ffbfxpvxztdx818gphnq",
+  "creationTime": 1792583551471.661,
+  "title": "Rôti provençal",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "800 g de rôti de bœuf",
+      "quantity": 800,
+      "unit": "g",
+      "label": "rôti de bœuf"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "800 g de courgettes",
+      "quantity": 800,
+      "unit": "g",
+      "label": "courgettes"
+    },
+    {
+      "raw": "4 tomates",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Salez, poivrez le rôti et faites-le dorer sur chaque face. Puis mettez-le de côté en attendant le début du repas.",
+    "Coupez les courgettes en dés, faites-les sauter dans un peu d'huile en remuant souvent.",
+    "Coupez les tomates en deux, épépinez-les, laissez-les égoutter. Disposez-les ensuite dans un plat allant au four, saupoudrez chaque tomate de persil haché avec une pointe d'ail. Faites cuire à four très chaud. Dès qu'elles commencent à dorer cessez la cuisson.",
+    "Gardez le four chaud pour finir de cuire le rôti, comptez 10 à 12 mn.",
+    "Maniez le restant du beurre avec du persil haché, salez, poivrez.",
+    "Servez le rôti badigeonné avec le beurre, entouré des légumes."
+  ],
+  "status": "published",
+  "slug": "roti-provencal",
+  "publishedAt": 1792583576446,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

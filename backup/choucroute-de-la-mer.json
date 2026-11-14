@@ -1,0 +1,150 @@
+{
+  "id": "j57ewyt1gbyvrhdd3kv6s7xs8n8dbxns",
+  "creationTime": 1787908639281.5212,
+  "title": "Choucroute de la mer",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "2 kg de choucroute crue",
+      "quantity": 2,
+      "unit": "kg",
+      "label": "choucroute crue"
+    },
+    {
+      "raw": "400 g de sole",
+      "quantity": 400,
+      "unit": "g",
+      "label": "sole"
+    },
+    {
+      "raw": "400 g de lotte",
+      "quantity": 400,
+      "unit": "g",
+      "label": "lotte"
+    },
+    {
+      "raw": "400 g de cabillaud",
+      "quantity": 400,
+      "unit": "g",
+      "label": "cabillaud"
+    },
+    {
+      "raw": "400 g de Saumon",
+      "quantity": 400,
+      "unit": "g",
+      "label": "Saumon"
+    },
+    {
+      "raw": "400 g de Haddock fumé",
+      "quantity": 400,
+      "unit": "g",
+      "label": "Haddock fumé"
+    },
+    {
+      "raw": "1 cuillère à soupe de graisse d'oie",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "graisse d'oie"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 litre de vin blanc d'Alsace (Riesling ou Pinot Blanc)",
+      "quantity": 1,
+      "unit": "litre",
+      "label": "vin blanc d'Alsace (Riesling ou Pinot Blanc)"
+    },
+    {
+      "raw": "1/2 verre d'eau de vie (Mirabelle ou Quetsche)",
+      "quantity": 0.5,
+      "unit": "verre",
+      "label": "eau de vie (Mirabelle ou Quetsche)"
+    },
+    {
+      "raw": "1 litre de crème fraîche liquide",
+      "quantity": 1,
+      "unit": "litre",
+      "label": "crème fraîche liquide"
+    },
+    {
+      "raw": "200 g de beurre",
+      "quantity": 200,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1/2 cuillère à café de cumin carvi",
+      "quantity": 0.5,
+      "unit": "cuillère à café",
+      "label": "cumin carvi"
+    },
+    {
+      "raw": "1 cuillère à café de baies de genièvre",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "baies de genièvre"
+    },
+    {
+      "raw": "1 cuillère à café de coriandre",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "coriandre"
+    },
+    {
+      "raw": "1/2 cuillère à café d'herbes de Provence",
+      "quantity": 0.5,
+      "unit": "cuillère à café",
+      "label": "herbes de Provence"
+    },
+    {
+      "raw": "5/6 clous de girofle",
+      "quantity": 5,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "2 feuilles de laurier",
+      "quantity": 2,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "1/2 cuillère à café de poivre en grains",
+      "quantity": 0.5,
+      "unit": "cuillère à café",
+      "label": "poivre en grains"
+    },
+    {
+      "raw": "3 gousses d'ail finement ciselées",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail finement ciselées"
+    },
+    {
+      "raw": "un peu de sel",
+      "quantity": null,
+      "unit": null,
+      "label": "un peu de sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire revenir les oignons dans la graisse d'oie. Y ajouter la choucroute, les épices, le vin et l'eau de vie. Laisser mijoter à feu doux pendant 2h30.",
+    "Couper en escalopes les morceaux de poisson (pour obtenir des morceaux de 50 g environ). Préparer un fumet de poisson relevé à l'échalotte. Y pocher les morceaux de poisson sans faire bouillir, pendant environ 10 minutes. Retirer le poisson et le garder au chaud. Réduire le fumet pour qu'il n'en reste que 60 cl.",
+    "Rajouter la crème, faire cuire à gros bouillon puis moins fort jusqu'à obtenir 1 litre de sauce.",
+    "Au moment de servir, faire bouillir la sauce et rajouter 200 g de beurre coupé en morceaux, fouetter jusqu'au premier bouillon, rectifier si nécessaire l'assaisonnement. Mettre de côté.",
+    "Bien égoutter la choucroute cuite. La disposer sur un plat en l'imbibant d'un peu de sauce.",
+    "Disposer les morceaux de poissons tenus au chaud sur la choucroute et les napper de la sauce restante.",
+    "Disposer sur le dessus une langoustine ou une écrevisse préalablement pochée dans le fumet."
+  ],
+  "status": "published",
+  "slug": "choucroute-de-la-mer",
+  "publishedAt": 1787908647583,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,52 @@
+{
+  "id": "j57cd76t916d17ya5nrc2yp22s8j635q",
+  "creationTime": 1794658778892.4705,
+  "title": "Porc à l'orange",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kg de filet de porc",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "filet de porc"
+    },
+    {
+      "raw": "6 oranges",
+      "quantity": 6,
+      "unit": null,
+      "label": "oranges"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "20 g de beurre, 1 cuil. à soupe de sucre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre, 1 cuil. à soupe de sucre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Salez, poivrez et huilez le rôti.",
+    "Arrosez avec le jus et les zestes émincés de 4 oranges, couvrez et enfournez (th. 7/210° C) pendant 1 h 15.",
+    "Faites poêler 2 oranges coupées en rondelles dans le beurre 2 min.",
+    "Saupoudrez de sucre, laissez caraméliser 3 min.",
+    "Tranchez le rôti, nappez-le de sa sauce filtrée et entourez d'oranges."
+  ],
+  "status": "published",
+  "slug": "porc-a-l-orange",
+  "publishedAt": 1794658906639,
+  "imageStorageId": "kg205w5bzdj5pp2t1wmqqs8qfs8j6jj5",
+  "beautifiedStorageId": "kg2fxemtff3z6avb0evshjvwkd8j6s89"
+}

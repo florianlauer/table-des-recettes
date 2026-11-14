@@ -1,0 +1,69 @@
+{
+  "id": "j579y4mfsgpmtks2brw4x34d958ctee3",
+  "creationTime": 1787248686630.3667,
+  "title": "Savarin de poisson",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "800 g de filets de merlan",
+      "quantity": 800,
+      "unit": "g",
+      "label": "filets de merlan"
+    },
+    {
+      "raw": "4 œufs",
+      "quantity": 4,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "500 g de crème épaisse",
+      "quantity": 500,
+      "unit": "g",
+      "label": "crème épaisse"
+    },
+    {
+      "raw": "3 cuil. à soupe de farine",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "1 petite boîte de pointes d'asperges",
+      "quantity": 1,
+      "unit": "petite boîte",
+      "label": "pointes d'asperges"
+    },
+    {
+      "raw": "2 cuil. à soupe de cerfeuil",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "cerfeuil"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mixez les morceaux de poisson, lavés et épongés, avec les oeufs, la crème, la farine, sel et poivre.",
+    "Faites tourner jusqu'à ce que le mélange soit lisse.",
+    "Ajoutez les asperges soigneusement égouttées et coupées en morceaux, le cerfeuil haché et versez la préparation dans un moule en couronne beurré.",
+    "Enfournez pendant 1 h au bain-marie, au four (th.6/180 °C)."
+  ],
+  "status": "published",
+  "slug": "savarin-de-poisson",
+  "publishedAt": 1787248729376,
+  "imageStorageId": "kg2fdt4dhhan0jwqf4q53935dd8cv9rn",
+  "beautifiedStorageId": "kg28pyxmhrey50kpc5d81cqcxh8cvgam"
+}

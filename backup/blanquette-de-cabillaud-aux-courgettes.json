@@ -1,0 +1,67 @@
+{
+  "id": "j57f0f4mt087jtp4zrdw67s1t58dae6d",
+  "creationTime": 1787909071463.642,
+  "title": "Blanquette de cabillaud aux courgettes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "Dos de cabillaud en cubes 400g",
+      "quantity": 400,
+      "unit": "g",
+      "label": "Dos de cabillaud en cubes"
+    },
+    {
+      "raw": "Courgettes, en cubes 600g",
+      "quantity": 600,
+      "unit": "g",
+      "label": "Courgettes, en cubes"
+    },
+    {
+      "raw": "Fumet de poisson 1 c. à café",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "Fumet de poisson"
+    },
+    {
+      "raw": "Beurre 60g",
+      "quantity": 60,
+      "unit": "g",
+      "label": "Beurre"
+    },
+    {
+      "raw": "Farine 60g",
+      "quantity": 60,
+      "unit": "g",
+      "label": "Farine"
+    },
+    {
+      "raw": "Crème épaisse 100g",
+      "quantity": 100,
+      "unit": "g",
+      "label": "Crème épaisse"
+    },
+    {
+      "raw": "Curry 1 c. à café",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "Curry"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire les courgettes à la vapeur ou à l'eau bouillante pendant 10 minutes puis réservez.",
+    "Faites fondre le beurre dans une cocotte puis ajoutez la farine et mélangez au fouet pour faire un roux, laissez cuire en remuant puis ajoutez le curry, le fumet de poisson et 50 cl d'eau. Salez et poivrez puis mélangez bien et laissez cuire 5 minutes à feu doux en remuant jusqu'à ce que la sauce épaississe. Ajoutez la crème, le poisson et les courgettes et poursuivez la cuisson 10-15 minutes jusqu'à ce que le tout soit bien cuit (le temps dépend de la taille de vos morceaux). Servez accompagné de riz."
+  ],
+  "status": "published",
+  "slug": "blanquette-de-cabillaud-aux-courgettes",
+  "publishedAt": 1787909082727,
+  "imageStorageId": "kg2e09fq1dkq1t1b0tj592skdd8dbqcc",
+  "beautifiedStorageId": "kg298wn1nh0ycd7ex4rx26y3qs8dbt6f"
+}

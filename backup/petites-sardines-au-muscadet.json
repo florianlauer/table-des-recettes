@@ -1,0 +1,54 @@
+{
+  "id": "j57c6m4w5hap3rff87qwdn5gmx8db1pz",
+  "creationTime": 1787907964746.5642,
+  "title": "Petites sardines au muscadet",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "20 petites sardines",
+      "quantity": 20,
+      "unit": null,
+      "label": "petites sardines"
+    },
+    {
+      "raw": "2 oignons, 2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons, 2 carottes"
+    },
+    {
+      "raw": "50 cl de muscadet",
+      "quantity": 50,
+      "unit": "cl",
+      "label": "muscadet"
+    },
+    {
+      "raw": "2 cuil à soupe de vinaigre",
+      "quantity": 2,
+      "unit": "cuil à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "1 citron, thym, laurier",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron, thym, laurier"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez les carottes et oignons en rondelles, le muscadet, le vinaigre, 1 branche de thym, 1 feuille de laurier, poivrez et laissez frémir 10 min. Ajoutez les rondelles de citron, versez le court-bouillon sur les sardines écaillées et vidées. Remettez 1 min sur le feu. Laissez refroidir, servez très frais."
+  ],
+  "status": "published",
+  "slug": "petites-sardines-au-muscadet",
+  "publishedAt": 1787908084057,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

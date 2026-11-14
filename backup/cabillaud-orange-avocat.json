@@ -1,0 +1,88 @@
+{
+  "id": "j57azmsgwqz3qdwy8fr2p23gw58dbr5x",
+  "creationTime": 1787908863334.3792,
+  "title": "Cabillaud orange-avocat",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 pavés de cabillaud (ou colin)",
+      "quantity": 4,
+      "unit": null,
+      "label": "pavés de cabillaud (ou colin)"
+    },
+    {
+      "raw": "2 avocats",
+      "quantity": 2,
+      "unit": null,
+      "label": "avocats"
+    },
+    {
+      "raw": "2 oranges (non traitées)",
+      "quantity": 2,
+      "unit": null,
+      "label": "oranges (non traitées)"
+    },
+    {
+      "raw": "1/2 bouquet d'aneth",
+      "quantity": 0.5,
+      "unit": "bouquet",
+      "label": "aneth"
+    },
+    {
+      "raw": "1 cm de racine de gingembre",
+      "quantity": 1,
+      "unit": "cm",
+      "label": "racine de gingembre"
+    },
+    {
+      "raw": "1 c. à café de paprika",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "paprika"
+    },
+    {
+      "raw": "1 piment rouge",
+      "quantity": 1,
+      "unit": null,
+      "label": "piment rouge"
+    },
+    {
+      "raw": "1 citron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron vert"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 c. à soupe de vinaigre balsamique",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "vinaigre balsamique"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Ouvrez et dénoyautez les avocats, détaillez la chair en lamelles. Arrosez-les de jus de citron vert. Lavez et séchez une orange et demie, puis coupez en fines rondelles. Effeuillez et ciselez l'aneth. Lavez, épépinez et émincez le piment.",
+    "Préchauffez le four à 180 °C (th. 6). Découpez 4 rectangles dans du papier cuisson. Répartissez dessus des rondelles d'orange, des lamelles d'avocat et de piment. Saupoudrez de paprika et d'aneth. Posez dessus un pavé de cabillaud.",
+    "Recouvrez les cabillauds avec le reste d'orange, d'avocat et de piment. Parsemez de paprika et d'aneth, salez. Fermez les papillotes en les maintenant avec de la ficelle de cuisine ou du raphia.",
+    "Posez les papillotes sur la plaque du four et enfournez 10 à 15 mn, selon l'épaisseur des pavés de cabillaud.",
+    "Pelez et râpez le gingembre. Pressez la demi-orange, mélangez-en le jus avec le gingembre, le vinaigre et 4 cuillerées d'huile. Salez, poivrez. Ouvrez les papillotes, arrosez-les de sauce et servez."
+  ],
+  "status": "published",
+  "slug": "cabillaud-orange-avocat",
+  "publishedAt": 1787908876943,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

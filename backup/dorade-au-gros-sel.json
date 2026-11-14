@@ -1,0 +1,33 @@
+{
+  "id": "j57ch48hq9xba61473g39kk0x58czw1t",
+  "creationTime": 1787416321259.9116,
+  "title": "Dorade au gros sel",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "2 kg de gros sel",
+      "quantity": 2,
+      "unit": "kg",
+      "label": "gros sel"
+    },
+    {
+      "raw": "1 belle dorade",
+      "quantity": 1,
+      "unit": null,
+      "label": "belle dorade"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un plat à four, disposer un lit de gros sel, poser la dorade au milieu et la recouvrir entièrement de gros sel.",
+    "Faire cuire à four chaud th.9 pendant 30 à 40 mn.",
+    "Le sel forme une croûte que l'on casse pour trouver à l'intérieur une dorade cuite à point et très juteuse.",
+    "On la savoure telle quelle ou bien on l'arrose d'un peu d'huile d'olive."
+  ],
+  "status": "published",
+  "slug": "dorade-au-gros-sel",
+  "publishedAt": 1787416351655,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

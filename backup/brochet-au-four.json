@@ -1,0 +1,59 @@
+{
+  "id": "j57472vwmy6fnmcys0t6sbczt98ctt7j",
+  "creationTime": 1787248435175.4656,
+  "title": "Brochet au four",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 brochet",
+      "quantity": 1,
+      "unit": null,
+      "label": "brochet"
+    },
+    {
+      "raw": "1 jaune d'œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "jaune d'œuf"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "thym, laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "thym, laurier"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Videz le poisson, nettoyez-le et épongez.",
+    "Coupez-le en tronçons de 2 à 3 cm d'épaisseur.",
+    "Beurrez un plat allant au four, disposez-y les morceaux de brochet, parsemez de noisettes de beurre, ajoutez une feuille de laurier, un brin de thym, un petit peu d'eau, salez et poivrez.",
+    "Faites cuire à four moyen en arrosant souvent, comptez 10 à 15 mn, puis réservez les morceaux sur un plat en les tenant au chaud.",
+    "Liez le jus de cuisson avec un jaune d'œuf, ajoutez le jus de citron, le beurre et fouettez énergiquement.",
+    "Réchauffez légèrement, nappez le poisson et servez."
+  ],
+  "status": "published",
+  "slug": "brochet-au-four",
+  "publishedAt": 1787248476552,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

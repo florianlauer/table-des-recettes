@@ -1,0 +1,61 @@
+{
+  "id": "j576s6der4nyybkk6gvtshva3s8gqm23",
+  "creationTime": 1792583551471.6619,
+  "title": "Sauté de bœuf",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "800 g de bœuf en morceaux",
+      "quantity": 800,
+      "unit": "g",
+      "label": "bœuf en morceaux"
+    },
+    {
+      "raw": "100 g de lardons",
+      "quantity": 100,
+      "unit": "g",
+      "label": "lardons"
+    },
+    {
+      "raw": "250 g d'oignons",
+      "quantity": 250,
+      "unit": "g",
+      "label": "oignons"
+    },
+    {
+      "raw": "eau",
+      "quantity": null,
+      "unit": null,
+      "label": "eau"
+    },
+    {
+      "raw": "250 g de champignons",
+      "quantity": 250,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "sauce Bourguignon KNORR",
+      "quantity": null,
+      "unit": null,
+      "label": "sauce Bourguignon KNORR"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faites revenir, dans 50 g de beurre chaud, 800 g de bœuf en morceaux et 100 g de lardons. Ajoutez et faites blondir 250 g d'oignons en rondelles. Recouvrez la viande d'eau, salez légèrement. Faites cuire 3 h (1 h en autocuiseur). Ajoutez 250 g de champignons 5 mn avant la fin de la cuisson. Retirez la viande, gardez-la au chaud. Préparez la sauce Bourguignon KNORR dans le liquide contenu dans la cocotte (1/2 litre).",
+    "Versez sur la viande et servez avec du riz ou des pommes de terre vapeur."
+  ],
+  "status": "published",
+  "slug": "saute-de-boeuf",
+  "publishedAt": 1792583603395,
+  "imageStorageId": "kg2174wr3qgbgh71xvzz1mm4en8gqf0a",
+  "beautifiedStorageId": "kg2ctv6j7md8zfc1q59bcjm36s8gqvtm"
+}

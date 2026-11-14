@@ -1,0 +1,56 @@
+{
+  "id": "j575sbzdggv88bgvc32fd4esq18czefe",
+  "creationTime": 1787415246944.784,
+  "title": "Truites au lard",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "6 truites",
+      "quantity": 6,
+      "unit": null,
+      "label": "truites"
+    },
+    {
+      "raw": "150 g de lard maigre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "lard maigre"
+    },
+    {
+      "raw": "150 g de lard gras",
+      "quantity": 150,
+      "unit": "g",
+      "label": "lard gras"
+    },
+    {
+      "raw": "3 gousses d'ail",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 poignée de persil",
+      "quantity": 1,
+      "unit": "poignée",
+      "label": "persil"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper les deux lards en petits dés.",
+    "Après les avoir fait fondre dans la poêle, les retirer et faire cuire dans leur graisse les truites assaisonnées à l'intérieur.",
+    "Entourer les truites d'un hachis d'ail et de persil additionné des lardons réchauffés."
+  ],
+  "status": "published",
+  "slug": "truites-au-lard",
+  "publishedAt": 1787415267788,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

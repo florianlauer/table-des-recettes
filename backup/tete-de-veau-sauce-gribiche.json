@@ -1,0 +1,111 @@
+{
+  "id": "j572f4vgy7baqtyy24840e515h8j67m4",
+  "creationTime": 1794661678075.52,
+  "title": "Tête de veau sauce gribiche",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 tête de veau préparée et ficelée",
+      "quantity": 1,
+      "unit": null,
+      "label": "tête de veau préparée et ficelée"
+    },
+    {
+      "raw": "4 carottes",
+      "quantity": 4,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "2 poireaux",
+      "quantity": 2,
+      "unit": null,
+      "label": "poireaux"
+    },
+    {
+      "raw": "2 oignons piqués de clous de girofle",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons piqués de clous de girofle"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "3 cuil. à soupe de vinaigre",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "2 cuil. à soupe de farine",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "3 œufs durs",
+      "quantity": 3,
+      "unit": null,
+      "label": "œufs durs"
+    },
+    {
+      "raw": "1 cuil. à café de moutarde",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "moutarde"
+    },
+    {
+      "raw": "1/4 litre d'huile",
+      "quantity": 0.25,
+      "unit": "litre",
+      "label": "huile"
+    },
+    {
+      "raw": "1 cuil. à soupe de vinaigre",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "3 cuil. à soupe de fines herbes hachées",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "fines herbes hachées"
+    },
+    {
+      "raw": "5 cornichons",
+      "quantity": 5,
+      "unit": null,
+      "label": "cornichons"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un grand faitout, préparez un court-bouillon avec les carottes et les poireaux émincés, les oignons entiers piqués de clous de girofle, le bouquet garni et le vinaigre. Délayez la farine dans un bol avec un peu d'eau et versez dans le faitout en complétant avec 3 litres d'eau. Salez, poivrez et placez la tête de veau dans le court-bouillon à bon feu en veillant à ce qu'elle soit totalement immergée.",
+    "Au premier bouillon, baissez le feu et laissez cuire pendant 2 heures.",
+    "Pendant ce temps, préparez la sauce gribiche en écrasant 3 jaunes d'œufs durs avec 1 cuillerée à café de moutarde. Versez 1/4 de litre d'huile petit à petit pour former une pâte, puis mélangez bien le tout. Salez, poivrez. Ajoutez le vinaigre, les fines herbes hachées, les cornichons coupés en rondelles et le blanc des œufs haché.",
+    "Servez la tête et la sauce à part."
+  ],
+  "status": "published",
+  "slug": "tete-de-veau-sauce-gribiche",
+  "publishedAt": 1794661687522,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

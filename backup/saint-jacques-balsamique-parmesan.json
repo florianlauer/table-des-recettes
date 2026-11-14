@@ -1,0 +1,56 @@
+{
+  "id": "j571s6441j5kbk64vx5vrjww0n8ceq2d",
+  "creationTime": 1786728768061.799,
+  "title": "Saint-Jacques balsamique parmesan",
+  "type": "plat",
+  "servings": 1,
+  "ingredients": [
+    {
+      "raw": "3 grosses noix de saint-jacques",
+      "quantity": 3,
+      "unit": null,
+      "label": "grosses noix de saint-jacques"
+    },
+    {
+      "raw": "4 cuillerées à soupe de vinaigre balsamique",
+      "quantity": 4,
+      "unit": "cuillerées à soupe",
+      "label": "vinaigre balsamique"
+    },
+    {
+      "raw": "1/4 de cuillerée à café de sucre",
+      "quantity": 0.25,
+      "unit": "cuillerée à café",
+      "label": "sucre"
+    },
+    {
+      "raw": "1 cuillerée à soupe d'huile d'olive",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "6 copeaux de parmesan frais",
+      "quantity": 6,
+      "unit": "copeaux",
+      "label": "parmesan frais"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Versez le vinaigre et le sucre dans une casserole et posez-la sur feu doux. Laissez cuire jusqu'à obtention d'un jus épais et parfumé : cela prend 1 mn au maximum. Réservez au chaud.",
+    "Epongez les noix de saint-jacques et huilez-les sur les deux faces. Salez-les et poivrez-les.",
+    "Faites chauffer une poêle sur feu vif et faites-y dorer les noix de saint-jacques, 1 mn sur chaque face. Répartissez-les dans une assiette et nappez-les de sauce balsamique. Parsemez de parmesan et servez ainsi."
+  ],
+  "status": "published",
+  "slug": "saint-jacques-balsamique-parmesan",
+  "publishedAt": 1786728860159,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

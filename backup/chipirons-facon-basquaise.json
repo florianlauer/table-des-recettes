@@ -1,0 +1,88 @@
+{
+  "id": "j57ec4r5gy0g4hkvrfnm0rj42s8cgtpr",
+  "creationTime": 1786816109675.5461,
+  "title": "Chipirons façon basquaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 chipirons (calamars) de 200 g environ",
+      "quantity": 4,
+      "unit": null,
+      "label": "chipirons (calamars) de 200 g environ"
+    },
+    {
+      "raw": "100 g de jambon de Bayonne",
+      "quantity": 100,
+      "unit": "g",
+      "label": "jambon de Bayonne"
+    },
+    {
+      "raw": "400 g de tomates",
+      "quantity": 400,
+      "unit": "g",
+      "label": "tomates"
+    },
+    {
+      "raw": "100 g de pain de mie",
+      "quantity": 100,
+      "unit": "g",
+      "label": "pain de mie"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "d'ail"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "2 branches de thym",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "thym"
+    },
+    {
+      "raw": "2 c. à soupe de persil haché",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "persil haché"
+    },
+    {
+      "raw": "3 c. à soupe d'huile de tournesol ou de maïs",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "huile de tournesol ou de maïs"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Hachez les tentacules des calamars.",
+    "Emincez ail et oignons.",
+    "Emiettez la mie du pain.",
+    "Hachez grossièrement le jambon débarrassé de son gras.",
+    "Sur feu doux, faites dorer la moitié de l'ail et des oignons émincés dans 2 c. à soupe d'huile.",
+    "Ajoutez ensuite les tentacules et le jambon, la mie de pain, 1 c. à soupe de persil.",
+    "Salez et poivrez. Laissez cuire à couvert sur feu doux pendant 15 min.",
+    "Garnissez les calamars avec cette farce, ficelez-les.",
+    "Faites dorer dans 1 c. à soupe d'huile l'oignon et l'ail restants, puis les calamars farcis.",
+    "Ajoutez les tomates coupées en quartiers, le reste de persil, le thym, le sel et le poivre.",
+    "Laissez mijoter à couvert pendant 20 min."
+  ],
+  "status": "published",
+  "slug": "chipirons-facon-basquaise",
+  "publishedAt": 1786816164316,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

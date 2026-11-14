@@ -1,0 +1,71 @@
+{
+  "id": "j576rec908zfp59b3dg18r0nws8hbp52",
+  "creationTime": 1793443069989.0486,
+  "title": "Rôti de porc aux pruneaux",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "Enlever le rôti du sachet",
+      "quantity": null,
+      "unit": null,
+      "label": "rôti de porc aux pruneaux"
+    },
+    {
+      "raw": "huile, beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "huile, beurre"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "une carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "un oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Enlever le rôti du sachet.",
+    "Préchauffer le four à 180°C, thermostat 6, pendant 10 mn.",
+    "Mettre à cuire 1 h avec huile, beurre, poivre, thym et laurier.",
+    "Ne pas saler.",
+    "A mi-cuisson, ajouter une carotte et un oignon coupés en morceaux.",
+    "Retourner et arroser le rôti de temps en temps.",
+    "Servir bien chaud avec le jus de cuisson passé.",
+    "Enlever le rôti du sachet.",
+    "Cuire 20 mn par séquences de 4 fois 5 mn ou procéder comme la cuisson au four à gaz ou électrique.",
+    "Mettre de l'eau à chauffer.",
+    "Maintenir l'eau à 80°C, c'est-à-dire à petite ébullition.",
+    "Laisser cuire 1 h."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-aux-pruneaux",
+  "publishedAt": 1793443090157,
+  "imageStorageId": "kg23bsv99759m1h3w33xp2qw3n8ha1pr",
+  "beautifiedStorageId": "kg27tac38mhmkycnjyv7f5sd7s8had3g"
+}

@@ -1,0 +1,78 @@
+{
+  "id": "j572a8ga818k7pt2m4fr7na38h8d9n5z",
+  "creationTime": 1787830494864.6667,
+  "title": "Filets de merlan pomodoro",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de merlan surgelés",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de merlan surgelés"
+    },
+    {
+      "raw": "800 g de haricots verts surgelés",
+      "quantity": 800,
+      "unit": "g",
+      "label": "haricots verts surgelés"
+    },
+    {
+      "raw": "400 g de quartiers de tomates pelées surgelées",
+      "quantity": 400,
+      "unit": "g",
+      "label": "quartiers de tomates pelées surgelées"
+    },
+    {
+      "raw": "100 g d'oignons émincés surgelés",
+      "quantity": 100,
+      "unit": "g",
+      "label": "oignons émincés surgelés"
+    },
+    {
+      "raw": "3 cuil. à café d'ail haché surgelé",
+      "quantity": 3,
+      "unit": "cuil. à café",
+      "label": "ail haché surgelé"
+    },
+    {
+      "raw": "2 cuil. à café de basilic surgelé",
+      "quantity": 2,
+      "unit": "cuil. à café",
+      "label": "basilic surgelé"
+    },
+    {
+      "raw": "12 olives noires dénoyautées",
+      "quantity": 12,
+      "unit": null,
+      "label": "olives noires dénoyautées"
+    },
+    {
+      "raw": "6 cuil. à soupe d'huile d'olive",
+      "quantity": 6,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 g de safran",
+      "quantity": 1,
+      "unit": "g",
+      "label": "safran"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Chauffez les 2/3 d'huile dans une cocotte. Faites-y revenir les oignons. Ajoutez tomates, ail, basilic, safran, olives. Salez, poivrez. Cuire à feu doux 25 min. Faites cuire les haricots verts. Dans une poêle, chauffez le reste d'huile, faites-y cuire les filets de merlan 4 min. de chaque côté. Servez le poisson, nappé de sauce, avec les haricots verts."
+  ],
+  "status": "published",
+  "slug": "filets-de-merlan-pomodoro",
+  "publishedAt": 1787830517166,
+  "imageStorageId": "kg28m6m40w6b860nvc7vcy0x4d8d8e0w",
+  "beautifiedStorageId": "kg2d9dsq62jgzz8qsj2rm1xrq98d9mmx"
+}

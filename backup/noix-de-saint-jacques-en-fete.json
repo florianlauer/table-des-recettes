@@ -1,0 +1,63 @@
+{
+  "id": "j579hsqrrymf6sb8peyn5bydn58ch0x1",
+  "creationTime": 1786816109675.546,
+  "title": "Noix de Saint-Jacques en fête",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "12 noix de Saint-Jacques Agrigel",
+      "quantity": 12,
+      "unit": null,
+      "label": "noix de Saint-Jacques Agrigel"
+    },
+    {
+      "raw": "250 g de tomates bien mûres",
+      "quantity": 250,
+      "unit": "g",
+      "label": "tomates bien mûres"
+    },
+    {
+      "raw": "2 cuillerées à café d'échalotes hachées Agrigel",
+      "quantity": 2,
+      "unit": "cuillerées à café",
+      "label": "d'échalotes hachées Agrigel"
+    },
+    {
+      "raw": "2 cuillerées à café d'ail haché Agrigel",
+      "quantity": 2,
+      "unit": "cuillerées à café",
+      "label": "d'ail haché Agrigel"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuillerées à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "Persil Agrigel, sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Persil Agrigel, sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites décongeler vos noix de Saint-Jacques 12 heures au réfrigérateur.",
+    "Dans une poêle, faites chauffer 1 cuillerée à soupe d'huile d'olive et faites-y dorer les échalotes en remuant bien.",
+    "Lavez et coupez les tomates en petits morceaux.",
+    "Versez-les dans la poêle et laissez cuire 15 mn.",
+    "Ajoutez ensuite l'ail, salez et poivrez.",
+    "Mélangez bien et poursuivez la cuisson encore 5 mn.",
+    "Faites chauffer le reste de l'huile dans une poêle et mettez les noix de Saint-Jacques à dorer 2 mn de chaque côté sur feu vif.",
+    "Salez et poivrez.",
+    "Disposez les noix dans les assiettes sur la sauce aux tomates.",
+    "Parsemez le tout de persil et servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "noix-de-saint-jacques-en-fete",
+  "publishedAt": 1786816142694,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

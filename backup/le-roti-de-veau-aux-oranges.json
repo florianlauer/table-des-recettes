@@ -1,0 +1,61 @@
+{
+  "id": "j57cme9g14804x3j2p74rg9a918ha6wt",
+  "creationTime": 1793443069989.049,
+  "title": "Le rôti de veau aux oranges",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "le rôti",
+      "quantity": null,
+      "unit": null,
+      "label": "rôti de veau"
+    },
+    {
+      "raw": "6 échalotes",
+      "quantity": 6,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "1 cuiller à café de coriandre",
+      "quantity": 1,
+      "unit": "cuiller à café",
+      "label": "coriandre"
+    },
+    {
+      "raw": "1 de gingembre",
+      "quantity": 1,
+      "unit": null,
+      "label": "gingembre"
+    },
+    {
+      "raw": "1 de miel",
+      "quantity": 1,
+      "unit": null,
+      "label": "miel"
+    },
+    {
+      "raw": "le jus de 3 oranges",
+      "quantity": 3,
+      "unit": null,
+      "label": "oranges"
+    },
+    {
+      "raw": "le zeste ébouillanté des oranges",
+      "quantity": null,
+      "unit": null,
+      "label": "zeste des oranges"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une cocotte, faites cuire à couvert le rôti en le retournant de temps en temps, avec 6 échalotes, 1 cuiller à café de coriandre, 1 de gingembre, 1 de miel, le jus de 3 oranges.",
+    "Vous incorporerez le zeste ébouillanté des oranges en fin de cuisson."
+  ],
+  "status": "published",
+  "slug": "le-roti-de-veau-aux-oranges",
+  "publishedAt": 1793443102017,
+  "imageStorageId": "kg2d8kt13kz8r3yx25bv5a4k8s8hb5wg",
+  "beautifiedStorageId": "kg287jaqdc1226wbkwtzvwc9hx8hbdve"
+}

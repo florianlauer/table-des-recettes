@@ -1,0 +1,39 @@
+{
+  "id": "j572d9752n30jcxabz7vrwjtzh8d99d9",
+  "creationTime": 1787830494864.6675,
+  "title": "Sardines marinées",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 petites sardines très fraîches",
+      "quantity": 8,
+      "unit": null,
+      "label": "petites sardines très fraîches"
+    },
+    {
+      "raw": "2 citrons verts, 20 cl d'huile d'olive",
+      "quantity": 2,
+      "unit": null,
+      "label": "citrons verts, 20 cl d'huile d'olive"
+    },
+    {
+      "raw": "1 cuil. à soupe de poivre en grains, sel",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "de poivre en grains, sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Etêtez, écaillez et videz les sardines. Fendez-les le long du ventre, ôtez l'arête centrale à l'aide d'un petit couteau pointu, séparez les filets, rincez-les sous l'eau froide et épongez dans du papier absorbant.",
+    "Mélangez le jus d'1 citron, l'huile et 1 pincée de sel.",
+    "Disposez les filets de sardines côte à côte dans un plat creux non métallique, répartissez le poivre, le deuxième citron coupé en fines tranches et arrosez avec la sauce.",
+    "Couvrez, mettez au frais 3 h en retournant les filets 2 fois."
+  ],
+  "status": "published",
+  "slug": "sardines-marinees",
+  "publishedAt": 1787830530040,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

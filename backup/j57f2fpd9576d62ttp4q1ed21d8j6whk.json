@@ -1,0 +1,80 @@
+{
+  "id": "j57f2fpd9576d62ttp4q1ed21d8j6whk",
+  "creationTime": 1794662700395.4446,
+  "title": "Carré de porc à la moutarde",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 rôti de porc de 1,5 kg, dans le filet",
+      "quantity": 1.5,
+      "unit": "kg",
+      "label": "rôti de porc, dans le filet"
+    },
+    {
+      "raw": "3 cuil. à soupe de moutarde à l'ancienne",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "moutarde à l'ancienne"
+    },
+    {
+      "raw": "1 cuil. à soupe de miel",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "1/2 cuil. à soupe de sauce soja",
+      "quantity": 0.5,
+      "unit": "cuil. à soupe",
+      "label": "sauce soja"
+    },
+    {
+      "raw": "3 pincées de gingembre en poudre",
+      "quantity": 3,
+      "unit": "pincées",
+      "label": "gingembre en poudre"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "1/2 citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "4 brins de romarin",
+      "quantity": 4,
+      "unit": "brins",
+      "label": "romarin"
+    },
+    {
+      "raw": "1 cuil. à soupe d'huile d'arachide",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "huile d'arachide"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "1. Huilez le rôti et posez-le dans un plat à four. Glissez le plat dans le four froid et allumez-le à 150 °C (th. 5). Laissez cuire 1 h 30 en tournant la viande plusieurs fois pour la faire dorer uniformément.",
+    "2. Mélangez dans un bol la moutarde, le miel, la sauce soja, le gingembre et la gousse d'ail passée au presse-ail. Salez et poivrez légèrement.",
+    "3. Retirez la viande du four et badigeonnez-la de la préparation à la moutarde. Remettez-la dans le four, en l'entourant des brins de romarin et en versant 2 cuil. à soupe d'eau dans le fond du plat. Poursuivez la cuisson 30 mn et laissez reposer 10 mn dans le four éteint."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

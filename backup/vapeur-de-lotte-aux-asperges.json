@@ -1,0 +1,45 @@
+{
+  "id": "j571txwzgn7svffffkhd4ekam98czh7h",
+  "creationTime": 1787416321259.9114,
+  "title": "Vapeur de lotte aux asperges",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g de lotte en 4 morceaux",
+      "quantity": 600,
+      "unit": "g",
+      "label": "lotte en 4 morceaux"
+    },
+    {
+      "raw": "2 sachets de court-bouillon",
+      "quantity": 2,
+      "unit": "sachets",
+      "label": "court-bouillon"
+    },
+    {
+      "raw": "2 litres d'eau",
+      "quantity": 2,
+      "unit": "litres",
+      "label": "eau"
+    },
+    {
+      "raw": "20 asperges fraîches",
+      "quantity": 20,
+      "unit": null,
+      "label": "asperges fraîches"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans la partie basse du cuiseur à vapeur portez à ébullition 2 litres d'eau et ajoutez les sachets de court-bouillon.",
+    "Posez au dessus le premier panier dans lequel sont placées les asperges, couvrez et faites cuire 15 à 20 minutes.",
+    "Dans le panier supérieur, placez les morceaux de lotte et laissez cuire 12 à 15 minutes.",
+    "Disposez les morceaux de lotte sur un lit d'asperges et accompagnez d'une sauce mousseline ou hollandaise."
+  ],
+  "status": "published",
+  "slug": "vapeur-de-lotte-aux-asperges",
+  "publishedAt": 1787416346603,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

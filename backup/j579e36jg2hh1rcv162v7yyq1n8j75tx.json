@@ -1,0 +1,71 @@
+{
+  "id": "j579e36jg2hh1rcv162v7yyq1n8j75tx",
+  "creationTime": 1794662700395.4438,
+  "title": "Filet mignon au maïs ultra croquant Géant Vert aux haricots verts",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 filets mignons de veau",
+      "quantity": 2,
+      "unit": null,
+      "label": "filets mignons de veau"
+    },
+    {
+      "raw": "2 boîtes de 285g de Maïs Ultra Croquant Géant Vert®",
+      "quantity": 2,
+      "unit": "boîtes",
+      "label": "Maïs Ultra Croquant Géant Vert®"
+    },
+    {
+      "raw": "100g de haricots verts fins",
+      "quantity": 100,
+      "unit": "g",
+      "label": "haricots verts fins"
+    },
+    {
+      "raw": "4 c. à s. d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à s.",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 petite gousse d'ail",
+      "quantity": 1,
+      "unit": "petite gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "12 petites feuilles de sauge",
+      "quantity": 12,
+      "unit": "petites feuilles",
+      "label": "sauge"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four à 200°C (thermostat 6).",
+    "Versez 1 c. à s. d'huile dans un plat à four, ajoutez sel et poivre et roulez-y les filets mignons.",
+    "Faites-les cuire 30 min à four chaud en les retournant plusieurs fois.",
+    "Faites cuire les haricots verts.",
+    "Hachez l'ail très finement.",
+    "Faites-le blondir dans 2 c. à s. d'huile, dans une sauteuse.",
+    "Ajoutez le Maïs Ultra Croquant Géant Vert® égoutté et les haricots verts.",
+    "Laissez mijoter 5 min.",
+    "Faites dorer les feuilles de sauge dans le reste d'huile.",
+    "Coupez la viande en tranches.",
+    "Dressez 3 tranches de viande sur chaque assiette et garnissez de Maïs Ultra Croquant Géant Vert® aux haricots verts.",
+    "Parsemez de feuilles de sauge et servez aussitôt."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

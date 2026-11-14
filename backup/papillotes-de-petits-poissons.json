@@ -1,0 +1,88 @@
+{
+  "id": "j57ds4ac0he9t6datn7n5zazbd8cz958",
+  "creationTime": 1787419210623.3757,
+  "title": "Papillotes de petits poissons",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 filets de petites dorades",
+      "quantity": 2,
+      "unit": null,
+      "label": "filets de petites dorades"
+    },
+    {
+      "raw": "2 filets de sole",
+      "quantity": 2,
+      "unit": null,
+      "label": "filets de sole"
+    },
+    {
+      "raw": "2 filets de julienne",
+      "quantity": 2,
+      "unit": null,
+      "label": "filets de julienne"
+    },
+    {
+      "raw": "1 bulbe de fenouil",
+      "quantity": 1,
+      "unit": null,
+      "label": "bulbe de fenouil"
+    },
+    {
+      "raw": "2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 blanc de poireau",
+      "quantity": 1,
+      "unit": null,
+      "label": "blanc de poireau"
+    },
+    {
+      "raw": "4 c. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "d'huile d'olive"
+    },
+    {
+      "raw": "2 c. à café de graines de pavot",
+      "quantity": 2,
+      "unit": "c. à café",
+      "label": "graines de pavot"
+    },
+    {
+      "raw": "fleur de sel",
+      "quantity": null,
+      "unit": null,
+      "label": "fleur de sel"
+    },
+    {
+      "raw": "poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre du moulin"
+    },
+    {
+      "raw": "4 papillotes en papier sulfurisé de 25 cm de long/ 20 cm de large",
+      "quantity": 4,
+      "unit": null,
+      "label": "papillotes en papier sulfurisé de 25 cm de long/ 20 cm de large"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire lever les filets des poissons par le poissonnier. Couper chaque filet en deux dans le sens de la largeur. Dans un plat creux, les faire mariner dans l'huile d'olive pendant 20 mn. Eplucher les légumes. Conserver le plumet vert du bulbe de fenouil. Préchauffer le four à thermostat n° 7 (210° C). Couper les légumes en bâtonnets très fins ou les râper à la grosse râpe.",
+    "Les jeter dans une casserole d'eau bouillante salée. Quand l'ébullition reprend, les verser dans une passoire. Les laisser égoutter avant de les répartir bien mélangés, en quantités égales, au fond de chaque papillote. Poser les poissons dessus. Saler, poivrer.",
+    "Laver et sécher sur un papier absorbant le plumet vert du fenouil. Le ciseler et le mélanger aux graines de pavot. Poudrer les poissons de ce mélange.",
+    "Fermer les papillotes, les disposer dans un plat allant au four et enfourner à mi-hauteur. Laisser cuire 8 mn en réglant le four sur thermostat n° 6 (180° C).",
+    "Poser les papillotes sur les assiettes, les entrouvrir et verser quelques gouttes d'huile d'olive sur les poissons."
+  ],
+  "status": "published",
+  "slug": "papillotes-de-petits-poissons",
+  "publishedAt": 1787419227190,
+  "imageStorageId": "kg24wxhjf53xpnpantkag8q7418cz58s",
+  "beautifiedStorageId": "kg29jzk3v2v88v8k4t83h1283s8cz8wy"
+}

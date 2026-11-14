@@ -1,0 +1,84 @@
+{
+  "id": "j57eg29b8rycq25e0wrntafwv98cycdx",
+  "creationTime": 1787414767746.3845,
+  "title": "Roulades de sole au saumon fumé et à la crème de chou-fleur",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de sole",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de sole"
+    },
+    {
+      "raw": "2 tranches de saumon fumé",
+      "quantity": 2,
+      "unit": "tranches",
+      "label": "de saumon fumé"
+    },
+    {
+      "raw": "25 cl de bisque de homard (ou d'écrevisse)",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "de bisque de homard (ou d'écrevisse)"
+    },
+    {
+      "raw": "10 cl de vin blanc",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "de vin blanc"
+    },
+    {
+      "raw": "15 cl de crème fraîche",
+      "quantity": 15,
+      "unit": "cl",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "40 g de beurre mou",
+      "quantity": 40,
+      "unit": "g",
+      "label": "de beurre mou"
+    },
+    {
+      "raw": "sel, poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre du moulin"
+    },
+    {
+      "raw": "600 g de chou-fleur surgelé",
+      "quantity": 600,
+      "unit": "g",
+      "label": "de chou-fleur surgelé"
+    },
+    {
+      "raw": "2 cuillères à soupe de crème fraîche",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "quelques brins de ciboulette",
+      "quantity": null,
+      "unit": null,
+      "label": "quelques brins de ciboulette"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four à 220°C (th.7).",
+    "Rincez les filets de sole, séchez-les dans du papier absorbant. Salez-les et poivrez-les sur les deux faces. Beurrez une face des filets.",
+    "Coupez les tranches de saumon fumé en deux dans le sens de la longueur et égalisez les bords. Posez les filets de sole sur les demi-tranches de saumon, roulez le tout et maintenez les roulades avec un pique en bois.",
+    "Déposez les paupiettes dans un plat à gratin beurré. Arrosez de vin blanc. Couvrez d'une feuille d'aluminium ménager et laissez cuire 20 mn au four.",
+    "Faites chauffez une grande casserole d'eau salée. Faites cuire le chou-fleur comme indiqué sur l'emballage. Egouttez-le, mixez-le et incorporez la crème fraîche. Rectifiez l'assaisonnement. Parsemez de ciboulette ciselée.",
+    "Réchauffez la bisque sur feu doux. Ajoutez la crème fraîche. Réservez les roulades sur un plat de service au chaud. Mélangez la bisque au jus de cuisson.",
+    "Servez les roulades accompagnées de cette sauce et de la crème de chou-fleur."
+  ],
+  "status": "published",
+  "slug": "roulades-de-sole-au-saumon-fume-et-a-la-creme-de-chou-fleur",
+  "publishedAt": 1787414810391,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

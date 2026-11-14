@@ -1,0 +1,59 @@
+{
+  "id": "j570a2k0xtdj417cfcxkpy59m18fdr8k",
+  "creationTime": 1790758916432.742,
+  "title": "Ragoût d'agneau du Pirée",
+  "type": "plat",
+  "servings": 5,
+  "ingredients": [
+    {
+      "raw": "750 g d'agneau",
+      "quantity": 750,
+      "unit": "g",
+      "label": "d'agneau"
+    },
+    {
+      "raw": "4 oignons",
+      "quantity": 4,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "6 tomates",
+      "quantity": 6,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "12 cuillerées à soupe de riz",
+      "quantity": 12,
+      "unit": "cuillerées à soupe",
+      "label": "de riz"
+    },
+    {
+      "raw": "laurier, paprika",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier, paprika"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper la viande en carrés de 5 cm environ.",
+    "Faire revenir à bon feu la viande et les oignons épluchés dans une cocotte avec beurre et huile. Remuer pendant 15 minutes.",
+    "Arroser avec le bouillon et laisser cuire à découvert 5 minutes.",
+    "Ajouter alors les tomates épluchées et coupées en quartiers, du laurier, du paprika ; saler et poivrer. Laisser cuire 10 minutes puis recouvrir d'eau bouillante, et ajouter le riz bien lavé.",
+    "Cuire à feu très doux environ 20 minutes.",
+    "Arroser d'un jus de citron avant de servir."
+  ],
+  "status": "published",
+  "slug": "ragout-d-agneau-du-piree",
+  "publishedAt": 1790758947675,
+  "imageStorageId": "kg22k1amkxeczwf4zyjyyb37xs8fd6yj",
+  "beautifiedStorageId": "kg23ne2qhg5934q2j8rkk3v53n8fdnv4"
+}

@@ -1,0 +1,52 @@
+{
+  "id": "j57c06xdj0hestbg3djrg012w98cv1z7",
+  "creationTime": 1787248686630.3657,
+  "title": "Carpaccio de saumon chaud",
+  "type": "entree",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "600 g de saumon frais (en un seul morceau)",
+      "quantity": 600,
+      "unit": "g",
+      "label": "saumon frais (en un seul morceau)"
+    },
+    {
+      "raw": "2 c. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "ciboulette ou aneth",
+      "quantity": null,
+      "unit": null,
+      "label": "ciboulette ou aneth"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Placer le morceau de saumon au congélateur pendant 15 à 20 mn après avoir en evé la peau et les arêtes.",
+    "Quand il est ferme et très froid, découper des tranches aussi fines que possible et les étaler à plat sur un grand plat.",
+    "A l'aide d'un pinceau, les enduire d'huile d'olive, recouvrir de ciboulette ou d'aneth ciselé, saler, poivrer, laisser mariner au minimum 1 h.",
+    "Juste avant de passer à table, préchauffer le four th.8/9 et y cuire le saumon 15 secondes seulement.",
+    "Servir aussitôt."
+  ],
+  "status": "published",
+  "slug": "carpaccio-de-saumon-chaud",
+  "publishedAt": 1787248702698,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

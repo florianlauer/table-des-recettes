@@ -1,0 +1,66 @@
+{
+  "id": "j57d6hw39vfsk4j6e8he9gnzts8d83cw",
+  "creationTime": 1787830816550.3044,
+  "title": "Maquereaux aux pommes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 petits maquereaux",
+      "quantity": 4,
+      "unit": null,
+      "label": "petits maquereaux"
+    },
+    {
+      "raw": "1 échalote, 4 pommes golden",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote, 4 pommes golden"
+    },
+    {
+      "raw": "20 cl de vinaigre de vin, 20 cl de vin rouge",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "de vinaigre de vin, 20 cl de vin rouge"
+    },
+    {
+      "raw": "1 cuil. à soupe rase de Maïzena",
+      "quantity": 1,
+      "unit": "cuil. à soupe rase",
+      "label": "de Maïzena"
+    },
+    {
+      "raw": "2 cuil. à soupe de crème",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "de crème"
+    },
+    {
+      "raw": "20 g de beurre, 5 cl d'huile d'olive",
+      "quantity": 20,
+      "unit": "g",
+      "label": "de beurre, 5 cl d'huile d'olive"
+    },
+    {
+      "raw": "sucre, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sucre, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez 1 cuil. de vinaigre avec l'huile, salez, poivrez.",
+    "Arrosez les maquereaux posés chacun sur 1 feuille d'aluminium, enveloppez-les et faites cuire au four (th.8/240°C) 10 min.",
+    "Faites réduire le reste de vinaigre avec l'échalote hachée, ajoutez le vin et laissez réduire de moitié.",
+    "Ajoutez 1 pomme pelée et coupée en dés, laissez cuire 2 min.",
+    "Versez la Maïzena délayée dans 1/2 verre d'eau, fouettez jusqu'à ce que la sauce épaississe, assaisonnez et liez à la crème.",
+    "Faites sauter les quartiers de pomme dans le beurre, saupoudrez de sucre et laissez caraméliser.",
+    "Servez les maquereaux avec les pommes et la sauce."
+  ],
+  "status": "published",
+  "slug": "maquereaux-aux-pommes",
+  "publishedAt": 1787830836130,
+  "imageStorageId": "kg29v83ateq145s4j21x65gcx58d8apv",
+  "beautifiedStorageId": "kg24h27hzmj7a3780shpj9ypzn8d9pzk"
+}

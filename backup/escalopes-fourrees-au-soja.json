@@ -1,0 +1,44 @@
+{
+  "id": "j577se8s3j53v78y2rar3vnhqs8dhz3d",
+  "creationTime": 1788170498858.874,
+  "title": "Escalopes fourrées au soja",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "escalopes",
+      "quantity": null,
+      "unit": null,
+      "label": "escalopes"
+    },
+    {
+      "raw": "jambon",
+      "quantity": null,
+      "unit": null,
+      "label": "jambon"
+    },
+    {
+      "raw": "germes de soja",
+      "quantity": null,
+      "unit": null,
+      "label": "germes de soja"
+    },
+    {
+      "raw": "une lamelle de gruyère",
+      "quantity": 1,
+      "unit": "lamelle",
+      "label": "gruyère"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Fendre les escalopes dans l'épaisseur, les fourrer de jambon, de germes de soja rincés et égouttés, d'une lamelle de gruyère, et fermer à l'aide d'un bâtonnet.",
+    "Faire dorer à feu vif et laisser cuire 5 minutes.",
+    "Servir avec les germes de soja restants."
+  ],
+  "status": "published",
+  "slug": "escalopes-fourrees-au-soja",
+  "publishedAt": 1788170518201,
+  "imageStorageId": "kg26etb2n91x44750a21f99qvh8dg0zz",
+  "beautifiedStorageId": "kg2b4jrc6p407h52zp1km7bh5n8dgv12"
+}

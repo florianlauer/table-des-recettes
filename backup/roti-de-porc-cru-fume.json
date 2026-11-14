@@ -1,0 +1,78 @@
+{
+  "id": "j57axz6p3dztjjqn4p4vf3cb4h8gqqg6",
+  "creationTime": 1792583846404.0862,
+  "title": "Rôti de porc cru fumé",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "Le rôti du sachet",
+      "quantity": 1,
+      "unit": null,
+      "label": "rôti du sachet"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "une carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "un oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "papier aluminium",
+      "quantity": null,
+      "unit": null,
+      "label": "papier aluminium"
+    },
+    {
+      "raw": "eau",
+      "quantity": null,
+      "unit": null,
+      "label": "eau"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Four gaz ou électrique : Enlever le rôti du sachet.",
+    "Préchauffer le four à 180°C, thermostat 6, pendant 10 mn.",
+    "Mettre à cuire 50 mn avec huile, beurre et poivre.",
+    "Ne pas saler.",
+    "A mi-cuisson, ajouter une carotte et un oignon coupés en morceaux.",
+    "Recouvrir de papier aluminium.",
+    "Retourner et arroser le rôti de temps en temps.",
+    "Servir bien chaud avec le jus de cuisson passé.",
+    "Four à micro-ondes : Enlever le rôti du sachet.",
+    "Cuire 20 mn par séquences de 4 fois 5 mn ou procéder comme la cuisson au four à gaz ou électrique.",
+    "Cuisson au bain-marie : Mettre de l'eau à chauffer.",
+    "Maintenir l'eau à 80°C, c'est-à-dire à petite ébullition.",
+    "Laisser cuire 1 h."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-cru-fume",
+  "publishedAt": 1792583904508,
+  "imageStorageId": "kg280r96qt45np34k7p8kf8t198gqkhd",
+  "beautifiedStorageId": "kg247hdmk4a443mzf29ntyrw698gq1ca"
+}

@@ -1,0 +1,76 @@
+{
+  "id": "j57ffg5t0s9rg8ew89e38t9zex8cyfqn",
+  "creationTime": 1787416321259.9119,
+  "title": "Rougets à la livournaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 ou 8 beaux rougets, selon taille",
+      "quantity": 4,
+      "unit": null,
+      "label": "beaux rougets, selon taille"
+    },
+    {
+      "raw": "1 kg de tomates",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "tomates"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "2 c. à soupe de câpres, (au sel si possible)",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "câpres, (au sel si possible)"
+    },
+    {
+      "raw": "1 petit bouquet de persil",
+      "quantity": 1,
+      "unit": "petit bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "15 feuilles de basilic",
+      "quantity": 15,
+      "unit": "feuilles",
+      "label": "basilic"
+    },
+    {
+      "raw": "3 c. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyer les rougets et mettre à l'intérieur une branche de persil et quelques câpres.",
+    "Préparer la sauce: faire blondir l'ail émincé dans la moitié de l'huile, ajouter le reste de persil, le basilic, les câpres et les tomates pelées, épépinées et coupées en morceaux.",
+    "Cuire 10 mn à couvert.",
+    "Faire poêler vivement les rougets des deux côtés dans le restant d'huile d'olive.",
+    "On ajoute ensuite la sauce, puis on couvre et on fait cuire encore 5 mn à petit feu."
+  ],
+  "status": "published",
+  "slug": "rougets-a-la-livournaise",
+  "publishedAt": 1787416357519,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

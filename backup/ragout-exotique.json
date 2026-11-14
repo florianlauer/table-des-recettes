@@ -1,0 +1,95 @@
+{
+  "id": "j5746rsqzk57hs2rmpzxkhkhz18ha243",
+  "creationTime": 1793443069989.0498,
+  "title": "Ragoût exotique",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1,5 kg d'échine de porc",
+      "quantity": 1.5,
+      "unit": "kg",
+      "label": "échine de porc"
+    },
+    {
+      "raw": "20 abricots secs",
+      "quantity": 20,
+      "unit": null,
+      "label": "abricots secs"
+    },
+    {
+      "raw": "100 g de raisins secs",
+      "quantity": 100,
+      "unit": "g",
+      "label": "raisins secs"
+    },
+    {
+      "raw": "5 échalotes",
+      "quantity": 5,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 verres de vin rouge",
+      "quantity": 2,
+      "unit": "verres",
+      "label": "vin rouge"
+    },
+    {
+      "raw": "4 c. à soupe de vinaigre",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "3/4 de litre de bouillon de bœuf",
+      "quantity": 0.75,
+      "unit": "litre",
+      "label": "bouillon de bœuf"
+    },
+    {
+      "raw": "1 c. à café de cumin",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "cumin"
+    },
+    {
+      "raw": "1 c. à soupe de miel",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "Huile",
+      "quantity": null,
+      "unit": null,
+      "label": "Huile"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La veille, faire tremper les abricots dans de l'eau.",
+    "Préparer une marinade : dans un saladier verser le vin, le vinaigre. Ajouter le cumin, les raisins secs et la viande coupée en morceaux. Saler, poivrer. Laisser mariner toute la nuit.",
+    "Dans une cocotte, faire blondir les échalotes hachées avec 2 c. à soupe d'huile, ajouter ensuite la viande et sa marinade, le bouillon et le miel.",
+    "Laisser cuire le tout couvert et à feu doux pendant 1 h.",
+    "Ajouter alors les abricots égouttés et rectifier l'assaisonnement.",
+    "Laisser encore cuire 30 mn, puis servir tout de suite, dans la cocotte."
+  ],
+  "status": "published",
+  "slug": "ragout-exotique",
+  "publishedAt": 1793443118581,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

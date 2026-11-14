@@ -1,0 +1,111 @@
+{
+  "id": "j5778aqwxrtjy0eaav19yaft2d8j7xr4",
+  "creationTime": 1794661466651.3752,
+  "title": "Blanquette de veau",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1,2 kg d'épaule de veau désossée",
+      "quantity": 1.2,
+      "unit": "kg",
+      "label": "épaule de veau désossée"
+    },
+    {
+      "raw": "8 carottes",
+      "quantity": 8,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 gros oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "gros oignon"
+    },
+    {
+      "raw": "3 poireaux",
+      "quantity": 3,
+      "unit": null,
+      "label": "poireaux"
+    },
+    {
+      "raw": "2 clous de girofle",
+      "quantity": 2,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "300 g de champignons de Paris",
+      "quantity": 300,
+      "unit": "g",
+      "label": "champignons de Paris"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "30 cl de vin blanc",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "70 g de beurre",
+      "quantity": 70,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "70 g de farine",
+      "quantity": 70,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "3 jaunes d'œufs",
+      "quantity": 3,
+      "unit": null,
+      "label": "jaunes d'œufs"
+    },
+    {
+      "raw": "30 cl de crème liquide",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez la viande en morceaux. Mettez les morceaux dans une marmite et couvrez-les d'eau froide. Portez à ébullition et écumez parfaitement.",
+    "Pelez deux carottes et l'oignon. Coupez les carottes en gros morceaux et piquez l'oignon de clous de girofle.",
+    "Ajoutez le vin blanc, l'oignon piqué, les carottes et le bouquet garni dans la marmite. Salez, poivrez et faites cuire une heure à petits frémissements.",
+    "Pendant ce temps, nettoyez les champignons et émincez-les. Portez à ébullition une casserole d'eau citronnée et faites-y blanchir les champignons une minute. Egouttez-les et réservez.",
+    "Pelez et coupez les carottes restantes en rondelles. Lavez et émincez les poireaux.",
+    "Portez une casserole d'eau salée à ébullition. Faites-y cuire les rondelles de carotte dix minutes puis ajoutez les poireaux et prolongez la cuisson dix minutes. Egouttez-les et réservez au chaud.",
+    "Au terme de la cuisson de la viande, égouttez-la et filtrez le bouillon.",
+    "Faites fondre le beurre dans une grande sauteuse et mettez-y les morceaux de viande. Faites-les étuver dix minutes puis saupoudrez-les de farine, mélangez et versez le bouillon. Faites cuire vingt minutes. Retirez la viande de la sauteuse et maintenez-la au chaud.",
+    "Faites bouillir la sauce cinq minutes. Pendant ce temps, fouettez les jaunes d'œufs et la crème. Ajoutez une cuillère à soupe de jus de cuisson, mélangez et reversez le tout dans la sauteuse. Fouettez.",
+    "Remettez les morceaux de viande dans la sauteuse ainsi que tous les légumes et faites réchauffer sans laisser la sauce bouillir. Servez très chaud avec du riz."
+  ],
+  "status": "published",
+  "slug": "blanquette-de-veau",
+  "publishedAt": 1794661494565,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

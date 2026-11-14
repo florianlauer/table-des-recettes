@@ -1,0 +1,48 @@
+{
+  "id": "j578rk420rzmqdyk57j649et0d8czrs5",
+  "creationTime": 1787419381225.3115,
+  "title": "Filet de truite et marinière de céleri",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g de filet de truite avec peau et écailles",
+      "quantity": 600,
+      "unit": "g",
+      "label": "filet de truite avec peau et écailles"
+    },
+    {
+      "raw": "200 g de beurre, 1 c. à soupe d'huile",
+      "quantity": 200,
+      "unit": "g",
+      "label": "beurre, 1 c. à soupe d'huile"
+    },
+    {
+      "raw": "1 gousse d'ail, 2 échalotes, 1 pied de céleri",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail, 2 échalotes, 1 pied de céleri"
+    },
+    {
+      "raw": "1/2 l de vin blanc sec",
+      "quantity": 0.5,
+      "unit": "l",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "2 c. à soupe de persil, 2 de cerfeuil, sel, poivre",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "persil, 2 de cerfeuil, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire, côté peau, dans 50 g de beurre et un peu d'huile le filet coupé en 4 durant 10 min. Réservez au chaud. Remettez 50 g de beurre et un peu d'huile dans la sauteuse, faites-y revenir ail, échalotes et céleri émincés. Ajoutez le vin, laissez cuire 10 min, salez et poivrez. Versez les légumes dans un plat, disposez dessus les filets, enfournez 5 min (th. 8/240 °C). Dressez le poisson sur un plat de service, liez la marinière de céleri avec le reste de beurre entourer le poisson, parsemez de persil et de cerfeuil."
+  ],
+  "status": "published",
+  "slug": "filet-de-truite-et-mariniere-de-celeri",
+  "publishedAt": 1787419407088,
+  "imageStorageId": "kg24tk9mty7zvj04j0mnwm3smd8cyfvr",
+  "beautifiedStorageId": "kg2121md3ad4krmszjs88t4nad8cyqer"
+}

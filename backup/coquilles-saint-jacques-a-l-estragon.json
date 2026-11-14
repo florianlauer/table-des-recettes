@@ -1,0 +1,92 @@
+{
+  "id": "j57dm9gmtnq4ntq9y4btt0rjwd8cm6kf",
+  "creationTime": 1786983289159.1846,
+  "title": "Coquilles Saint-Jacques à l'estragon",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "16 coquilles Saint-Jacques",
+      "quantity": 16,
+      "unit": null,
+      "label": "coquilles Saint-Jacques"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "6 échalotes",
+      "quantity": 6,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "5 cuil. à soupe d'huile à l'estragon",
+      "quantity": 5,
+      "unit": "cuillères à soupe",
+      "label": "huile à l'estragon"
+    },
+    {
+      "raw": "70 g de beurre",
+      "quantity": 70,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuil. à soupe d'estragon",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "estragon"
+    },
+    {
+      "raw": "1 cuil. à soupe de cerfeuil",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "cerfeuil"
+    },
+    {
+      "raw": "2 dl de pâte à beignet",
+      "quantity": 2,
+      "unit": "dl",
+      "label": "pâte à beignet"
+    },
+    {
+      "raw": "4 courgettes",
+      "quantity": 4,
+      "unit": null,
+      "label": "courgettes"
+    },
+    {
+      "raw": "1 bain de friture d'huile",
+      "quantity": 1,
+      "unit": "bain de friture",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire chauffer le bain d'huile. Couper les courgettes en tranches. Les tremper dans la pâte à beignet, puis les plonger dans le bain d'huile de friture. Les retirer dès qu'elles deviennent dorées. Les garder au chaud. Dans une poêle, faire chauffer l'huile, puis ajouter les noix de Saint-Jacques. Saler et poivrer. Laisser cuire environ 10 mn. Lorsqu'elles sont dorées, les mettre dans un plat que vous garderez au chaud.",
+    "Dans une casserole, sur feu doux, faire fondre les échalotes hachées, l'ail pilé. Saler et poivrer. Après 3 mn de cuisson, ajouter l'estragon et le cerfeuil hachés, prolonger la cuisson de 1 mn.",
+    "Napper les noix de Saint-Jacques de cette sauce."
+  ],
+  "status": "published",
+  "slug": "coquilles-saint-jacques-a-l-estragon",
+  "publishedAt": 1786983328819,
+  "imageStorageId": "kg2fxevta0mgmz4e2cv796ds398cn8v0",
+  "beautifiedStorageId": "kg29vy5fx1byda20ytg49e8bf18cm8fq"
+}

@@ -1,0 +1,76 @@
+{
+  "id": "j5740d2j115wfweeprza79fqvh8j60db",
+  "creationTime": 1794661755379.9783,
+  "title": "Le tournedos poêlé et sa sauce crémeuse au poivron",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "Dans le filet de boeuf paré, tailler 4 tournedos de 140 g chacun",
+      "quantity": 4,
+      "unit": "tournedos",
+      "label": "filet de boeuf paré de 140 g chacun"
+    },
+    {
+      "raw": "4 échalotes",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "20 cl de vin blanc",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "Thym, laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "Thym, laurier"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "3 poivrons rouges",
+      "quantity": 3,
+      "unit": null,
+      "label": "poivrons rouges"
+    },
+    {
+      "raw": "3 cuillerées à soupe d'huile ISIO 4",
+      "quantity": 3,
+      "unit": "cuillerées à soupe",
+      "label": "huile ISIO 4"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une cocotte, faire revenir, dans 2 cuillères d'huile ISIO 4, les échalotes, l'oignon, la carotte ciselés. Remuer, déglacer avec le vin blanc. Ajouter 2 dl d'eau et laisser cuire doucement. Ajouter l'ail, le thym et le laurier.",
+    "Cuire les poivrons à l'eau 15 minutes.",
+    "Mixer le fond de cuisson, avec les poivrons égouttés. Assaisonner.",
+    "Faire chauffer l'huile restante et cuire les tournedos 5 mn de chaque côté.",
+    "Verser la sauce dans les assiettes et déposer les tournedos au milieu."
+  ],
+  "status": "published",
+  "slug": "le-tournedos-poele-et-sa-sauce-cremeuse-au-poivron",
+  "publishedAt": 1794662008205,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

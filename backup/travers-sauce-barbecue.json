@@ -1,0 +1,56 @@
+{
+  "id": "j570rgtagzz6vk2eqjj9c7jj6h8hb12j",
+  "creationTime": 1793443069989.0496,
+  "title": "Travers sauce barbecue",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kg de travers de porc",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "travers de porc"
+    },
+    {
+      "raw": "3 c. à soupe de ketchup",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "ketchup"
+    },
+    {
+      "raw": "1 c. à soupe d'huile",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un saladier verser le ketchup, l'huile et le vinaigre.",
+    "Saler, poivrer.",
+    "À l'aide d'un petit fouet à main, bien mélanger tous les ingrédients.",
+    "Couper le travers de porc en morceaux.",
+    "Les badigeonner très soigneusement sur les deux faces avec la préparation au ketchup.",
+    "Les disposer sur une grille, placer la lèchefrite au-dessous.",
+    "Faire cuire sous le gril du four 8 mn environ en retournant à mi-cuisson, ou sur un barbecue.",
+    "Badigeonner abondamment de sauce au moins 2 fois en cours de cuisson.",
+    "Servir aussitôt cuit."
+  ],
+  "status": "published",
+  "slug": "travers-sauce-barbecue",
+  "publishedAt": 1793443114111,
+  "imageStorageId": "kg23ksz10j76e9tzeqr7y40c398hb840",
+  "beautifiedStorageId": "kg2chjy274c07r1wd0qkavvgf58hbvrk"
+}

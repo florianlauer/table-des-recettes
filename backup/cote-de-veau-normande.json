@@ -1,0 +1,57 @@
+{
+  "id": "j575c6eqvdzymq3pfhej718y1n8j6prj",
+  "creationTime": 1794661466651.3757,
+  "title": "Côte de veau normande",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 côtes premières de 180 à 200 g",
+      "quantity": 6,
+      "unit": null,
+      "label": "côtes premières de 180 à 200 g"
+    },
+    {
+      "raw": "125 g de beurre",
+      "quantity": 125,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "6 cuillerées à soupe de Calvados",
+      "quantity": 6,
+      "unit": "cuillerées à soupe",
+      "label": "Calvados"
+    },
+    {
+      "raw": "200 g de crème",
+      "quantity": 200,
+      "unit": "g",
+      "label": "crème"
+    },
+    {
+      "raw": "1 kg de pommes Golden",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "pommes Golden"
+    },
+    {
+      "raw": "1 cuillerée à soupe de sucre, sel, poivre",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "sucre, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites dorer les côtes au beurre dans une poêle et réservez-les au chaud dans un plat allant au four. Salez et poivrez.",
+    "Déglacez la poêle avec la crème, faites réduire d'un tiers. Versez cette crème sur les côtelettes avec le Calvados*.",
+    "Laissez cuire 15 à 20 minutes à four moyen (180° C).",
+    "Pendant ce temps, épluchez les pommes et faites-les dorer au beurre. A mi-cuisson, saupoudrez-les de sucre pour les glacer."
+  ],
+  "status": "published",
+  "slug": "cote-de-veau-normande",
+  "publishedAt": 1794661494565,
+  "imageStorageId": "kg2a249mdx7sgvd53ymawj9nwx8j6f3g",
+  "beautifiedStorageId": "kg26p42xscyhqrn5kay2bxb2n18j6467"
+}

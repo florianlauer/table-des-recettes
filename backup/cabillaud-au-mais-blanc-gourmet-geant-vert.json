@@ -1,0 +1,58 @@
+{
+  "id": "j57eat7t943hmf258mah2ctp9s8cywhh",
+  "creationTime": 1787414767746.384,
+  "title": "Cabillaud au maïs blanc gourmet Géant Vert",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de cabillaud",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de cabillaud"
+    },
+    {
+      "raw": "2 boîtes de 285g de Maïs Blanc Gourmet Géant Vert",
+      "quantity": 2,
+      "unit": "boîtes",
+      "label": "de 285g de Maïs Blanc Gourmet Géant Vert"
+    },
+    {
+      "raw": "3 échalotes",
+      "quantity": 3,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 citrons",
+      "quantity": 2,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "1 c. à s. de persil ciselé",
+      "quantity": 1,
+      "unit": "c. à s.",
+      "label": "de persil ciselé"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Versez le contenu des 2 boîtes de Maïs Blanc Gourmet Géant Vert dans un plat adapté au four à micro-ondes, salez et poivrez.",
+    "Disposez les filets de cabillaud par-dessus.",
+    "Pelez et ciselez les échalotes et ajoutez-les par-dessus, ainsi que le persil.",
+    "Couvrez le plat de son couvercle et faites cuire au micro-ondes (1) min à puissance maximale.",
+    "Servez avec les citrons coupés en deux."
+  ],
+  "status": "published",
+  "slug": "cabillaud-au-mais-blanc-gourmet-geant-vert",
+  "publishedAt": 1787414797663,
+  "imageStorageId": "kg26qgsr0m8rcnyx9cye0zq6d98cyajt",
+  "beautifiedStorageId": "kg201p924bhbth9x6nkpj0ybx98czeke"
+}

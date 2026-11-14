@@ -1,0 +1,125 @@
+{
+  "id": "j577v5rrgsp53bdbdj443k8j2n8gpata",
+  "creationTime": 1792583846404.0854,
+  "title": "Brochettes de bœuf aux morilles et au maïs blanc",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de bœuf premier choix, en cubes",
+      "quantity": 400,
+      "unit": "g",
+      "label": "bœuf premier choix, en cubes"
+    },
+    {
+      "raw": "1 rognon de veau préparé par votre boucher et coupé en morceaux",
+      "quantity": 1,
+      "unit": null,
+      "label": "rognon de veau préparé par votre boucher et coupé en morceaux"
+    },
+    {
+      "raw": "1 boîte de 300 g de maïs blanc Géant Vert",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "de 300 g de maïs blanc Géant Vert"
+    },
+    {
+      "raw": "300 g de morilles fraîches",
+      "quantity": 300,
+      "unit": "g",
+      "label": "morilles fraîches"
+    },
+    {
+      "raw": "une vingtaine d'oignons grelots",
+      "quantity": 20,
+      "unit": null,
+      "label": "oignons grelots"
+    },
+    {
+      "raw": "feuilles de laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "feuilles de laurier"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "vin blanc",
+      "quantity": null,
+      "unit": null,
+      "label": "vin blanc"
+    },
+    {
+      "raw": "thym pour la marinade",
+      "quantity": null,
+      "unit": null,
+      "label": "thym pour la marinade"
+    },
+    {
+      "raw": "1/4 litre de crème fleurette",
+      "quantity": 0.25,
+      "unit": "litre",
+      "label": "crème fleurette"
+    },
+    {
+      "raw": "1 cuillerée à café de moutarde",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "moutarde"
+    },
+    {
+      "raw": "1 cuillerée à café de graines de moutarde",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "graines de moutarde"
+    },
+    {
+      "raw": "2 échalotes hachées",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes hachées"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "brochettes",
+      "quantity": null,
+      "unit": null,
+      "label": "brochettes"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites mariner la viande 2-3 heures.",
+    "Lavez les morilles et poêlez-les 15 mn avec un peu d'eau.",
+    "Confectionnez les brochettes en piquant les cubes de viande et de rognons, 2 morilles par brochette (le surplus servira à la sauce), les oignons grelots et quelques feuilles de laurier.",
+    "Faites cuire au barbecue ou au grill une quinzaine de minutes, pendant ce temps, préparez la sauce.",
+    "Faites dorer les échalotes dans un peu de beurre, ajoutez les morilles, la crème fraîche, la moutarde et les graines de moutarde, salez et poivrez, laissez réduire.",
+    "Vous proposerez la sauce séparément ainsi que du maïs blanc sauté au beurre et bien poivré."
+  ],
+  "status": "published",
+  "slug": "brochettes-de-boeuf-aux-morilles-et-au-mais-blanc",
+  "publishedAt": 1792583882696,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

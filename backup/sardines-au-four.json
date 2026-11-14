@@ -1,0 +1,53 @@
+{
+  "id": "j5780hszxkd163q8dj1xrr8ja98ctrb1",
+  "creationTime": 1787248435175.4653,
+  "title": "Sardines au four",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "2 douzaines de petites sardines",
+      "quantity": 2,
+      "unit": "douzaines",
+      "label": "petites sardines"
+    },
+    {
+      "raw": "du fenouil en branche séché",
+      "quantity": null,
+      "unit": null,
+      "label": "fenouil en branche séché"
+    },
+    {
+      "raw": "2 cuillères à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "4 citrons",
+      "quantity": 4,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Ecaillez les sardines sous l'eau froide courante en remontant de la queue vers la tête.",
+    "Faites une petite incision sous le ventre et videz-les.",
+    "Lavez, épongez.",
+    "Dans un plat allant au four, disposez les sardines sur un lit de fenouil. Salez, poivrez, arrosez d'huile, d'un jus de citron et d'un peu d'eau.",
+    "Mettez à four chaud et laissez cuire 1/4 h en arrosant très souvent.",
+    "Servez accompagné de quartiers de citron."
+  ],
+  "status": "published",
+  "slug": "sardines-au-four",
+  "publishedAt": 1787248465803,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,96 @@
+{
+  "id": "j57avawh53pn0cvjaswxqdtsph8d8s2z",
+  "creationTime": 1787830359704.454,
+  "title": "Lotte au cidre et son riz",
+  "type": "plat",
+  "servings": 5,
+  "ingredients": [
+    {
+      "raw": "250 g de riz long grain (soit 2 sachets de 125 g)",
+      "quantity": 250,
+      "unit": "g",
+      "label": "de riz long grain (soit 2 sachets de 125 g)"
+    },
+    {
+      "raw": "1 kg de lotte coupée en morceaux",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "de lotte coupée en morceaux"
+    },
+    {
+      "raw": "3 petites pommes",
+      "quantity": 3,
+      "unit": null,
+      "label": "petites pommes"
+    },
+    {
+      "raw": "5 dl de cidre brut",
+      "quantity": 5,
+      "unit": "dl",
+      "label": "de cidre brut"
+    },
+    {
+      "raw": "25 g de farine",
+      "quantity": 25,
+      "unit": "g",
+      "label": "de farine"
+    },
+    {
+      "raw": "25 g de margarine",
+      "quantity": 25,
+      "unit": "g",
+      "label": "de margarine"
+    },
+    {
+      "raw": "1 citron jaune",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron jaune"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "d'ail"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "une branche de persil",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "de persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire légèrement dorer la lotte sur les 2 faces, dans une cocotte.",
+    "Emincer les oignons. Peler les pommes, les couper en rondelles.",
+    "Retirer la lotte et mettre les oignons dans la cocotte. Les faire blondir. Ajouter la farine et remuer pendant 2 mn. Incorporer peu à peu le cidre.",
+    "Ajouter les pommes, l'ail épluché, et la lotte. Saler, poivrer. Porter à ébullition.",
+    "Puis disposer la préparation dans un plat allant au four. Laisser cuire pendant 45 à 50 mn à four moyen (180 °C).",
+    "Pendant ce temps, faire cuire le riz dans 2 fois 1/2 son volume en eau salée, pendant 15 à 20 mn.",
+    "Servir le riz blanc moulé en médaillon dans l'assiette pour accompagner le poisson et sa sauce. Décorer avec des rondelles de citron et du persil haché."
+  ],
+  "status": "published",
+  "slug": "lotte-au-cidre-et-son-riz",
+  "publishedAt": 1787830387175,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

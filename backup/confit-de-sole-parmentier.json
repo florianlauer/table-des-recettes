@@ -1,0 +1,86 @@
+{
+  "id": "j572cdzm7z9zxd7ajcpyrnhf3x8d8mha",
+  "creationTime": 1787830702686.784,
+  "title": "Confit de sole Parmentier",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de purée de pommes de terre",
+      "quantity": 400,
+      "unit": "g",
+      "label": "purée de pommes de terre"
+    },
+    {
+      "raw": "4 filets de sole",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de sole"
+    },
+    {
+      "raw": "2 cuil. à soupe de ciboulette",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "ciboulette"
+    },
+    {
+      "raw": "3 cuil. à soupe d'échalote",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "échalote"
+    },
+    {
+      "raw": "2 cuil. à soupe de mélange d'herbes pour poisson",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "mélange d'herbes pour poisson"
+    },
+    {
+      "raw": "200 g de pois gourmands",
+      "quantity": 200,
+      "unit": "g",
+      "label": "pois gourmands"
+    },
+    {
+      "raw": "8 cuil. à soupe d'huile d'olive",
+      "quantity": 8,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "un demi-citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuil. à soupe de vinaigre balsamique",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre balsamique"
+    },
+    {
+      "raw": "farine, sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "farine, sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Réchauffer la purée de pommes de terre sur feu doux avec 5 cuil. à soupe d'huile d'olive, la ciboulette, 2 cuil. à soupe de jus de citron. Saler et poivrer. Répartir le mélange dans quatre ramequins individuels huilés. Réserver.",
+    "Saler et poivrer les filets de sole, les fariner très légèrement. Chauffer 40 g de beurre dans une poêle et, dès qu'il frémit, y saisir les filets 3 mn par face, les détailler en trois morceaux puis les disposer dans une casserole. Ajouter le reste de beurre fondu, 1 cuil. à soupe d'huile d'olive, 1 cuil. à soupe de jus de citron, le vinaigre balsamique, l'échalote et les herbes pour poisson. Laisser confire 5 mn à feu doux.",
+    "Faire cuire les pois gourmands 3 mn à l'eau bouillante salée. Egoutter aussitôt. Faire réchauffer les ramequins 3 mn au four à micro-ondes ou 10 mn au four à thermostat 6 (180 °C). Les démouler, disposer un filet de sole sur le dessus et les pois gourmands autour. Servir bien chaud."
+  ],
+  "status": "published",
+  "slug": "confit-de-sole-parmentier",
+  "publishedAt": 1787830716735,
+  "imageStorageId": "kg2c033jtjsq8qycws833kd5hn8d93k8",
+  "beautifiedStorageId": "kg2543gmpg5kbj2keaz3g70qcx8d8jck"
+}

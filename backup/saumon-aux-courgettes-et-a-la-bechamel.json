@@ -1,0 +1,65 @@
+{
+  "id": "j575svdx6q1859yet1e1xt3x3d8czf3g",
+  "creationTime": 1787414853182.4795,
+  "title": "Saumon aux courgettes et à la béchamel",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "3 courgettes",
+      "quantity": 3,
+      "unit": null,
+      "label": "courgettes"
+    },
+    {
+      "raw": "1 cuillère à soupe d'huile d'olive",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "du beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "2 pavés de saumon crus",
+      "quantity": 2,
+      "unit": null,
+      "label": "pavés de saumon crus"
+    },
+    {
+      "raw": "sauce Béchamel Knorr",
+      "quantity": null,
+      "unit": null,
+      "label": "sauce Béchamel Knorr"
+    },
+    {
+      "raw": "50 cl de lait",
+      "quantity": 50,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "un œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Lavez et coupez en très fines rondelles 3 courgettes.",
+    "Faites-les revenir 5 mn dans une grande poêle avec 1 cuillère à soupe d'huile d'olive.",
+    "Puis recouvrez le fond d'un plat à gratin beurré d'une couche de courgettes.",
+    "Ajoutez 2 pavés de saumon crus coupés en dés et à nouveau une couche de courgettes.",
+    "Préparez votre sauce Béchamel Knorr avec 50 cl de lait puis, hors du feu, ajoutez un œuf.",
+    "Versez la béchamel sur le gratin et enfournez à 200°C pendant 30 mn."
+  ],
+  "status": "published",
+  "slug": "saumon-aux-courgettes-et-a-la-bechamel",
+  "publishedAt": 1787414864286,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

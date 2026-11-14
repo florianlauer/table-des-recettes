@@ -1,0 +1,61 @@
+{
+  "id": "j57er72g4qdq2h96yk1s6qefdh8j6td9",
+  "creationTime": 1794661368720.212,
+  "title": "Rôti de veau et carottes nouvelles au cumin",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg de rôti de veau dans le quasi",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "rôti de veau dans le quasi"
+    },
+    {
+      "raw": "1 livre de carottes nouvelles",
+      "quantity": 1,
+      "unit": "livre",
+      "label": "carottes nouvelles"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuil. à soupe rase de cumin en grains",
+      "quantity": 1,
+      "unit": "cuil. à soupe rase",
+      "label": "cumin en grains"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire à couvert le rôti de veau à la vapeur, sans le saler ni le poivrer, pendant 45 min",
+    "15 min avant la fin, mettez à cuire dans le panier supérieur les carottes épluchées, tronçonnées, rincées et roulées dans les grains de cumin",
+    "Parallèlement, préchauffez le four à 260 °C (th. 8 environ)",
+    "Faites fondre 3 min le beurre dans un plat de cuisson au four",
+    "Epongez le rôti après l'avoir débarrassé de sa barde, s'il en a une",
+    "Roulez-le dans le beurre fondu, ainsi que les carottes au cumin",
+    "Enfournez une dizaine de minutes jusqu'à ce que le rôti soit doré",
+    "Salez et poivrez au moment du service."
+  ],
+  "status": "published",
+  "slug": "roti-de-veau-et-carottes-nouvelles-au-cumin",
+  "publishedAt": 1794661403733,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

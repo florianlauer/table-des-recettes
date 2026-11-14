@@ -1,0 +1,88 @@
+{
+  "id": "j579emhas29b0em1dh5dqajcts8cyct2",
+  "creationTime": 1787415246944.7842,
+  "title": "La pochouse",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "2 kilos de poissons (anguille, brochet, perche, tanche, carpe)",
+      "quantity": 2,
+      "unit": "kilos",
+      "label": "poissons (anguille, brochet, perche, tanche, carpe)"
+    },
+    {
+      "raw": "1 bouteille de bourgogne aligoté blanc",
+      "quantity": 1,
+      "unit": "bouteille",
+      "label": "bourgogne aligoté blanc"
+    },
+    {
+      "raw": "1 tête d'ail",
+      "quantity": 1,
+      "unit": "tête",
+      "label": "ail"
+    },
+    {
+      "raw": "150 g de lard",
+      "quantity": 150,
+      "unit": "g",
+      "label": "lard"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuillerée à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "100 g de crème fraîche",
+      "quantity": 100,
+      "unit": "g",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "Thym",
+      "quantity": null,
+      "unit": null,
+      "label": "Thym"
+    },
+    {
+      "raw": "Croûtons de pain frits",
+      "quantity": null,
+      "unit": null,
+      "label": "Croûtons de pain frits"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyer et couper les poissons en tronçons.",
+    "Dans un mélange moitié eau, moitié vin blanc, faire cuire à part les têtes et les queues.",
+    "Dans une cocotte, jeter le lard gras coupé en petits dés, l'ail écrasé et le thym.",
+    "Ajouter le reste de vin blanc, puis le poisson.",
+    "Laisser cuire 10 minutes.",
+    "Retirer ensuite les morceaux de poissons et les mettre dans un plat tenu au chaud.",
+    "A feu doux, délayer le beurre manié avec de la farine.",
+    "Ajouter peu à peu le fumet filtré et le jus de cuisson.",
+    "Faire bouillir quelques instants.",
+    "Enfin, ajouter la crème fraîche et assaisonner.",
+    "Servir avec des croûtons frits frottés d'ail."
+  ],
+  "status": "published",
+  "slug": "la-pochouse",
+  "publishedAt": 1787415275575,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

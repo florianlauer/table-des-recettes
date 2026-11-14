@@ -1,0 +1,51 @@
+{
+  "id": "j57d48wfv41kehyy96n02a24518d8hsh",
+  "creationTime": 1787830494864.6672,
+  "title": "Maquereaux à la tomate",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 maquereaux levés en filets",
+      "quantity": 6,
+      "unit": null,
+      "label": "maquereaux levés en filets"
+    },
+    {
+      "raw": "1 gousse d'ail, 2 oignons, 1 poivron rouge",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "d'ail, 2 oignons, 1 poivron rouge"
+    },
+    {
+      "raw": "3 cuil. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "20 cl de pulpe de tomate, 10 cl de vin blanc",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "de pulpe de tomate, 10 cl de vin blanc"
+    },
+    {
+      "raw": "origan, estragon, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "origan, estragon, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites revenir l'ail et les oignons hachés ainsi que le poivron émincé dans l'huile puis étalez au fond d'un plat.",
+    "Rangez les filets sur ce lit de légumes, salez et poivrez.",
+    "Mélangez pulpe de tomate et vin blanc, aromatisez d'origan et estragon séchés, assaisonnez et versez sur le poisson.",
+    "Enfournez (th.6/180°C) pendant 30 min."
+  ],
+  "status": "published",
+  "slug": "maquereaux-a-la-tomate",
+  "publishedAt": 1787830526157,
+  "imageStorageId": "kg22qrz21mt7vbpa4beqgn8dp58d8x22",
+  "beautifiedStorageId": "kg2f540f0n0x5v9gry9sdqfad98d9atf"
+}

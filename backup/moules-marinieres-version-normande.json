@@ -1,0 +1,53 @@
+{
+  "id": "j57b5733q6z3ct8qnwn7g9wbfs8cgnpn",
+  "creationTime": 1786815656232.1082,
+  "title": "Moules marinières version normande",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "3 pommes golden",
+      "quantity": 3,
+      "unit": null,
+      "label": "pommes golden"
+    },
+    {
+      "raw": "3 kg de moules",
+      "quantity": 3,
+      "unit": "kg",
+      "label": "de moules"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "20 cl de vin blanc",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "de vin blanc"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyez les pommes sans les éplucher.",
+    "Coupez la moitié en petits dés et l'autre en bâtonnets.",
+    "Nettoyez les moules.",
+    "Épluchez et ciselez les oignons, faites-les revenir 2 à 3 min avec un peu de beurre.",
+    "Versez le vin blanc. Dès qu'il bout, ajoutez les moules et les dés de pomme. Comptez entre 5 et 10 min, stoppez le feu dès que les moules sont ouvertes (au-delà, la chair serait caoutchouteuse).",
+    "Servez à l'assiette et ajoutez les bâtonnets de pomme crue."
+  ],
+  "status": "published",
+  "slug": "moules-marinieres-version-normande",
+  "publishedAt": 1786815776404,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

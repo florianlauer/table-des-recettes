@@ -1,0 +1,62 @@
+{
+  "id": "j57ba6svz8f8hmh1q1n0a4bng18fdw6h",
+  "creationTime": 1790758916432.7415,
+  "title": "Bœuf Mironton",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "600 g de bœuf bouilli",
+      "quantity": 600,
+      "unit": "g",
+      "label": "de bœuf bouilli"
+    },
+    {
+      "raw": "500 g d'oignon",
+      "quantity": 500,
+      "unit": "g",
+      "label": "d'oignon"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "1 cuillerée à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "de farine"
+    },
+    {
+      "raw": "7 dl de bouillon",
+      "quantity": 7,
+      "unit": "dl",
+      "label": "de bouillon"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "1 cuillerée à café de vinaigre",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "de vinaigre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire blondir sur feu doux les oignons émincés. Les saupoudrer de farine et mouiller avec le vinaigre et le bouillon. Ajouter le bouquet garni, saler et poivrer.",
+    "1/2 heure de cuisson à feu doux. Cinq minutes avant la fin de la cuisson, ajouter la viande coupée en tranches.",
+    "Placer la viande sur un plat et napper avec la sauce."
+  ],
+  "status": "published",
+  "slug": "boeuf-mironton",
+  "publishedAt": 1790758931869,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,96 @@
+{
+  "id": "j57c6kvdfwmpwqbadr590fzctd8dasmb",
+  "creationTime": 1787908398999.0461,
+  "title": "Millefeuille aux deux saumons",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "150 g de comté",
+      "quantity": 150,
+      "unit": "g",
+      "label": "de comté"
+    },
+    {
+      "raw": "100 g de saumon fumé",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de saumon fumé"
+    },
+    {
+      "raw": "400 g de saumon frais",
+      "quantity": 400,
+      "unit": "g",
+      "label": "de saumon frais"
+    },
+    {
+      "raw": "250 g de pommes de terre",
+      "quantity": 250,
+      "unit": "g",
+      "label": "de pommes de terre"
+    },
+    {
+      "raw": "1 branche de persil",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "de persil"
+    },
+    {
+      "raw": "300 g de tomates",
+      "quantity": 300,
+      "unit": "g",
+      "label": "de tomates"
+    },
+    {
+      "raw": "50 g d'échalotes",
+      "quantity": 50,
+      "unit": "g",
+      "label": "d'échalotes"
+    },
+    {
+      "raw": "10 cl de crème fraîche",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "1 dl de Côtes du Jura blanc",
+      "quantity": 1,
+      "unit": "dl",
+      "label": "de Côtes du Jura blanc"
+    },
+    {
+      "raw": "huile pour friture",
+      "quantity": null,
+      "unit": null,
+      "label": "huile pour friture"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Lavez et épluchez les pommes de terre.",
+    "Ciselez les échalotes.",
+    "Mondez et épépinez les tomates, puis coupez-les en petits dés.",
+    "Mettez du beurre dans une cocotte allant au four, parsemez d'échalotes ciselées, dés de tomates, persil haché.",
+    "Déposez le saumon frais détaillé en 4 morceaux.",
+    "Ajoutez le vin blanc, sel, poivre et un petit peu d'eau ou de fumet de poisson si possible.",
+    "Portez à frémissement sur le feu, puis terminez la cuisson à four moyen (200°C/th 6-7), durant 5 min environ.",
+    "Faites frire les pommes de terre coupées en tranches de 2 mm.",
+    "Retirez les morceaux de saumon frais, réservez le liquide de cuisson dans une casserole, et réduisez-le au 4/5ème.",
+    "Montez les millefeuilles dans le plat en couches successives : saumon fumé, chips, saumon frais, comté râpé, chips, saumon fumé, comté râpé.",
+    "Ajoutez la crème à la réduction, et réduisez de nouveau pour obtenir une sauce presque nappante.",
+    "Versez la sauce autour des millefeuilles, puis passez à four chaud (220°C/th 7-8), pendant 10 min environ afin de gratiner.",
+    "Servez bien chaud."
+  ],
+  "status": "published",
+  "slug": "millefeuille-aux-deux-saumons",
+  "publishedAt": 1787908531126,
+  "imageStorageId": "kg26sbffgrzhkeag6f008n4vbs8dby4z",
+  "beautifiedStorageId": "kg29hzttajzqshwwrywq2v9hj98dbjb4"
+}

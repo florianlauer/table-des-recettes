@@ -1,0 +1,55 @@
+{
+  "id": "j57crb0s1kfp8atva90ekng5sd8d82hc",
+  "creationTime": 1787830702686.7842,
+  "title": "Papillotes de saumon aux courgettes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 morceaux de filet de saumon de 200 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "morceaux de filet de saumon de 200 g"
+    },
+    {
+      "raw": "2 courgettes",
+      "quantity": 2,
+      "unit": null,
+      "label": "courgettes"
+    },
+    {
+      "raw": "1 pot de Boursin cuisine échalotes et ciboulette",
+      "quantity": 1,
+      "unit": "pot",
+      "label": "Boursin cuisine échalotes et ciboulette"
+    },
+    {
+      "raw": "un petit bouquet de fines herbes (ciboulette, aneth, persil)",
+      "quantity": 1,
+      "unit": "petit bouquet",
+      "label": "fines herbes (ciboulette, aneth, persil)"
+    },
+    {
+      "raw": "1 cuil. à soupe de baies roses",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "baies roses"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffer le four à thermostat n° 7 (210 °C). Rincer les courgettes et les couper en fines rondelles sans les peler. Etaler une cuillerée à soupe de Boursin cuisine au milieu de quatre grands carrés de papier sulfurisé. Répartir quelques rondelles de courgette en les faisant se chevaucher et couvrir avec les morceaux de saumon. Saler, poivrer et recouvrir le poisson du reste de rondelles de courgettes. Répartir le reste du Boursin cuisine. Parsemer de baies roses et de fines herbes et fermer soigneusement les papillotes.",
+    "Les enfourner à mi hauteur et laisser cuire 10 mn. Servir au sortir du four en ouvrant un peu les papillotes pour laisser la vapeur s'échapper avant de les placer dans chaque assiette. Accompagner de pommes vapeur, de pâtes ou d'une simple salade verte."
+  ],
+  "status": "published",
+  "slug": "papillotes-de-saumon-aux-courgettes",
+  "publishedAt": 1787830721326,
+  "imageStorageId": "kg25sp81qme71g6850w4ge06ms8d8nrg",
+  "beautifiedStorageId": "kg23s1nbbz1p1w72b19evg1rwn8d9yf8"
+}

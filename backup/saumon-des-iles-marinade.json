@@ -1,0 +1,111 @@
+{
+  "id": "j57ez3zvj9fkp5fbh1mmq6sa0n8dbbzv",
+  "creationTime": 1787907776085.1316,
+  "title": "Saumon des îles marinade",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de filet de saumon",
+      "quantity": 800,
+      "unit": "g",
+      "label": "filet de saumon"
+    },
+    {
+      "raw": "1 mangue",
+      "quantity": 1,
+      "unit": null,
+      "label": "mangue"
+    },
+    {
+      "raw": "1 noix de coco",
+      "quantity": 1,
+      "unit": null,
+      "label": "noix de coco"
+    },
+    {
+      "raw": "Le jus de 2 citrons verts",
+      "quantity": 2,
+      "unit": "jus de",
+      "label": "citrons verts"
+    },
+    {
+      "raw": "2 citrons jaunes",
+      "quantity": 2,
+      "unit": null,
+      "label": "citrons jaunes"
+    },
+    {
+      "raw": "Sel poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel poivre"
+    },
+    {
+      "raw": "3 cuill à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuill à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "3 cuill à soupe d'huile de tournesol",
+      "quantity": 3,
+      "unit": "cuill à soupe",
+      "label": "huile de tournesol"
+    },
+    {
+      "raw": "Le jus d'un demi citron",
+      "quantity": 0.5,
+      "unit": "jus de",
+      "label": "citron"
+    },
+    {
+      "raw": "Le jus d'une noix de coco",
+      "quantity": 1,
+      "unit": "jus de",
+      "label": "noix de coco"
+    },
+    {
+      "raw": "1 cuill à soupe de sauce soja",
+      "quantity": 1,
+      "unit": "cuill à soupe",
+      "label": "sauce soja"
+    },
+    {
+      "raw": "1/2 bouquet de coriandre émincé",
+      "quantity": 0.5,
+      "unit": "bouquet",
+      "label": "coriandre émincé"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    },
+    {
+      "raw": "Riz sauvage",
+      "quantity": null,
+      "unit": null,
+      "label": "Riz sauvage"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez le filet de saumon en quatre, puis otez la peau en glissant la lame d'un couteau entre la peau et la chair.",
+    "Emincez chaque part de filet de saumon puis disposez les tranches obtenues dans un plat creux. Salez et poivrez, puis arrosez avec les ingrédients de la marinade.",
+    "Réservez une heure au réfrigérateur.",
+    "Cassez la noix de coco, filtrez le jus.",
+    "Préparez des lamelles de noix de coco en vous aidant d'un couteau économe.",
+    "Mélangez les ingrédients de la vinaigrette. Pelez et émincez la mangue.",
+    "Au moment de servir, égouttez le saumon mariné, présentez sur assiette en alternant les lamelles de saumon aux lamelles de mangue.",
+    "Arrosez avec la vinaigrette.",
+    "Décorez avec des lamelles de noix de coco.",
+    "Servez accompagné d'un riz sauvage que vous pourrez agrémenter de noix de coco râpée."
+  ],
+  "status": "published",
+  "slug": "saumon-des-iles-marinade",
+  "publishedAt": 1787907830586,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,69 @@
+{
+  "id": "j5785hqqq78et47pfj6gb1cxsx8cvdqp",
+  "creationTime": 1787247978807.0295,
+  "title": "Crevettes à la thaïlandaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de grosses crevettes décortiquées crues",
+      "quantity": 400,
+      "unit": "g",
+      "label": "grosses crevettes décortiquées crues"
+    },
+    {
+      "raw": "1 cuil. à soupe mélange d'épices",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "mélange d'épices"
+    },
+    {
+      "raw": "1 citron vert non traité",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron vert non traité"
+    },
+    {
+      "raw": "100 g de coulis de tomate nature",
+      "quantity": 100,
+      "unit": "g",
+      "label": "coulis de tomate nature"
+    },
+    {
+      "raw": "2 dl de crème de coco thaïlandaise ou lait de coco",
+      "quantity": 2,
+      "unit": "dl",
+      "label": "crème de coco thaïlandaise ou lait de coco"
+    },
+    {
+      "raw": "2 cuil. à soupe de coriandre ciselée",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "coriandre ciselée"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver le citron vert (lime du Mexique de préférence). Râper très finement son zeste au-dessus d'un bol, le presser et ajouter son jus dans le bol.",
+    "Verser l'huile dans un wok ou, à défaut, dans une sauteuse. La faire chauffer à feu moyen et y faire dorer les épices, afin qu'elles exhalent leur parfum. Ensuite, ajouter les crevettes et les laisser rougir en les tournant sans cesse, 2 mn environ.",
+    "Les saler, les poivrer, les napper de coulis de tomate, et, 1 mn plus tard, ajouter le lait de coco, sans cesser de tourner avec une spatule. Laisser cuire 1 mn de plus, en tournant, puis ajouter le jus de citron vert additionné de son zeste, ainsi que la coriandre.",
+    "Mélanger durant 30 secondes et servir aussitôt."
+  ],
+  "status": "published",
+  "slug": "crevettes-a-la-thailandaise",
+  "publishedAt": 1787248173369,
+  "imageStorageId": "kg223d8qqwm9rwhsc6zj2c28ss8ctqyk",
+  "beautifiedStorageId": "kg2by1643w6ff1vk88xb31ez358ct2pa"
+}

@@ -1,0 +1,82 @@
+{
+  "id": "j578hz0cfkhxcy9acf1tw2jfy58d92er",
+  "creationTime": 1787830359704.4531,
+  "title": "Saint-Pierre au laurier et fenouils confits au safran",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 Saint-Pierre de 1,5 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "Saint-Pierre de 1,5 kg"
+    },
+    {
+      "raw": "12 mini fenouils, 2 endives, 6 tomates cerises",
+      "quantity": 12,
+      "unit": null,
+      "label": "mini fenouils, 2 endives, 6 tomates cerises"
+    },
+    {
+      "raw": "4 échalotes, 1 oignon, 2 carottes, 1 bouquet garni (céleri, poireau, persil, thym)",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes, 1 oignon, 2 carottes, 1 bouquet garni (céleri, poireau, persil, thym)"
+    },
+    {
+      "raw": "2 oranges juteuses",
+      "quantity": 2,
+      "unit": null,
+      "label": "oranges juteuses"
+    },
+    {
+      "raw": "150 g de riz sauvage",
+      "quantity": 150,
+      "unit": "g",
+      "label": "riz sauvage"
+    },
+    {
+      "raw": "100 g de beurre, 10 cl d'huile d'olive",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre, 10 cl d'huile d'olive"
+    },
+    {
+      "raw": "1/2 l de côtes-du-Rhône (cornas)",
+      "quantity": 0.5,
+      "unit": "l",
+      "label": "côtes-du-Rhône (cornas)"
+    },
+    {
+      "raw": "6 cuil. à café de fumet de poisson, 2 de fond de veau (déshydratés), 1 tablette de bouillon de volaille",
+      "quantity": 6,
+      "unit": "cuil. à café",
+      "label": "fumet de poisson, 2 de fond de veau (déshydratés), 1 tablette de bouillon de volaille"
+    },
+    {
+      "raw": "1 cuil. à café de sucre",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "sucre"
+    },
+    {
+      "raw": "1 g de safran, 1 cuil. à soupe de laurier en poudre, sel, poivre",
+      "quantity": 1,
+      "unit": "g",
+      "label": "safran, 1 cuil. à soupe de laurier en poudre, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites écailler le poisson et lever les filets. Cuisez les fenouils à peine recouverts d'eau safranée avec sel, poivre, sucre et 1 noisette de beurre. Faites sauter à l'huile les endives coupées en six, ajoutez le jus d'orange, assaisonnez, couvrez, laissez mijoter jusqu'à ce qu'elles soient tendres.",
+    "Faites suer les échalotes ciselées dans 10 g de beurre, saupoudrez le fond de veau, mouillez d'eau à niveau et laissez cuire jusqu'à évaporation totale. Farcissez les tomates avec les échalotes confites.",
+    "Faites revenir les carottes en dés et le bouquet garni dans un peu d'huile, mouillez avec le vin, laissez évaporer complètement, ajoutez le fumet délayé dans 1/2 l d'eau, laissez réduire de moitié. Passez au chinois, incorporez le reste de beurre par parcelles en fouettant, et trois pincées de laurier.",
+    "Faites revenir le riz dans 2 cuil. d'huile jusqu'à ce qu'il soit translucide. Ajoutez l'oignon haché, mélangez 1 min, mouillez avec le bouillon (2,5 fois le volume de riz), assaisonnez, laissez cuire à couvert 20 min.",
+    "Assaisonnez les filets de poisson, mettez-les dans une poêle antiadhésive très chaude, côté peau dessous, laissez cuire 8 min, saupoudrez de laurier. Dressez sur assiette avec les tomates, les endives, les fenouils et un peu de sauce."
+  ],
+  "status": "published",
+  "slug": "saint-pierre-au-laurier-et-fenouils-confits-au-safran",
+  "publishedAt": 1787830371551,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

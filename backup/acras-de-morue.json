@@ -1,0 +1,96 @@
+{
+  "id": "j577whrpsyaptq05ftyr9cpq818db6ee",
+  "creationTime": 1787908863334.379,
+  "title": "Acras de morue",
+  "type": "apero",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "200 g de morue",
+      "quantity": 200,
+      "unit": "g",
+      "label": "morue"
+    },
+    {
+      "raw": "250 g de farine",
+      "quantity": 250,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "30 cl de lait",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "2 œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "6 cives",
+      "quantity": 6,
+      "unit": null,
+      "label": "cives"
+    },
+    {
+      "raw": "2 brins de persil",
+      "quantity": 2,
+      "unit": "brins",
+      "label": "persil"
+    },
+    {
+      "raw": "6 brins de ciboulette",
+      "quantity": 6,
+      "unit": "brins",
+      "label": "ciboulette"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 piment oiseau",
+      "quantity": 1,
+      "unit": null,
+      "label": "piment oiseau"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "1 litre d'huile de friture",
+      "quantity": 1,
+      "unit": "litre",
+      "label": "huile de friture"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La veille, placez la morue dans un grand récipient d'eau et laissez-la dessaler 24 h au réfrigérateur en prenant soin de changer l'eau au moins trois fois.",
+    "Le jour même, dans un saladier, mélangez la farine, le lait et les œufs jusqu'à ce que la pâte soit homogène. Couvrez d'un linge et laissez reposer 4 h au réfrigérateur.",
+    "Ciselez finement l'oignon pelé, les cives, le persil et la ciboulette. Pelez et pressez les gousses d'ail. Hachez le piment oiseau. Egouttez et émiettez la morue dessalée.",
+    "Mélangez tous ces ingrédients dans un second saladier, puis écrasez à l'aide d'un pilon afin que les acras soient plus fins et plus agréables à déguster.",
+    "Une fois la pâte reposée, mélangez les deux préparations. La texture doit être molle et onctueuse. Salez et poivrez à votre convenance.",
+    "Dans une casserole, faites chauffer l'huile de friture à feu vif. Une fois qu'elle est bien chaude, formez des boules de pâte à l'aide d'une cuillère à soupe et plongez-les directement dans l'huile.",
+    "Faites frire 10 min jusqu'à ce que les acras soient bien dorés. Egouttez-les sur du papier absorbant avant de servir."
+  ],
+  "status": "published",
+  "slug": "acras-de-morue",
+  "publishedAt": 1787908872273,
+  "imageStorageId": "kg26aqw3vthy975cd3zb8ned9h8dage1",
+  "beautifiedStorageId": "kg28by3ny5x1wmjbqx6jnd17zx8dbv9h"
+}

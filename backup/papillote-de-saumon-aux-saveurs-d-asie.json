@@ -1,0 +1,63 @@
+{
+  "id": "j579j8tha1pdwkfgnp5246pqe58db8s7",
+  "creationTime": 1787908960470.9749,
+  "title": "Papillote de saumon aux saveurs d'Asie",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 gros filet de saumon",
+      "quantity": 1,
+      "unit": null,
+      "label": "gros filet de saumon"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "3 cuil. à soupe de sauce de soja sucrée ou salée",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "sauce de soja sucrée ou salée"
+    },
+    {
+      "raw": "le jus de ½ citron",
+      "quantity": 0.5,
+      "unit": "jus de",
+      "label": "citron"
+    },
+    {
+      "raw": "3 cm de gingembre",
+      "quantity": 3,
+      "unit": "cm",
+      "label": "gingembre"
+    },
+    {
+      "raw": "2 ciboules",
+      "quantity": 2,
+      "unit": null,
+      "label": "ciboules"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans un récipient creux, mélangez l’huile d’olive, la sauce de soja, le jus du citron, le gingembre haché et les ciboules ciselées. Salez, poivrez et mélangez.",
+    "Déposez le filet de saumon dans cette marinade. Couvrez d’un film alimentaire et laissez mariner 30 min au frais.",
+    "Préchauffez le four à 200 °C (th. 6-7).",
+    "Découpez une grande feuille de papier sulfurisé. Déposez le filet de saumon au centre et arrosez-le de marinade. Fermez soigneusement la papillote en repliant les côtés et mettez à cuire 15 min. Dégustez chaud avec du blé."
+  ],
+  "status": "published",
+  "slug": "papillote-de-saumon-aux-saveurs-d-asie",
+  "publishedAt": 1787908974540,
+  "imageStorageId": "kg24wfyewffcnptegvavsf82gh8dabgz",
+  "beautifiedStorageId": "kg29zs2bc9fqjc5wgdn5g0qpbd8dam9n"
+}

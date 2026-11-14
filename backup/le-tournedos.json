@@ -1,0 +1,56 @@
+{
+  "id": "j57c94186r531ye30qnh718pvx8fcjj6",
+  "creationTime": 1790750970400.5972,
+  "title": "Le tournedos",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 Chèvretines",
+      "quantity": 8,
+      "unit": null,
+      "label": "Chèvretines"
+    },
+    {
+      "raw": "4 tournedos bardés",
+      "quantity": 4,
+      "unit": null,
+      "label": "tournedos bardés"
+    },
+    {
+      "raw": "2 cuillères à soupe de moutarde de Meaux",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "moutarde de Meaux"
+    },
+    {
+      "raw": "1 cuillère à moka de poivre vert concassé",
+      "quantity": 1,
+      "unit": "cuillère à moka",
+      "label": "poivre vert concassé"
+    },
+    {
+      "raw": "2 cuillères à soupe de cognac",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "cognac"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettre un plat de service et les assiettes dans le four tiède préchauffé (thermostat 3).",
+    "Fondre au bain-marie les Chèvretines avec un peu de moutarde de Meaux, du poivre vert, sel et du cognac. Le mélange ainsi obtenu doit être très onctueux et chaud.",
+    "Verser la préparation sur les tournedos bien chauds et cuits au goût. Servir aussitôt avec une salade verte et des pommes de terre sautées."
+  ],
+  "status": "published",
+  "slug": "le-tournedos",
+  "publishedAt": 1790751043420,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

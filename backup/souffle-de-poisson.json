@@ -1,0 +1,60 @@
+{
+  "id": "j572qyby422y7rqze296yqpjkd8cyhb9",
+  "creationTime": 1787415246944.7847,
+  "title": "Soufflé de poisson",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 cuillères à soupe de farine",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "1/2 litre de lait",
+      "quantity": 0.5,
+      "unit": "litre",
+      "label": "lait"
+    },
+    {
+      "raw": "4 œufs",
+      "quantity": 4,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "restes de poisson",
+      "quantity": null,
+      "unit": null,
+      "label": "restes de poisson"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites fondre le beurre dans une casserole, ajoutez la farine et laissez cuire doucement.",
+    "Mouillez avec le lait chaud en versant doucement et en remuant sans arrêt.",
+    "Portez à ébullition, la sauce doit être épaisse.",
+    "Salez, poivrez, émiettez le poisson.",
+    "Hors du feu, ajoutez les jaunes d'œufs un à un, puis les blancs battus en neige.",
+    "Versez la préparation dans un moule largement beurré sans le remplir complètement.",
+    "Faites cuire à four chaud 20 à 30 mn."
+  ],
+  "status": "published",
+  "slug": "souffle-de-poisson",
+  "publishedAt": 1787415286234,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

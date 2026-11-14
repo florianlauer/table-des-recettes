@@ -1,0 +1,78 @@
+{
+  "id": "j572sqkvcv7xzf3fe1syyv7gq58dbbtd",
+  "creationTime": 1787908960470.9746,
+  "title": "Boulettes de poisson, sauce de soja",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 filets de merlan",
+      "quantity": 4,
+      "unit": null,
+      "label": "filets de merlan"
+    },
+    {
+      "raw": "3 cuil. à soupe de sauce de soja sucrée ou salée",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "sauce de soja sucrée ou salée"
+    },
+    {
+      "raw": "½ baguette rassise",
+      "quantity": 0.5,
+      "unit": "baguette",
+      "label": "baguette rassise"
+    },
+    {
+      "raw": "10 cl de lait",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "½ bouquet de persil plat",
+      "quantity": 0.5,
+      "unit": "bouquet",
+      "label": "persil plat"
+    },
+    {
+      "raw": "1 œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites tremper la baguette dans le lait pour l’humidifier.",
+    "Hachez très finement les filets de poisson au couteau.",
+    "Pelez l’ail et l’oignon et hachez-les finement.",
+    "Lavez le persil et hachez-le.",
+    "Mélangez le tout, puis ajoutez l’œuf, la mie de pain essorée et la sauce de soja.",
+    "Formez des boulettes de la taille d’une noix. Rectifiez l’assaisonnement.",
+    "Disposez dans le panier vapeur et faites cuire 20 min."
+  ],
+  "status": "published",
+  "slug": "boulettes-de-poisson-sauce-de-soja",
+  "publishedAt": 1787908969944,
+  "imageStorageId": "kg2d7j06n4mvys1er1gbb9vw6d8dbd6k",
+  "beautifiedStorageId": "kg23c1h7wvh3g081v8g7244vm18dbr20"
+}

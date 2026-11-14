@@ -1,0 +1,59 @@
+{
+  "id": "j5720ak2p5g37tfaxxghv5r63s8hac0x",
+  "creationTime": 1793442851385.51,
+  "title": "Émincé de bœuf aux oignons",
+  "type": "plat",
+  "servings": 5,
+  "ingredients": [
+    {
+      "raw": "800 g de bœuf cuit en pot-au-feu",
+      "quantity": 800,
+      "unit": "g",
+      "label": "de bœuf cuit en pot-au-feu"
+    },
+    {
+      "raw": "8 oignons",
+      "quantity": 8,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "de vin blanc sec"
+    },
+    {
+      "raw": "1 cuillère à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "de farine"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez la viande en fines lamelles.",
+    "Epluchez et coupez finement les oignons.",
+    "Faites-les fondre à feu doux dans le beurre, puis ajoutez les lamelles de viande.",
+    "Faites revenir jusqu'à ce que le tout soit bien doré.",
+    "Ajoutez alors la farine, remuez bien et mouillez avec le vin blanc.",
+    "Laissez cuire 10 mn environ et dégustez aussitôt."
+  ],
+  "status": "published",
+  "slug": "emince-de-boeuf-aux-oignons",
+  "publishedAt": 1793442874582,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

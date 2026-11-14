@@ -1,0 +1,77 @@
+{
+  "id": "j57d98e7ga8gev4c77h6ab91958j7e11",
+  "creationTime": 1794661368720.2122,
+  "title": "Côte de veau et ses légumes au balsamique",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 côtes de veau",
+      "quantity": 6,
+      "unit": null,
+      "label": "côtes de veau"
+    },
+    {
+      "raw": "600 g de carottes",
+      "quantity": 600,
+      "unit": "g",
+      "label": "carottes"
+    },
+    {
+      "raw": "3 courgettes",
+      "quantity": 3,
+      "unit": null,
+      "label": "courgettes"
+    },
+    {
+      "raw": "300 g de petits pois",
+      "quantity": 300,
+      "unit": "g",
+      "label": "petits pois"
+    },
+    {
+      "raw": "3 oignons frais",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons frais"
+    },
+    {
+      "raw": "2 branches de thym",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "thym"
+    },
+    {
+      "raw": "4 c. à s. de vinaigre balsamique",
+      "quantity": 4,
+      "unit": "c. à s.",
+      "label": "vinaigre balsamique"
+    },
+    {
+      "raw": "5 c. à s. d'huile d'olive",
+      "quantity": 5,
+      "unit": "c. à s.",
+      "label": "d'huile d'olive"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver et éplucher les légumes. Les couper en morceaux de taille équivalente puis les faire revenir à feu vif dans une sauteuse avec 3 c. à s. d'huile d'olive.",
+    "Une fois colorés, ajouter 50 cl d'eau, le thym, le sel et le poivre.",
+    "Laisser mijoter 30 min à feu doux. À mi-cuisson, ajouter les petits pois.",
+    "Égoutter et réserver les légumes.",
+    "Dans une poêle anti-adhésive bien chaude, faire cuire les côtes de veau, 5 min de chaque côté.",
+    "Déglacer au vinaigre balsamique. Assaisonner et parsemer de persil ciselé et servir avec les légumes."
+  ],
+  "status": "published",
+  "slug": "cote-de-veau-et-ses-legumes-au-balsamique",
+  "publishedAt": 1794661403733,
+  "imageStorageId": "kg24gdybsqavndfe4gdy66b2598j692s",
+  "beautifiedStorageId": "kg270agzw2k4fvekggy8rx00rs8j7r5d"
+}

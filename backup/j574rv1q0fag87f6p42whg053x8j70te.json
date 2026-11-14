@@ -1,0 +1,78 @@
+{
+  "id": "j574rv1q0fag87f6p42whg053x8j70te",
+  "creationTime": 1794662700395.4453,
+  "title": "Filet de porc à l'orange",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 beau filet de porc",
+      "quantity": 1,
+      "unit": null,
+      "label": "filet de porc"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "2 oranges",
+      "quantity": 2,
+      "unit": null,
+      "label": "oranges"
+    },
+    {
+      "raw": "15 cl de Porto",
+      "quantity": 15,
+      "unit": "cl",
+      "label": "Porto"
+    },
+    {
+      "raw": "4 échalotes",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "thym, laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "thym, laurier"
+    },
+    {
+      "raw": "fond de veau déshydraté",
+      "quantity": null,
+      "unit": null,
+      "label": "fond de veau déshydraté"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer le fond de veau avec un peu d'eau.",
+    "Laver une orange, en prélever le zeste, l'émincer finement et le faire blanchir à l'eau bouillante, presser l'orange.",
+    "Éplucher la seconde orange à vif et détacher les quartiers.",
+    "Dans une cocotte, faire chauffer l'huile et dorer le filet de porc de tous côtés.",
+    "Saler, poivrer. Lorsque le filet est doré, mettre 20 cl de fond de veau dans la cocotte, couvrir et laisser mijoter une demi-heure environ.",
+    "Dans une petite casserole, mettre les échalotes épluchées et hachées, le thym, le laurier, 2 cuillères à soupe de fond de veau, 15 cl de Porto, le jus d'une orange et la moitié d'un jus de citron, mélanger avec la moitié des zestes d'orange, faire réduire de moitié environ, ajouter les quartiers d'orange, juste le temps de les chauffer.",
+    "Servir le filet sur un plat chaud et l'entourer des quartiers d'orange, napper de sauce (enlever le thym et le laurier) et parsemer la viande du reste des zestes."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

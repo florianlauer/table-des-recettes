@@ -1,0 +1,74 @@
+{
+  "id": "j574d6a6grx17620gcvhdd3tnx8cyyrq",
+  "creationTime": 1787416321259.9124,
+  "title": "Sardines farcies",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "16 sardines",
+      "quantity": 16,
+      "unit": null,
+      "label": "sardines"
+    },
+    {
+      "raw": "100 g de ricotta",
+      "quantity": 100,
+      "unit": "g",
+      "label": "ricotta"
+    },
+    {
+      "raw": "50 g de parmesan",
+      "quantity": 50,
+      "unit": "g",
+      "label": "parmesan"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "1 bouquet de persil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "1 cuil. à soupe de thym",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "thym"
+    },
+    {
+      "raw": "14 feuilles de laurier",
+      "quantity": 14,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Etêtez, videz, écaillez et séchez les sardines. Ouvrez-les en deux par le dos, retirez l'arête centrale.",
+    "Mélangez la ricotta, le parmesan, l'ail et le persil hachés. Aromatisez de thym et poivre.",
+    "Répartissez ensuite ce mélange sur les sardines ouvertes, disposez-les côte à côte dans un plat en intercalant 1 feuille de laurier, arrosez d'huile, versez 10 cl d'eau et enfournez (th.7/210°C) 10 min."
+  ],
+  "status": "published",
+  "slug": "sardines-farcies",
+  "publishedAt": 1787416367199,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

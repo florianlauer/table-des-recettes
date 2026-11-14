@@ -1,0 +1,95 @@
+{
+  "id": "j579sm4t7nt580ar4wwwsgg06h8j7pdx",
+  "creationTime": 1794660296186.8896,
+  "title": "Grenadins aux asperges",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 tranches de filet de veau épaisses de 3 cm en médaillon",
+      "quantity": 6,
+      "unit": null,
+      "label": "tranches de filet de veau épaisses de 3 cm en médaillon"
+    },
+    {
+      "raw": "12 fines tranches de lard fumé",
+      "quantity": 12,
+      "unit": null,
+      "label": "fines tranches de lard fumé"
+    },
+    {
+      "raw": "500 g d'asperges blanches",
+      "quantity": 500,
+      "unit": "g",
+      "label": "asperges blanches"
+    },
+    {
+      "raw": "500 g d'asperges vertes",
+      "quantity": 500,
+      "unit": "g",
+      "label": "asperges vertes"
+    },
+    {
+      "raw": "500 g de brocolis",
+      "quantity": 500,
+      "unit": "g",
+      "label": "brocolis"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "4 jaunes d'œufs",
+      "quantity": 4,
+      "unit": null,
+      "label": "jaunes d'œufs"
+    },
+    {
+      "raw": "100 g de beurre pour la sauce",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre pour la sauce"
+    },
+    {
+      "raw": "basilic et persil plat",
+      "quantity": null,
+      "unit": null,
+      "label": "basilic et persil plat"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Peler les asperges et les ficeler en bottes.",
+    "Remplir d'eau une marmite haute, la saler et la porter à ébullition, y plonger les bottes d'asperges en position verticale, la pointe en l'air.",
+    "Laisser cuire 15 mn puis égoutter.",
+    "Couper les brocolis en petits bouquets et les cuire à l'eau bouillante salée 4 mn.",
+    "Egoutter.",
+    "Réserver asperges et brocolis au chaud.",
+    "Entourer chaque tranche de filet de veau de 2 tranches de lard fumé, les ficeler pour les maintenir.",
+    "Faire fondre 20 g de beurre dans une poêle, y faire revenir les tranches de filet de veau 3 à 4 mn de chaque côté.",
+    "Saler et poivrer.",
+    "Retirer la viande de la poêle et la réserver au chaud.",
+    "Déglacer la poêle avec un verre de vin blanc sec et verser la sauce obtenue dans une casserole.",
+    "Porter sur feu doux et laisser réduire 2 à 3 mn.",
+    "Hors du feu, ajouter les jaunes d'œufs et mélanger au fouet.",
+    "Remettre la casserole sur feu doux sans cesser de remuer jusqu'à ce que la sauce soit devenue bien épaisse.",
+    "Verser alors le reste du beurre coupé en morceaux et fouetter.",
+    "Rectifiez l'assaisonnement.",
+    "Napper de cette sauce les grenadins et leur garniture.",
+    "Parsemer de persil plat et basilic."
+  ],
+  "status": "published",
+  "slug": "grenadins-aux-asperges",
+  "publishedAt": 1794660935437,
+  "imageStorageId": "kg2438yes1bq9jye5rz8hk493s8j6p8j",
+  "beautifiedStorageId": "kg2a569a7akc4sjcqr2rnhhdbn8j6tgm"
+}

@@ -1,0 +1,87 @@
+{
+  "id": "j57cv6pp1d1xjqsas53jcx96f98cydqv",
+  "creationTime": 1787415862361.2395,
+  "title": "Lotte à l'armoricaine",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "8 belles darnes de lotte",
+      "quantity": 8,
+      "unit": null,
+      "label": "belles darnes de lotte"
+    },
+    {
+      "raw": "70 g de beurre",
+      "quantity": 70,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "1 verre à liqueur de cognac",
+      "quantity": 1,
+      "unit": "verre à liqueur",
+      "label": "cognac"
+    },
+    {
+      "raw": "2 verres de vin blanc sec",
+      "quantity": 2,
+      "unit": "verres",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "200 g de tomates",
+      "quantity": 200,
+      "unit": "g",
+      "label": "tomates"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "2 cuillérées à soupe de farine",
+      "quantity": 2,
+      "unit": "cuillérées à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "1 pincée de poivre de cayenne",
+      "quantity": 1,
+      "unit": "pincée",
+      "label": "poivre de cayenne"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "1 - Salez, poivrez et farinez légèrement les darnes de lotte. Dans une cocotte, faites chauffer 50 g de beurre. Mettez-y les morceaux de lotte à dorer de toutes parts. Ajoutez ensuite l'échalote hachée et le cognac. Lorsqu'il commence à bouillir, faites-le flamber sur le feu.",
+    "2 - Ajoutez les 2 verres de vin blanc, 1 verre d'eau, les tomates pelées coupées en morceaux, une pincée de poivre de Cayenne. Couvrez. Laissez mijoter 45 minutes environ, sur feu très doux.",
+    "3 - Egouttez les morceaux de lotte. Déposez-les dans un plat creux tenu au chaud. Malaxer le reste du beurre avec une cuillérée à café de farine. Incorporez par petits morceaux à la sauce restée dans la cocotte et faites bouillir un instant en mélangeant sans arrêt avant de versez sur la lotte.",
+    "4 - Servez bien chaud."
+  ],
+  "status": "published",
+  "slug": "lotte-a-l-armoricaine",
+  "publishedAt": 1787415886675,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

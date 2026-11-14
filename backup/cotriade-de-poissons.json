@@ -1,0 +1,62 @@
+{
+  "id": "j57a7p1c0xsc08004wk0cw27518d8dbh",
+  "creationTime": 1787830494864.667,
+  "title": "Cotriade de poissons",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kg de poissons (merlan, congre, grondins, colinots, etc.), en tronçons de 60 à 80 g",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "poissons (merlan, congre, grondins, colinots, etc.), en tronçons de 60 à 80 g"
+    },
+    {
+      "raw": "2 petites courgettes",
+      "quantity": 2,
+      "unit": null,
+      "label": "petites courgettes"
+    },
+    {
+      "raw": "250 g de carottes et 500 g de pommes de terre nouvelles",
+      "quantity": 250,
+      "unit": "g",
+      "label": "carottes et 500 g de pommes de terre nouvelles"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "2 carottes, 2 oignons, 2 blancs de poireau",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes, 2 oignons, 2 blancs de poireau"
+    },
+    {
+      "raw": "thym, laurier, persil, sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "thym, laurier, persil, sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer le fumet : laver et émincer les légumes, les mettre avec le vin, les aromates et les parures de poisson, dans 1,5 l d'eau bouillante salée et poivrée.",
+    "Laisser mijoter 30 min. Passer le fumet dans une passoire fine.",
+    "Laver les courgettes, gratter les pommes de terre et les carottes.",
+    "Déposer les pommes de terre dans le fumet bouillant, les cuire 10 min.",
+    "Ajouter les carottes coupées en fins bâtonnets.",
+    "Laisser cuire 5 min.",
+    "Ajouter les courgettes détaillées et les poissons en morceaux.",
+    "Cuire 5 à 8 min.",
+    "Servir bien chaud dans des assiettes creuses."
+  ],
+  "status": "published",
+  "slug": "cotriade-de-poissons",
+  "publishedAt": 1787830521938,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

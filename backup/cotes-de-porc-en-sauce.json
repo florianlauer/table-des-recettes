@@ -1,0 +1,61 @@
+{
+  "id": "j57f0mrn344n5hp5tbs5hfvp3n8gp00r",
+  "creationTime": 1792583551471.6614,
+  "title": "Côtes de porc en sauce",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "4 côtes de porc",
+      "quantity": 4,
+      "unit": null,
+      "label": "côtes de porc"
+    },
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 boîte de concentré de tomates",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "concentré de tomates"
+    },
+    {
+      "raw": "cornichons",
+      "quantity": null,
+      "unit": null,
+      "label": "cornichons"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "1 cube de bouillon de viande",
+      "quantity": 1,
+      "unit": "cube",
+      "label": "bouillon de viande"
+    },
+    {
+      "raw": "vinaigre, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "vinaigre, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire les côtes de porc et gardez-les au chaud dans un plat.",
+    "Dans la matière grasse de la poêle, faites un roux avec une cuillère de farine, mouillez avec un verre d'eau, ajoutez le cube de bouillon, le concentré de tomates, une cuillère à café de vinaigre et quelques cornichons coupés en rondelles. Salez, poivrez, laissez mijoter quelques minutes, puis nappez-en les côtes de porc."
+  ],
+  "status": "published",
+  "slug": "cotes-de-porc-en-sauce",
+  "publishedAt": 1792583590635,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

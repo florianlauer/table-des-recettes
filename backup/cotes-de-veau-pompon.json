@@ -1,0 +1,56 @@
+{
+  "id": "j571hsehyf4n6n6p4p9f9p1b0h8dhg11",
+  "creationTime": 1788170417780.2876,
+  "title": "Côtes de veau Pompon",
+  "type": "plat",
+  "servings": 1,
+  "ingredients": [
+    {
+      "raw": "1 côte de veau par personne",
+      "quantity": 1,
+      "unit": null,
+      "label": "côte de veau par personne"
+    },
+    {
+      "raw": "10 g de farine",
+      "quantity": 10,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "gruyère rapé",
+      "quantity": null,
+      "unit": null,
+      "label": "gruyère rapé"
+    },
+    {
+      "raw": "sauce tomate",
+      "quantity": null,
+      "unit": null,
+      "label": "sauce tomate"
+    },
+    {
+      "raw": "cêpes ou champignons de Paris",
+      "quantity": null,
+      "unit": null,
+      "label": "cêpes ou champignons de Paris"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Fariner légèrement les côtes de veau. Les faire cuire dans du beurre bien chaud. Le temps de cuisson dépend de l'épaisseur des côtes qui doivent être bien cuites.",
+    "Les dresser sur un plat, mettre une cuillerée de gruyère rapé sur chaque côte, l'entourer d'un coulis de sauce tomate et de quelques cêpes ou champignons de Paris. Glacer quelques instants au four.",
+    "Servir en entourant le plat de croutons frits."
+  ],
+  "status": "published",
+  "slug": "cotes-de-veau-pompon",
+  "publishedAt": 1788170425815,
+  "imageStorageId": "kg20mrw15se5nkkznks9s6akrx8dhn3t",
+  "beautifiedStorageId": "kg23hychrh6egx7jbvq84fpdks8dgqr1"
+}

@@ -1,0 +1,45 @@
+{
+  "id": "j5782t4cc0v9kf4shqcdzfx9sn8gqbf1",
+  "creationTime": 1792583551471.6611,
+  "title": "Veau à l'estragon",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "reste de veau (rôti)",
+      "quantity": null,
+      "unit": null,
+      "label": "reste de veau (rôti)"
+    },
+    {
+      "raw": "quelques branches d'estragon",
+      "quantity": null,
+      "unit": "branches",
+      "label": "estragon"
+    },
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuillère à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "farine"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites fondre le beurre à feu doux, ajoutez la farine, mouillez avec un verre d'eau, salez, poivrez.",
+    "Hachez bien fin l'estragon, mettez-le dans la sauce, placez-y le veau coupé en tranches.",
+    "Laissez chauffer sans bouillir.",
+    "Servez avec des croûtons frits dans le beurre."
+  ],
+  "status": "published",
+  "slug": "veau-a-l-estragon",
+  "publishedAt": 1792583583703,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

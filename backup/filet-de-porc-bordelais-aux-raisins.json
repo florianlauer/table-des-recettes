@@ -1,0 +1,66 @@
+{
+  "id": "j57f1pffpngytmvg56e57nbp6x8j6tsc",
+  "creationTime": 1794658778892.4702,
+  "title": "Filet de porc bordelais aux raisins",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1,2 Kg environ de filet de porc désossé",
+      "quantity": 1.2,
+      "unit": "Kg",
+      "label": "filet de porc désossé"
+    },
+    {
+      "raw": "2 dl de bon vin de Bordeaux",
+      "quantity": 2,
+      "unit": "dl",
+      "label": "bon vin de Bordeaux"
+    },
+    {
+      "raw": "3 cuillères à soupe d'huile",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "1 oignon piqué de 2 clous de girofle",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon piqué de 2 clous de girofle"
+    },
+    {
+      "raw": "1 carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "1 bouquet garni(persil, thym, laurier)",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni(persil, thym, laurier)"
+    },
+    {
+      "raw": "1 belle grappe de raisin (noir ou blanc)",
+      "quantity": 1,
+      "unit": null,
+      "label": "belle grappe de raisin (noir ou blanc)"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une cocotte, faire colorer ('à l'huile) le rôti sur toutes ses faces.",
+    "Ajouter l'oignon et la carotte (coupés).",
+    "Couvrir et laisser cuire à feu doux aussi longtemps que possible sans brûler.",
+    "Incorporer la matière grasse.",
+    "Mouiller ensuite avec deux verrres d'eau et le vin de Bordeaux. Ajouter le bouquet garni.",
+    "5 à 10 minutes avant la fin de la cuisson, disposer autour de la viande les grains de raisin (préalablement lavés).",
+    "Servir le rôti en tranches, sur plat, entouré de raisins."
+  ],
+  "status": "published",
+  "slug": "filet-de-porc-bordelais-aux-raisins",
+  "publishedAt": 1794658906639,
+  "imageStorageId": "kg27m9d4by2xhtdygsf8gxqgqd8j6hrm",
+  "beautifiedStorageId": "kg20r1ypr4eadpc6v8rwtgr99x8j6mn2"
+}

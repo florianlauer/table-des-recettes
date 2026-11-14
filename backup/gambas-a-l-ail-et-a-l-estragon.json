@@ -1,0 +1,54 @@
+{
+  "id": "j578hs0a7fgeeqtbedmnbyxfyn8cdsza",
+  "creationTime": 1786649078242.6946,
+  "title": "Gambas à l'ail et à l'estragon",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "24 gambas",
+      "quantity": 24,
+      "unit": null,
+      "label": "gambas"
+    },
+    {
+      "raw": "1 bol d'huile d'olive",
+      "quantity": 1,
+      "unit": "bol",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "4 brins d'estragon",
+      "quantity": 4,
+      "unit": "brins",
+      "label": "estragon"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez une marinade avec l'huile d'olive, le jus de citron, l'estragon et l'ail pilé. Faites-y macérer les gambas. Puis enfilez-les sur les brochettes et faites-les griller en arrosant avec la marinade."
+  ],
+  "status": "published",
+  "slug": "gambas-a-l-ail-et-a-l-estragon",
+  "publishedAt": 1786649161548,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

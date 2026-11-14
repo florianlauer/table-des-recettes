@@ -1,0 +1,61 @@
+{
+  "id": "j573aycbgrgyyeyebhypjkn7s18cfk9e",
+  "creationTime": 1786728768061.8003,
+  "title": "Noix de Saint-Jacques à la tapenade",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "18 grosses noix de Saint-Jacques",
+      "quantity": 18,
+      "unit": null,
+      "label": "grosses noix de Saint-Jacques"
+    },
+    {
+      "raw": "250 g d'olives noires dénoyautées",
+      "quantity": 250,
+      "unit": "g",
+      "label": "olives noires dénoyautées"
+    },
+    {
+      "raw": "100 g de câpres",
+      "quantity": 100,
+      "unit": "g",
+      "label": "câpres"
+    },
+    {
+      "raw": "1 ou 2 gousses d'ail",
+      "quantity": 1,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "6 filets d'anchois à l'huile",
+      "quantity": 6,
+      "unit": "filets",
+      "label": "anchois à l'huile"
+    },
+    {
+      "raw": "1 verre d'huile d'olive",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "huile d'olive"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Egouttez soigneusement les olives et les câpres en les pressant avec les mains.",
+    "Mettez-les dans le bol du mixeur avec les gousses d'ail pelées et les filets d'anchois.",
+    "Mixez quelques minutes, puis liez avec l'huile d'olive, en continuant à mixer.",
+    "Placez cette tapenade au frais.",
+    "Faites cuire les noix de Saint-Jacques à la vapeur pendant 6 à 7 minutes.",
+    "Disposez-les dans un plat ou des assiettes de service.",
+    "Déposez 1 cuillère à café de votre tapenade sur chaque noix.",
+    "Servez immédiatement avec des petits légumes cuits à la vapeur ou du riz basmati."
+  ],
+  "status": "published",
+  "slug": "noix-de-saint-jacques-a-la-tapenade",
+  "publishedAt": 1786728879113,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

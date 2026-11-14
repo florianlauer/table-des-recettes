@@ -1,0 +1,60 @@
+{
+  "id": "j570ehbdq75pqzwjgt8pmh88qx8cff1b",
+  "creationTime": 1786728768061.8,
+  "title": "Moules marinières",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 dl de Muscadet sur Lie",
+      "quantity": 2,
+      "unit": "dl",
+      "label": "Muscadet sur Lie"
+    },
+    {
+      "raw": "2 l de moules",
+      "quantity": 2,
+      "unit": "l",
+      "label": "moules"
+    },
+    {
+      "raw": "2 échalotes hachées",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes hachées"
+    },
+    {
+      "raw": "quelques branches de persil",
+      "quantity": null,
+      "unit": "quelques branches",
+      "label": "persil"
+    },
+    {
+      "raw": "1 branche de thym",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "thym"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "beurre frais",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre frais"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Grattez les moules sous l'eau. Faites fondre les échalotes dans une cocotte avec le beurre frais. Ajoutez un peu de persil, le thym, le laurier puis les moules. Mouillez avec le Muscadet. Cuisez à plein feu sous couvercle 10 min environ. Quand les moules sont ouvertes, dressez-les sur un plat, nappez-les du jus de cuisson et décorez avec du persil ciselé."
+  ],
+  "status": "published",
+  "slug": "moules-marinieres",
+  "publishedAt": 1786728873937,
+  "imageStorageId": "kg27h9rhndn75wgcpyf5ngxcsd8cenad",
+  "beautifiedStorageId": "kg22e9bwzgcv85mawxqzpztgp18cfe2y"
+}

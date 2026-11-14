@@ -1,0 +1,79 @@
+{
+  "id": "j576esbq2nknw9bmbfpc8e1srn8czxag",
+  "creationTime": 1787414767746.3838,
+  "title": "Filets de truite aux endives",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 belles truites",
+      "quantity": 6,
+      "unit": null,
+      "label": "belles truites"
+    },
+    {
+      "raw": "500 g d'endives, 2 échalotes",
+      "quantity": 500,
+      "unit": "g",
+      "label": "d'endives, 2 échalotes"
+    },
+    {
+      "raw": "25 cl de riesling",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "de riesling"
+    },
+    {
+      "raw": "100 g de crème fraîche",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de crème fraîche"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "300 g de poitrine fumée",
+      "quantity": 300,
+      "unit": "g",
+      "label": "de poitrine fumée"
+    },
+    {
+      "raw": "sel, poivre, huile",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre, huile"
+    },
+    {
+      "raw": "300 g de lard fumé",
+      "quantity": 300,
+      "unit": "g",
+      "label": "de lard fumé"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire lever les filets de truites par votre poissonnier.",
+    "Éplucher les échalotes, hacher finement.",
+    "Essuyer les endives, les émincer dans le sens de la longueur, équeuter et laver les épinards.",
+    "Faire blanchir 2 minutes le lard fumé à l'eau bouillante.",
+    "Oter la couenne du lard, couper en lardons.",
+    "Huiler une poêle, mettre les lardons à dorer à feu modéré, réserver.",
+    "Dans une sauteuse faire fondre 40 g de beurre, lorsqu'il est chaud mettre les endives à cuire doucement environ 15 minutes.",
+    "A la poêle, dans 10 g de beurre, faire fondre les échalotes, mouiller avec le riesling, réduire à bon feu et ajouter la crème, saler, poivrer.",
+    "Disposer le poisson dans cette sauce, faire cuire 2 minutes de chaque côté.",
+    "Dresser sur un plat de service chaud.",
+    "Hors du feu, ajouter le reste du beurre divisé en parcelles.",
+    "Chauffer la sauce doucement.",
+    "La passer au chinois en nappant le poisson.",
+    "Garnir avec les endives et les lardons."
+  ],
+  "status": "published",
+  "slug": "filets-de-truite-aux-endives",
+  "publishedAt": 1787414787467,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

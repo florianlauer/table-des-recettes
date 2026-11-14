@@ -1,0 +1,51 @@
+{
+  "id": "j57fz0v4q20sd7mwqg3bw7w0j98d98sp",
+  "creationTime": 1787830816550.305,
+  "title": "Maquereaux au vin blanc",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 maquereaux vidés",
+      "quantity": 6,
+      "unit": null,
+      "label": "maquereaux vidés"
+    },
+    {
+      "raw": "75 cl de vin blanc sec, 15 cl de vinaigre de vin blanc",
+      "quantity": 75,
+      "unit": "cl",
+      "label": "de vin blanc sec, 15 cl de vinaigre de vin blanc"
+    },
+    {
+      "raw": "2 carottes, 2 oignons, 2 échalotes, 2 citrons",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes, 2 oignons, 2 échalotes, 2 citrons"
+    },
+    {
+      "raw": "thym, laurier, persil",
+      "quantity": null,
+      "unit": null,
+      "label": "thym, laurier, persil"
+    },
+    {
+      "raw": "sel, poivre en grains",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre en grains"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une casserole, mettez vin, vinaigre, rondelles de carottes, oignons, échalotes et citrons, 4 brins de thym, 3 feuilles de laurier, 6 brins de persil, sel et poivre.",
+    "Portez à ébullition, laissez frémir 10 min, plongez les maquereaux, entiers ou levés en filets.",
+    "Laissez frémir 5 min, rangez les poissons dans un plat, faites réduire le court-bouillon, disposez carottes, oignons, échalotes et citrons sur les poissons puis versez le bouillon filtré.",
+    "Laissez refroidir et mettez au frais."
+  ],
+  "status": "published",
+  "slug": "maquereaux-au-vin-blanc",
+  "publishedAt": 1787830855100,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

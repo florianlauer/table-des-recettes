@@ -1,0 +1,79 @@
+{
+  "id": "j57a76p0yw448q40jvks64bz7h8cnwf7",
+  "creationTime": 1786983803388.3281,
+  "title": "Les bigorneaux et les bulots vivants",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "coquillages",
+      "quantity": null,
+      "unit": null,
+      "label": "coquillages"
+    },
+    {
+      "raw": "eau froide",
+      "quantity": null,
+      "unit": null,
+      "label": "eau froide"
+    },
+    {
+      "raw": "35 g de gros sel par litre d'eau",
+      "quantity": 35,
+      "unit": "g",
+      "label": "gros sel par litre d'eau"
+    },
+    {
+      "raw": "une feuille de laurier",
+      "quantity": 1,
+      "unit": "feuille",
+      "label": "laurier"
+    },
+    {
+      "raw": "une brindille de thym",
+      "quantity": 1,
+      "unit": "brindille",
+      "label": "thym"
+    },
+    {
+      "raw": "une cuillère à café de grains de coriandre",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "grains de coriandre"
+    },
+    {
+      "raw": "un morceau de zeste d'orange non traitée",
+      "quantity": 1,
+      "unit": "morceau",
+      "label": "zeste d'orange non traitée"
+    },
+    {
+      "raw": "une gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "quelques grains de poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "grains de poivre"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Après avoir lavé les coquillages dans plusieurs eaux froides successives (pour éliminer sable et débris d'algues), placez-les dans une casserole et recouvrez-les (à hauteur) d'eau froide.",
+    "Ceci, non pour les faire cuire de suite, mais pour calculer la dose de sel à utiliser.",
+    "Transvasez cette eau dans un verre mesureur et repérez son volume.",
+    "Salez-la au gros sel à raison de 35 g par litre puis versez-la dans la casserole débarrassée des coquillages, que vous avez réservés dans une passoire.",
+    "Ajoutez dans la casserole une feuille de laurier émiettée, une brindille de thym, une cuillère à café de grains de coriandre, un morceau de zeste d'orange non traitée, une gousse d'ail écrasée et quelques grains de poivre.",
+    "Portez le tout à ébullition et, dès que l'eau bouillonne franchement, plongez-y les coquillages.",
+    "Pour les bigorneaux, faites cuire 2 min (après la reprise de l'ébullition), puis éteignez le feu et laissez-les tiédir 5 min dans leur eau de cuisson avant de les égoutter.",
+    "Pour les bulots, faites cuire 7 min (après la reprise de l'ébullition) puis laissez infuser 5 min avant d'égoutter."
+  ],
+  "status": "published",
+  "slug": "les-bigorneaux-et-les-bulots-vivants",
+  "publishedAt": 1786983896875,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

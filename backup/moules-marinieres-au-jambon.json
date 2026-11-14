@@ -1,0 +1,69 @@
+{
+  "id": "j57ds27av8efw29h69bb27zp218chmay",
+  "creationTime": 1786816109675.5464,
+  "title": "Moules marinières au jambon",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 l de moules de bouchot",
+      "quantity": 2,
+      "unit": "l",
+      "label": "moules de bouchot"
+    },
+    {
+      "raw": "3 échalotes",
+      "quantity": 3,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "1 verre de muscadet",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "muscadet"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 tranche de jambon de pays un peu épaisse",
+      "quantity": 1,
+      "unit": "tranche",
+      "label": "jambon de pays un peu épaisse"
+    },
+    {
+      "raw": "12 brins de persil plat",
+      "quantity": 12,
+      "unit": "brins",
+      "label": "persil plat"
+    },
+    {
+      "raw": "sel, poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre du moulin"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Lavez et nettoyez les 2 l de moules.",
+    "Taillez le jambon en lamelles.",
+    "Pelez puis hachez les échalotes.",
+    "Faites-les revenir avec le beurre dans une grande casserole pendant 5 min, à feu doux.",
+    "Ajoutez le jambon et poursuivez la cuisson 10 min, toujours à feu doux.",
+    "Versez les moules et le vin blanc.",
+    "Augmentez le feu et couvrez.",
+    "Laissez cuire 5 min en secouant la casserole de temps à autre.",
+    "Remuez avec une cuillère en bois, salez, poivrez et ajoutez le persil ciselé.",
+    "Mélangez et servez quand toutes les moules sont ouvertes."
+  ],
+  "status": "published",
+  "slug": "moules-marinieres-au-jambon",
+  "publishedAt": 1786816423767,
+  "imageStorageId": "kg29wara1dde25m0fxevfkgwr58ch9f9",
+  "beautifiedStorageId": "kg29m56t9y4asc428vxpb5x3zs8chmvs"
+}

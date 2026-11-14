@@ -1,0 +1,78 @@
+{
+  "id": "j574tx0fnny40tb31mfzans1wn8cey88",
+  "creationTime": 1786728768061.7998,
+  "title": "Moules à l'espagnole",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "moules",
+      "quantity": null,
+      "unit": null,
+      "label": "moules"
+    },
+    {
+      "raw": "l'eau",
+      "quantity": null,
+      "unit": null,
+      "label": "l'eau"
+    },
+    {
+      "raw": "de l'huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "un oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "3 gousses d'ail",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "une cuillère d'harissa",
+      "quantity": 1,
+      "unit": "cuillère",
+      "label": "harissa"
+    },
+    {
+      "raw": "une cuillère de moutarde",
+      "quantity": 1,
+      "unit": "cuillère",
+      "label": "moutarde"
+    },
+    {
+      "raw": "une petite boîte de concentré de tomates",
+      "quantity": 1,
+      "unit": "petite boîte",
+      "label": "concentré de tomates"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Brossez les moules et lavez-les abondamment à l'eau. Faites chauffer de l'huile dans une cocotte et faites revenir un oignon et 3 gousses d'ail finement hachés. Ajoutez une cuillère d'harissa, une cuillère de moutarde et une petite boîte de concentré de tomates. Salez et poivrez. Mélangez jusqu'à obtenir une sauce épaisse. Ajoutez les moules (1 litre par personne) et remuez avec une cuillère en bois. Il n'est pas nécessaire d'ajouter de l'eau. Laissez cuire jusqu'à l'ouverture des moules (environ 20 minutes). Accompagnez d'un Riesling."
+  ],
+  "status": "published",
+  "slug": "moules-a-l-espagnole",
+  "publishedAt": 1786728867108,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

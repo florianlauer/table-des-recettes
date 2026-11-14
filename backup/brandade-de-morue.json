@@ -1,0 +1,88 @@
+{
+  "id": "j5728qkt31ryp06952avf425f58d9zpw",
+  "creationTime": 1787830359704.4539,
+  "title": "Brandade de morue",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 paquet de 125 g de MOUSLINE",
+      "quantity": 1,
+      "unit": "paquet",
+      "label": "de 125 g de MOUSLINE"
+    },
+    {
+      "raw": "40 cl d'eau",
+      "quantity": 40,
+      "unit": "cl",
+      "label": "d'eau"
+    },
+    {
+      "raw": "1/4 de l de lait",
+      "quantity": 0.25,
+      "unit": "l",
+      "label": "de lait"
+    },
+    {
+      "raw": "400 g de morue",
+      "quantity": 400,
+      "unit": "g",
+      "label": "de morue"
+    },
+    {
+      "raw": "1 demi-verre de lait",
+      "quantity": 0.5,
+      "unit": "verre",
+      "label": "de lait"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "d'ail"
+    },
+    {
+      "raw": "2 œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "50 g de gruyère râpé",
+      "quantity": 50,
+      "unit": "g",
+      "label": "de gruyère râpé"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "1°) Faites dessaler la morue à l'eau froide en changeant plusieurs fois l'eau.",
+    "2°) Préparez la purée MOUSLINE selon le mode d'emploi avec seulement 40 cl d'eau, 1/4 de l de lait et la moitié du beurre. Poivrez.",
+    "3°) Faites cuire la morue dans une grande quantité d'eau froide. Portez à ébullition et laissez frémir doucement 10 mn. Egouttez-la, enlevez les arêtes.",
+    "4°) Pilez la morue avec l'ail et le demi-verre de lait. Ajoutez les œufs battus, le persil haché, la moitié du gruyère râpé. Mélangez à la purée.",
+    "5°) Versez la brandade dans un plat à gratin beurré. Saupoudrez de gruyère râpé. Parsemez de noisettes de beurre et faites dorer au gril du four 10 mn environ."
+  ],
+  "status": "published",
+  "slug": "brandade-de-morue",
+  "publishedAt": 1787830383549,
+  "imageStorageId": "kg22qx4z4m52mz5d65tgbj81a58d9jhf",
+  "beautifiedStorageId": "kg245e455v3n9ht9rvq4869q258d9xah"
+}

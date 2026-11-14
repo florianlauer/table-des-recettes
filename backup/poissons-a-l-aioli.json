@@ -1,0 +1,43 @@
+{
+  "id": "j577naej5vpdkzkx93p76yxwqn8d80en",
+  "creationTime": 1787830359704.4534,
+  "title": "Poissons à l'aïoli",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de cabillaud, 4 filets de merlan, 350 g de filets de haddock, 1 l de moules",
+      "quantity": 400,
+      "unit": "g",
+      "label": "cabillaud, 4 filets de merlan, 350 g de filets de haddock, 1 l de moules"
+    },
+    {
+      "raw": "4 pommes de terre, 1/2 chou-fleur, 250 g de brocolis, 4 carottes",
+      "quantity": 4,
+      "unit": null,
+      "label": "pommes de terre, 1/2 chou-fleur, 250 g de brocolis, 4 carottes"
+    },
+    {
+      "raw": "sauce : 6 gousses d'ail, 1 jaune d'œuf, 25 cl d'huile d'olive, 1/2 citron",
+      "quantity": 6,
+      "unit": "gousses",
+      "label": "d'ail, 1 jaune d'œuf, 25 cl d'huile d'olive, 1/2 citron"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettez le cabillaud et les rondelles de pommes de terre dans le panier perforé, laissez cuire 10 min à couvert. Ajoutez les bouquets de chou-fleur et brocoli et les filets de merlan roulés, cuisez 5 min. Ajoutez les carottes taillées en bâtonnets et les moules, finissez de cuire 5 min.",
+    "Mélangez l'ail mixé et le jaune d'œuf, ajoutez l'huile en filet sans cesser de tourner. Assaisonnez de sel, poivre et jus de citron. Servez avec les poissons et légumes."
+  ],
+  "status": "published",
+  "slug": "poissons-a-l-aioli",
+  "publishedAt": 1787830375879,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

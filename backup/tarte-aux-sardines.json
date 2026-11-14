@@ -1,0 +1,51 @@
+{
+  "id": "j578mnazsq5kkzeaz73nazjka98d84fc",
+  "creationTime": 1787830816550.3047,
+  "title": "Tarte aux sardines",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "350 g de pâte brisée",
+      "quantity": 350,
+      "unit": "g",
+      "label": "de pâte brisée"
+    },
+    {
+      "raw": "8 sardines levées en filets, 1 boîte de thon à l'huile, 2 oeufs",
+      "quantity": 8,
+      "unit": null,
+      "label": "sardines levées en filets, 1 boîte de thon à l'huile, 2 oeufs"
+    },
+    {
+      "raw": "2 cuil. à soupe de ciboulette, 2 de persil, 1 citron",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "de ciboulette, 2 de persil, 1 citron"
+    },
+    {
+      "raw": "2 cuil. à soupe de câpres, 10 olives noires",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "de câpres, 10 olives noires"
+    },
+    {
+      "raw": "graines de cumin, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "graines de cumin, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Foncez un moule à tarte beurré et faites cuire la pâte à blanc 10 min (th.7/210°C).",
+    "Etalez le thon mélangé aux herbes hachées et au jus de citron sur la pâte, disposez les filets de sardines en les intercalant avec des rondelles d'oeufs durs.",
+    "Répartissez les câpres et les rondelles d'olives et parsemez ensuite de cumin.",
+    "Salez, poivrez et enfournez (th.7/210°C) pendant environ 10 min."
+  ],
+  "status": "published",
+  "slug": "tarte-aux-sardines",
+  "publishedAt": 1787830844716,
+  "imageStorageId": "kg2bvqbq2s57ybzgnwzmqsp1kn8d8m4j",
+  "beautifiedStorageId": "kg22yn49sks8edhxax68typ2a58d8ha3"
+}

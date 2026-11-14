@@ -1,0 +1,60 @@
+{
+  "id": "j571940a6xp93mh1q7nf1vwdph8cv525",
+  "creationTime": 1787248435175.4663,
+  "title": "Rougets en papillotes",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "8 petits rougets",
+      "quantity": 8,
+      "unit": null,
+      "label": "petits rougets"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "graines de fenouil",
+      "quantity": null,
+      "unit": null,
+      "label": "graines de fenouil"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "papier d'aluminium",
+      "quantity": null,
+      "unit": null,
+      "label": "papier d'aluminium"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Taillez les papillotes en forme de cœur dans le papier d'aluminium.",
+    "Epluchez et hachez les oignons.",
+    "Videz, écaillez les poissons, enduisez-les d'huile d'olive.",
+    "Sur chaque moitié de feuille de papier déposez une pincée d'oignon, quelques graines de fenouil, sel, poivre. Posez le poisson et assaisonnez comme dessous. Fermez la papillote en torsadant et procédez de même pour chaque poisson.",
+    "Disposez-les ensuite sur la grille de la lèche-frite.",
+    "Faites cuire à four très chaud 15 mn en surveillant de temps en temps.",
+    "Servez dans l'enveloppe."
+  ],
+  "status": "published",
+  "slug": "rougets-en-papillotes",
+  "publishedAt": 1787248499970,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,77 @@
+{
+  "id": "j57awewyn7ejx5tp0ph4n20ged8daa1r",
+  "creationTime": 1787908742966.17,
+  "title": "Cœurs de filet de merlu au cidre",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 oignon émincé",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon émincé"
+    },
+    {
+      "raw": "125 g de champignons de Paris émincés",
+      "quantity": 125,
+      "unit": "g",
+      "label": "champignons de Paris émincés"
+    },
+    {
+      "raw": "4 cœurs de filet de merlu décongelés",
+      "quantity": 4,
+      "unit": null,
+      "label": "cœurs de filet de merlu décongelés"
+    },
+    {
+      "raw": "1 œuf battu",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf battu"
+    },
+    {
+      "raw": "3 cuillères à soupe de chapelure",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "chapelure"
+    },
+    {
+      "raw": "2 cuillères à soupe de jus de citron",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "6 cuillères à soupe de cidre brut",
+      "quantity": 6,
+      "unit": "cuillères à soupe",
+      "label": "cidre brut"
+    },
+    {
+      "raw": "25 g de beurre",
+      "quantity": 25,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "Persil haché",
+      "quantity": null,
+      "unit": null,
+      "label": "Persil haché"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites un lit d'oignons et de champignons au fond d'un plat à gratin.",
+    "Trempez les filets de merlu dans l'œuf, égouttez, puis saupoudrez de chapelure.",
+    "Déposez le poisson sur les champignons et parsemez la chapelure.",
+    "Arrosez du jus de citron, du cidre, puis salez et poivrez à votre convenance.",
+    "Dispersez des noisettes de beurre dans le plat, puis enfournez dans un four chaud durant 30 minutes (préchauffé 10 min à 160°).",
+    "Servez chaud, décorez de persil et accompagnez de poivrons grillés."
+  ],
+  "status": "published",
+  "slug": "coeurs-de-filet-de-merlu-au-cidre",
+  "publishedAt": 1787908763263,
+  "imageStorageId": "kg25f28ssxby4dz3nzd2vjx6x58dbw5t",
+  "beautifiedStorageId": "kg2ce7ab31jdj96rf33aj870wx8da4ry"
+}

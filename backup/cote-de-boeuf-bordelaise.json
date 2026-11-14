@@ -1,0 +1,46 @@
+{
+  "id": "j577y8bq7eh2r1pkvmyn0vrfm98fda1s",
+  "creationTime": 1790750970400.5962,
+  "title": "Côte de bœuf Bordelaise",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "votre côte de bœuf",
+      "quantity": null,
+      "unit": null,
+      "label": "côte de bœuf"
+    },
+    {
+      "raw": "500 g de cèpes (ou le contenu d'un bocal de cèpes au naturel)",
+      "quantity": 500,
+      "unit": "g",
+      "label": "cèpes (ou le contenu d'un bocal de cèpes au naturel)"
+    },
+    {
+      "raw": "4 demi-tomates à la provençale (huile d'olive, ail)",
+      "quantity": 4,
+      "unit": "demi-tomates",
+      "label": "tomates à la provençale (huile d'olive, ail)"
+    },
+    {
+      "raw": "1/4 de litre de liquide, moitié eau, moitié Bordeaux rouge",
+      "quantity": 0.25,
+      "unit": "litre",
+      "label": "liquide, moitié eau, moitié Bordeaux rouge"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faites griller votre côte de bœuf comme habituellement.",
+    "Faites sauter à la poêle 500 g de cèpes (ou le contenu d'un bocal de cèpes au naturel) ainsi que 4 demi-tomates à la provençale (huile d'olive, ail).",
+    "La côte étant cuite selon votre goût éteignez le gril et laissez reposer la viande 5 mn.",
+    "Préparez la sauce liée pour rôti avec 1/4 de litre de liquide, moitié eau, moitié Bordeaux rouge.",
+    "Servez la côte de bœuf, les cèpes et les tomates, accompagnés de la sauce en saucière."
+  ],
+  "status": "published",
+  "slug": "cote-de-boeuf-bordelaise",
+  "publishedAt": 1790751016609,
+  "imageStorageId": "kg20b0v9w0ckrzyecxas71g6pd8fdsxd",
+  "beautifiedStorageId": "kg2995ch4ngf0et0qhcbkpz9n98fdjw1"
+}

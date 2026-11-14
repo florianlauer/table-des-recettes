@@ -1,0 +1,66 @@
+{
+  "id": "j57cdn93fw6zyp6xnxg0ypzc3s8hahjr",
+  "creationTime": 1793443069989.0483,
+  "title": "Rôti de porc cru saumuré",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "Enlever le rôti du sachet",
+      "quantity": null,
+      "unit": null,
+      "label": "rôti de porc cru saumuré"
+    },
+    {
+      "raw": "huile, beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "huile, beurre"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "une carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "un oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Enlever le rôti du sachet.",
+    "Préchauffer le four à 180°C, thermostat 6, pendant 10 mn.",
+    "Mettre à cuire 50 mn avec huile, beurre et poivre.",
+    "Ne pas saler.",
+    "A mi-cuisson, ajouter une carotte et un oignon coupés en morceaux.",
+    "Recouvrir de papier aluminium.",
+    "Retourner et arroser le rôti de temps en temps.",
+    "Servir bien chaud avec le jus de cuisson passé.",
+    "Enlever le rôti du sachet.",
+    "Cuire 20 mn par séquences de 4 fois 5 mn ou procéder comme la cuisson au four à gaz ou électrique.",
+    "Mettre de l'eau à chauffer.",
+    "Maintenir l'eau à 80°C, c'est-à-dire à petite ébullition.",
+    "Laisser cuire 1 h."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-cru-saumure",
+  "publishedAt": 1793443082581,
+  "imageStorageId": "kg2b6pgc2qa8t4zptxyc0ezqxx8hbmqh",
+  "beautifiedStorageId": "kg2fq1mnsvjxfa0x64n6nrnwvs8hbb65"
+}

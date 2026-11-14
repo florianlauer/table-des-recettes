@@ -1,0 +1,66 @@
+{
+  "id": "j5739r8cdpp0sv8kreyhtctff58dbrmd",
+  "creationTime": 1787908262116.0408,
+  "title": "Lotte au beurre de basilic et riz sauvage",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "12 médaillons de lotte",
+      "quantity": 12,
+      "unit": null,
+      "label": "médaillons de lotte"
+    },
+    {
+      "raw": "150 g de beurre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 bouquet de basilic",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "basilic"
+    },
+    {
+      "raw": "10 cl de vin blanc",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "100 g de riz blanc",
+      "quantity": 100,
+      "unit": "g",
+      "label": "riz blanc"
+    },
+    {
+      "raw": "100 g de riz sauvage",
+      "quantity": 100,
+      "unit": "g",
+      "label": "riz sauvage"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez 100 g de beurre en parcelles et laissez-le ramollir à température ambiante.",
+    "Lavez, séchez, effeuillez et hachez finement le basilic. Ajoutez-le au beurre et mélangez à la fourchette, en écrasant bien. Salez et poivrez. Réservez au frais.",
+    "Faites cuire les deux riz comme indiqué sur les paquets.",
+    "Faites fondre le beurre restant dans une sauteuse. Ajoutez les médaillons de lotte et faites-les dorer des deux côtés. Puis baissez le feu, versez le vin blanc et poursuivez la cuisson à couvert pendant 15 minutes.",
+    "Egouttez les deux riz et mélangez-les. Ajoutez un petit morceau de beurre. Réservez au chaud.",
+    "Retirez les médaillons de lotte de la sauteuse. Maintenez la sauteuse sur feu doux et ajoutez une cuillère à soupe de beurre de basilic dans le jus de cuisson, en fouettant.",
+    "Posez les médaillons dans les assiettes, arrosez-les de sauce, ajoutez le riz et le reste de beurre de basilic et servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "lotte-au-beurre-de-basilic-et-riz-sauvage",
+  "publishedAt": 1787908273886,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

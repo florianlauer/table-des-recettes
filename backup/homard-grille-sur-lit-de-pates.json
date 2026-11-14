@@ -1,0 +1,71 @@
+{
+  "id": "j5767jaznc0wb2565wn66w4p6h8cc5av",
+  "creationTime": 1786649548120.517,
+  "title": "Homard grillé sur lit de pâtes",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "2 homards de 500 g",
+      "quantity": 2,
+      "unit": null,
+      "label": "homards de 500g"
+    },
+    {
+      "raw": "4 dl de vin blanc sec",
+      "quantity": 4,
+      "unit": "dl",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 verre de cognac",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "cognac"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "coriandre",
+      "quantity": null,
+      "unit": null,
+      "label": "coriandre"
+    },
+    {
+      "raw": "basilic",
+      "quantity": null,
+      "unit": null,
+      "label": "basilic"
+    },
+    {
+      "raw": "pâtes au basilic",
+      "quantity": null,
+      "unit": null,
+      "label": "pâtes au basilic"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Ebouillanter une minute 2 homards de 500 g.",
+    "Les décortiquer sans les abîmer.",
+    "Griller la chair sur un gril et la réserver.",
+    "Broyer les carcasses, les cuire 30 min. dans 4 dl de vin blanc sec, 1 verre de cognac, 2 gousses d'ail, 1 oignon, coriandre, basilic hachés.",
+    "Trancher la chair du homard et dresser les morceaux sur un lit de pâtes au basilic.",
+    "Napper du jus de homard avant de servir."
+  ],
+  "status": "published",
+  "slug": "homard-grille-sur-lit-de-pates",
+  "publishedAt": 1786649633319,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

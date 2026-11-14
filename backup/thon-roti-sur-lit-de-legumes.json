@@ -1,0 +1,88 @@
+{
+  "id": "j5793143c03mbx3tg1rb5n688n8ctc8f",
+  "creationTime": 1787248575320.7136,
+  "title": "Thon rôti sur lit de légumes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 tranche de thon",
+      "quantity": 1,
+      "unit": "tranche",
+      "label": "thon"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "1 petit bouquet garni (thym, laurier)",
+      "quantity": 1,
+      "unit": "petit bouquet",
+      "label": "garni (thym, laurier)"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuillerées à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "3 navets",
+      "quantity": 3,
+      "unit": null,
+      "label": "navets"
+    },
+    {
+      "raw": "150 g de haricots verts",
+      "quantity": 150,
+      "unit": "g",
+      "label": "haricots verts"
+    },
+    {
+      "raw": "1 branchette de céleri",
+      "quantity": 1,
+      "unit": "branchette",
+      "label": "céleri"
+    },
+    {
+      "raw": "1 tablette de bouillon de poule",
+      "quantity": 1,
+      "unit": "tablette",
+      "label": "bouillon de poule"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Effilez les haricots verts. Épluchez la gousse d'ail, l'échalote et les autres légumes. Rincez-les. Coupez les carottes et les navets en fines rondelles. Enlevez les fils de la branchette de céleri. Coupez-la en bâtonnets de 4 à 5 cm de long.",
+    "Faites fondre la tablette de bouillon de poule dans un quart de litre d'eau chaude (25 cl). Préchauffez le four à thermostat 3 (80 °C).",
+    "Dans une cocotte, faites chauffer l'huile d'olive puis placez-y la tranche de thon. Faites-la revenir entre quatre à sept minutes de chaque côté (bien cuit ou un peu rosé). Réservez sur un plat et mettre dans le four tiède.",
+    "Dans la cocotte, à la place du thon, mettez tous les légumes. Ajoutez le bouquet garni, la gousse d'ail coupée en deux et l'échalote coupée en quatre. Versez-le bouillon. Salez. Mélangez et laissez cuire à petits bouillons pendant 10 minutes.",
+    "Prélevez les légumes, disposez-les dans un plat, posez la tranche de thon rôti dessus. Poivrez. Continuez la cuisson du jus de façon à le faire réduire de moitié. Répartissez-le sur le poisson. Mélangez et laissez cuire à petits bouillons pendant 10 minutes."
+  ],
+  "status": "published",
+  "slug": "thon-roti-sur-lit-de-legumes",
+  "publishedAt": 1787248606487,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,75 @@
+{
+  "id": "j5795hrsdqd0fjtqdtpp69zk698dbc59",
+  "creationTime": 1787907776085.1313,
+  "title": "Cabillaud sur lit de poireaux à la citronnelle",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 gros morceaux de dos de cabillaud",
+      "quantity": 4,
+      "unit": "gros morceaux",
+      "label": "dos de cabillaud"
+    },
+    {
+      "raw": "4 gros poireaux",
+      "quantity": 4,
+      "unit": "gros",
+      "label": "poireaux"
+    },
+    {
+      "raw": "2 bâtons de citronnelle",
+      "quantity": 2,
+      "unit": "bâtons",
+      "label": "citronnelle"
+    },
+    {
+      "raw": "2 cm de gingembre",
+      "quantity": 2,
+      "unit": "cm",
+      "label": "gingembre"
+    },
+    {
+      "raw": "1 citron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron vert"
+    },
+    {
+      "raw": "5 cl de crème liquide",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "4 c. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "½ bouquet de cerfeuil",
+      "quantity": 0.5,
+      "unit": "bouquet",
+      "label": "cerfeuil"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "1. Préchauffer le four à 210°C. Piler la citronnelle, le gingembre, l'huile d'olive et le jus du citron vert. Mélanger, saler et poivrer. Y déposer les morceaux de poisson et recouvrir de film transparent.",
+    "2. Faire mariner le cabillaud 1 h avant de le faire cuire. Pendant ce temps, couper les poireaux en rondelles. Les faire suer dans une grande poêle 3 min seulement. Ajouter la crème liquide.",
+    "3. Découper des rectangles de papier sulfurisé, les badigeonner d'huile d'olive, puis répartir la fondue de poireaux dans chaque papillote. Enfin, déposer le cabillaud avec un peu de marinade par-dessus.",
+    "4. Fermer les papillotes hermétiquement, les disposer dans un plat à four et faire cuire 15 à 18 min."
+  ],
+  "status": "published",
+  "slug": "cabillaud-sur-lit-de-poireaux-a-la-citronnelle",
+  "publishedAt": 1787907821801,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

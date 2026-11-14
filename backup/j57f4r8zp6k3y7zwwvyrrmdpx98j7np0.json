@@ -1,0 +1,72 @@
+{
+  "id": "j57f4r8zp6k3y7zwwvyrrmdpx98j7np0",
+  "creationTime": 1794662700395.4443,
+  "title": "Paupiettes de veau pommes et pruneaux",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 paupiettes de veau",
+      "quantity": 4,
+      "unit": null,
+      "label": "paupiettes de veau"
+    },
+    {
+      "raw": "2 pommes (un peu acides)",
+      "quantity": 2,
+      "unit": null,
+      "label": "pommes (un peu acides)"
+    },
+    {
+      "raw": "12 pruneaux dénoyautés",
+      "quantity": 12,
+      "unit": null,
+      "label": "pruneaux dénoyautés"
+    },
+    {
+      "raw": "1 boîte de châtaignes",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "châtaignes"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "2 c. à soupe de fond de veau",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "fond de veau"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "eau",
+      "quantity": null,
+      "unit": null,
+      "label": "eau"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une cocotte à fond épais, faites fondre une grosse noisette de beurre.",
+    "Ajoutez-y l'oignon épluché et émincé et faites le fondre.",
+    "Pendant ce temps, pelez et découpez les pommes en grosses tranches.",
+    "Mettez les paupiettes à dorer sur toutes leurs faces sur le lit d'oignons.",
+    "Lorsqu'elles sont bien colorées, ajoutez les tranches de pomme, les pruneaux et déglacez avec un peu de fond de veau que vous aurez dilué dans un grand verre d'eau.",
+    "Couvrez et laissez cuire à feu doux 30 minutes, sans oublier de les retourner de temps en temps.",
+    "10 minutes avant la fin de la cuisson rajoutez les châtaignes."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,37 @@
+{
+  "id": "j572vnjvkeb4q7yztpdyzem4z58dbwkj",
+  "creationTime": 1787908742966.1702,
+  "title": "Thon basquaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 belle darne (tranche) de thon",
+      "quantity": 1,
+      "unit": null,
+      "label": "belle darne (tranche) de thon"
+    },
+    {
+      "raw": "1 bocal de sauce Basquaise Amora",
+      "quantity": 1,
+      "unit": "bocal",
+      "label": "sauce Basquaise Amora"
+    },
+    {
+      "raw": "1 boîte de haricots rouges au naturel",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "haricots rouges au naturel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez la tranche de thon en quatre morceaux et faites-les revenir à la poêle dans un peu d'huile, en les retournant. Versez la sauce Basquaise Amora et laissez mijoter 2 minutes.",
+    "Pendant ce temps, faites réchauffer à feu doux les haricots rouges. Disposez le thon nappé de sauce avec les haricots dans les assiettes. Servez avec un vin rouge corsé."
+  ],
+  "status": "published",
+  "slug": "thon-basquaise",
+  "publishedAt": 1787908768546,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

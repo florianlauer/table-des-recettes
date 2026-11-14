@@ -1,0 +1,57 @@
+{
+  "id": "j571c4gtky2txy2eaa5g8szkmx8ccc8g",
+  "creationTime": 1786649544537.532,
+  "title": "Saint-Jacques en aumônières",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 coquilles Saint-Jacques",
+      "quantity": 4,
+      "unit": null,
+      "label": "coquilles Saint-Jacques"
+    },
+    {
+      "raw": "4 feuilles de chou vert",
+      "quantity": 4,
+      "unit": null,
+      "label": "feuilles de chou vert"
+    },
+    {
+      "raw": "8 tomates cerises",
+      "quantity": 8,
+      "unit": null,
+      "label": "tomates cerises"
+    },
+    {
+      "raw": "1 bouquet de persil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "4 cuil. à soupe de crème",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "crème"
+    },
+    {
+      "raw": "safran, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "safran, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire les feuilles de chou à la vapeur 10 min.",
+    "Posez, au centre de chacune des feuilles, 1 Saint-Jacques coupée en trois dans l'épaisseur, 2 tomates cerises incisées, un peu de persil haché et 1 cuil. de crème.",
+    "Salez, poivrez, ajoutez 1 pointe de safran.",
+    "Rabattez les bords des feuilles pour former une papillote et laisser cuire 10 min à la vapeur."
+  ],
+  "status": "published",
+  "slug": "saint-jacques-en-aumonieres",
+  "publishedAt": 1786649578918,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

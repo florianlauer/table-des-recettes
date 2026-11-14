@@ -1,0 +1,88 @@
+{
+  "id": "j570nw8wp3zrsv0xawkmkrgmen8j7r19",
+  "creationTime": 1794662700395.444,
+  "title": "Mitonnée de veau au vin",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g d'épaule de veau",
+      "quantity": 800,
+      "unit": "g",
+      "label": "épaule de veau"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "3 branches de céleri",
+      "quantity": 3,
+      "unit": "branches",
+      "label": "céleri"
+    },
+    {
+      "raw": "400 g de petits champignons de Paris",
+      "quantity": 400,
+      "unit": "g",
+      "label": "petits champignons de Paris"
+    },
+    {
+      "raw": "2 citrons",
+      "quantity": 2,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "25 cl de vin blanc sec fruité",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "vin blanc sec fruité"
+    },
+    {
+      "raw": "20 cl de bouillon de volaille",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "10 brins de cerfeuil",
+      "quantity": 10,
+      "unit": "brins",
+      "label": "cerfeuil"
+    },
+    {
+      "raw": "farine, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "farine, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Farinez les morceaux de veau.",
+    "Faites-les dorer dans une cocotte avec 2 cuil. d'huile chaude, réservez.",
+    "Faites suer les oignons émincés dans le reste d'huile jusqu'à ce qu'ils soient transparents.",
+    "Ajoutez le céleri coupé en tronçons de 3 cm, laissez revenir pendant 5 min en remuant.",
+    "Remettez le veau, salez, poivrez, mouillez avec le vin et le bouillon de volaille.",
+    "Couvrez et laissez cuire 30 min à feu doux.",
+    "Pochez le zeste d'un citron taillé en bâtonnets 2 min dans l'eau bouillante.",
+    "Ajoutez les champignons pelés et citronnés dans la cocotte, poursuivez la cuisson durant 15 min.",
+    "Disposez la viande et les légumes dans un plat.",
+    "Faites réduire la sauce de moitié à feu vif, ajoutez les zestes, versez dans le plat et parsemez de pluches de cerfeuil.",
+    "Accompagnez de polenta au parmesan."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

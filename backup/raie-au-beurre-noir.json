@@ -1,0 +1,57 @@
+{
+  "id": "j579qbm13jajwkk6z3kayvxzxh8cy0pj",
+  "creationTime": 1787414767746.3843,
+  "title": "Raie au beurre noir",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g d'ailerons de raie",
+      "quantity": 600,
+      "unit": "g",
+      "label": "d'ailerons de raie"
+    },
+    {
+      "raw": "1 court-bouillon",
+      "quantity": 1,
+      "unit": null,
+      "label": "court-bouillon"
+    },
+    {
+      "raw": "câpres",
+      "quantity": null,
+      "unit": null,
+      "label": "câpres"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "de beurre"
+    },
+    {
+      "raw": "2 cuill. à soupe de vinaigre de cidre",
+      "quantity": 2,
+      "unit": "cuill. à soupe",
+      "label": "de vinaigre de cidre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Cuire les ailerons de raie dans un court-bouillon pendant 8 minutes. Égoutter. Dépouiller et dresser la raie sur un plat de service.",
+    "Saler, poivrer, ajouter quelques câpres.",
+    "A la poêle, faire noircir le beurre. Ajouter le vinaigre.",
+    "Mélanger et napper la raie. Servir immédiatement."
+  ],
+  "status": "published",
+  "slug": "raie-au-beurre-noir",
+  "publishedAt": 1787414803796,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

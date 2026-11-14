@@ -1,0 +1,89 @@
+{
+  "id": "j57f0m14nsemvyq7dd5kw5dqg98cvpvx",
+  "creationTime": 1787248686630.366,
+  "title": "Torta de blettes aux anchois",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g d'anchois",
+      "quantity": 600,
+      "unit": "g",
+      "label": "anchois"
+    },
+    {
+      "raw": "300 g de vert de blettes",
+      "quantity": 300,
+      "unit": "g",
+      "label": "vert de blettes"
+    },
+    {
+      "raw": "400 g de ricotta",
+      "quantity": 400,
+      "unit": "g",
+      "label": "ricotta"
+    },
+    {
+      "raw": "2 branches de marjolaine",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "marjolaine"
+    },
+    {
+      "raw": "2 œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "50 g de parmesan",
+      "quantity": 50,
+      "unit": "g",
+      "label": "parmesan"
+    },
+    {
+      "raw": "30 g de chapelure",
+      "quantity": 30,
+      "unit": "g",
+      "label": "chapelure"
+    },
+    {
+      "raw": "4 c. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "noix muscade",
+      "quantity": null,
+      "unit": null,
+      "label": "noix muscade"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver et nettoyer les anchois, ôter la tête, la queue, l'arête centrale et les ouvrir à plat.",
+    "Préparer la farce: laver le vert de blettes et le faire blanchir 2 mn dans l'eau bouillante salée, rafraîchir, égoutter, essorer.",
+    "Hacher grossièrement et mélanger avec les œufs, la ricotta, le parmesan, la marjolaine ciselée, sel, poivre et muscade.",
+    "Recouvrir le fond d'un plat en terre à bord un peu haut d'un peu d'huile d'olive, étaler la chapelure, disposer une couche d'anchois, recouvrir de farce, d'une autre couche d'anchois, arroser d'huile d'olive.",
+    "Cuisson: 25 mn au four chaud th.7.",
+    "Servir tiède."
+  ],
+  "status": "published",
+  "slug": "torta-de-blettes-aux-anchois",
+  "publishedAt": 1787248709106,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

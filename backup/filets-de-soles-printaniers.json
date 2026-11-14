@@ -1,0 +1,90 @@
+{
+  "id": "j57c8y8qw0cwfqxgk14sz0bmns8czh1z",
+  "creationTime": 1787415862361.2393,
+  "title": "Filets de soles printaniers",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "2 soles de 500 g",
+      "quantity": 2,
+      "unit": null,
+      "label": "soles de 500 g"
+    },
+    {
+      "raw": "1 bouteille de muscadet",
+      "quantity": 1,
+      "unit": "bouteille",
+      "label": "muscadet"
+    },
+    {
+      "raw": "1 poireau",
+      "quantity": 1,
+      "unit": null,
+      "label": "poireau"
+    },
+    {
+      "raw": "3 branches de céleri",
+      "quantity": 3,
+      "unit": "branches",
+      "label": "céleri"
+    },
+    {
+      "raw": "125 g de carottes",
+      "quantity": 125,
+      "unit": "g",
+      "label": "carottes"
+    },
+    {
+      "raw": "100 g de champignons",
+      "quantity": 100,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "125 g de navets",
+      "quantity": 125,
+      "unit": "g",
+      "label": "navets"
+    },
+    {
+      "raw": "2 tomates",
+      "quantity": 2,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "125 g de beurre",
+      "quantity": 125,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "300 g de crème fraîche",
+      "quantity": 300,
+      "unit": "g",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1 bouquet de cerfeuil",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "cerfeuil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Demander à votre poissonnier de lever les filets des soles. Garder les arêtes centrales. Préparer un fumet avec les arêtes et les trois quarts de la bouteille de muscadet. Laisser cuire 20 mn. Passer au chinois. Ôter le bout terreux des champignons, éplucher les légumes. Peler et épépiner les tomates. Tailler tous les légumes en julienne, les verser dans le fumet et faire cuire 8 à 10 mn. Les égoutter. Saler et poivrer les filets de soles, les plier en deux, les ranger dans un plat légèrement beurré, ajouter les légumes. Arroser avec le fumet de poisson bouillant, faire pocher 2 mn à feu très doux. Dresser les filets sur le plat de service chaud, décorer avec quelques légumes, mouiller d'une louche de bouillon. Garder au chaud à l'entrée du four et préparer la sauce. Dans une casserole faire fondre le beurre, ajouter la crème petit à petit en fouettant bien, saler, poivrer, ajouter le jus du citron et le cerfeuil haché. Servir la sauce en saucière."
+  ],
+  "status": "published",
+  "slug": "filets-de-soles-printaniers",
+  "publishedAt": 1787415881093,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

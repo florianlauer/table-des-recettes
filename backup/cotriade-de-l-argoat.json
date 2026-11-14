@@ -1,0 +1,72 @@
+{
+  "id": "j57ay15nekhpgy45agjp3v1xgn8dbc2c",
+  "creationTime": 1787907964746.5647,
+  "title": "Cotriade de l'Argoat",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 maquereaux, 600 g de roussette, 600 g de congre",
+      "quantity": 2,
+      "unit": null,
+      "label": "maquereaux, 600 g de roussette, 600 g de congre"
+    },
+    {
+      "raw": "300 g de moules",
+      "quantity": 300,
+      "unit": "g",
+      "label": "moules"
+    },
+    {
+      "raw": "2 oignons, 1 bouquet garni",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons, 1 bouquet garni"
+    },
+    {
+      "raw": "1 l de muscadet",
+      "quantity": 1,
+      "unit": "l",
+      "label": "muscadet"
+    },
+    {
+      "raw": "4 carottes, 4 poireaux",
+      "quantity": 4,
+      "unit": null,
+      "label": "carottes, 4 poireaux"
+    },
+    {
+      "raw": "4 pommes de terre",
+      "quantity": 4,
+      "unit": null,
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "100 g de lardons",
+      "quantity": 100,
+      "unit": "g",
+      "label": "lardons"
+    },
+    {
+      "raw": "2 cuil à soupe de saindoux (ou beurre)",
+      "quantity": 2,
+      "unit": "cuil à soupe",
+      "label": "saindoux (ou beurre)"
+    },
+    {
+      "raw": "4 tranches de pain rassis, sel, poivre",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "pain rassis, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites fondre le saindoux dans une cocotte, ajoutez les oignons émincés, laissez étuver doucement 1 min. Disposez dessus les poissons écaillés, vidés et tronçonnés. Mouillez avec le vin, ajoutez 1/4 l d'eau, le bouquet garni, le sel et le poivre. Laissez mijoter 10 min, ajoutez les moules soigneusement grattées, laissez cuire encore 10 min. Présentez sur un plat les poissons, les moules, les légumes cuits à l'eau bouillante salée et les lardons poêlés. Versez le bouillon sur le pain et servez comme une soupe."
+  ],
+  "status": "published",
+  "slug": "cotriade-de-l-argoat",
+  "publishedAt": 1787908098019,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

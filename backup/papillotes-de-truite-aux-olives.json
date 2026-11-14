@@ -1,0 +1,71 @@
+{
+  "id": "j574xd0c47xa415v584qj6204d8dbda5",
+  "creationTime": 1787908742966.1697,
+  "title": "Papillotes de truite aux olives",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 filets de truite",
+      "quantity": 6,
+      "unit": null,
+      "label": "filets de truite"
+    },
+    {
+      "raw": "225 g d'olives vertes dénoyautées",
+      "quantity": 225,
+      "unit": "g",
+      "label": "olives vertes dénoyautées"
+    },
+    {
+      "raw": "5 petits oignons nouveaux",
+      "quantity": 5,
+      "unit": null,
+      "label": "petits oignons nouveaux"
+    },
+    {
+      "raw": "6 tomates confites",
+      "quantity": 6,
+      "unit": null,
+      "label": "tomates confites"
+    },
+    {
+      "raw": "3 cuill. à soupe de câpres",
+      "quantity": 3,
+      "unit": "cuillère à soupe",
+      "label": "câpres"
+    },
+    {
+      "raw": "2 cuill. à soupe de zestes de citron jaune",
+      "quantity": 2,
+      "unit": "cuillère à soupe",
+      "label": "zestes de citron jaune"
+    },
+    {
+      "raw": "6 cuill. à soupe d'huile d'olive",
+      "quantity": 6,
+      "unit": "cuillère à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pelez les oignons. Hachez-les grossièrement, ainsi que les olives. Coupez les tomates confites en petits morceaux. Dans un saladier, mélangez le tout avec les câpres et les zestes de citron.",
+    "Préchauffez le four th. 7 (210 °C).",
+    "Découpez six grands carrés de papier sulfurisé. Posez un filet de truite au centre de chacun d'eux. Salez, poivrez et parsemez du mélange aux olives.",
+    "Arrosez chaque filet d'une cuillère à soupe d'huile d'olive puis repliez le papier de manière à former une papillote.",
+    "Enfournez et faites cuire 15 minutes.",
+    "Servez les papillotes accompagnées de riz blanc ou d'une ratatouille froide."
+  ],
+  "status": "published",
+  "slug": "papillotes-de-truite-aux-olives",
+  "publishedAt": 1787908751120,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

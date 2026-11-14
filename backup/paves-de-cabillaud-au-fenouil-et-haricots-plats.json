@@ -1,0 +1,72 @@
+{
+  "id": "j5715qnsn6btvayffxhzqfyn9n8dbmn7",
+  "creationTime": 1787908742966.1704,
+  "title": "Pavés de cabillaud au fenouil et haricots plats",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 pavés de cabillaud de 150 g chacun",
+      "quantity": 4,
+      "unit": null,
+      "label": "pavés de cabillaud de 150 g chacun"
+    },
+    {
+      "raw": "3 mini-fenouils (frais ou surgelés)",
+      "quantity": 3,
+      "unit": null,
+      "label": "mini-fenouils (frais ou surgelés)"
+    },
+    {
+      "raw": "400 g de haricots plats (frais ou surgelés)",
+      "quantity": 400,
+      "unit": "g",
+      "label": "haricots plats (frais ou surgelés)"
+    },
+    {
+      "raw": "4 tiges de persil plat",
+      "quantity": 4,
+      "unit": "tiges",
+      "label": "persil plat"
+    },
+    {
+      "raw": "1 cuillerée à soupe de zestes de citron",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "zestes de citron"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuillerée à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "4 cuillerées à soupe de crème épaisse",
+      "quantity": 4,
+      "unit": "cuillerée à soupe",
+      "label": "crème épaisse"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Épluchez et lavez les haricots. Coupez les fenouils en quatre, lavez-les.",
+    "Portez à ébullition une grande casserole d'eau salée. Plongez-y les fenouils et faites-les cuire 15 minutes.",
+    "Pendant ce temps, lavez, séchez et effeuillez le persil. Ciselez-le finement.",
+    "Faites chauffer l'huile dans une poêle. Quand elle est chaude, posez les pavés de cabillaud et faites-les cuire 5 minutes à feu vif. Salez et poivrez. Retournez-les et prolongez la cuisson 4 minutes. Retirez les pavés et gardez-les au chaud. Réservez la poêle sans la nettoyer.",
+    "Ajoutez les haricots dans la casserole des fenouils et prolongez la cuisson 5 minutes. Égouttez les légumes.",
+    "Versez la crème dans la poêle de cuisson du poisson. Ajoutez le persil et les zestes de citron. Faites cuire 2 minutes en remuant à feu vif. Puis ajoutez les légumes et prolongez la cuisson 3 minutes en enrobant les légumes de sauce.",
+    "Répartissez les légumes dans les assiettes, arrosez-les de sauce, posez le cabillaud par-dessus et servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "paves-de-cabillaud-au-fenouil-et-haricots-plats",
+  "publishedAt": 1787908773799,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

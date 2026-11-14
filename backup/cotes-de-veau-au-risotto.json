@@ -1,0 +1,83 @@
+{
+  "id": "j579sp8mnpjh9gkzj46hvf801h8j61w6",
+  "creationTime": 1794660296186.8894,
+  "title": "Côtes de veau au risotto",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 côtes de veau double",
+      "quantity": 2,
+      "unit": null,
+      "label": "côtes de veau double"
+    },
+    {
+      "raw": "2 carottes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 blanc de poireau",
+      "quantity": 1,
+      "unit": null,
+      "label": "blanc de poireau"
+    },
+    {
+      "raw": "1 branche de céleri",
+      "quantity": 1,
+      "unit": null,
+      "label": "branche de céleri"
+    },
+    {
+      "raw": "25 cl de bière blonde",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "bière blonde"
+    },
+    {
+      "raw": "120 g de riz rond type arborio",
+      "quantity": 120,
+      "unit": "g",
+      "label": "riz rond type arborio"
+    },
+    {
+      "raw": "1 échalote émincée",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote émincée"
+    },
+    {
+      "raw": "50 cl de bouillon de volaille",
+      "quantity": 50,
+      "unit": "cl",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire fondre une grosse noix de beurre dans une poêle, y saisir la viande des deux côtés.",
+    "Peler et laver les carottes, le poireau, le céleri.",
+    "Tailler ces légumes en petits dés et les ajouter à la viande.",
+    "Mouiller avec la moitié de la bière, baisser le feu et couvrir.",
+    "Laisser cuire 10 mn puis retirer la viande et la réserver au chaud.",
+    "Dans une casserole à fond épais, faire colorer l'échalote dans du beurre, ajouter le riz et bien mélanger.",
+    "Laisser cuire le risotto en ajoutant de l'eau peu à peu, au fur et à mesure que le riz absorbe le liquide.",
+    "A mi-cuisson, ajouter les légumes (réserver la sauce) et vérifier l'assaisonnement.",
+    "Arrêter la cuisson lorsque le riz est tendre sans s'effondrer.",
+    "Ajouter un peu de bière et une noix de beurre puis mélanger.",
+    "Déglacer le jus de cuisson de la poêle avec le reste de bière et laisser réduire.",
+    "Couper les côtes de veau en tranches et dresser sur un plat de service accompagné du risotto et des légumes."
+  ],
+  "status": "published",
+  "slug": "cotes-de-veau-au-risotto",
+  "publishedAt": 1794660935437,
+  "imageStorageId": "kg2806sgjsbv39gvtb9ts2vaq98j6fpw",
+  "beautifiedStorageId": "kg2e5ennk11x9h29n0nzq6r7gd8j650s"
+}

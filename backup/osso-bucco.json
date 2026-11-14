@@ -1,0 +1,77 @@
+{
+  "id": "j57f2bddgxqtb52qp0wvdddgvx8gpvvc",
+  "creationTime": 1792583846404.0852,
+  "title": "Osso Bucco",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 kg de jarret de veau",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "jarret de veau"
+    },
+    {
+      "raw": "(demandez à votre boucher de le couper en 6 tranches dans le sens de la largeur : l'os doit être au milieu de chaque tranche)",
+      "quantity": null,
+      "unit": null,
+      "label": "(demandez à votre boucher de le couper en 6 tranches dans le sens de la largeur : l'os doit être au milieu de chaque tranche)"
+    },
+    {
+      "raw": "1 boîte de tomates pelées",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "tomates pelées"
+    },
+    {
+      "raw": "(ou 1 kg de tomates fraîches)",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "(ou kg de tomates fraîches)"
+    },
+    {
+      "raw": "3 verres de vin blanc sec",
+      "quantity": 3,
+      "unit": "verres",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "5 oignons",
+      "quantity": 5,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "sel, poivre, thym, basilic, romarin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre, thym, basilic, romarin"
+    },
+    {
+      "raw": "3 cuillères à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "huile d'olive"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites revenir les tranches de jarret de veau dans l'huile d'olive bien chaude.",
+    "Lorsqu'elles sont bien dorées, ajoutez les oignons émincés et faites-les bien colorer.",
+    "Puis versez les tomates pelées et le vin blanc.",
+    "Salez, poivrez, ajoutez l'ail pilé et les herbes.",
+    "Laissez cuire à feu moyen 45 mn environ.",
+    "Servez avec un plat de spaghettis au parmesan."
+  ],
+  "status": "published",
+  "slug": "osso-bucco",
+  "publishedAt": 1792583861793,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

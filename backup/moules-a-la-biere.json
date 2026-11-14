@@ -1,0 +1,70 @@
+{
+  "id": "j57cjtdjsfam186yx8fyb77ad18cc4y5",
+  "creationTime": 1786649078242.6943,
+  "title": "Moules à la bière",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "3 l de moules bouchots",
+      "quantity": 3,
+      "unit": "l",
+      "label": "moules bouchots"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 verre de bière",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "bière"
+    },
+    {
+      "raw": "1 cuillère à soupe de vinaigre de vin",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "vinaigre de vin"
+    },
+    {
+      "raw": "4 échalotes",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 branche de céleri, poivre",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "céleri, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyez les moules.",
+    "Faites chauffer le beurre dans un faitout et y ajoutez les échalotes, l'ail haché, la branche de céleri découpée en dés, le vin blanc, le vinaigre et la bière.",
+    "Laissez cuire à couvert sur feu vif pendant 10 mn.",
+    "Ajoutez les moules, poivrez et laissez cuire encore 3 mn.",
+    "Bon Appétit."
+  ],
+  "status": "published",
+  "slug": "moules-a-la-biere",
+  "publishedAt": 1786649135767,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

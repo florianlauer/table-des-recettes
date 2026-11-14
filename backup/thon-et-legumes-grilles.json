@@ -1,0 +1,87 @@
+{
+  "id": "j57atqd0pw76hcayv1n27d0zg18cz73d",
+  "creationTime": 1787419210623.376,
+  "title": "Thon et légumes grillés",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 tranches de thon de 125 g",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "thon de 125 g"
+    },
+    {
+      "raw": "3 gousse d'ail",
+      "quantity": 3,
+      "unit": "gousse",
+      "label": "d'ail"
+    },
+    {
+      "raw": "3 cuil. à soupe de sauce marinade au soja (Teriyaki)",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "sauce marinade au soja (Teriyaki)"
+    },
+    {
+      "raw": "1 cuil. à soupe de graines de sésame dorées",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "graines de sésame dorées"
+    },
+    {
+      "raw": "4 tomates mûres et fermes",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates mûres et fermes"
+    },
+    {
+      "raw": "4 oignons blancs",
+      "quantity": 4,
+      "unit": null,
+      "label": "oignons blancs"
+    },
+    {
+      "raw": "2 poivrons rouges ou jaunes",
+      "quantity": 2,
+      "unit": null,
+      "label": "poivrons rouges ou jaunes"
+    },
+    {
+      "raw": "4 petites courgettes",
+      "quantity": 4,
+      "unit": null,
+      "label": "petites courgettes"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "d'huile d'olive"
+    },
+    {
+      "raw": "4 brins de basilic",
+      "quantity": 4,
+      "unit": "brins",
+      "label": "basilic"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Peler les gousses d'ail, les passer au presse-ail au-dessus d'un bol, verser la sauce marinade au soja et mélanger.",
+    "Poser les tranches de thon dans le bol, les badigeonner de sauce et les laisser mariner 30 mn environ.",
+    "Préparer les légumes, poser les poivrons sur un gril et les faire cuire, en les tournant souvent, jusqu'à ce que la peau devienne brune. Puis les laisser refroidir dans un saladier couvert. Puis les peler, éliminer les graines et les pédoncules, couper la pulpe en fines lanières et réserver.",
+    "Couper les courgettes en lanières de 0,5 cm et les oignons et tomates en deux. huiler et saler tous les légumes, les poser sur le gril et les faire cuire 3 mn de chaque côté, puis les répartir dans 4 assiettes, ajouter les lanières de poivron, parsemer de basilic ciselé et ajouter l'huile. Poser les tranches de thon sur le gril très chaud et les faire cuire 1 mn de chaque côté, les poser sur les légumes dans les assiettes. Parsemer de graines de sésame et servir aussitôt."
+  ],
+  "status": "published",
+  "slug": "thon-et-legumes-grilles",
+  "publishedAt": 1787419231481,
+  "imageStorageId": "kg2aqjtzf7knz578dhdq1bpzrn8cyp0y",
+  "beautifiedStorageId": "kg241kfjf25fgqepts4qcnxygd8cy67h"
+}

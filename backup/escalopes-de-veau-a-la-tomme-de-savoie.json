@@ -1,0 +1,86 @@
+{
+  "id": "j576bt2kbjyq8sszbj2gt5qzhd8j7d1m",
+  "creationTime": 1794661368720.2117,
+  "title": "Escalopes de veau à la Tomme de Savoie",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 escalopes de veau",
+      "quantity": 4,
+      "unit": null,
+      "label": "escalopes de veau"
+    },
+    {
+      "raw": "4 tomates moyennes",
+      "quantity": 4,
+      "unit": null,
+      "label": "tomates moyennes"
+    },
+    {
+      "raw": "2 tranches de jambon cuit",
+      "quantity": 2,
+      "unit": "tranches",
+      "label": "jambon cuit"
+    },
+    {
+      "raw": "80 g d'emmental",
+      "quantity": 80,
+      "unit": "g",
+      "label": "d'emmental"
+    },
+    {
+      "raw": "150 g de Tomme de Savoie",
+      "quantity": 150,
+      "unit": "g",
+      "label": "Tomme de Savoie"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Farinez vos escalopes.",
+    "Dans une poêle, mettez du beurre et de l'huile. Lorsque la graisse est chaude, ajoutez les escalopes.",
+    "Faites-les dorer 2 mn de chaque côté, salez et poivrez.",
+    "Retirez la poêle du feu et déposez les escalopes dans un plat pouvant aller au four.",
+    "Coupez les tranches de jambon en deux.",
+    "Découpez la Tomme de Savoie en 8 tranches.",
+    "Sur chaque escalope, posez une demie tranche de jambon puis 2 tranches de Tomme de Savoie.",
+    "Coupez les tomates en rondelles, mettez-les sur la Tomme de Savoie puis saupoudrez d'Emmental.",
+    "Mettez vos escalopes dans votre four préchauffé th. 9 et laissez gratiner une dizaine de minutes environ."
+  ],
+  "status": "published",
+  "slug": "escalopes-de-veau-a-la-tomme-de-savoie",
+  "publishedAt": 1794661403733,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

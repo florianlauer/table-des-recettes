@@ -1,0 +1,69 @@
+{
+  "id": "j576y2x7pr2spyh7gby50jj8rh8ceckp",
+  "creationTime": 1786728768061.8008,
+  "title": "Fricassée de crevettes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de crevettes entières",
+      "quantity": 800,
+      "unit": "g",
+      "label": "crevettes entières"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "2 cuillères à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "1 boîte de tomates concassées",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "tomates concassées"
+    },
+    {
+      "raw": "1 petite boîte de champignons de Paris émincés",
+      "quantity": 1,
+      "unit": "petite boîte",
+      "label": "champignons de Paris émincés"
+    },
+    {
+      "raw": "1 petit piment",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit piment"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "1 tranche de citron",
+      "quantity": 1,
+      "unit": "tranche",
+      "label": "citron"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Hachez l'oignon et le faites-le revenir dans l'huile. Lorsqu'il est coloré, rajoutez les crevettes entières que vous aurez décortiquées. Faites revenir jusqu'à obtention d'une couleur rosée.",
+    "Ajoutez petit à petit la boîte de tomates concassées puis les champignons. Après avoir bien enlevé les pépins, coupez le piment en petits morceaux et ajoutez-le au mélange précédent. Salez, poivrez et laissez revenir une dizaine de minutes à feu doux.",
+    "Au moment de servir, mettez un filet de jus de citron sur les crevettes.",
+    "S'accompagne parfaitement avec du riz Basmati."
+  ],
+  "status": "published",
+  "slug": "fricassee-de-crevettes",
+  "publishedAt": 1786728888468,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

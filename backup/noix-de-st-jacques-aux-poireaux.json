@@ -1,0 +1,85 @@
+{
+  "id": "j575gskdk03ghg50xvy9ynf4cs8cem1m",
+  "creationTime": 1786728768061.8005,
+  "title": "Noix de Saint-Jacques aux poireaux",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "poireaux",
+      "quantity": null,
+      "unit": null,
+      "label": "poireaux"
+    },
+    {
+      "raw": "60 g de beurre",
+      "quantity": 60,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "échalotes",
+      "quantity": null,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuil. à café de jus de citron",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "4 cuil. à soupe de vin blanc",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    },
+    {
+      "raw": "noix de Saint-Jacques",
+      "quantity": null,
+      "unit": null,
+      "label": "noix de Saint-Jacques"
+    },
+    {
+      "raw": "crème",
+      "quantity": null,
+      "unit": null,
+      "label": "crème"
+    },
+    {
+      "raw": "vin blanc",
+      "quantity": null,
+      "unit": null,
+      "label": "vin blanc"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faites fondre les poireaux émincés dans 60 g de beurre.",
+    "Laissez cuire à découvert.",
+    "Mettez les échalotes hachées dans 20 g de beurre. Mouillez avec 1 cuil. à café de jus de citron et 4 cuil. à soupe de vin blanc. Poivrez.",
+    "Mettez les noix de Saint-Jacques dans la poêle et laissez-les cuire 1mn. de chaque côté.",
+    "Réservez-les.",
+    "Mettez la crème dans la poêle, avant d'y ajouter les noix de Saint-Jacques. Couvrez et laissez cuire 2 mn.",
+    "Egouttez les noix et répartissez-les sur les assiettes chaudes avec les poireaux émincés. Passez le jus de cuisson au chinois dans une casserole et ajoutez le reste de vin blanc.",
+    "Fouettez vivement et répartissez la sauce dans les assiettes."
+  ],
+  "status": "published",
+  "slug": "noix-de-st-jacques-aux-poireaux",
+  "publishedAt": 1786728884862,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,54 @@
+{
+  "id": "j57btfctgsr9se60yep3d0407n8j60vd",
+  "creationTime": 1794661466651.3755,
+  "title": "Roulés de veau fondant au jambon cru",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "2 escalopes de veau très fines",
+      "quantity": 2,
+      "unit": null,
+      "label": "escalopes de veau très fines"
+    },
+    {
+      "raw": "4 tranches de jambon cru très fines",
+      "quantity": 4,
+      "unit": null,
+      "label": "tranches de jambon cru très fines"
+    },
+    {
+      "raw": "4 c. à s. de Boursin Cuisine 3 poivres",
+      "quantity": 4,
+      "unit": "c. à s.",
+      "label": "Boursin Cuisine 3 poivres"
+    },
+    {
+      "raw": "4 feuilles de sauge",
+      "quantity": 4,
+      "unit": null,
+      "label": "feuilles de sauge"
+    },
+    {
+      "raw": "200 g d'asperges vertes",
+      "quantity": 200,
+      "unit": "g",
+      "label": "asperges vertes"
+    },
+    {
+      "raw": "Pics en bois",
+      "quantity": null,
+      "unit": null,
+      "label": "Pics en bois"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Badigeonnez les escalopes de Boursin Cuisine. Couvrez de jambon cru. Ajoutez les feuilles de sauge. Roulez chacune des escalopes sur elle-même et maintenez-les avec un pic en bois. Préchauffez le four à 210° C (th.7). Faites chauffer un peu d'huile d'olive dans une poêle pour dorer les roulés. Posez-les dans un plat et laissez-les cuire au four 15 minutes. Ebouillantez les asperges. Laissez refroidir le tout et dégustez froid. Ou bien chaud avec du Boursin Cuisine préalablement tiédi au micro-ondes."
+  ],
+  "status": "published",
+  "slug": "roules-de-veau-fondant-au-jambon-cru",
+  "publishedAt": 1794661494565,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}
