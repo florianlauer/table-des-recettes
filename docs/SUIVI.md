@@ -130,7 +130,9 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
 - **CI** — sept contrôles sur chaque PR, dont le build, aucun ne dépense d'argent.
 - **Sauvegarde** — miroir versionné des recettes dans `backup/`, une par fichier JSON, actualisé
   chaque dimanche à 03 h UTC et commité sur `main`. La restauration a son script et ses tests. Un
-  export vide refuse de tourner, pour ne pas effacer le miroir.
+  export vide refuse de tourner, pour ne pas effacer le miroir. Elle ne tourne vraiment que depuis
+  le 2026-11-14. `BACKUP_TOKEN` et `CONVEX_BACKUP_URL` n'avaient jamais été posés, donc aucune
+  sauvegarde n'a tourné entre le 2026-08-16 et cette date, et les 13 runs planifiés ont échoué.
 - **Déploiement** — production sur https://table-des-recettes.vercel.app, backend Convex
   `fleet-bat-50` (région US East). `vercel.json` porte le build ; poser le label `preview` sur une
   PR crée un backend Convex jetable avec une copie de la base de production et publie un frontend
