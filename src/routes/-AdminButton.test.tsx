@@ -1,36 +1,11 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
 import { describe, expect, test } from 'vite-plus/test'
 import { rowGesture } from '../lib/gestures'
-import type { Outcome, Run } from '../lib/gestureRegistry'
-import type { Gestures } from '../lib/useGestures'
+import type { Run } from '../lib/gestureRegistry'
+import { fakeGestures } from '../lib/gestures.fixture'
 import { AdminButton } from './-AdminButton'
 
 const gesture = rowGesture('recipe-1', 'generate')
-
-/** Only what the button reads. The registry itself is covered by `gestureRegistry.test.ts`. */
-function fakeGestures({
-  running = null,
-  outcome = null,
-  blocked = false,
-}: {
-  running?: Run | null
-  outcome?: Outcome | null
-  blocked?: boolean
-} = {}): Gestures {
-  return {
-    run: async () => {},
-    confirm: () => {},
-    running: () => running,
-    outcome: () => outcome,
-    blocked: () => blocked,
-    orphanedOutcomes: () => [],
-    liveGestures: () => [],
-    markOrphaned: () => {},
-    releaseFocusClaim: () => {},
-    clearOutcomes: () => {},
-    holdsFocus: () => false,
-  }
-}
 
 function runningSince(elapsedMs: number, estimateMs: number | null): Run {
   return {

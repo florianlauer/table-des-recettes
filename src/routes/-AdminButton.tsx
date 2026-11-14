@@ -23,6 +23,7 @@ export function AdminButton({
   estimateMs = null,
   settle = false,
   titleId,
+  describedBy,
 }: {
   gestures: Gestures
   gesture: Gesture
@@ -38,6 +39,8 @@ export function AdminButton({
   settle?: boolean
   /** The row's title, so the bar says what progresses rather than progressing anonymously. */
   titleId?: string
+  /** Text that says what a terse label acts on, such as the line an « Annuler » cancels. */
+  describedBy?: string
 }) {
   const id = useId()
   const labelId = `${id}-label`
@@ -61,7 +64,10 @@ export function AdminButton({
       <button
         type="button"
         disabled={inert}
-        aria-describedby={reason ? reasonId : undefined}
+        aria-describedby={
+          [describedBy, reason && reasonId].filter(Boolean).join(' ') ||
+          undefined
+        }
         onClick={() => {
           if (confirm && !window.confirm(confirm)) return
           void gestures.run(

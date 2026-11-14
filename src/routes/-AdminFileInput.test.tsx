@@ -1,36 +1,10 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
 import { describe, expect, test } from 'vite-plus/test'
 import { rowGesture } from '../lib/gestures'
-import type { Outcome, Run } from '../lib/gestureRegistry'
-import type { Gestures } from '../lib/useGestures'
+import { fakeGestures } from '../lib/gestures.fixture'
 import { AdminFileInput } from './-AdminFileInput'
 
 const gesture = rowGesture('recipe-1', 'attach')
-
-/** Only what the control reads. The registry itself is covered by `gestureRegistry.test.ts`. */
-function fakeGestures({
-  running = null,
-  outcome = null,
-  blocked = false,
-}: {
-  running?: Run | null
-  outcome?: Outcome | null
-  blocked?: boolean
-} = {}): Gestures {
-  return {
-    run: async () => {},
-    confirm: () => {},
-    running: () => running,
-    outcome: () => outcome,
-    blocked: () => blocked,
-    orphanedOutcomes: () => [],
-    liveGestures: () => [],
-    markOrphaned: () => {},
-    releaseFocusClaim: () => {},
-    clearOutcomes: () => {},
-    holdsFocus: () => false,
-  }
-}
 
 function render(props: Partial<Parameters<typeof AdminFileInput>[0]> = {}) {
   return renderToStaticMarkup(

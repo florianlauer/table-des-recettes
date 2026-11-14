@@ -25,7 +25,7 @@ import { AdminFileInput } from './-AdminFileInput'
 import { GestureProgress } from './-GestureProgress'
 import { OrphanedOutcomes } from './-OrphanedOutcomes'
 import { RecipeForm, toDraft } from './-RecipeForm'
-import { ScanSummary } from './-ScanSummary'
+import { ScanSummary, summaryRows } from './-ScanSummary'
 import type { Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
@@ -114,6 +114,15 @@ function ScanCorrectionPage() {
     ? new Set<string>(data.recipes.map((recipe) => recipe.id))
     : null
   useOrphanedRows({ gestures, liveRowIds: liveRecipeIds })
+  // The rows the summary renders publish their own orphaned outcomes; the page block takes the rest.
+  const summaryRowIds =
+    illustrations.kind === 'ready' && data
+      ? new Set<string>(
+          summaryRows(data.recipes, illustrations.data).map(
+            ({ recipe }) => recipe.id,
+          ),
+        )
+      : null
 
   // Bulk publication is the one path that never passes in front of a recipe's own warning, so the
   // list of duplicates is rebuilt here and asked for once. One entry per *row*, not per name: the
@@ -150,7 +159,13 @@ function ScanCorrectionPage() {
       {scan.kind === 'loading' && <p>Chargement…</p>}
       {data === null && <p role="alert">Scan introuvable.</p>}
 
-      <OrphanedOutcomes gestures={gestures} />
+      <OrphanedOutcomes
+        gestures={gestures}
+        keep={({ gesture }) =>
+          gesture.scope.kind !== 'row' ||
+          !summaryRowIds?.has(gesture.scope.rowId)
+        }
+      />
 
       {data && (
         <>
