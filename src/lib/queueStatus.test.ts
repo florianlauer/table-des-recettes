@@ -38,7 +38,10 @@ describe('queue status', () => {
       deriveQueueState({ facts: { ...idle, pendingCount: 1 }, now }).button,
     ).toEqual({ label: 'Démarrer l’extraction', disabled: false })
     expect(
-      deriveQueueState({ facts: { ...idle, leaseStartedAt: 1 }, now }).button,
+      deriveQueueState({
+        facts: { ...idle, leaseStartedAt: now - LEASE_MS },
+        now,
+      }).button,
     ).toEqual({ label: 'Relancer la file', disabled: false })
     expect(deriveQueueState({ facts: idle, now }).button).toEqual({
       label: 'Rien à extraire',

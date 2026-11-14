@@ -49,14 +49,23 @@ type ExtractionEnvironment = {
   OPENROUTER_API_KEY?: string
   OPENROUTER_MODEL?: string
   OPENROUTER_PROVIDER?: string
+  OPENROUTER_FALLBACK_MODEL?: string
+  OPENROUTER_FALLBACK_PROVIDER?: string
 }
 
-type AttemptObservation = {
+/** What one billed call cost and who served it. */
+type CallObservation = {
   model: string
   servedProvider: string | null
   latencyMs: number
   costUsd: number
+}
+
+type AttemptObservation = CallObservation & {
   repairCount: number
+  // The primary call cut for recitation, when the fallback model then answered: journaled as its own
+  // row, so each model's figures stay its own.
+  recited: CallObservation | null
 }
 
 type Extraction = ReturnType<typeof normalizeExtraction>
@@ -101,6 +110,7 @@ function failure({
     latencyMs: performance.now() - startedAt,
     costUsd: 0,
     repairCount: 0,
+    recited: null,
   }
 }
 
@@ -163,7 +173,9 @@ export function interpretResponse(answer: unknown): ExtractionReading {
       .join(' / ')
     const detail = choice?.error?.message ? ` : ${choice.error.message}` : ''
     return refuse(
-      'truncated',
+      choice?.native_finish_reason === 'RECITATION'
+        ? 'recitation'
+        : 'truncated',
       `Réponse tronquée (${reasons || 'motif inconnu'})${detail}`,
     )
   }
@@ -190,15 +202,27 @@ export async function extractImages({
   blobs,
   environment = process.env,
   fetchImpl = fetch,
+  takeFallbackQuota = () => Promise.resolve(true),
 }: {
   blobs: readonly (Blob | null)[]
   environment?: ExtractionEnvironment
   fetchImpl?: typeof fetch
+  // The fallback is a second billed call, so it spends its own unit of the extraction quota.
+  takeFallbackQuota?: () => Promise<boolean>
 }): Promise<ExtractionResult> {
   const startedAt = performance.now()
   const model = environment.OPENROUTER_MODEL ?? ''
   const provider = environment.OPENROUTER_PROVIDER ?? ''
   const apiKey = environment.OPENROUTER_API_KEY ?? ''
+  // Both or nothing: without the pair, a recitation fails as it always did.
+  const fallback =
+    environment.OPENROUTER_FALLBACK_MODEL &&
+    environment.OPENROUTER_FALLBACK_PROVIDER
+      ? {
+          model: environment.OPENROUTER_FALLBACK_MODEL,
+          provider: environment.OPENROUTER_FALLBACK_PROVIDER,
+        }
+      : null
   if (!model || !provider || !apiKey) {
     return failure({
       kind: 'transport',
@@ -252,25 +276,44 @@ export async function extractImages({
     dataUris.push(`data:image/${header.format};base64,${bytesToBase64(bytes)}`)
   }
 
-  const call = await callOpenRouter({
-    apiKey,
-    fetchImpl,
-    timeoutMs: REQUEST_TIMEOUT_MS,
-    maxResponseBytes: MAX_RESPONSE_BYTES,
-    body: requestBody({ model, provider, dataUris }),
-    decode: (raw) => {
-      const reading = interpretResponse(raw)
-      return reading.ok
-        ? { ok: true as const, value: reading }
-        : { ok: false as const, kind: reading.kind, error: reading.error }
-    },
-  })
+  const ask = (target: { model: string; provider: string }) =>
+    callOpenRouter({
+      apiKey,
+      fetchImpl,
+      timeoutMs: REQUEST_TIMEOUT_MS,
+      maxResponseBytes: MAX_RESPONSE_BYTES,
+      body: requestBody({ ...target, dataUris }),
+      decode: (raw) => {
+        const reading = interpretResponse(raw)
+        return reading.ok
+          ? { ok: true as const, value: reading }
+          : { ok: false as const, kind: reading.kind, error: reading.error }
+      },
+    })
+
+  const first = await ask({ model, provider })
+  const target =
+    !first.ok &&
+    first.kind === 'recitation' &&
+    fallback &&
+    (await takeFallbackQuota())
+      ? fallback
+      : null
+  const call = target ? await ask(target) : first
 
   const observation = {
-    model,
+    model: target ? target.model : model,
     servedProvider: call.servedProvider,
     latencyMs: call.latencyMs,
     costUsd: call.costUsd,
+    recited: target
+      ? {
+          model,
+          servedProvider: first.servedProvider,
+          latencyMs: first.latencyMs,
+          costUsd: first.costUsd,
+        }
+      : null,
   }
   return call.ok
     ? {
@@ -420,6 +463,13 @@ export const reserve = internalMutation({
   },
 })
 
+const callObservation = v.object({
+  model: v.string(),
+  servedProvider: v.union(v.string(), v.null()),
+  latencyMs: v.number(),
+  costUsd: v.number(),
+})
+
 const observationArgs = {
   attemptId: v.string(),
   model: v.string(),
@@ -427,6 +477,7 @@ const observationArgs = {
   latencyMs: v.number(),
   costUsd: v.number(),
   repairCount: v.number(),
+  recited: v.union(callObservation, v.null()),
 }
 
 /**
@@ -450,6 +501,43 @@ async function journalAttempt(
   })
 }
 
+/**
+ * One journal row per billed call, the recited primary first: a row carrying two calls would charge
+ * the primary's cost and wait to the fallback model and hide the primary's failure from its stats.
+ */
+async function journalCalls(
+  ctx: MutationCtx,
+  {
+    scanId,
+    attempt,
+    recited,
+  }: {
+    scanId: Id<'scans'>
+    attempt: Infer<typeof attemptRecord>
+    recited: Infer<typeof callObservation> | null
+  },
+): Promise<void> {
+  if (recited) {
+    await journalAttempt(ctx, {
+      scanId,
+      attempt: {
+        ...recited,
+        attemptId: attempt.attemptId,
+        failureKind: 'recitation',
+        repairCount: 0,
+        recitationFallback: false,
+      },
+    })
+  }
+  await journalAttempt(ctx, { scanId, attempt })
+}
+
+export const takeFallbackQuota = internalMutation({
+  args: {},
+  returns: v.boolean(),
+  handler: async (ctx) => (await rateLimiter.limit(ctx, 'extraction')).ok,
+})
+
 export const finalize = internalMutation({
   args: {
     scanId: v.id('scans'),
@@ -466,7 +554,7 @@ export const finalize = internalMutation({
     ),
   },
   returns: v.boolean(),
-  handler: async (ctx, { scanId, recipes, ...observation }) => {
+  handler: async (ctx, { scanId, recipes, recited, ...observation }) => {
     const scan = await ctx.db.get('scans', scanId)
     // The attempt id alone would not do: it survives the write, so a second identical call would
     // pass the guard and insert a second set of recipes. Requiring `extracting` and clearing the id
@@ -495,7 +583,11 @@ export const finalize = internalMutation({
         ),
       )
     }
-    const attempt = { ...observation, failureKind: null }
+    const attempt = {
+      ...observation,
+      failureKind: null,
+      recitationFallback: recited !== null,
+    }
     await ctx.db.patch(scanId, {
       status: 'done',
       error: undefined,
@@ -503,9 +595,12 @@ export const finalize = internalMutation({
       startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: attempt,
-      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
+      totalCostUsd:
+        (scan.totalCostUsd ?? 0) +
+        observation.costUsd +
+        (recited?.costUsd ?? 0),
     })
-    await journalAttempt(ctx, { scanId, attempt })
+    await journalCalls(ctx, { scanId, attempt, recited })
     return true
   },
 })
@@ -518,7 +613,10 @@ export const recordFailure = internalMutation({
     error: v.string(),
   },
   returns: v.boolean(),
-  handler: async (ctx, { scanId, failureKind, error, ...observation }) => {
+  handler: async (
+    ctx,
+    { scanId, failureKind, error, recited, ...observation },
+  ) => {
     const scan = await ctx.db.get('scans', scanId)
     if (
       !scan ||
@@ -528,7 +626,11 @@ export const recordFailure = internalMutation({
       return false
     const terminal =
       isTerminalFailure(failureKind) || scan.attempts >= MAX_ATTEMPTS
-    const attempt = { ...observation, failureKind }
+    const attempt = {
+      ...observation,
+      failureKind,
+      recitationFallback: recited !== null,
+    }
     await ctx.db.patch(scanId, {
       status: terminal ? 'failed' : 'pending',
       error,
@@ -536,9 +638,12 @@ export const recordFailure = internalMutation({
       startedAt: undefined,
       nextAttemptAt: undefined,
       lastAttempt: attempt,
-      totalCostUsd: (scan.totalCostUsd ?? 0) + observation.costUsd,
+      totalCostUsd:
+        (scan.totalCostUsd ?? 0) +
+        observation.costUsd +
+        (recited?.costUsd ?? 0),
     })
-    await journalAttempt(ctx, { scanId, attempt })
+    await journalCalls(ctx, { scanId, attempt, recited })
     return true
   },
 })
@@ -600,7 +705,11 @@ export const drain = internalAction({
     const blobs = await Promise.all(
       reservation.storageIds.map((storageId) => ctx.storage.get(storageId)),
     )
-    const result = await extractImages({ blobs })
+    const result = await extractImages({
+      blobs,
+      takeFallbackQuota: () =>
+        ctx.runMutation(internal.extract.takeFallbackQuota, {}),
+    })
     const observation = {
       scanId: reservation.scanId,
       attemptId: reservation.attemptId,
@@ -609,6 +718,7 @@ export const drain = internalAction({
       latencyMs: result.latencyMs,
       costUsd: result.costUsd,
       repairCount: result.repairCount,
+      recited: result.recited,
     }
     if (result.ok) {
       await ctx.runMutation(internal.extract.finalize, {

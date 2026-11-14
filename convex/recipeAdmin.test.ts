@@ -616,6 +616,7 @@ describe('a title already scanned', () => {
         latencyMs: 10,
         costUsd: 0.01,
         repairCount: 0,
+        recited: null,
         recipes: [
           {
             title: 'Blanquette de veau',

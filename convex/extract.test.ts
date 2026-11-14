@@ -278,7 +278,7 @@ describe('answer interpretation', () => {
       }),
     ).toEqual({
       ok: false,
-      kind: 'truncated',
+      kind: 'recitation',
       error:
         'Réponse tronquée (error / RECITATION) : Provider stopped the generation',
     })
@@ -341,6 +341,224 @@ describe('billing of a call whose answer is refused', () => {
     await expect(
       extractImages({ blobs: [jpeg()], environment, fetchImpl }),
     ).resolves.toMatchObject({ ok: false, kind: 'truncated' })
+  })
+})
+
+describe('recitation fallback', () => {
+  const fallbackEnvironment = {
+    ...environment,
+    OPENROUTER_FALLBACK_MODEL: 'fallback-model',
+    OPENROUTER_FALLBACK_PROVIDER: 'fallback-provider',
+  }
+  const recited = (reason = 'RECITATION') =>
+    new Response(
+      JSON.stringify({
+        provider: 'primary-provider',
+        usage: { cost: 0.002 },
+        choices: [
+          { finish_reason: 'error', native_finish_reason: reason, message: {} },
+        ],
+      }),
+    )
+  const answered = () =>
+    new Response(
+      JSON.stringify({
+        provider: 'fallback-served',
+        usage: { cost: 0.006 },
+        choices: [
+          {
+            finish_reason: 'stop',
+            message: {
+              content: JSON.stringify({
+                recipes: [
+                  {
+                    title: 'Soup',
+                    type: 'entree',
+                    servings: 4,
+                    ingredients: [],
+                    ingredientsInferred: false,
+                    steps: ['Cook.'],
+                  },
+                ],
+              }),
+            },
+          },
+        ],
+      }),
+    )
+  const sentModels = (fetchImpl: ReturnType<typeof vi.fn>) =>
+    fetchImpl.mock.calls.map(([, init]) => {
+      const body = JSON.parse((init as RequestInit).body as string) as {
+        model: string
+        provider: { only: string[] }
+      }
+      return [body.model, body.provider.only[0]]
+    })
+  const primaryCall = {
+    model: 'model',
+    servedProvider: 'primary-provider',
+    costUsd: 0.002,
+  }
+
+  test('covers two calls with the lease', () => {
+    expect(LEASE_MS).toBeGreaterThan(2 * REQUEST_TIMEOUT_MS)
+  })
+
+  test('asks the fallback model once when the primary recites', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(recited())
+      .mockResolvedValueOnce(answered())
+    const takeFallbackQuota = vi.fn(() => Promise.resolve(true))
+    const result = await extractImages({
+      blobs: [jpeg()],
+      environment: fallbackEnvironment,
+      fetchImpl,
+      takeFallbackQuota,
+    })
+    expect(sentModels(fetchImpl)).toEqual([
+      ['model', 'provider'],
+      ['fallback-model', 'fallback-provider'],
+    ])
+    expect(takeFallbackQuota).toHaveBeenCalledTimes(1)
+    // Each call keeps its own figures: the fallback answered, the primary is reported apart.
+    expect(result).toMatchObject({
+      ok: true,
+      model: 'fallback-model',
+      servedProvider: 'fallback-served',
+      costUsd: 0.006,
+      recited: primaryCall,
+    })
+  })
+
+  test('reports both calls when the fallback fails too', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(recited())
+      .mockResolvedValueOnce(recited())
+    const result = await extractImages({
+      blobs: [jpeg()],
+      environment: fallbackEnvironment,
+      fetchImpl,
+    })
+    expect(fetchImpl).toHaveBeenCalledTimes(2)
+    expect(result).toMatchObject({
+      ok: false,
+      kind: 'recitation',
+      model: 'fallback-model',
+      costUsd: 0.002,
+      recited: primaryCall,
+    })
+  })
+
+  test('stays on the primary model without both fallback variables', async () => {
+    for (const partial of [
+      environment,
+      { ...environment, OPENROUTER_FALLBACK_MODEL: 'fallback-model' },
+    ]) {
+      const fetchImpl = vi.fn().mockResolvedValueOnce(recited())
+      const result = await extractImages({
+        blobs: [jpeg()],
+        environment: partial,
+        fetchImpl,
+      })
+      expect(fetchImpl).toHaveBeenCalledTimes(1)
+      expect(result).toMatchObject({
+        ok: false,
+        kind: 'recitation',
+        error: expect.stringContaining('RECITATION'),
+        model: 'model',
+        costUsd: 0.002,
+        recited: null,
+      })
+    }
+  })
+
+  test('skips the fallback when the extraction quota is spent', async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(recited())
+    await expect(
+      extractImages({
+        blobs: [jpeg()],
+        environment: fallbackEnvironment,
+        fetchImpl,
+        takeFallbackQuota: () => Promise.resolve(false),
+      }),
+    ).resolves.toMatchObject({
+      ok: false,
+      kind: 'recitation',
+      model: 'model',
+      recited: null,
+    })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+  })
+
+  test('does not fall back on any other truncation', async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(recited('MAX_TOKENS'))
+    const takeFallbackQuota = vi.fn(() => Promise.resolve(true))
+    await expect(
+      extractImages({
+        blobs: [jpeg()],
+        environment: fallbackEnvironment,
+        fetchImpl,
+        takeFallbackQuota,
+      }),
+    ).resolves.toMatchObject({ ok: false, kind: 'truncated', recited: null })
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+    expect(takeFallbackQuota).not.toHaveBeenCalled()
+  })
+
+  test('records the fallback model and journals each call apart', async () => {
+    const t = setup()
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    const scanId = await t.run((ctx) =>
+      ctx.db.insert('scans', {
+        imageStorageIds: [storageId],
+        status: 'extracting',
+        attempts: 1,
+        attemptId: 'attempt-1',
+        startedAt: 1,
+        totalCostUsd: 0.01,
+        createdAt: 1,
+      }),
+    )
+    await t.mutation(internal.extract.finalize, {
+      scanId,
+      attemptId: 'attempt-1',
+      model: 'fallback-model',
+      servedProvider: 'fallback-served',
+      latencyMs: 28000,
+      costUsd: 0.006,
+      repairCount: 0,
+      recited: { ...primaryCall, latencyMs: 9000 },
+      recipes: [],
+    })
+
+    const scan = await t.run((ctx) => ctx.db.get('scans', scanId))
+    expect(scan?.lastAttempt).toMatchObject({
+      model: 'fallback-model',
+      recitationFallback: true,
+    })
+    expect(scan?.totalCostUsd).toBeCloseTo(0.018)
+    const journal = await t.run((ctx) =>
+      ctx.db.query('extractionAttempts').collect(),
+    )
+    expect(journal).toMatchObject([
+      {
+        attemptId: 'attempt-1',
+        model: 'model',
+        costUsd: 0.002,
+        latencyMs: 9000,
+        failureKind: 'recitation',
+      },
+      {
+        attemptId: 'attempt-1',
+        model: 'fallback-model',
+        costUsd: 0.006,
+        latencyMs: 28000,
+        failureKind: null,
+        recitationFallback: true,
+      },
+    ])
   })
 })
 
@@ -503,6 +721,7 @@ describe('extraction state machine', () => {
       latencyMs: 7500,
       costUsd: 0.0051,
       repairCount: 0,
+      recited: null,
     }
     await t.mutation(internal.extract.recordFailure, {
       ...observation,
@@ -565,6 +784,7 @@ describe('extraction state machine', () => {
         latencyMs: 1,
         costUsd: 0,
         repairCount: 0,
+        recited: null,
         failureKind: 'transport',
         error: 'failed',
       }),
@@ -595,6 +815,7 @@ describe('extraction state machine', () => {
       latencyMs: 1,
       costUsd: 0,
       repairCount: 0,
+      recited: null,
       error: 'failed',
     }
     expect(
@@ -671,6 +892,7 @@ describe('finalization consumes its attempt', () => {
       latencyMs: 10,
       costUsd: 0.01,
       repairCount: 0,
+      recited: null,
       recipes: [
         {
           title: 'Tarte',

@@ -561,6 +561,9 @@ export const getScanForCorrection = query({
       purgedAt: v.union(v.number(), v.null()),
       imagesChangedAt: v.union(v.number(), v.null()),
       totalCostUsd: v.union(v.number(), v.null()),
+      // The recipes on screen come from the fallback model, whose figures drift from one run to the
+      // next: the operator has to know before trusting them.
+      extractedByFallback: v.boolean(),
       createdAt: v.number(),
       // Only while extracting, as in `listScans`: the screen used to say "État : extracting" without
       // saying since when, so a running extraction was indistinguishable from a stuck one.
@@ -607,6 +610,8 @@ export const getScanForCorrection = query({
       purgedAt: scan.purgedAt ?? null,
       imagesChangedAt: scan.imagesChangedAt ?? null,
       totalCostUsd: scan.totalCostUsd ?? null,
+      extractedByFallback:
+        scan.status === 'done' && scan.lastAttempt?.recitationFallback === true,
       createdAt: scan.createdAt,
       startedAt: scan.status === 'extracting' ? (scan.startedAt ?? null) : null,
       recipes: await Promise.all(

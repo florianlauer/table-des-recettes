@@ -3,6 +3,9 @@
 export const FAILURE_KINDS = [
   'refusal',
   'truncated',
+  // Google's filter on verbatim reproduction of published text: retrying the same model cuts at the
+  // same place, so only the fallback model gets past it.
+  'recitation',
   'invalid_json',
   'invalid_schema',
   'timeout',
