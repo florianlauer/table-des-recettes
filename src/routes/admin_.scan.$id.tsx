@@ -83,12 +83,28 @@ function ScanCorrectionPage() {
   // the one below saying « Scan introuvable ». Folding it into « nothing yet » would print the
   // verdict over every load.
   const data = scan.kind === 'ready' ? scan.data : undefined
+  // « Lancer l'extraction » starts the whole queue, not this scan: the operator is told before older
+  // pending scans get extracted, and billed, ahead of it.
+  const queue = useAdminQuery(
+    token,
+    api.admin.queueStatus,
+    data?.status === 'pending' ? {} : 'skip',
+  )
+  // `null` while the count is unknown, which asks too: silence must mean « nothing else waits ».
+  const queueCount = readyData(queue)?.counts.pending
+  const othersPending =
+    queueCount === undefined ? null : Math.max(0, queueCount - 1)
   const purged = data != null && data.purgedAt !== null
   const imagesChanged = Boolean(data?.imagesChangedAt)
   const liveEdit = (recipe: RecipeView): Draft | null => {
     const edit = edits[recipe.id]
     return edit?.revision === recipe.revision ? edit.draft : null
   }
+  const editDraft = (recipe: RecipeView, draft: Draft) =>
+    setEdits((current) => ({
+      ...current,
+      [recipe.id]: { revision: recipe.revision, draft },
+    }))
   const anyDirty =
     data?.recipes.some((recipe) => liveEdit(recipe) !== null) ?? false
 
@@ -257,6 +273,13 @@ function ScanCorrectionPage() {
                 gesture={pageGesture('extract')}
                 label="Lancer l’extraction"
                 pendingLabel="Lancement…"
+                confirm={
+                  othersPending === null
+                    ? 'La file extrait tous les scans en attente, pas seulement celui-ci. Lancer ?'
+                    : othersPending > 0
+                      ? `La file extrait aussi ${formatCount(othersPending, 'autre scan en attente', 'autres scans en attente')}. Lancer ?`
+                      : undefined
+                }
                 run={async () =>
                   extractionMessage(await startExtraction({ adminToken }), {
                     now,
@@ -317,26 +340,31 @@ function ScanCorrectionPage() {
             </p>
           )}
 
-          {data.recipes.length > 0 && (
-            <ScanSummary
-              recipes={data.recipes}
-              rows={readyData(illustrations)}
-              edited={liveEdit}
-              onChange={(recipe, draft) =>
-                setEdits((current) => ({
-                  ...current,
-                  [recipe.id]: { revision: recipe.revision, draft },
-                }))
-              }
-              onRenamed={(recipe, title) =>
-                setEdits((current) => carryOverRename(current, recipe, title))
-              }
-              adminToken={adminToken}
-              gestures={gestures}
-              now={now}
-              estimateMs={beautifyEstimateMs}
-            />
-          )}
+          {/* Mounted once the photo state is in, never before: a title field rendered ahead of it
+              would be remounted under the operator's fingers when it arrived. */}
+          {data.recipes.length > 0 &&
+            (illustrations.kind === 'failed' ? (
+              <AdminFailure
+                error={illustrations.error}
+                retry={illustrations.refetch}
+              />
+            ) : illustrations.kind === 'ready' ? (
+              <ScanSummary
+                recipes={data.recipes}
+                rows={illustrations.data}
+                edited={liveEdit}
+                onChange={editDraft}
+                onTitleSettled={(recipe, saved) =>
+                  setEdits((current) => settleTitle(current, recipe, saved))
+                }
+                adminToken={adminToken}
+                gestures={gestures}
+                now={now}
+                estimateMs={beautifyEstimateMs}
+              />
+            ) : (
+              <p>Chargement des photos…</p>
+            ))}
 
           <section className="scan-page__recipes">
             <h2>Recettes</h2>
@@ -353,12 +381,7 @@ function ScanCorrectionPage() {
                 adminToken={adminToken}
                 gestures={gestures}
                 publishBlocked={imagesChanged}
-                onChange={(draft) =>
-                  setEdits((current) => ({
-                    ...current,
-                    [recipe.id]: { revision: recipe.revision, draft },
-                  }))
-                }
+                onChange={(draft) => editDraft(recipe, draft)}
               />
             ))}
           </section>
@@ -369,21 +392,25 @@ function ScanCorrectionPage() {
 }
 
 /**
- * A rename bumps the revision, and a draft on the old revision stops counting: the corrections typed in
- * the form below would go with it. They are moved onto the next revision, unless the title was all the
- * draft held — then it is left to lapse, and the form reads clean.
+ * Once the summary's title is saved — or found already saved — the draft is moved onto the revision
+ * the server now holds, so the form's other unsaved corrections survive the bump. The draft is taken
+ * as it is now, not as it was sent: the title may have been typed on during the request. A draft
+ * left equal to the server, trailing spaces aside, is dropped, so the form and « Publier » read clean.
  */
-export function carryOverRename(
+export function settleTitle(
   edits: Record<string, Edit>,
   recipe: RecipeView,
-  title: string,
+  { title, revision }: { title: string; revision: number },
 ): Record<string, Edit> {
   const edit = edits[recipe.id]
   if (edit?.revision !== recipe.revision) return edits
-  const draft = { ...edit.draft, title }
-  const server = { ...toDraft(recipe), title }
-  if (JSON.stringify(draft) === JSON.stringify(server)) return edits
-  return { ...edits, [recipe.id]: { revision: recipe.revision + 1, draft } }
+  const { [recipe.id]: _settled, ...others } = edits
+  const typed = { ...edit.draft, title: edit.draft.title.trim() }
+  // Drafts are only ever built from `toDraft` and spreads of it, so key order matches; a false
+  // « different » would only keep a draft, never lose one.
+  if (JSON.stringify(typed) === JSON.stringify({ ...toDraft(recipe), title }))
+    return others
+  return { ...others, [recipe.id]: { revision, draft: edit.draft } }
 }
 
 /** Names the drafts that stayed behind: a count alone would not tell the operator what to fix. */

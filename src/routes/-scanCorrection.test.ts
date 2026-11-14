@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vite-plus/test'
 import type { Id } from '../../convex/_generated/dataModel'
-import { carryOverRename, publicationReport } from './admin_.scan.$id'
+import { publicationReport, settleTitle } from './admin_.scan.$id'
 import { toDraft } from './-RecipeForm'
 import type { RecipeView } from './-RecipeForm'
 
@@ -26,7 +26,7 @@ describe('publication report', () => {
   })
 })
 
-describe('renaming from the summary', () => {
+describe('settling the summary title', () => {
   const recipe: RecipeView = {
     id: 'r1' as Id<'recipes'>,
     title: 'Crêpes',
@@ -41,24 +41,37 @@ describe('renaming from the summary', () => {
     duplicateOf: null,
   }
 
-  test('moves the form’s other corrections onto the revision the rename produces', () => {
+  test('moves the form’s other corrections onto the revision the server returned', () => {
     const draft = {
       ...toDraft(recipe),
       title: 'Galettes',
       steps: 'Cuire.\nServir.',
     }
-    const edits = carryOverRename(
-      { r1: { revision: 3, draft } },
-      recipe,
-      'Galettes',
-    )
+    const edits = settleTitle({ r1: { revision: 3, draft } }, recipe, {
+      title: 'Galettes',
+      revision: 4,
+    })
     expect(edits.r1).toEqual({ revision: 4, draft })
   })
 
-  test('lets a draft that only held the title lapse', () => {
-    const edits = {
-      r1: { revision: 3, draft: { ...toDraft(recipe), title: 'Galettes ' } },
-    }
-    expect(carryOverRename(edits, recipe, 'Galettes')).toBe(edits)
+  // The rename is in flight while the field is typed into again: the answer must not put the sent
+  // title back over the newer one.
+  test('keeps a title typed while the rename was in flight', () => {
+    const draft = { ...toDraft(recipe), title: 'Galettes de sarrasin' }
+    const edits = settleTitle({ r1: { revision: 3, draft } }, recipe, {
+      title: 'Galettes',
+      revision: 4,
+    })
+    expect(edits.r1).toEqual({ revision: 4, draft })
+  })
+
+  test('drops a draft that only held the saved title, trailing spaces aside', () => {
+    const draft = { ...toDraft(recipe), title: 'Crêpes ' }
+    expect(
+      settleTitle({ r1: { revision: 3, draft } }, recipe, {
+        title: 'Crêpes',
+        revision: 3,
+      }),
+    ).toEqual({})
   })
 })

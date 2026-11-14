@@ -164,7 +164,7 @@ export function interpretResponse(answer: unknown): ExtractionReading {
     const detail = choice?.error?.message ? ` : ${choice.error.message}` : ''
     return refuse(
       'truncated',
-      `Réponse tronquée (${reasons || 'undefined'})${detail}`,
+      `Réponse tronquée (${reasons || 'motif inconnu'})${detail}`,
     )
   }
   let parsed: unknown

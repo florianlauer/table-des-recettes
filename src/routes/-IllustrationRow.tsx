@@ -130,7 +130,9 @@ export function IllustrationRow({
     },
     {
       offered: can.unpublish,
-      action: 'unpublish',
+      // Not 'unpublish': the scan page also mounts the recipe form, whose own « Dépublier » holds that
+      // key on the same row.
+      action: 'unpublishBeautified',
       label: 'Dépublier l’embellissement',
       pendingLabel: 'Dépublication…',
       run: () => unpublishAccepted(args),

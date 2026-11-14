@@ -143,7 +143,7 @@ describe('editing a draft', () => {
         title: 'Galettes de sarrasin',
       })
 
-    await expect(rename(1)).resolves.toMatchObject({ ok: true })
+    await expect(rename(1)).resolves.toEqual({ ok: true, revision: 2 })
     expect(await read(t, recipeId)).toMatchObject({
       title: 'Galettes de sarrasin',
       type: 'dessert',

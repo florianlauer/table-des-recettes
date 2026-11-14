@@ -209,7 +209,12 @@ export const renameRecipe = mutation({
     expectedRevision: v.number(),
     title: v.string(),
   },
-  returns: okOrError,
+  // The new revision is returned so the screen can move its other unsaved corrections onto it,
+  // rather than guess the server's numbering.
+  returns: v.union(
+    v.object({ ok: v.literal(true), revision: v.number() }),
+    v.object({ ok: v.literal(false), error: v.string() }),
+  ),
   handler: async (ctx, { adminToken, recipeId, expectedRevision, title }) => {
     requireAdmin(adminToken)
     const recipe = await loadRecipe(ctx, recipeId)
@@ -217,16 +222,13 @@ export const renameRecipe = mutation({
     const refusal = editRefusal(recipe, expectedRevision, title)
     if (refusal) return refusal
 
+    const revision = expectedRevision + 1
     await patchRecipeDoc(
       ctx,
       recipe,
-      withSearchText({
-        title,
-        ingredients: recipe.ingredients,
-        revision: expectedRevision + 1,
-      }),
+      withSearchText({ title, ingredients: recipe.ingredients, revision }),
     )
-    return succeeded
+    return { ok: true as const, revision }
   },
 })
 

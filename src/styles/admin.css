@@ -538,7 +538,8 @@
    the summary below the fold on a phone. The link opens it at full size. */
 .scan-page__image img {
   display: block;
-  height: 12rem;
+  /* A ceiling, not a fixed height: with `max-width` also set, a fixed height squashed a wide page. */
+  max-height: 12rem;
   width: auto;
   max-width: 100%;
   border: 1px solid var(--rule);

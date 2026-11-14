@@ -19,26 +19,28 @@ export function ScanSummary({
   rows,
   edited,
   onChange,
-  onRenamed,
+  onTitleSettled,
   adminToken,
   gestures,
   now,
   estimateMs,
 }: {
   recipes: readonly RecipeView[]
-  /** `null` while the photo state loads: the titles do not wait for it. */
-  rows: readonly Row[] | null
+  rows: readonly Row[]
   edited: (recipe: RecipeView) => Draft | null
   onChange: (recipe: RecipeView, draft: Draft) => void
-  /** The rename bumped the revision: whatever else the draft held has to follow it. */
-  onRenamed: (recipe: RecipeView, title: string) => void
+  /** The title the server now holds, and under which revision: the rest of the draft follows it. */
+  onTitleSettled: (
+    recipe: RecipeView,
+    saved: { title: string; revision: number },
+  ) => void
   adminToken: string
   gestures: Gestures
   now: number
   estimateMs: number | null
 }) {
   const renameRecipe = useMutation(api.recipeAdmin.renameRecipe)
-  const rowsById = new Map(rows?.map((row) => [row.id, row]))
+  const rowsById = new Map(rows.map((row) => [row.id, row]))
 
   return (
     <section className="scan-page__summary">
@@ -55,8 +57,17 @@ export function ScanSummary({
         const rename = isolatedGesture(recipe.id, 'rename')
 
         function saveTitle() {
+          // A rename in flight decides nothing yet: settling now against the old server title could
+          // drop a draft the answer is about to contradict. Its own answer settles the draft, which
+          // stays on screen and is saved by the next blur.
+          if (gestures.running(rename) !== null) return
           const title = draft.title.trim()
-          if (title === recipe.title) return
+          // Already saved, give or take a trailing space: a draft that only held that must not block
+          // « Publier » with corrections nobody can see.
+          if (title === recipe.title) {
+            onTitleSettled(recipe, { title, revision: recipe.revision })
+            return
+          }
           void gestures.run(
             rename,
             { pendingLabel: 'Enregistrement…' },
@@ -67,7 +78,8 @@ export function ScanSummary({
                 expectedRevision: recipe.revision,
                 title,
               })
-              if (result.ok) onRenamed(recipe, title)
+              if (result.ok)
+                onTitleSettled(recipe, { title, revision: result.revision })
               return outcomeMessage(result)
             },
           )
@@ -102,8 +114,10 @@ export function ScanSummary({
           </div>
         )
 
+        // Always there: the query lists the scan's recipes under the same index and cap.
         const row = rowsById.get(recipe.id)
-        return row ? (
+        if (!row) return null
+        return (
           <IllustrationRow
             key={recipe.id}
             row={row}
@@ -113,10 +127,6 @@ export function ScanSummary({
             estimateMs={estimateMs}
             heading={heading}
           />
-        ) : (
-          <article key={recipe.id} className="illustrations__recipe">
-            {heading(`summary-${recipe.id}`)}
-          </article>
         )
       })}
     </section>
