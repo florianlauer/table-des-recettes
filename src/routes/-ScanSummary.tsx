@@ -126,6 +126,7 @@ export function ScanSummary({
             now={now}
             estimateMs={estimateMs}
             heading={heading}
+            keepOutcomesInRow
           />
         )
       })}

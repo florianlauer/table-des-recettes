@@ -15,6 +15,7 @@ import type { Gestures } from '../lib/useGestures'
 import { uploadProgress } from '../lib/uploadProgress'
 import { AdminButton } from './-AdminButton'
 import { AdminFileInput } from './-AdminFileInput'
+import { GestureFeedback } from './-GestureFeedback'
 import { GestureProgress } from './-GestureProgress'
 
 /**
@@ -39,6 +40,7 @@ export function IllustrationRow({
   now,
   estimateMs,
   heading,
+  keepOutcomesInRow = false,
 }: {
   row: Row
   adminToken: string
@@ -50,6 +52,12 @@ export function IllustrationRow({
    * on whatever names the recipe — the scan summary's title field.
    */
   heading?: (titleId: string) => ReactNode
+  /**
+   * Print the message of a gesture that took its own button away inside the row, instead of handing it
+   * to the page's orphaned outcomes. For a screen whose rows never move: on the scan page those sit at
+   * the top, out of view of the row that was just touched.
+   */
+  keepOutcomesInRow?: boolean
 }) {
   const attachIllustration = useAttachIllustration(adminToken)
   const detachIllustration = useMutation(api.illustrations.detachIllustration)
@@ -161,19 +169,20 @@ export function IllustrationRow({
       run: () => detachIllustration(args),
     },
     // No confirmation on either: both are reversible with the opposite button and neither destroys a
-    // blob. The only thing they change is which section lists the recipe.
+    // blob. The only thing they change is which section lists the recipe. Their labels read after the
+    // « Photo : … » line that states what they toggle.
     {
       offered: can.markNoPhoto,
       action: 'markNoPhoto',
-      label: 'Pas de photo dans la source',
+      label: 'Aucune dans la source',
       pendingLabel: 'Marquage…',
       run: () => markNoPhoto(args),
     },
     {
       offered: can.unmarkNoPhoto,
       action: 'unmarkNoPhoto',
-      label: 'La source a une photo',
-      pendingLabel: 'Retrait de la marque…',
+      label: 'Annuler',
+      pendingLabel: 'Annulation…',
       run: () => clearNoPhoto(args),
     },
   ]
@@ -189,20 +198,41 @@ export function IllustrationRow({
    * A gesture on this screen usually removes its own control: accepting takes "Accepter" away,
    * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the button that
    * held the message is gone, and the result would be lost. Those outcomes are orphaned too, and the
-   * section republishes them.
+   * section republishes them — unless `keepOutcomesInRow`, where the row prints them itself.
    */
   const offered = new Set([
     ...gestureRows.filter(({ offered: shown }) => shown).map((g) => g.action),
     ...(can.replace ? ['upload'] : []),
   ])
+  const withdrawn = rowActions.filter((action) => !offered.has(action))
   useEffect(() => {
-    for (const action of rowActions) {
-      if (offered.has(action)) continue
+    if (keepOutcomesInRow) return
+    for (const action of withdrawn) {
       const gesture = rowGesture(row.id, action)
       if (gestures.outcome(gesture) === null) continue
       gestures.markOrphaned(gesture)
     }
   })
+
+  function renderButton(gesture: (typeof gestureRows)[number]) {
+    return (
+      <AdminButton
+        key={gesture.action}
+        gestures={gestures}
+        gesture={rowGesture(row.id, gesture.action)}
+        label={gesture.label}
+        pendingLabel={gesture.pendingLabel}
+        confirm={gesture.confirm}
+        settle={gesture.settle}
+        estimateMs={gesture.settle ? estimateMs : null}
+        titleId={titleId}
+        run={async () => {
+          gesture.beforeRun?.()
+          return outcomeMessage(await gesture.run())
+        }}
+      />
+    )
+  }
 
   return (
     <article
@@ -218,8 +248,36 @@ export function IllustrationRow({
       <p>
         {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}
-        {row.noPhotoAvailable && ' · pas de photo dans la source'}
       </p>
+      {!row.hasOriginal && (
+        <p>
+          Photo :{' '}
+          <strong>
+            {row.noPhotoAvailable
+              ? 'aucune dans la source'
+              : 'aucune pour l’instant'}
+          </strong>
+        </p>
+      )}
+      {/* Right under the state it reverts, not among the photo buttons: a bare « Annuler » needs the
+          line it cancels next to it. */}
+      {gestureRows
+        .filter(
+          (gesture) => gesture.offered && gesture.action === 'unmarkNoPhoto',
+        )
+        .map(renderButton)}
+      {keepOutcomesInRow &&
+        withdrawn.map((action) => {
+          const gesture = rowGesture(row.id, action)
+          return (
+            <GestureFeedback
+              key={action}
+              running={gestures.running(gesture)}
+              outcome={gestures.outcome(gesture)}
+              labelledBy={titleId}
+            />
+          )
+        })}
       {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}
       {row.beautifyStatus === 'generating' && (
         <div className="illustrations__waiting">
@@ -325,24 +383,10 @@ export function IllustrationRow({
       )}
 
       {gestureRows
-        .filter((gesture) => gesture.offered)
-        .map((gesture) => (
-          <AdminButton
-            key={gesture.action}
-            gestures={gestures}
-            gesture={rowGesture(row.id, gesture.action)}
-            label={gesture.label}
-            pendingLabel={gesture.pendingLabel}
-            confirm={gesture.confirm}
-            settle={gesture.settle}
-            estimateMs={gesture.settle ? estimateMs : null}
-            titleId={titleId}
-            run={async () => {
-              gesture.beforeRun?.()
-              return outcomeMessage(await gesture.run())
-            }}
-          />
-        ))}
+        .filter(
+          (gesture) => gesture.offered && gesture.action !== 'unmarkNoPhoto',
+        )
+        .map(renderButton)}
     </article>
   )
 }
