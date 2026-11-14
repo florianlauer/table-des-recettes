@@ -5,9 +5,26 @@ import { isolatedGesture } from '../lib/gestures'
 import type { Gestures } from '../lib/useGestures'
 import { GestureFeedback } from './-GestureFeedback'
 import { IllustrationRow } from './-IllustrationRow'
+import { OrphanedOutcomes } from './-OrphanedOutcomes'
 import type { Row } from './-IllustrationRow'
 import { recipeAnchor, toDraft } from './-RecipeForm'
 import type { Draft, RecipeView } from './-RecipeForm'
+
+/**
+ * The recipes the summary renders, each with its photo row. Shared with the page, whose own outcome
+ * block takes whatever these rows do not publish themselves.
+ */
+export function summaryRows(
+  recipes: readonly RecipeView[],
+  rows: readonly Row[],
+): { recipe: RecipeView; row: Row }[] {
+  const rowsById = new Map(rows.map((row) => [row.id, row]))
+  // Always there in practice: the query lists the scan's recipes under the same index and cap.
+  return recipes.flatMap((recipe) => {
+    const row = rowsById.get(recipe.id)
+    return row ? [{ recipe, row }] : []
+  })
+}
 
 /**
  * The scan's recipes before their full forms: every title, editable, and each recipe's photo gestures
@@ -40,7 +57,6 @@ export function ScanSummary({
   estimateMs: number | null
 }) {
   const renameRecipe = useMutation(api.recipeAdmin.renameRecipe)
-  const rowsById = new Map(rows.map((row) => [row.id, row]))
 
   return (
     <section className="scan-page__summary">
@@ -49,7 +65,7 @@ export function ScanSummary({
           ? '1 recette extraite'
           : `${recipes.length} recettes extraites`}
       </h2>
-      {recipes.map((recipe) => {
+      {summaryRows(recipes, rows).map(({ recipe, row }) => {
         const draft = edited(recipe) ?? toDraft(recipe)
         // Isolated, not row-scoped: leaving the field is usually a tap on « Ajouter une photo » in the
         // same row, and a row lock taken on blur would swallow that tap. Nothing is lost by running
@@ -114,9 +130,6 @@ export function ScanSummary({
           </div>
         )
 
-        // Always there: the query lists the scan's recipes under the same index and cap.
-        const row = rowsById.get(recipe.id)
-        if (!row) return null
         return (
           <IllustrationRow
             key={recipe.id}
@@ -126,7 +139,15 @@ export function ScanSummary({
             now={now}
             estimateMs={estimateMs}
             heading={heading}
-            keepOutcomesInRow
+            notes={
+              <OrphanedOutcomes
+                gestures={gestures}
+                keep={({ gesture }) =>
+                  gesture.scope.kind === 'row' &&
+                  gesture.scope.rowId === recipe.id
+                }
+              />
+            }
           />
         )
       })}
