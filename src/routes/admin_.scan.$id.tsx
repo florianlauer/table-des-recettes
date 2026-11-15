@@ -9,7 +9,12 @@ import { bulkDuplicateConfirm } from '../lib/duplicateMessages'
 import { formatCount } from '../lib/formatCount'
 import { formatUsd } from '../lib/formatNumber'
 import { estimateFrom } from '../shared/journalStats'
-import { extractionMessage, outcomeMessage } from '../lib/gestureMessages'
+import {
+  extractionMessage,
+  othersPendingWarning,
+  outcomeMessage,
+  rescanMessage,
+} from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../shared/scanLimits'
@@ -83,17 +88,13 @@ function ScanCorrectionPage() {
   // the one below saying « Scan introuvable ». Folding it into « nothing yet » would print the
   // verdict over every load.
   const data = scan.kind === 'ready' ? scan.data : undefined
-  // « Lancer l'extraction » starts the whole queue, not this scan: the operator is told before older
+  // Both extraction buttons start the whole queue, not this scan: the operator is told before older
   // pending scans get extracted, and billed, ahead of it.
-  const queue = useAdminQuery(
-    token,
-    api.admin.queueStatus,
-    data?.status === 'pending' ? {} : 'skip',
-  )
-  // `null` while the count is unknown, which asks too: silence must mean « nothing else waits ».
-  const queueCount = readyData(queue)?.counts.pending
-  const othersPending =
-    queueCount === undefined ? null : Math.max(0, queueCount - 1)
+  const queue = useAdminQuery(token, api.admin.queueStatus, data ? {} : 'skip')
+  const othersWarning = othersPendingWarning({
+    pendingCount: readyData(queue)?.counts.pending,
+    selfPending: data?.status === 'pending',
+  })
   const purged = data != null && data.purgedAt !== null
   const imagesChanged = Boolean(data?.imagesChangedAt)
   const liveEdit = (recipe: RecipeView): Draft | null => {
@@ -289,11 +290,7 @@ function ScanCorrectionPage() {
                 label="Lancer l’extraction"
                 pendingLabel="Lancement…"
                 confirm={
-                  othersPending === null
-                    ? 'La file extrait tous les scans en attente, pas seulement celui-ci. Lancer ?'
-                    : othersPending > 0
-                      ? `La file extrait aussi ${formatCount(othersPending, 'autre scan en attente', 'autres scans en attente')}. Lancer ?`
-                      : undefined
+                  othersWarning ? `${othersWarning} Lancer ?` : undefined
                 }
                 run={async () =>
                   extractionMessage(await startExtraction({ adminToken }), {
@@ -304,10 +301,12 @@ function ScanCorrectionPage() {
             ) : (
               <AdminButton
                 gestures={gestures}
-                gesture={pageGesture('rescan')}
+                // The same gesture as « Lancer »: a rescan swaps this button for that one, and its
+                // message has to survive the swap.
+                gesture={pageGesture('extract')}
                 label="Relancer l’extraction"
                 pendingLabel="Relance…"
-                confirm="Relancer supprime les brouillons de ce scan. Continuer ?"
+                confirm={`Relancer supprime les brouillons de ce scan.${othersWarning ? ` ${othersWarning}` : ''} Continuer ?`}
                 disabled={purged || data.images.length === 0}
                 blockedReason={
                   purged
@@ -315,7 +314,7 @@ function ScanCorrectionPage() {
                     : 'Ce scan ne porte aucune image.'
                 }
                 run={async () =>
-                  outcomeMessage(await rescan({ adminToken, scanId }))
+                  rescanMessage(await rescan({ adminToken, scanId }), { now })
                 }
               />
             )}

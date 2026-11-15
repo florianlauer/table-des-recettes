@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vite-plus/test'
 import {
   extractionMessage,
+  othersPendingWarning,
   outcomeMessage,
   purgeMessage,
+  rescanMessage,
   thrownMessage,
   uploadMessage,
 } from './gestureMessages'
@@ -46,6 +48,52 @@ describe('extractionMessage', () => {
       extractionMessage({ status: 'rate_limited', retryAt: 30_000 }, { now: 0 })
         .text,
     ).toBe('Limite atteinte. Reprise possible dans 30 s.')
+  })
+})
+
+describe('rescanMessage', () => {
+  it('passes a refused requeue through', () => {
+    expect(
+      rescanMessage({ ok: false, error: 'Scan inconnu' }, { now: 0 }),
+    ).toEqual({ ok: false, text: 'Scan inconnu' })
+  })
+
+  it('treats a queue already running as a success, since the drain takes the scan', () => {
+    expect(
+      rescanMessage(
+        { ok: true, start: { status: 'already_running' } },
+        { now: 0 },
+      ).ok,
+    ).toBe(true)
+  })
+
+  it('says the scan was requeued when the queue could not start', () => {
+    expect(
+      rescanMessage(
+        { ok: true, start: { status: 'rate_limited', retryAt: 30_000 } },
+        { now: 0 },
+      ),
+    ).toEqual({
+      ok: false,
+      text: 'Scan remis en file. Limite atteinte. Reprise possible dans 30 s.',
+    })
+  })
+})
+
+describe('othersPendingWarning', () => {
+  it('warns while the count is unknown', () => {
+    expect(
+      othersPendingWarning({ pendingCount: undefined, selfPending: false }),
+    ).toBe('La file extrait tous les scans en attente, pas seulement celui-ci.')
+  })
+
+  it('leaves out the scan itself when it is already pending', () => {
+    expect(
+      othersPendingWarning({ pendingCount: 1, selfPending: true }),
+    ).toBeNull()
+    expect(othersPendingWarning({ pendingCount: 1, selfPending: false })).toBe(
+      'La file extrait aussi 1 autre scan en attente.',
+    )
   })
 })
 

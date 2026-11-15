@@ -279,9 +279,10 @@ describe('rescanning', () => {
     })
     if (!added.ok) throw new Error(added.error)
 
+    // Requeued and started in the same transaction: a requeue nothing starts left the page idle.
     await expect(
       t.mutation(api.admin.rescan, { adminToken, scanId }),
-    ).resolves.toEqual({ ok: true })
+    ).resolves.toEqual({ ok: true, start: { status: 'scheduled' } })
 
     const scan = await t.run((ctx) => ctx.db.get('scans', scanId))
     expect(scan).toMatchObject({
