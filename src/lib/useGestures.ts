@@ -11,6 +11,7 @@ import {
   changeEpoch,
   claim,
   clearOutcomes as clearOutcomesIn,
+  dismiss as dismissIn,
   emptyRegistry,
   isGestureBlocked,
   markOrphaned as markOrphanedIn,
@@ -25,6 +26,8 @@ export type ReportProgress = (progress: MeasuredProgress) => void
 
 export type RunOptions = {
   pendingLabel: string
+  /** What the gesture acts on, named in the activity bar. */
+  subject?: string | null
   estimateMs?: number | null
   /**
    * Hold the control until the reactive data shows the transition. Only for gestures whose real work
@@ -44,6 +47,10 @@ export type Gestures = {
   blocked: (gesture: Gesture) => boolean
   /** Outcomes whose row is gone: the section shows them instead. */
   orphanedOutcomes: () => Outcome[]
+  /** Everything the activity bar shows: what runs, and what came of it. */
+  runs: () => Run[]
+  outcomes: () => Outcome[]
+  dismiss: (outcome: Outcome) => void
   /**
    * Everything in flight *and* everything that has answered but not yet been read, so a screen can
    * notice that either kind belongs to a row which left the data.
@@ -98,7 +105,7 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
   const run = useCallback<Gestures['run']>(
     async (
       gesture,
-      { pendingLabel, estimateMs = null, settle = false },
+      { pendingLabel, subject = null, estimateMs = null, settle = false },
       action,
     ) => {
       // Test-and-set before any await: this is what refuses a second click landing in the same tick,
@@ -106,6 +113,7 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
       const attempt = claim(stateRef.current, {
         gesture,
         pendingLabel,
+        subject,
         startedAt: Date.now(),
         estimateMs,
       })
@@ -154,6 +162,10 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
     blocked: (gesture) => isGestureBlocked(state, gesture),
     orphanedOutcomes: () =>
       Object.values(state.outcomes).filter((outcome) => outcome.orphaned),
+    runs: () => Object.values(state.runs),
+    outcomes: () => Object.values(state.outcomes),
+    dismiss: ({ gesture, token }) =>
+      commit(dismissIn(stateRef.current, gesture, token)),
     liveGestures: () => [
       ...Object.values(state.runs).map((live) => live.gesture),
       ...Object.values(state.outcomes)

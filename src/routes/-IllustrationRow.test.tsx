@@ -38,7 +38,6 @@ function render(overrides: Partial<Row> = {}) {
       gestures={fakeGestures()}
       now={0}
       estimateMs={null}
-      notes={<p>note</p>}
     />,
   )
 }
@@ -60,7 +59,12 @@ describe('IllustrationRow', () => {
     )
   })
 
-  test('prints the caller’s notes inside the row, under the photo line', () => {
-    expect(render()).toMatch(/Photo :.*<p>note<\/p>.*<\/article>/)
+  test('tells the four kinds of control apart before they are read', () => {
+    const judged = render({ hasOriginal: true, hasCandidate: true })
+    expect(judged).toMatch(/class="btn btn--secondary"[^>]*>.*?Régénérer/)
+    expect(judged).toMatch(/class="btn btn--danger"[^>]*>.*?Retirer la photo/)
+    expect(render()).toMatch(
+      /class="btn btn--quiet"[^>]*>.*?Aucune dans la source/,
+    )
   })
 })

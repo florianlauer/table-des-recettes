@@ -16,6 +16,8 @@ export type Run = {
   token: number
   epoch: string
   pendingLabel: string
+  /** What the gesture acts on — a recipe title, a scan — so the activity bar names it. */
+  subject: string | null
   startedAt: number
   estimateMs: number | null
   progress: MeasuredProgress | null
@@ -31,6 +33,7 @@ export type Outcome = {
   gesture: Gesture
   token: number
   result: GestureResult
+  subject: string | null
   /** Republished at section level because the row it belonged to is gone. */
   orphaned: boolean
   /**
@@ -81,11 +84,13 @@ export function claim(
   {
     gesture,
     pendingLabel,
+    subject = null,
     startedAt,
     estimateMs,
   }: {
     gesture: Gesture
     pendingLabel: string
+    subject?: string | null
     startedAt: number
     estimateMs: number | null
   },
@@ -100,6 +105,7 @@ export function claim(
     token,
     epoch: state.epoch,
     pendingLabel,
+    subject,
     startedAt,
     estimateMs,
     progress: null,
@@ -236,6 +242,7 @@ export function settle(
         gesture,
         token,
         result,
+        subject: run.subject,
         orphaned: run.orphaned,
         stealsFocus: run.stealsFocus,
       },
@@ -254,6 +261,22 @@ export function changeEpoch(
 ): RegistryState {
   if (epoch === state.epoch) return state
   return { epoch, nextToken: state.nextToken, runs: {}, outcomes: {} }
+}
+
+/**
+ * The operator closed the message, or its display time ran out. Keyed by token: a newer outcome of the
+ * same gesture, published meanwhile, is not the one being closed.
+ */
+export function dismiss(
+  state: RegistryState,
+  gesture: Gesture,
+  token: number,
+): RegistryState {
+  const key = gestureId(gesture)
+  if (state.outcomes[key]?.token !== token) return state
+  const outcomes = { ...state.outcomes }
+  delete outcomes[key]
+  return { ...state, outcomes }
 }
 
 /** An edit in the form perishes the message that described the value before it. */

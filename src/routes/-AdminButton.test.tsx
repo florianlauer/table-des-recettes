@@ -13,6 +13,7 @@ function runningSince(elapsedMs: number, estimateMs: number | null): Run {
     token: 7,
     epoch: 'test',
     pendingLabel: 'Embellissement…',
+    subject: 'Côte de veau',
     startedAt: Date.now() - elapsedMs,
     estimateMs,
     progress: null,
@@ -92,8 +93,7 @@ describe('AdminButton', () => {
     expect(markup).not.toContain('Dépublie la recette')
   })
 
-  test('says why it is dead when another gesture holds the row', () => {
-    // The lock greys out every sibling control in the band; without this it explained nothing.
+  test('stays quiet when another gesture holds the row: the activity bar says what runs', () => {
     const markup = renderToStaticMarkup(
       <AdminButton
         gestures={fakeGestures({ blocked: true })}
@@ -103,39 +103,35 @@ describe('AdminButton', () => {
         run={async () => ({ ok: true, text: 'Fait.' })}
       />,
     )
-    const described = markup.match(/aria-describedby="([^"]+)"/)
-    expect(described).not.toBeNull()
-    expect(markup).toContain(
-      `id="${described?.[1]}">Une autre action est en cours.`,
-    )
+    expect(markup).toContain('disabled=""')
+    expect(markup).not.toContain('aria-describedby')
   })
 
-  test('names the bar by the gesture and by its row, never anonymously', () => {
+  test('keeps its variant and its width while running, so nothing moves', () => {
     const markup = renderToStaticMarkup(
       <AdminButton
         gestures={fakeGestures({ running: runningSince(20_000, 26_000) })}
         gesture={gesture}
-        label="Embellir"
-        pendingLabel="Embellissement…"
-        titleId="row-title"
+        label="Supprimer"
+        pendingLabel="Suppression…"
+        variant="danger"
         run={async () => ({ ok: true, text: 'Fait.' })}
       />,
     )
-    const labelled = markup.match(/aria-labelledby="([^" ]+) row-title"/)
-    expect(labelled).not.toBeNull()
-    // The first id is the button's own label — the bar reads "Embellissement, <recipe>".
-    expect(markup).toContain(`id="${labelled?.[1]}"`)
-    expect(markup).toContain('role="progressbar"')
+    expect(markup).toContain('class="btn btn--danger"')
+    expect(markup).toContain('aria-busy="true"')
   })
 
-  test('publishes the result keyed by its execution, and only its own', () => {
+  test('opens nothing next to itself: progress and result belong to the activity bar', () => {
     const markup = renderToStaticMarkup(
       <AdminButton
         gestures={fakeGestures({
+          running: runningSince(20_000, 26_000),
           outcome: {
             gesture,
             token: 3,
             result: { ok: true, text: 'Embellissement lancé.' },
+            subject: null,
             orphaned: false,
             stealsFocus: false,
           },
@@ -146,28 +142,7 @@ describe('AdminButton', () => {
         run={async () => ({ ok: true, text: 'Fait.' })}
       />,
     )
-    expect(markup).toContain('role="status"')
-    expect(markup).toContain('Embellissement lancé.')
-  })
-
-  test('leaves an orphaned result to the section that outlived the row', () => {
-    const markup = renderToStaticMarkup(
-      <AdminButton
-        gestures={fakeGestures({
-          outcome: {
-            gesture,
-            token: 3,
-            result: { ok: true, text: 'Recette supprimée.' },
-            orphaned: true,
-            stealsFocus: false,
-          },
-        })}
-        gesture={gesture}
-        label="Supprimer"
-        pendingLabel="Suppression…"
-        run={async () => ({ ok: true, text: 'Fait.' })}
-      />,
-    )
-    expect(markup).not.toContain('Recette supprimée.')
+    expect(markup).not.toContain('role="progressbar"')
+    expect(markup).not.toContain('Embellissement lancé.')
   })
 })

@@ -5,6 +5,7 @@ import {
   changeEpoch,
   claim,
   clearOutcomes,
+  dismiss,
   emptyRegistry,
   isGestureBlocked,
   markOrphaned,
@@ -272,5 +273,28 @@ describe('awaitObservation', () => {
       awaitObservation(first.state, rowA, 99, 4_000).runs['["row","a","save"]']
         ?.settlingSince,
     ).toBeNull()
+  })
+})
+
+describe('dismiss', () => {
+  it('carries the subject from the run to its outcome, then closes it', () => {
+    const run = start(emptyRegistry('e'), rowA, { subject: 'Gratin' })
+    const settled = settle(run.state, rowA, run.token, {
+      ok: true,
+      text: 'Fait.',
+    })
+    expect(Object.values(settled.outcomes)[0]?.subject).toBe('Gratin')
+    expect(dismiss(settled, rowA, run.token).outcomes).toEqual({})
+  })
+
+  it('leaves a newer outcome of the same gesture alone', () => {
+    const first = start(emptyRegistry('e'))
+    const one = settle(first.state, rowA, first.token, { ok: true, text: '1' })
+    const second = start(one)
+    const two = settle(second.state, rowA, second.token, {
+      ok: true,
+      text: '2',
+    })
+    expect(dismiss(two, rowA, first.token)).toBe(two)
   })
 })

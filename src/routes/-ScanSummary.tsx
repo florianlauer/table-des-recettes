@@ -3,18 +3,13 @@ import { api } from '../../convex/_generated/api'
 import { outcomeMessage } from '../lib/gestureMessages'
 import { isolatedGesture } from '../lib/gestures'
 import type { Gestures } from '../lib/useGestures'
-import { GestureFeedback } from './-GestureFeedback'
 import { IllustrationRow } from './-IllustrationRow'
-import { OrphanedOutcomes } from './-OrphanedOutcomes'
 import type { Row } from './-IllustrationRow'
 import { recipeAnchor, toDraft } from './-RecipeForm'
 import type { Draft, RecipeView } from './-RecipeForm'
 
-/**
- * The recipes the summary renders, each with its photo row. Shared with the page, whose own outcome
- * block takes whatever these rows do not publish themselves.
- */
-export function summaryRows(
+/** The recipes the summary renders, each with its photo row. */
+function summaryRows(
   recipes: readonly RecipeView[],
   rows: readonly Row[],
 ): { recipe: RecipeView; row: Row }[] {
@@ -86,7 +81,7 @@ export function ScanSummary({
           }
           void gestures.run(
             rename,
-            { pendingLabel: 'Enregistrement…' },
+            { pendingLabel: 'Enregistrement du titre…', subject: title },
             async () => {
               const result = await renameRecipe({
                 adminToken,
@@ -120,11 +115,6 @@ export function ScanSummary({
                   if (event.key === 'Enter') event.currentTarget.blur()
                 }}
               />
-              <GestureFeedback
-                running={gestures.running(rename)}
-                outcome={gestures.outcome(rename)}
-                labelledBy={titleId}
-              />
             </div>
             <a href={`#${recipeAnchor(recipe.id)}`}>Détails</a>
           </div>
@@ -139,15 +129,6 @@ export function ScanSummary({
             now={now}
             estimateMs={estimateMs}
             heading={heading}
-            notes={
-              <OrphanedOutcomes
-                gestures={gestures}
-                keep={({ gesture }) =>
-                  gesture.scope.kind === 'row' &&
-                  gesture.scope.rowId === recipe.id
-                }
-              />
-            }
           />
         )
       })}

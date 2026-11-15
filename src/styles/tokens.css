@@ -18,6 +18,14 @@
   --rule-strong: #8a7f74; /* 3.53:1 sur --paper */
   --focus: #9a5b2b;
 
+  /* What destroys, on /admin only. A brick, not a signal red: 6.38:1 on --paper, and kept apart from
+     the ochre by the shape of the control as much as by the hue — filled ochre, outlined brick. */
+  --danger: #9e3426;
+  --danger-hover: #7a2519;
+
+  /* The admin's one curve, DESIGN.md § Mouvement: what arrives settles, nothing bounces. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
   /* One ink per dish type. Colour here is scanning information, not decoration: it is only
      ever carried by the word naming the type. All six sit between 4.86:1 and 5.72:1 on
      --paper, so none of them outweighs the others in a column of labels. */

@@ -21,11 +21,11 @@ import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../client/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
 import { adminHead } from './-adminHead'
+import { AdminActivity } from './-ActivityBar'
 import { AdminButton } from './-AdminButton'
 import { AdminFileInput } from './-AdminFileInput'
 import { AdminSectionState } from './-AdminSectionState'
 import { AttemptStatsTable } from './-AttemptStats'
-import { GestureProgress } from './-GestureProgress'
 import { ScanTable } from './-ScanTable'
 
 export const Route = createFileRoute('/admin')({
@@ -59,108 +59,110 @@ function AdminPage() {
 
   return (
     <main className="page admin-page">
-      <header className="admin-page__header">
-        <h1>Administration</h1>
-        {/* The way out was missing: /admin is reached by typing the path, and nothing on it led back
+      <AdminActivity gestures={gestures}>
+        <header className="admin-page__header">
+          <h1>Administration</h1>
+          {/* The way out was missing: /admin is reached by typing the path, and nothing on it led back
             to the site it administers. */}
-        <p>
-          <Link to="/admin/illustrations">Photos des plats</Link> ·{' '}
-          <Link to="/">Voir le site</Link>
-        </p>
-      </header>
+          <p>
+            <Link to="/admin/illustrations">Photos des plats</Link> ·{' '}
+            <Link to="/">Voir le site</Link>
+          </p>
+        </header>
 
-      {/* Sixty characters typed on a phone, masked, with a refusal as the only feedback: the reveal
+        {/* Sixty characters typed on a phone, masked, with a refusal as the only feedback: the reveal
           is what lets the operator check the token instead of retyping it. */}
-      <div className="admin-page__token">
-        <label className="admin-page__field">
-          Jeton administrateur
-          <input
-            type={revealToken ? 'text' : 'password'}
-            value={adminToken}
-            autoComplete="off"
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck={false}
-            onChange={(event) => updateToken(event.target.value)}
-          />
-        </label>
-        <button type="button" onClick={() => setRevealToken(!revealToken)}>
-          {revealToken ? 'Masquer' : 'Afficher'}
-        </button>
-      </div>
-
-      <AdminFileInput
-        gestures={gestures}
-        gesture={capture}
-        label="Photographier une page"
-        pendingLabel="Envoi…"
-        multiple
-        disabled={!adminToken}
-        onFiles={async (files, report) => {
-          const failures: string[] = []
-          let created: Id<'scans'> | null = null
-          for (const [index, file] of files.entries()) {
-            const result = await attachImage(file, {
-              onPhase: (phase) =>
-                report(
-                  uploadProgress({ done: index, total: files.length, phase }),
-                ),
-            })
-            if (result.ok) created = result.scanId
-            else failures.push(`${file.name} : ${result.error}`)
-          }
-          // A single page is usually the first of a recipe that runs on: its scan is where the next
-          // page gets added. A batch is the backlog, one scan per file, and stays on the list.
-          if (files.length === 1 && created) {
-            await navigate({ to: '/admin/scan/$id', params: { id: created } })
-          }
-          await scans.refetch()
-          return uploadMessage({ total: files.length, failures })
-        }}
-      />
-
-      <QueueBlock
-        token={token}
-        now={now}
-        gestures={gestures}
-        estimateMs={extractionEstimateMs}
-      />
-
-      <section className="admin-page__scans">
-        <h2>Scans</h2>
-        <AdminSectionState
-          view={scans}
-          absent="Saisis le jeton administrateur pour afficher les scans."
-          retry={scans.refetch}
-        />
-        {scans.kind === 'ready' &&
-          (scanRows ? (
-            <ScanTable
-              rows={scanRows}
-              adminToken={adminToken}
-              gestures={gestures}
-              now={now}
-              estimateMs={extractionEstimateMs}
+        <div className="admin-page__token">
+          <label className="admin-page__field">
+            Jeton administrateur
+            <input
+              type={revealToken ? 'text' : 'password'}
+              value={adminToken}
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
+              onChange={(event) => updateToken(event.target.value)}
             />
-          ) : (
-            <p className="empty">Aucun scan.</p>
-          ))}
-      </section>
+          </label>
+          <button
+            type="button"
+            className="btn btn--quiet"
+            onClick={() => setRevealToken(!revealToken)}
+          >
+            {revealToken ? 'Masquer' : 'Afficher'}
+          </button>
+        </div>
 
-      <section className="admin-page__stats">
-        <h2>Tentatives d’extraction</h2>
-        <AdminSectionState
-          view={stats}
-          absent="Saisis le jeton administrateur pour afficher le journal."
-          retry={stats.refetch}
+        <AdminFileInput
+          gestures={gestures}
+          gesture={capture}
+          label="Photographier une page"
+          pendingLabel="Envoi…"
+          variant="primary"
+          multiple
+          disabled={!adminToken}
+          onFiles={async (files, report) => {
+            const failures: string[] = []
+            let created: Id<'scans'> | null = null
+            for (const [index, file] of files.entries()) {
+              const result = await attachImage(file, {
+                onPhase: (phase) =>
+                  report(
+                    uploadProgress({ done: index, total: files.length, phase }),
+                  ),
+              })
+              if (result.ok) created = result.scanId
+              else failures.push(`${file.name} : ${result.error}`)
+            }
+            // A single page is usually the first of a recipe that runs on: its scan is where the next
+            // page gets added. A batch is the backlog, one scan per file, and stays on the list.
+            if (files.length === 1 && created) {
+              await navigate({ to: '/admin/scan/$id', params: { id: created } })
+            }
+            await scans.refetch()
+            return uploadMessage({ total: files.length, failures })
+          }}
         />
-        {stats.kind === 'ready' &&
-          (statsRows ? (
-            <AttemptStatsTable rows={statsRows} />
-          ) : (
-            <p className="empty">Aucune tentative journalisée.</p>
-          ))}
-      </section>
+
+        <QueueBlock token={token} now={now} gestures={gestures} />
+
+        <section className="admin-page__scans">
+          <h2>Scans</h2>
+          <AdminSectionState
+            view={scans}
+            absent="Saisis le jeton administrateur pour afficher les scans."
+            retry={scans.refetch}
+          />
+          {scans.kind === 'ready' &&
+            (scanRows ? (
+              <ScanTable
+                rows={scanRows}
+                adminToken={adminToken}
+                gestures={gestures}
+                now={now}
+                estimateMs={extractionEstimateMs}
+              />
+            ) : (
+              <p className="empty">Aucun scan.</p>
+            ))}
+        </section>
+
+        <section className="admin-page__stats">
+          <h2>Tentatives d’extraction</h2>
+          <AdminSectionState
+            view={stats}
+            absent="Saisis le jeton administrateur pour afficher le journal."
+            retry={stats.refetch}
+          />
+          {stats.kind === 'ready' &&
+            (statsRows ? (
+              <AttemptStatsTable rows={statsRows} />
+            ) : (
+              <p className="empty">Aucune tentative journalisée.</p>
+            ))}
+        </section>
+      </AdminActivity>
     </main>
   )
 }
@@ -169,12 +171,10 @@ function QueueBlock({
   token,
   now,
   gestures,
-  estimateMs,
 }: {
   token: string | null
   now: number
   gestures: Gestures
-  estimateMs: number | null
 }) {
   const adminToken = token ?? ''
   const startExtraction = useMutation(api.admin.startExtraction)
@@ -188,6 +188,25 @@ function QueueBlock({
     },
     now,
   })
+
+  // Above the status lines, not under them: a « Reprise programmée » appearing must not push the
+  // control down. The running lease itself is in the activity bar, declared by its scan's row.
+  const queueButton = (
+    <div className="admin-page__queue-action">
+      <AdminButton
+        gestures={gestures}
+        gesture={pageGesture('extract')}
+        label={button.label}
+        pendingLabel="Relance…"
+        variant="primary"
+        subject="File d’extraction"
+        disabled={!adminToken || button.disabled}
+        run={async () =>
+          extractionMessage(await startExtraction({ adminToken }), { now })
+        }
+      />
+    </div>
+  )
 
   return (
     <section className="admin-page__queue">
@@ -221,6 +240,7 @@ function QueueBlock({
               Au plafond <b>{status.attemptsCeiling}</b>
             </span>
           </p>
+          {queueButton}
           {status.truncated && <p>Comptages plafonnés à 1000.</p>}
           {status.oldestPendingAt !== null && (
             <p>
@@ -235,14 +255,6 @@ function QueueBlock({
               tentative {status.currentLease.attempts} / {MAX_ATTEMPTS}
             </p>
           )}
-          {/* The real wait is here, not in the click: pressing the button schedules and returns. */}
-          {leaseLive && status.currentLease && (
-            <GestureProgress
-              startedAt={status.currentLease.startedAt}
-              estimateMs={estimateMs}
-              token={status.currentLease.startedAt}
-            />
-          )}
           {status.nextAttemptAt !== null && status.nextAttemptAt > now && (
             <p>
               Reprise programmée dans{' '}
@@ -252,16 +264,7 @@ function QueueBlock({
           {stopped && <p>File à l’arrêt.</p>}
         </>
       )}
-      <AdminButton
-        gestures={gestures}
-        gesture={pageGesture('extract')}
-        label={button.label}
-        pendingLabel="Relance…"
-        disabled={!adminToken || button.disabled}
-        run={async () =>
-          extractionMessage(await startExtraction({ adminToken }), { now })
-        }
-      />
+      {!status && queueButton}
     </section>
   )
 }

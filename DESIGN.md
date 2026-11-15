@@ -123,7 +123,7 @@ Un composant ne fait **jamais** correspondre un type à une couleur en JavaScrip
 
 Le filet sous le titre du site, les lettres de groupe dans la marge de l'index, la reliure en
 tête de page, et le type « plat » dont il est l'encre. **Jamais comme décoration**, jamais en
-remplissage de bouton.
+remplissage de bouton, sauf le bouton principal de `/admin` (§ _Quatre sortes de contrôles_).
 
 **Pas de mode sombre.** Décision assumée : l'objet est un imprimé sur papier blanc ; une version
 inversée en fait un autre objet. Révisable si l'usage nocturne en cuisine se révèle réel.
@@ -600,9 +600,10 @@ fois ses échecs payés. Une pile de paragraphes répond une ligne à la fois, j
 que cette page n'est jamais vue par un lecteur.
 
 **Ce qui ne change pas** : les interdits _Anti-slop_ s'appliquent ici comme ailleurs — pas de carte,
-pas d'angle arrondi, pas d'aplat, pas de pictogramme, pas de bouton à fond plein. Les contrôles
-restent du texte. Et les exemptions restent des exemptions : Fraunces sur les seuls titres de section,
-pas d'encre de type ailleurs que sur le mot qui nomme un type.
+pas d'angle arrondi, pas d'aplat, pas de pictogramme. Un seul bouton à fond plein par zone, le
+principal, et c'est l'unique écart (§ _Quatre sortes de contrôles_). Les contrôles restent du texte.
+Et les exemptions restent des exemptions : Fraunces sur les seuls titres de section, pas d'encre de
+type ailleurs que sur le mot qui nomme un type.
 
 ### Un repli ouvert se tient à son titre
 
@@ -631,6 +632,55 @@ sont faites que de filet et de papier.
 **Ce que ça coûte** : deux mécaniques là où il n'y en avait aucune, et un bandeau qui occupe une ligne
 de haut d'écran pendant la lecture. Assumé, parce que la question qu'elles suppriment — « cette recette
 est-elle sans photo, ou sans photo dans la source ? » — se paie en gestes sur la mauvaise ligne.
+
+### Quatre sortes de contrôles
+
+> **Ajouté le 2026-11-15.** Tous les boutons portaient le même contour ocre. « Supprimer » avait l'air
+> de « Ajouter une recette », et l'œil devait lire chaque libellé pour trouver le geste d'une zone.
+
+| Sorte      | Rendu                                              | Pour                                                        |
+| ---------- | -------------------------------------------------- | ----------------------------------------------------------- |
+| Principal  | fond `--ochre`, texte `--on-ochre` (5,38:1), 600   | le geste pour lequel la zone existe, un seul par zone       |
+| Secondaire | contour `--ink`, texte `--ink`                     | les autres gestes de la zone                                |
+| Destructif | contour et texte `--danger` (brique, 6,38:1)       | ce qui efface : purge, suppression, rejet, abandon, retrait |
+| Discret    | lien souligné, sans contour, plancher tactile tenu | ce qui bascule ou révèle : afficher, rétablir, marquer      |
+
+Le principal suit l'étape suivante, il ne reste pas collé à un bouton : sur une fiche, c'est
+« Enregistrer » tant qu'il y a des corrections, puis « Publier ». La confirmation des gestes
+destructifs reste ; la couleur la précède, elle ne la remplace pas. La brique et l'ocre sont proches
+en luminance : c'est la forme, plein contre contour, qui les sépare d'abord.
+
+**Un bouton tient sur une ligne et garde sa largeur.** `white-space: nowrap` ; une bande trop longue
+renvoie des boutons entiers à la ligne, jamais la moitié d'un libellé. Le libellé en cours est
+superposé au libellé au repos dans la même cellule, pour les boutons comme pour les champs fichier.
+Un bouton en cours garde sa sorte et sa couleur : il n'est pas mort, il travaille. Seul un bouton
+bloqué passe en `--rule-strong`.
+
+**La raison d'un blocage a sa ligne réservée**, sous la bande, vide ou non. Une raison qui apparaissait
+sous son propre bouton poussait la bande à la première frappe et élargissait le bouton.
+
+### La barre d'activité
+
+> **Ajouté le 2026-11-15.** Chaque geste ouvrait de la place à côté de son contrôle : une piste, une
+> note, puis un résultat, chacun ajoutant une ligne. La page bougeait sous le doigt à chaque appui, et
+> ce qui tournait ailleurs restait invisible depuis l'écran courant.
+
+Tout ce qui travaille, et tout ce qui en est sorti, vit dans **une barre fixée en haut de la fenêtre,
+par-dessus la page**. Elle ne pousse rien. Elle n'existe que si elle a quelque chose à montrer.
+
+- Même matière que le bandeau d'un repli ouvert : `--surface`, filet `--ochre` 2 px au-dessus,
+  `--rule-strong` en dessous. Pas d'ombre.
+- Une entrée nomme le geste **et ce sur quoi il porte** : « Embellissement… · Tarte aux pommes ».
+- Les travaux du serveur (bail de la file, génération d'image) y figurent au même titre que les gestes
+  du navigateur, sous le nom de leur ligne.
+- Un succès part seul après 5 s, sauf si le pointeur ou le focus est dessus. Un échec est un appel
+  facturé qui a mal tourné : il reste jusqu'à ce qu'on le ferme ou que le même geste reparte. Au-delà
+  de quatre résultats, « + N autres ».
+- Quand la ligne qui tenait le focus disparaît sous son propre geste, le focus passe au message.
+
+**Ce que ça coûte** : la barre masque le haut de l'écran tant qu'elle a des entrées, y compris parfois
+le bouton qu'on vient de presser. Assumé, parce que l'autre option faisait bouger la page à chaque
+appui.
 
 ---
 
@@ -668,11 +718,30 @@ prochaine animation ajoutée ne peut pas oublier sa garde.
 Interdits, comme le reste de l'_Anti-slop_ : apparition au défilement, décalage, échelle, rotation,
 squelette pulsant, roue qui tourne, survol animé, transition sur un changement de page.
 
+### Les trois exceptions de `/admin`
+
+> **Ajouté le 2026-11-15.** Le poste de travail n'est pas lu, il est manipulé, souvent pendant un
+> batch de trente pages. Il a besoin de savoir que l'appui a porté et de voir arriver ce qui change
+> ailleurs que sous ses yeux. Les 120 ms du tableau ci-dessus servent la recherche, qui doit suivre la
+> frappe ; sur l'admin ils lisaient comme une absence de mouvement.
+
+| Surface                      | Mouvement                                                    | Courbe       |
+| ---------------------------- | ------------------------------------------------------------ | ------------ |
+| Appui sur un bouton          | `scale(0.96)`, 120 ms à l'enfoncement, 280 ms au relâchement | `--ease-out` |
+| Entrée et sortie de la barre | `opacity`, 220 ms                                            | `--ease-out` |
+| Remplissage de la piste      | `transform: scaleX`, 400 ms, entre deux ticks                | `linear`     |
+
+`--ease-out` vaut `cubic-bezier(0.23, 1, 0.32, 1)`. L'échelle est admise **là seulement**, et pour la
+même raison que le reste : elle répond à un geste que l'œil ne suit pas, le doigt couvrant le bouton.
+La piste suit la vérité avec environ 0,4 s de retard, sans conséquence sur une attente annoncée en
+dizaines de secondes. La garde `no-preference` s'applique comme ailleurs.
+
 ### La piste de progression — un objet, pas un filet
 
 Le seul objet graphique du système : la barre qui montre l'avancement d'une extraction sur `/admin`.
 Elle n'est pas un filet et ne suit pas leur échelle, parce qu'elle **porte un état** — c'est le seul
-retour continu pendant une extraction facturée à l'appel.
+retour continu pendant une extraction facturée à l'appel. Depuis le 2026-11-15, elle vit dans la
+barre d'activité, sous le nom de ce qu'elle mesure, et plus sous le contrôle pressé.
 
 Donc elle tient 3:1 des deux côtés, ce qu'aucun filet n'a à faire : **piste `--rule-strong` (3,53:1
 sur le papier), remplissage `--ink` (3,75:1 sur la piste), 3 px de haut.**
@@ -706,7 +775,7 @@ Interdits, sans exception :
 - centrage général de la page ;
 - label en capitales répété au-dessus de chaque section ;
 - Inter, Roboto, Arial, Helvetica, `system-ui`, Open Sans, Lato, Montserrat, Poppins ;
-- pastilles de filtre, boutons à fond plein, ombre au survol ;
+- pastilles de filtre, boutons à fond plein (sauf le principal de `/admin`), ombre au survol ;
 - **toute couleur qui ne porte pas d'information.** Les encres de type sont admises parce
   qu'elles nomment le type et rien d'autre ; le jour où l'une d'elles sert à décorer un filet,
   un fond de ligne ou une bordure, elle sort du système.

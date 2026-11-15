@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { useAdminToken } from '../lib/adminToken'
 import { readyData } from '../lib/dataView'
@@ -9,7 +9,6 @@ import {
   ILLUSTRATION_WORK_LISTED,
   ILLUSTRATION_WORK_MAX,
 } from '../shared/illustrationLimits'
-import type { Outcome } from '../lib/gestureRegistry'
 import { estimateFrom, nonEmpty } from '../shared/journalStats'
 import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures, useOrphanedRows } from '../lib/useGestures'
@@ -20,7 +19,7 @@ import { AdminSectionState } from './-AdminSectionState'
 import { BeautifyStats } from './-BeautifyStats'
 import { IllustrationRow } from './-IllustrationRow'
 import type { WorkSection } from './-IllustrationRow'
-import { OrphanedOutcomes } from './-OrphanedOutcomes'
+import { AdminActivity } from './-ActivityBar'
 
 export const Route = createFileRoute('/admin_/illustrations')({
   component: IllustrationsPage,
@@ -53,7 +52,6 @@ const SECTIONS = [
   'sourceHasNone',
   'done',
 ] as const
-type Section = (typeof SECTIONS)[number]
 
 type Limits = {
   toBeautify: number
@@ -119,151 +117,116 @@ function IllustrationsPage() {
     : null
   useOrphanedRows({ gestures, liveRowIds })
 
-  /**
-   * Where each row was last seen. Written in an effect, so it is deliberately one render behind: on the
-   * render where a row disappears, the map still names the section it left — which is where its result
-   * has to reappear, next to the rows the operator is reading, rather than at the top of the page.
-   *
-   * A message printed above everything pushed the whole screen down at the exact moment the row under
-   * the cursor vanished: two shifts in opposite directions, and the browser cannot anchor through
-   * either, since the node it would have anchored to is the one that left.
-   */
-  const homes = useRef(new Map<string, Section>())
-  useEffect(() => {
-    if (!data) return
-    for (const name of SECTIONS)
-      for (const row of data[name].rows) homes.current.set(row.id, name)
-  })
-
-  // A message inside a closed fold would not be read at all, so those go back to the top of the page.
-  // Losing an outcome is worse than misplacing it.
-  const reachable = (name: Section) =>
-    name === 'active' || name === 'toBeautify' || limits[name] !== null
-  const homeOf = (outcome: Outcome): Section | null => {
-    const { scope } = outcome.gesture
-    if (scope.kind !== 'row') return null
-    const home = homes.current.get(scope.rowId)
-    return home !== undefined && reachable(home) ? home : null
-  }
-  const from = (name: Section) => (outcome: Outcome) => homeOf(outcome) === name
-  const unattached = (outcome: Outcome) => homeOf(outcome) === null
-
   const rowProps = { adminToken, gestures, now, estimateMs }
 
   return (
     <main className="page admin-page">
-      <header className="admin-page__header">
-        <h1>Photos des plats</h1>
-        <p>
-          <Link to="/admin">Retour à l’administration</Link>
-        </p>
-        <p>{FRAMING_ADVICE}</p>
-      </header>
+      <AdminActivity gestures={gestures}>
+        <header className="admin-page__header">
+          <h1>Photos des plats</h1>
+          <p>
+            <Link to="/admin">Retour à l’administration</Link>
+          </p>
+          <p>{FRAMING_ADVICE}</p>
+        </header>
 
-      {/* Only what no open section can carry: a page-wide gesture, or a row whose section is folded. */}
-      <OrphanedOutcomes gestures={gestures} keep={unattached} />
+        <AdminSectionState
+          view={work}
+          absent="Saisis le jeton administrateur pour afficher la file des photos."
+          retry={work.refetch}
+        />
 
-      <AdminSectionState
-        view={work}
-        absent="Saisis le jeton administrateur pour afficher la file des photos."
-        retry={work.refetch}
-      />
+        {data && (
+          <>
+            <MigrationBanner migration={data.migration} />
 
-      {data && (
-        <>
-          <MigrationBanner migration={data.migration} />
+            <section className="illustrations__section">
+              <h2>À arbitrer</h2>
+              {data.active.count === 0 && (
+                <p className="empty">Rien à arbitrer.</p>
+              )}
+              {data.active.truncated && (
+                <p role="alert">
+                  Plus de générations en cours que l’écran n’en affiche :
+                  arbitre celles-ci d’abord.
+                </p>
+              )}
+              <DayGroups section={data.active} {...rowProps} />
+            </section>
 
-          <section className="illustrations__section">
-            <h2>À arbitrer</h2>
-            {data.active.count === 0 && (
-              <p className="empty">Rien à arbitrer.</p>
-            )}
-            {data.active.truncated && (
-              <p role="alert">
-                Plus de générations en cours que l’écran n’en affiche : arbitre
-                celles-ci d’abord.
-              </p>
-            )}
-            <OrphanedOutcomes gestures={gestures} keep={from('active')} />
-            <DayGroups section={data.active} {...rowProps} />
-          </section>
-
-          {/* Always open, and second: this is the flow the screen exists for. A photo posted and not
+            {/* Always open, and second: this is the flow the screen exists for. A photo posted and not
               yet beautified used to land in "Déjà illustrées", behind a checkbox — the main step
               filed under "finished". */}
-          <section className="illustrations__section">
-            <h2>À embellir</h2>
-            {!data.stagesReady && <MigratingNotice />}
-            {data.stagesReady && data.toBeautify.count === 0 && (
-              <p className="empty">Aucune photo n’attend d’être embellie.</p>
-            )}
-            <OrphanedOutcomes gestures={gestures} keep={from('toBeautify')} />
-            <DayGroups section={data.toBeautify} {...rowProps} />
-            <MoreRows
-              section={data.toBeautify}
-              limit={limits.toBeautify}
-              onMore={() => showMore('toBeautify')}
+            <section className="illustrations__section">
+              <h2>À embellir</h2>
+              {!data.stagesReady && <MigratingNotice />}
+              {data.stagesReady && data.toBeautify.count === 0 && (
+                <p className="empty">Aucune photo n’attend d’être embellie.</p>
+              )}
+              <DayGroups section={data.toBeautify} {...rowProps} />
+              <MoreRows
+                section={data.toBeautify}
+                limit={limits.toBeautify}
+                onMore={() => showMore('toBeautify')}
+              />
+            </section>
+
+            <FoldedSection
+              title="À traiter"
+              section={data.missing}
+              limit={limits.missing}
+              ready={data.stagesReady}
+              empty="Toutes les recettes classées ont une photo."
+              onFold={(open) => fold('missing', open)}
+              onMore={() => showMore('missing')}
+              {...rowProps}
             />
-          </section>
 
-          <FoldedSection
-            title="À traiter"
-            section={data.missing}
-            limit={limits.missing}
-            ready={data.stagesReady}
-            empty="Toutes les recettes classées ont une photo."
-            onFold={(open) => fold('missing', open)}
-            onMore={() => showMore('missing')}
-            keep={from('missing')}
-            {...rowProps}
-          />
+            <FoldedSection
+              title="Sans photo dans la source"
+              section={data.sourceHasNone}
+              limit={limits.sourceHasNone}
+              ready={data.stagesReady}
+              empty="Aucune recette marquée."
+              onFold={(open) => fold('sourceHasNone', open)}
+              onMore={() => showMore('sourceHasNone')}
+              {...rowProps}
+            />
 
-          <FoldedSection
-            title="Sans photo dans la source"
-            section={data.sourceHasNone}
-            limit={limits.sourceHasNone}
-            ready={data.stagesReady}
-            empty="Aucune recette marquée."
-            onFold={(open) => fold('sourceHasNone', open)}
-            onMore={() => showMore('sourceHasNone')}
-            keep={from('sourceHasNone')}
-            {...rowProps}
-          />
-
-          <FoldedSection
-            title="Terminées"
-            section={data.done}
-            limit={limits.done}
-            ready={data.stagesReady}
-            empty="Aucun embellissement publié."
-            onFold={(open) => fold('done', open)}
-            onMore={() => showMore('done')}
-            keep={from('done')}
-            {...rowProps}
-          />
-        </>
-      )}
-
-      <section className="admin-page__stats">
-        <h2>Générations d’images</h2>
-        <AdminSectionState
-          view={stats}
-          absent="Saisis le jeton administrateur pour afficher le journal."
-          retry={stats.refetch}
-        />
-        {estimateMs === null && statsRows && (
-          <p>
-            Pas encore assez d’appels sur la configuration en service pour
-            estimer une durée.
-          </p>
+            <FoldedSection
+              title="Terminées"
+              section={data.done}
+              limit={limits.done}
+              ready={data.stagesReady}
+              empty="Aucun embellissement publié."
+              onFold={(open) => fold('done', open)}
+              onMore={() => showMore('done')}
+              {...rowProps}
+            />
+          </>
         )}
-        {stats.kind === 'ready' &&
-          (statsRows ? (
-            <BeautifyStats rows={statsRows} />
-          ) : (
-            <p className="empty">Aucune génération journalisée.</p>
-          ))}
-      </section>
+
+        <section className="admin-page__stats">
+          <h2>Générations d’images</h2>
+          <AdminSectionState
+            view={stats}
+            absent="Saisis le jeton administrateur pour afficher le journal."
+            retry={stats.refetch}
+          />
+          {estimateMs === null && statsRows && (
+            <p>
+              Pas encore assez d’appels sur la configuration en service pour
+              estimer une durée.
+            </p>
+          )}
+          {stats.kind === 'ready' &&
+            (statsRows ? (
+              <BeautifyStats rows={statsRows} />
+            ) : (
+              <p className="empty">Aucune génération journalisée.</p>
+            ))}
+        </section>
+      </AdminActivity>
     </main>
   )
 }
@@ -324,7 +287,11 @@ function MoreRows({
   if (limit >= ILLUSTRATION_WORK_MAX)
     return <p>Liste plafonnée : traite celles-ci, les suivantes viendront.</p>
   return (
-    <button type="button" className="illustrations__more" onClick={onMore}>
+    <button
+      type="button"
+      className="btn btn--quiet illustrations__more"
+      onClick={onMore}
+    >
       Afficher {ILLUSTRATION_WORK_LISTED} de plus
     </button>
   )
@@ -342,7 +309,6 @@ function FoldedSection({
   empty,
   onFold,
   onMore,
-  keep,
   ...rowProps
 }: {
   title: string
@@ -352,7 +318,6 @@ function FoldedSection({
   empty: string
   onFold: (open: boolean) => void
   onMore: () => void
-  keep: (outcome: Outcome) => boolean
 } & RowProps) {
   return (
     <details
@@ -372,7 +337,6 @@ function FoldedSection({
           The summary stays outside it, so the title keeps the page's own left margin while the rows
           step in behind the rule. */}
       <div className="illustrations__fold-body">
-        <OrphanedOutcomes gestures={rowProps.gestures} keep={keep} />
         {!ready && <MigratingNotice />}
         {ready && limit !== null && section.count === 0 && (
           <p className="empty">{empty}</p>

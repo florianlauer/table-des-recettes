@@ -24,13 +24,13 @@ import { useGestures, useOrphanedRows } from '../lib/useGestures'
 import { useServerClock } from '../client/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
 import { adminHead } from './-adminHead'
+import { AdminActivity, ServerActivity } from './-ActivityBar'
+import { AdminActions } from './-AdminActions'
 import { AdminButton } from './-AdminButton'
 import { AdminFailure } from './-AdminFailure'
 import { AdminFileInput } from './-AdminFileInput'
-import { GestureProgress } from './-GestureProgress'
-import { OrphanedOutcomes } from './-OrphanedOutcomes'
 import { RecipeForm, toDraft } from './-RecipeForm'
-import { ScanSummary, summaryRows } from './-ScanSummary'
+import { ScanSummary } from './-ScanSummary'
 import type { Draft, RecipeView } from './-RecipeForm'
 
 export const Route = createFileRoute('/admin_/scan/$id')({
@@ -115,15 +115,6 @@ function ScanCorrectionPage() {
     ? new Set<string>(data.recipes.map((recipe) => recipe.id))
     : null
   useOrphanedRows({ gestures, liveRowIds: liveRecipeIds })
-  // The rows the summary renders publish their own orphaned outcomes; the page block takes the rest.
-  const summaryRowIds =
-    illustrations.kind === 'ready' && data
-      ? new Set<string>(
-          summaryRows(data.recipes, illustrations.data).map(
-            ({ recipe }) => recipe.id,
-          ),
-        )
-      : null
 
   // Bulk publication is the one path that never passes in front of a recipe's own warning, so the
   // list of duplicates is rebuilt here and asked for once. One entry per *row*, not per name: the
@@ -141,273 +132,279 @@ function ScanCorrectionPage() {
 
   return (
     <main className="page admin-page">
-      <header className="admin-page__header">
-        <h1>Correction du scan</h1>
-        <p>
-          <Link to="/admin">Retour à l’administration</Link>
-        </p>
-      </header>
+      <AdminActivity gestures={gestures}>
+        <header className="admin-page__header">
+          <h1>Correction du scan</h1>
+          <p>
+            <Link to="/admin">Retour à l’administration</Link>
+          </p>
+        </header>
 
-      {/* Only once storage has actually been read: browser storage is invisible to the server
+        {/* Only once storage has actually been read: browser storage is invisible to the server
           render and to the first client render, so this alert used to greet every operator who
           had a token. */}
-      {scan.kind === 'absent' && (
-        <p role="alert">Jeton absent : passe par /admin.</p>
-      )}
-      {scan.kind === 'failed' && (
-        <AdminFailure error={scan.error} retry={scan.refetch} />
-      )}
-      {scan.kind === 'loading' && <p>Chargement…</p>}
-      {data === null && <p role="alert">Scan introuvable.</p>}
+        {scan.kind === 'absent' && (
+          <p role="alert">Jeton absent : passe par /admin.</p>
+        )}
+        {scan.kind === 'failed' && (
+          <AdminFailure error={scan.error} retry={scan.refetch} />
+        )}
+        {scan.kind === 'loading' && <p>Chargement…</p>}
+        {data === null && <p role="alert">Scan introuvable.</p>}
 
-      <OrphanedOutcomes
-        gestures={gestures}
-        keep={({ gesture }) =>
-          gesture.scope.kind !== 'row' ||
-          !summaryRowIds?.has(gesture.scope.rowId)
-        }
-      />
-
-      {data && (
-        <>
-          <section className="scan-page__images">
-            <h2>Pages d’origine</h2>
-            {purged ? (
-              <p>
-                Photos purgées. La correction reste possible, pas la relance de
-                l’extraction.
-              </p>
-            ) : (
-              <>
-                {data.images.length === 0 && <p>Aucune image.</p>}
-                {data.images.map((image, index) => (
-                  <figure key={image.storageId} className="scan-page__image">
-                    {/* A thumbnail now, so the titles below come up on the first screen; the page
+        {data && (
+          <>
+            <section className="scan-page__images">
+              <h2>Pages d’origine</h2>
+              {purged ? (
+                <p>
+                  Photos purgées. La correction reste possible, pas la relance
+                  de l’extraction.
+                </p>
+              ) : (
+                <>
+                  {data.images.length === 0 && <p>Aucune image.</p>}
+                  {data.images.map((image, index) => (
+                    <figure key={image.storageId} className="scan-page__image">
+                      {/* A thumbnail now, so the titles below come up on the first screen; the page
                         itself is one tap away, in a new tab so the drafts survive. */}
-                    {image.url && (
-                      <a href={image.url} target="_blank" rel="noreferrer">
-                        <img
-                          src={image.url}
-                          alt={`Page ${index + 1}, agrandir`}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </a>
-                    )}
-                    <figcaption>
-                      Page {index + 1} / {data.images.length}
-                      {/* Page scope, one action per page: removing an image rewrites the scan and
+                      {image.url && (
+                        <a href={image.url} target="_blank" rel="noreferrer">
+                          <img
+                            src={image.url}
+                            alt={`Page ${index + 1}, agrandir`}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </a>
+                      )}
+                      <figcaption>
+                        Page {index + 1} / {data.images.length}
+                        {/* Page scope, one action per page: removing an image rewrites the scan and
                           stamps `imagesChangedAt`, which blocks every recipe's publication. */}
-                      <AdminButton
-                        gestures={gestures}
-                        gesture={pageGesture(`detach:${image.storageId}`)}
-                        label="Retirer"
-                        pendingLabel="Retrait…"
-                        confirm={`Retirer la page ${index + 1} ?`}
-                        run={async () =>
-                          outcomeMessage(
-                            await detachImage({
-                              adminToken,
-                              scanId,
-                              storageId: image.storageId,
-                            }),
-                          )
-                        }
-                      />
-                    </figcaption>
-                  </figure>
-                ))}
-                {data.images.length < MAX_IMAGES_PER_SCAN && (
-                  <AdminFileInput
-                    gestures={gestures}
-                    gesture={pageGesture('upload')}
-                    label="Ajouter une page à ce scan"
-                    pendingLabel="Envoi…"
-                    onFiles={async (files, report) => {
-                      const file = files[0]
-                      if (!file) return { ok: false, text: 'Aucun fichier.' }
-                      return outcomeMessage(
-                        await attachImage(file, {
-                          scanId,
-                          onPhase: (phase) =>
-                            report(
-                              uploadProgress({ done: 0, total: 1, phase }),
-                            ),
-                        }),
-                      )
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </section>
+                        <AdminButton
+                          gestures={gestures}
+                          gesture={pageGesture(`detach:${image.storageId}`)}
+                          label="Retirer"
+                          pendingLabel="Retrait…"
+                          variant="danger"
+                          subject={`Page ${index + 1}`}
+                          confirm={`Retirer la page ${index + 1} ?`}
+                          run={async () =>
+                            outcomeMessage(
+                              await detachImage({
+                                adminToken,
+                                scanId,
+                                storageId: image.storageId,
+                              }),
+                            )
+                          }
+                        />
+                      </figcaption>
+                    </figure>
+                  ))}
+                  {data.images.length < MAX_IMAGES_PER_SCAN && (
+                    <AdminFileInput
+                      gestures={gestures}
+                      gesture={pageGesture('upload')}
+                      label="Ajouter une page à ce scan"
+                      pendingLabel="Envoi…"
+                      subject={`Page ${data.images.length + 1}`}
+                      onFiles={async (files, report) => {
+                        const file = files[0]
+                        if (!file) return { ok: false, text: 'Aucun fichier.' }
+                        return outcomeMessage(
+                          await attachImage(file, {
+                            scanId,
+                            onPhase: (phase) =>
+                              report(
+                                uploadProgress({ done: 0, total: 1, phase }),
+                              ),
+                          }),
+                        )
+                      }}
+                    />
+                  )}
+                </>
+              )}
+            </section>
 
-          {/* A div, not a `<p role="alert">`: the control inside now carries a result and a bar,
-              which are blocks. The alert stays on the sentence. */}
-          {imagesChanged && (
-            <div className="admin-page__banner">
-              <p role="alert">
-                Les images ont changé depuis l’extraction. La publication est
-                bloquée tant que les recettes n’ont pas été relues.
+            {/* A div, not a `<p role="alert">`: the alert stays on the sentence, not on the control. */}
+            {imagesChanged && (
+              <div className="admin-page__banner">
+                <p role="alert">
+                  Les images ont changé depuis l’extraction. La publication est
+                  bloquée tant que les recettes n’ont pas été relues.
+                </p>
+                <AdminButton
+                  gestures={gestures}
+                  gesture={pageGesture('acknowledge')}
+                  label="Les corrections sont à jour"
+                  pendingLabel="Enregistrement…"
+                  variant="primary"
+                  run={async () =>
+                    outcomeMessage(
+                      await acknowledgeImageChange({ adminToken, scanId }),
+                    )
+                  }
+                />
+              </div>
+            )}
+
+            <section className="scan-page__actions">
+              <p>
+                État : {scanStatusLabel(data.status)}
+                {data.error && ` · ${data.error}`}
+                {data.totalCostUsd !== null &&
+                  ` · ${formatUsd(data.totalCostUsd)} consommés`}
               </p>
-              <AdminButton
-                gestures={gestures}
-                gesture={pageGesture('acknowledge')}
-                label="Les corrections sont à jour"
-                pendingLabel="Enregistrement…"
-                run={async () =>
-                  outcomeMessage(
-                    await acknowledgeImageChange({ adminToken, scanId }),
-                  )
-                }
-              />
-            </div>
-          )}
-
-          <section className="scan-page__actions">
-            <p>
-              État : {scanStatusLabel(data.status)}
-              {data.error && ` · ${data.error}`}
-              {data.totalCostUsd !== null &&
-                ` · ${formatUsd(data.totalCostUsd)} consommés`}
-            </p>
-            {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
+              {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
                 own `startedAt`, so it is there after a reload too. */}
-            {data.startedAt !== null && (
-              <GestureProgress
-                startedAt={data.startedAt}
-                estimateMs={estimateMs}
-                token={data.startedAt}
-              />
-            )}
-            {/* A scan arriving straight from the capture is still pending, and the queue only starts
+              {data.startedAt !== null && (
+                <ServerActivity
+                  id="scan-extraction"
+                  label="Extraction en cours"
+                  subject="Ce scan"
+                  startedAt={data.startedAt}
+                  estimateMs={estimateMs}
+                />
+              )}
+              <AdminActions>
+                {/* A scan arriving straight from the capture is still pending, and the queue only starts
                 from a button: without this one, adding its second page meant going back to /admin
                 to launch it. */}
-            {data.status === 'pending' ? (
-              <AdminButton
-                gestures={gestures}
-                gesture={pageGesture('extract')}
-                label="Lancer l’extraction"
-                pendingLabel="Lancement…"
-                confirm={
-                  othersWarning ? `${othersWarning} Lancer ?` : undefined
-                }
-                run={async () =>
-                  extractionMessage(await startExtraction({ adminToken }), {
-                    now,
-                  })
-                }
-              />
-            ) : (
-              <AdminButton
-                gestures={gestures}
-                // The same gesture as « Lancer »: a rescan swaps this button for that one, and its
-                // message has to survive the swap.
-                gesture={pageGesture('extract')}
-                label="Relancer l’extraction"
-                pendingLabel="Relance…"
-                confirm={`Relancer supprime les brouillons de ce scan.${othersWarning ? ` ${othersWarning}` : ''} Continuer ?`}
-                disabled={purged || data.images.length === 0}
-                blockedReason={
-                  purged
-                    ? 'Les photos de ce scan sont purgées.'
-                    : 'Ce scan ne porte aucune image.'
-                }
-                run={async () =>
-                  rescanMessage(await rescan({ adminToken, scanId }), { now })
-                }
-              />
-            )}
-            <AdminButton
-              gestures={gestures}
-              gesture={pageGesture('addRecipe')}
-              label="Ajouter une recette"
-              pendingLabel="Ajout…"
-              run={async () =>
-                outcomeMessage(await addRecipe({ adminToken, scanId }))
-              }
-            />
-            <AdminButton
-              gestures={gestures}
-              gesture={pageGesture('publishScan')}
-              label="Tout publier"
-              pendingLabel="Publication…"
-              confirm={
-                duplicateTitles.length > 0
-                  ? bulkDuplicateConfirm(duplicateTitles)
-                  : undefined
-              }
-              disabled={anyDirty || imagesChanged}
-              blockedReason={publishBlockedReason}
-              run={async () => {
-                const result = await publishScan({ adminToken, scanId })
-                if (!result.ok) return { ok: false, text: result.error }
-                return { ok: true, text: publicationReport(result) }
-              }}
-            />
-          </section>
+                {data.status === 'pending' ? (
+                  <AdminButton
+                    gestures={gestures}
+                    gesture={pageGesture('extract')}
+                    label="Lancer l’extraction"
+                    pendingLabel="Lancement…"
+                    variant="primary"
+                    confirm={
+                      othersWarning ? `${othersWarning} Lancer ?` : undefined
+                    }
+                    run={async () =>
+                      extractionMessage(await startExtraction({ adminToken }), {
+                        now,
+                      })
+                    }
+                  />
+                ) : (
+                  <AdminButton
+                    gestures={gestures}
+                    // The same gesture as « Lancer »: a rescan swaps this button for that one, and its
+                    // message has to survive the swap.
+                    gesture={pageGesture('extract')}
+                    label="Relancer l’extraction"
+                    pendingLabel="Relance…"
+                    confirm={`Relancer supprime les brouillons de ce scan.${othersWarning ? ` ${othersWarning}` : ''} Continuer ?`}
+                    disabled={purged || data.images.length === 0}
+                    blockedReason={
+                      purged
+                        ? 'Les photos de ce scan sont purgées.'
+                        : 'Ce scan ne porte aucune image.'
+                    }
+                    run={async () =>
+                      rescanMessage(await rescan({ adminToken, scanId }), {
+                        now,
+                      })
+                    }
+                  />
+                )}
+                <AdminButton
+                  gestures={gestures}
+                  gesture={pageGesture('addRecipe')}
+                  label="Ajouter une recette"
+                  pendingLabel="Ajout…"
+                  run={async () =>
+                    outcomeMessage(await addRecipe({ adminToken, scanId }))
+                  }
+                />
+                <AdminButton
+                  gestures={gestures}
+                  gesture={pageGesture('publishScan')}
+                  label="Tout publier"
+                  pendingLabel="Publication…"
+                  // One primary per zone: while the scan waits, launching it is the gesture this row is for.
+                  variant={data.status === 'pending' ? 'secondary' : 'primary'}
+                  confirm={
+                    duplicateTitles.length > 0
+                      ? bulkDuplicateConfirm(duplicateTitles)
+                      : undefined
+                  }
+                  disabled={anyDirty || imagesChanged}
+                  blockedReason={publishBlockedReason}
+                  run={async () => {
+                    const result = await publishScan({ adminToken, scanId })
+                    if (!result.ok) return { ok: false, text: result.error }
+                    return { ok: true, text: publicationReport(result) }
+                  }}
+                />
+              </AdminActions>
+            </section>
 
-          {data.extractedByFallback && (
-            <p>
-              Recettes extraites par le modèle de repli : relis les quantités et
-              les durées de près.
-            </p>
-          )}
-
-          {data.recipesTruncated && (
-            <p role="alert">
-              Ce scan porte plus de recettes que l’écran n’en affiche :
-              corrige-les une par une.
-            </p>
-          )}
-
-          {/* Mounted once the photo state is in, never before: a title field rendered ahead of it
-              would be remounted under the operator's fingers when it arrived. */}
-          {data.recipes.length > 0 &&
-            (illustrations.kind === 'failed' ? (
-              <AdminFailure
-                error={illustrations.error}
-                retry={illustrations.refetch}
-              />
-            ) : illustrations.kind === 'ready' ? (
-              <ScanSummary
-                recipes={data.recipes}
-                rows={illustrations.data}
-                edited={liveEdit}
-                onChange={editDraft}
-                onTitleSettled={(recipe, saved) =>
-                  setEdits((current) => settleTitle(current, recipe, saved))
-                }
-                adminToken={adminToken}
-                gestures={gestures}
-                now={now}
-                estimateMs={beautifyEstimateMs}
-              />
-            ) : (
-              <p>Chargement des photos…</p>
-            ))}
-
-          <section className="scan-page__recipes">
-            <h2>Recettes</h2>
-            {data.recipes.length === 0 && (
+            {data.extractedByFallback && (
               <p>
-                Aucune recette. Ajoute-la à la main si la page est illisible.
+                Recettes extraites par le modèle de repli : relis les quantités
+                et les durées de près.
               </p>
             )}
-            {data.recipes.map((recipe) => (
-              <RecipeForm
-                key={recipe.id}
-                recipe={recipe}
-                edited={liveEdit(recipe)}
-                adminToken={adminToken}
-                gestures={gestures}
-                publishBlocked={imagesChanged}
-                onChange={(draft) => editDraft(recipe, draft)}
-              />
-            ))}
-          </section>
-        </>
-      )}
+
+            {data.recipesTruncated && (
+              <p role="alert">
+                Ce scan porte plus de recettes que l’écran n’en affiche :
+                corrige-les une par une.
+              </p>
+            )}
+
+            {/* Mounted once the photo state is in, never before: a title field rendered ahead of it
+              would be remounted under the operator's fingers when it arrived. */}
+            {data.recipes.length > 0 &&
+              (illustrations.kind === 'failed' ? (
+                <AdminFailure
+                  error={illustrations.error}
+                  retry={illustrations.refetch}
+                />
+              ) : illustrations.kind === 'ready' ? (
+                <ScanSummary
+                  recipes={data.recipes}
+                  rows={illustrations.data}
+                  edited={liveEdit}
+                  onChange={editDraft}
+                  onTitleSettled={(recipe, saved) =>
+                    setEdits((current) => settleTitle(current, recipe, saved))
+                  }
+                  adminToken={adminToken}
+                  gestures={gestures}
+                  now={now}
+                  estimateMs={beautifyEstimateMs}
+                />
+              ) : (
+                <p>Chargement des photos…</p>
+              ))}
+
+            <section className="scan-page__recipes">
+              <h2>Recettes</h2>
+              {data.recipes.length === 0 && (
+                <p>
+                  Aucune recette. Ajoute-la à la main si la page est illisible.
+                </p>
+              )}
+              {data.recipes.map((recipe) => (
+                <RecipeForm
+                  key={recipe.id}
+                  recipe={recipe}
+                  edited={liveEdit(recipe)}
+                  adminToken={adminToken}
+                  gestures={gestures}
+                  publishBlocked={imagesChanged}
+                  onChange={(draft) => editDraft(recipe, draft)}
+                />
+              ))}
+            </section>
+          </>
+        )}
+      </AdminActivity>
     </main>
   )
 }

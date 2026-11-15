@@ -15,7 +15,9 @@ import type { Gestures } from '../lib/useGestures'
 import { uploadProgress } from '../lib/uploadProgress'
 import { AdminButton } from './-AdminButton'
 import { AdminFileInput } from './-AdminFileInput'
-import { GestureProgress } from './-GestureProgress'
+import { ServerActivity } from './-ActivityBar'
+import { AdminActions } from './-AdminActions'
+import type { ButtonVariant } from './-AdminButton'
 
 /**
  * Read off the server rather than retyped: the wire shape is declared once, as a validator, and every
@@ -39,7 +41,6 @@ export function IllustrationRow({
   now,
   estimateMs,
   heading,
-  notes,
 }: {
   row: Row
   adminToken: string
@@ -51,11 +52,6 @@ export function IllustrationRow({
    * on whatever names the recipe — the scan summary's title field.
    */
   heading?: (titleId: string) => ReactNode
-  /**
-   * Where the caller publishes this row's orphaned outcomes, inside the row under its photo line. For a
-   * screen whose rows never move: the scan page's page-level block sits out of view of the row.
-   */
-  notes?: ReactNode
 }) {
   const attachIllustration = useAttachIllustration(adminToken)
   const detachIllustration = useMutation(api.illustrations.detachIllustration)
@@ -101,6 +97,7 @@ export function IllustrationRow({
     action: string
     label: string
     pendingLabel: string
+    variant: ButtonVariant
     confirm?: string
     settle?: boolean
     /** Rendered under the « Photo : … » line it toggles, which also describes it. */
@@ -112,15 +109,18 @@ export function IllustrationRow({
     {
       offered: can.accept,
       action: 'accept',
-      label: 'Accepter l’embellissement',
+      // Short: the row already names what is accepted, and a long label wrapped in the action band.
+      label: 'Accepter',
       pendingLabel: 'Acceptation…',
+      variant: 'primary',
       run: () => acceptBeautified(args),
     },
     {
       offered: can.reject,
       action: 'reject',
-      label: 'Rejeter le candidat',
+      label: 'Rejeter',
       pendingLabel: 'Rejet…',
+      variant: 'danger',
       // `rejectPendingCandidate` deletes the blob: the render is paid for and gone, and getting
       // another costs a second call. Same reason `detach` asks.
       confirm: `Rejeter le candidat de « ${title} » ? L’image générée est supprimée, et en obtenir une autre demandera une nouvelle génération.`,
@@ -131,6 +131,7 @@ export function IllustrationRow({
       action: 'generate',
       label: row.hasCandidate ? 'Régénérer' : 'Embellir',
       pendingLabel: 'Embellissement…',
+      variant: row.hasCandidate ? 'secondary' : 'primary',
       settle: true,
       beforeRun: () => {
         startedAtAtClick.current = row.beautifyStartedAt
@@ -144,21 +145,24 @@ export function IllustrationRow({
       action: 'unpublishBeautified',
       label: 'Dépublier l’embellissement',
       pendingLabel: 'Dépublication…',
+      variant: 'secondary',
       run: () => unpublishAccepted(args),
     },
     {
       offered: can.deleteCandidate,
       action: 'deleteCandidate',
-      label: 'Supprimer le candidat conservé',
+      label: 'Supprimer le candidat',
       pendingLabel: 'Suppression…',
+      variant: 'danger',
       confirm: `Supprimer le candidat conservé de « ${title} » ? L’image est effacée définitivement.`,
       run: () => deleteCandidate(args),
     },
     {
       offered: can.abandon,
       action: 'abandon',
-      label: 'Abandonner cette génération',
+      label: 'Abandonner',
       pendingLabel: 'Abandon…',
+      variant: 'danger',
       run: () => abandonBeautify(args),
     },
     {
@@ -166,6 +170,7 @@ export function IllustrationRow({
       action: 'detach',
       label: 'Retirer la photo',
       pendingLabel: 'Retrait…',
+      variant: 'danger',
       confirm: `Retirer la photo de « ${title} » ?`,
       run: () => detachIllustration(args),
     },
@@ -177,6 +182,7 @@ export function IllustrationRow({
       action: 'markNoPhoto',
       label: 'Aucune dans la source',
       pendingLabel: 'Marquage…',
+      variant: 'quiet',
       run: () => markNoPhoto(args),
     },
     {
@@ -185,6 +191,7 @@ export function IllustrationRow({
       action: 'unmarkNoPhoto',
       label: 'Annuler',
       pendingLabel: 'Annulation…',
+      variant: 'quiet',
       run: () => clearNoPhoto(args),
     },
   ]
@@ -198,9 +205,8 @@ export function IllustrationRow({
 
   /**
    * A gesture on this screen usually removes its own control: accepting takes "Accepter" away,
-   * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the button that
-   * held the message is gone, and the result would be lost. Those outcomes are orphaned too, and the
-   * section republishes them, or the row itself through `notes`.
+   * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the focus was
+   * on a button that is gone. Marking the outcome orphaned lets the activity bar take that focus.
    */
   const offered = new Set([
     ...gestureRows.filter(({ offered: shown }) => shown).map((g) => g.action),
@@ -227,6 +233,7 @@ export function IllustrationRow({
         gesture={rowGesture(row.id, gesture.action)}
         label={gesture.label}
         pendingLabel={gesture.pendingLabel}
+        variant={gesture.variant}
         confirm={gesture.confirm}
         settle={gesture.settle}
         estimateMs={gesture.settle ? estimateMs : null}
@@ -270,23 +277,18 @@ export function IllustrationRow({
       {/* Right under the state they toggle, not among the photo buttons: a bare « Annuler » needs the
           line it cancels next to it. */}
       {photoLineButtons.map(renderButton)}
-      {notes}
-      {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. */}
-      {row.beautifyStatus === 'generating' && (
-        <div className="illustrations__waiting">
-          <p>Génération en cours…</p>
-          {row.beautifyStartedAt !== null && (
-            <GestureProgress
-              startedAt={row.beautifyStartedAt}
-              estimateMs={estimateMs}
-              labelledBy={titleId}
-              // A new generation is a new execution: the monotonic floor must not inherit the
-              // maximum of the one before it.
-              token={row.beautifyStartedAt}
-            />
-          )}
-        </div>
-      )}
+      {/* The real wait: the click came back in 300 ms, the generation runs for tens of seconds. It is
+          shown in the activity bar under the recipe's name; the row only says it is busy. */}
+      {row.beautifyStatus === 'generating' &&
+        row.beautifyStartedAt !== null && (
+          <ServerActivity
+            id={`beautify:${row.id}`}
+            label="Génération en cours"
+            subject={title}
+            startedAt={row.beautifyStartedAt}
+            estimateMs={estimateMs}
+          />
+        )}
       {row.beautifyStatus === 'failed' && row.beautifyError && (
         <p role="alert">Échec : {row.beautifyError}</p>
       )}
@@ -361,6 +363,8 @@ export function IllustrationRow({
           gesture={rowGesture(row.id, 'upload')}
           label={row.hasOriginal ? 'Remplacer la photo' : 'Ajouter une photo'}
           pendingLabel="Envoi…"
+          variant={row.hasOriginal ? 'secondary' : 'primary'}
+          subject={title}
           onFiles={async (files, report) => {
             const file = files[0]
             if (!file) return { ok: false, text: 'Aucun fichier.' }
@@ -375,7 +379,9 @@ export function IllustrationRow({
         />
       )}
 
-      {actionButtons.map(renderButton)}
+      {actionButtons.length > 0 && (
+        <AdminActions>{actionButtons.map(renderButton)}</AdminActions>
+      )}
     </article>
   )
 }
