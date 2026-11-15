@@ -1,0 +1,84 @@
+{
+  "id": "j574bb7e75x1qr7fqx2m4dayxd8j74s3",
+  "creationTime": 1794663223225.2925,
+  "title": "Rôti de porc aux pommes et aux pruneaux",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 rôti de porc de 1,2 kg",
+      "quantity": 1.2,
+      "unit": "kg",
+      "label": "rôti de porc"
+    },
+    {
+      "raw": "6 pommes reinettes",
+      "quantity": 6,
+      "unit": null,
+      "label": "pommes reinettes"
+    },
+    {
+      "raw": "18 pruneaux",
+      "quantity": 18,
+      "unit": null,
+      "label": "pruneaux"
+    },
+    {
+      "raw": "30 cl de cidre",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "cidre"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "1 brin de thym",
+      "quantity": 1,
+      "unit": "brin",
+      "label": "thym"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "75 g de beurre",
+      "quantity": 75,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettez les pruneaux dans un bol, recouvrez-les d'eau bouillante.",
+    "Faites revenir le rôti de porc dans l'huile à feu moyen 5 min, jusqu'à ce qu'il soit doré sur tous les côtés.",
+    "Ajoutez les oignons et l'ail émincés et faites rissoler 10 min en retournant le rôti de temps à autre.",
+    "Versez le cidre, salez, poivrez, ajoutez le thym. Couvrez, faites cuire 30 min en retournant le rôti régulièrement.",
+    "Ajoutez les pruneaux égouttés, couvrez, continuez la cuisson 15 min.",
+    "Entre-temps, épluchez les pommes et coupez-les en quartiers. Faites-les sauter dans le beurre en les retournant de temps à autre.",
+    "Servez le rôti découpé, entouré des pommes et pruneaux."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-aux-pommes-et-aux-pruneaux",
+  "publishedAt": 1794663356902,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,102 @@
+{
+  "id": "j577jhqa5ptc9j8chfh36tpxks8j9z0z",
+  "creationTime": 1794738535361.702,
+  "title": "Le coq de Cahors aux morilles",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "lard",
+      "quantity": null,
+      "unit": null,
+      "label": "lard"
+    },
+    {
+      "raw": "oignons",
+      "quantity": null,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "coq découpé",
+      "quantity": 1,
+      "unit": null,
+      "label": "coq"
+    },
+    {
+      "raw": "Cognac",
+      "quantity": null,
+      "unit": null,
+      "label": "Cognac"
+    },
+    {
+      "raw": "échalotes",
+      "quantity": null,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "ail",
+      "quantity": null,
+      "unit": null,
+      "label": "ail"
+    },
+    {
+      "raw": "morilles",
+      "quantity": null,
+      "unit": null,
+      "label": "morilles"
+    },
+    {
+      "raw": "bouteille de Cahors",
+      "quantity": 1,
+      "unit": "bouteille",
+      "label": "Cahors"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "muscade",
+      "quantity": null,
+      "unit": null,
+      "label": "muscade"
+    },
+    {
+      "raw": "sucre",
+      "quantity": null,
+      "unit": null,
+      "label": "sucre"
+    },
+    {
+      "raw": "50 g de beurre battu au fouet",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "fécule",
+      "quantity": null,
+      "unit": null,
+      "label": "fécule"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une cocotte, faites revenir du lard, des oignons et le coq découpé. Flambez au Cognac. Ajoutez échalotes, ail et morilles. Faites chauffer une bouteille de Cahors, versez dans la cocotte avec sel, poivre, muscade et un peu de sucre. Laissez mijoter 1 h. Liez la sauce à la fécule puis ajouter 50 g de beurre battu au fouet."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,87 @@
+{
+  "id": "j57f65sj0a7v1zy50ys7k0tn5s8j7k04",
+  "creationTime": 1794663708554.3645,
+  "title": "Keftas aux épices",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g de viande de bœuf",
+      "quantity": 600,
+      "unit": "g",
+      "label": "viande de bœuf"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 gousse d'ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "2 tomates",
+      "quantity": 2,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "1 cuillère à soupe de thym",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "thym"
+    },
+    {
+      "raw": "1 cuillère à café de cumin",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "cumin"
+    },
+    {
+      "raw": "1 cuillère à soupe de piment fort",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "piment fort"
+    },
+    {
+      "raw": "1 bouquet de persil plat",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "persil plat"
+    },
+    {
+      "raw": "1 bouquet de coriandre",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "coriandre"
+    },
+    {
+      "raw": "1 cuillère à soupe d'huile d'olive",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez l'oignon dans le hachoir et faites le fondre à feu doux avec l'ail écrasé. Ajoutez les tomates coupées en morceaux.",
+    "Mixez les tomates, l'ail et l'oignon avec le sel, le poivre, le cumin, le piment, le persil, la coriandre, et l'huile d'olive avec le pied mixeur.",
+    "Mélangez à la main la viande hachée avec le mélange et le thym. Formez vos boulettes.",
+    "Faites cuire à feu moyen 15 mn dans l'huile."
+  ],
+  "status": "published",
+  "slug": "keftas-aux-epices",
+  "publishedAt": 1794663813602,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

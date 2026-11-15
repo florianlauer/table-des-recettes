@@ -1,0 +1,68 @@
+{
+  "id": "j57dmhpwfcke3z3a4b11xv67758j69d0",
+  "creationTime": 1794663223225.2922,
+  "title": "Filet mignon laqué aux fruits rouges et ses galettes de riz",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "2 sachets de Lipton Infusion Fruits Rouges",
+      "quantity": 2,
+      "unit": "sachets",
+      "label": "Lipton Infusion Fruits Rouges"
+    },
+    {
+      "raw": "700 g de filet mignon",
+      "quantity": 700,
+      "unit": "g",
+      "label": "filet mignon"
+    },
+    {
+      "raw": "250 g de sucre",
+      "quantity": 250,
+      "unit": "g",
+      "label": "sucre"
+    },
+    {
+      "raw": "1 c. à soupe de miel",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "1 c. à soupe de sauce soja",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "sauce soja"
+    },
+    {
+      "raw": "20 cerises au sirop",
+      "quantity": 20,
+      "unit": null,
+      "label": "cerises au sirop"
+    },
+    {
+      "raw": "2 verres de riz basmati",
+      "quantity": 2,
+      "unit": "verres",
+      "label": "riz basmati"
+    },
+    {
+      "raw": "Huile d'olive, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Huile d'olive, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez un sirop de fruits rouges : dans une casserole, portez à ébullition 25 cl d'eau avec le sucre et les sachets de Lipton Infusion Fruits Rouges. Laissez bouillir 10 min. et réservez. Déposez la viande dans un grand plat allant au four, arrosez-la de sirop et laissez mariner 30 min. Préchauffez le four à 160° (th. 5/6).",
+    "Dans une sauteuse faites chauffer 2 c. à soupe d'huile d'olive et faites dorer la viande de tous les côtés pendant 5 min puis remettez-la dans le plat, poivrez. Glissez le plat au four et faites cuire pendant 30 min. Arrosez la viande de temps en temps avec son jus. Si le sirop caramélise trop, n'hésitez pas à verser un peu d'eau. Ajoutez les cerises 10 min. avant la fin. Versez le reste de sirop dans une petite casserole avec le miel et le soja, poivrez et laissez cuire à feu doux pendant 10 min. Vérifiez la cuisson du filet mignon qui doit être cuit à peine rosé. Tranchez-le, salez-le, arrosez-le de sirop et servez-le avec les cerises. Proposez une galette de riz en accompagnement.",
+    "Pour les galettes de riz : faites dorer le riz dans 1 c. à soupe d'huile d'olive. Couvrez avec 4 verres d'eau et laissez cuire à couvert pendant 8 à 10 min. Le riz doit absorber toute l'eau. Faites chauffer 2 c. à soupe d'huile d'olive dans une grande sauteuse, versez 2-3 c. à soupe de riz en l'étalant comme une galette et faites-la dorer 7 min. de chaque côté."
+  ],
+  "status": "published",
+  "slug": "filet-mignon-laque-aux-fruits-rouges-et-ses-galettes-de-riz",
+  "publishedAt": 1794663356902,
+  "imageStorageId": "kg25q43ggqn1nvwy7yfywybde58j7a25",
+  "beautifiedStorageId": "kg24w4qamhrw88nvc6mf493vrh8j6wq6"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "j5729s6b230vzgyckdz7c6n8z58j946j",
+  "creationTime": 1794738167620.9575,
+  "title": "Magret de canard aux pêches",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "2 magrets",
+      "quantity": 2,
+      "unit": null,
+      "label": "magrets"
+    },
+    {
+      "raw": "1/2 boîte de pêches au sirop (4 demi-pêches)",
+      "quantity": 0.5,
+      "unit": "boîte",
+      "label": "pêches au sirop (4 demi-pêches)"
+    },
+    {
+      "raw": "1 sachet de sauce Chasseur aux lardons Knorr",
+      "quantity": 1,
+      "unit": "sachet",
+      "label": "sauce Chasseur aux lardons Knorr"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites cuire les magrets à la poêle sur feu assez vif, tenez-les au chaud.",
+    "Dans la poêle, versez 1 verre 1/2 d'eau et 1/2 verre de sirop de pêche.",
+    "Grattez bien le fond de la poêle, ajoutez le sachet de sauce Chasseur aux lardons, remuez bien, laissez bouillir 1 mn.",
+    "Ajoutez les oreillons de pêches coupés en 4, faites réchauffer 2 mn encore dans la sauce, nappez les magrets."
+  ],
+  "status": "published",
+  "slug": "magret-de-canard-aux-peches",
+  "publishedAt": 1794738374525,
+  "imageStorageId": "kg29cqb59byc4jk3m8s0qjn4jn8j814k",
+  "beautifiedStorageId": "kg28va68h2rn58pv4x36tn698n8j8nn2"
+}

@@ -1,0 +1,96 @@
+{
+  "id": "j57053gx4zvf9c01r8t08cj8jh8j7jkz",
+  "creationTime": 1794666145292.5334,
+  "title": "Bœuf braisé aux carottes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "120 g de petits oignons grelots",
+      "quantity": 120,
+      "unit": "g",
+      "label": "petits oignons grelots"
+    },
+    {
+      "raw": "100 g de lard maigre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "lard maigre"
+    },
+    {
+      "raw": "800 g de bœuf (basse côte ou paleron)",
+      "quantity": 800,
+      "unit": "g",
+      "label": "bœuf (basse côte ou paleron)"
+    },
+    {
+      "raw": "1/2 bouteille de vin blanc sec",
+      "quantity": 0.5,
+      "unit": "bouteille",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "2 clous de girofle",
+      "quantity": 2,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "1 gousse d’ail",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "1/2 branche de céleri",
+      "quantity": 0.5,
+      "unit": "branche",
+      "label": "céleri"
+    },
+    {
+      "raw": "1 brin de thym",
+      "quantity": 1,
+      "unit": "brin",
+      "label": "thym"
+    },
+    {
+      "raw": "1 laurier",
+      "quantity": 1,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "500 g de carottes",
+      "quantity": 500,
+      "unit": "g",
+      "label": "carottes"
+    },
+    {
+      "raw": "bouillon de bœuf (facultatif)",
+      "quantity": null,
+      "unit": null,
+      "label": "bouillon de bœuf"
+    },
+    {
+      "raw": "poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre du moulin"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Épluchez les petits oignons, coupez le lard maigre en dés. Mettez le tout dans une terrine, ajoutez le morceau de bœuf et arrosez l’ensemble de vin blanc sec. Poivrez, ajoutez les clous de girofle, l’ail, l’échalote ciselée, le céleri, du thym, du laurier et laissez mariner toute la nuit. Le lendemain, retirez le bœuf, égouttez-le et essuyez-le. Réservez également les oignons et le lard. Filtrez la marinade. Dans une cocotte sur feu vif, faites revenir le bœuf 10 min env. en mouillant peu à peu avec la marinade filtrée. Si besoin, complétez avec du bouillon dégraissé pour qu’il soit bien recouvert de liquide. Baissez le feu et laissez cuire pendant 2 h, sur feu doux. Retirez le morceau de viande, faites réduire la sauce de moitié sur feu moyen pendant 20 min env. en raclant le fond de la casserole, puis passez la sauce au chinois. Remettez la viande dans la sauce, ajoutez les carottes épluchées et découpées en rondelles, les oignons et le lard réservés. Poursuivez la cuisson 20 min env. jusqu’à ce que les carottes soient cuites. Servez bien chaud."
+  ],
+  "status": "published",
+  "slug": "boeuf-braise-aux-carottes",
+  "publishedAt": 1794737276825,
+  "imageStorageId": "kg283535ta6bp2vgtsjbae00qx8j82f4",
+  "beautifiedStorageId": "kg26hpgdb22vvkpjq5evca9ehx8j8m08"
+}

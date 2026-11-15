@@ -1,0 +1,54 @@
+{
+  "id": "j577zrsd47z4e6bjhdhk70e3hs8j9hzh",
+  "creationTime": 1794738535361.7014,
+  "title": "Pintade aux abricots",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 pintade (1 kg environ)",
+      "quantity": 1,
+      "unit": null,
+      "label": "pintade"
+    },
+    {
+      "raw": "1 boîte d'abricots au sirop (250 g)",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "abricots au sirop"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "CUISIFINE",
+      "quantity": null,
+      "unit": null,
+      "label": "CUISIFINE"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pulvériser CUISIFINE sur les parois intérieures de la cocotte froide.",
+    "Préchauffer à feu doux et laisser évaporer.",
+    "Poser la pintade sur le dos. Lorsqu'elle commence à \"fricasser\" la retourner pour la faire dorer sur toutes ses faces.",
+    "Verser alors le jus d'une boîte d'abricots et fermer la cocotte.",
+    "Retourner régulièrement la pintade dans le jus qui prend une belle teinte caramel.",
+    "En milieu de cuisson (environ 30 mn) ajouter les abricots.",
+    "Terminer la cuisson à feu doux."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

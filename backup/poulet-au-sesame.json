@@ -1,0 +1,81 @@
+{
+  "id": "j5722n0rn3prcemknncr5ss9258j8wm4",
+  "creationTime": 1794738007243.804,
+  "title": "Poulet au sésame",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "12 pilons de poulet",
+      "quantity": 12,
+      "unit": null,
+      "label": "pilons de poulet"
+    },
+    {
+      "raw": "6 c. à soupe de graines de sésame",
+      "quantity": 6,
+      "unit": "c. à soupe",
+      "label": "graines de sésame"
+    },
+    {
+      "raw": "6 grosses échalotes",
+      "quantity": 6,
+      "unit": null,
+      "label": "grosses échalotes"
+    },
+    {
+      "raw": "400 g de pousses de soja",
+      "quantity": 400,
+      "unit": "g",
+      "label": "pousses de soja"
+    },
+    {
+      "raw": "le jus d'un citron pressé",
+      "quantity": 1,
+      "unit": null,
+      "label": "jus d'un citron pressé"
+    },
+    {
+      "raw": "3 c. à soupe d'huile de sésame",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "huile de sésame"
+    },
+    {
+      "raw": "1 c. à soupe d'huile neutre",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "huile neutre"
+    },
+    {
+      "raw": "3 c. à soupe de sauce soja",
+      "quantity": 3,
+      "unit": "c. à soupe",
+      "label": "sauce soja"
+    },
+    {
+      "raw": "coriandre",
+      "quantity": null,
+      "unit": null,
+      "label": "coriandre"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Placez les pilons dans un saladier. Arrosez-les avec l'huile de sésame, la sauce soja et le jus de citron. Salez et poivrez. Couvrez d'un film alimentaire et laissez mariner 4 h au frais. Pelez et émincez les échalotes.",
+    "Égouttez les pilons de poulet et posez-les dans un plat à four. Parsemez-les de graines de sésame. Placez au four, préchauffé à 210 °C (th. 7), pendant 15 mn. Baissez le thermostat à 180 °C (th. 6) et ajoutez les échalotes dans le plat. Continuez la cuisson 20 mn, en arrosant la volaille de marinade.",
+    "Rincez, séchez et faites revenir les pousses de soja, pendant 1 mn, dans une poêle avec 1 c. à soupe d'huile.",
+    "Répartissez le poulet au sésame dans les assiettes. Disposez les échalotes et les pousses de soja à côté. Décorez avec quelques feuilles de coriandre et servez."
+  ],
+  "status": "published",
+  "slug": "poulet-au-sesame",
+  "publishedAt": 1794738100110,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

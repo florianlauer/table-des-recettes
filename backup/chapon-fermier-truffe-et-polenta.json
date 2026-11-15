@@ -1,0 +1,133 @@
+{
+  "id": "j572cfwwq058t4zgcvh24hhw5d8j9fp5",
+  "creationTime": 1794738167620.9565,
+  "title": "Chapon fermier truffé et polenta",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 chapon fermier de 3,5 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "chapon fermier de 3,5 kg"
+    },
+    {
+      "raw": "quelques lamelles de truffe",
+      "quantity": null,
+      "unit": null,
+      "label": "quelques lamelles de truffe"
+    },
+    {
+      "raw": "1 boîte de fond de volaille en poudre",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "fond de volaille en poudre"
+    },
+    {
+      "raw": "250 g de polenta",
+      "quantity": 250,
+      "unit": "g",
+      "label": "polenta"
+    },
+    {
+      "raw": "1 litre de lait",
+      "quantity": 1,
+      "unit": "litre",
+      "label": "lait"
+    },
+    {
+      "raw": "3 cuil. à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "100 g de cèpes",
+      "quantity": 100,
+      "unit": "g",
+      "label": "cèpes"
+    },
+    {
+      "raw": "sel, poivre, muscade",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre, muscade"
+    },
+    {
+      "raw": "300 g de blancs de volaille",
+      "quantity": 300,
+      "unit": "g",
+      "label": "blancs de volaille"
+    },
+    {
+      "raw": "1 blanc d'œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "blanc d'œuf"
+    },
+    {
+      "raw": "1 dl de crème fraîche",
+      "quantity": 1,
+      "unit": "dl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "20 g de truffes hachées",
+      "quantity": 20,
+      "unit": "g",
+      "label": "truffes hachées"
+    },
+    {
+      "raw": "50 g de farine",
+      "quantity": 50,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "6 cuil. à soupe de crème fraîche",
+      "quantity": 6,
+      "unit": "cuil. à soupe",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "1 jaune d'œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "jaune d'œuf"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Hacher les blancs de volaille.",
+    "Les mélanger aux autres ingrédients de la farce et en remplir le chapon.",
+    "Glisser les rondelles de truffe entre chair et peau en détachant progressivement la peau de la chair à partir du cou.",
+    "Envelopper la volaille dans deux ou trois épaisseurs de film alimentaire, le percer en plusieurs endroits avec la pointe d'un couteau.",
+    "Préparer 1 litre 1/2 de fond de volaille.",
+    "Plonger le chapon dans ce fond tiède et laisser pocher à feu doux en écumant pendant 1 heure.",
+    "L'égoutter, retirer le film alimentaire et le faire dorer au four, thermostat n° 6 (180°C), bien enduit de beurre.",
+    "Verser la polenta en pluie dans le lait bouillant.",
+    "Cuire 5 mn à feu doux en tournant sans cesse.",
+    "Ajouter les cèpes bien essuyés, hachés et poêlés au préalable.",
+    "Bien mélanger et étaler dans un grand plat à gratin.",
+    "Laisser refroidir.",
+    "Découper des étoiles de à l'aide d'un emporte-pièce et les faire revenir à la poêle avec une cuillère d'huile d'olive.",
+    "Pour la sauce, faire réduire 1/2 litre de fond de volaille, le passer au chinois.",
+    "Mélanger beurre et farine sur feu doux et incorporer le fond en mélangeant au fouet.",
+    "Laisser frémir en ajoutant la crème fraîche.",
+    "Laisser réduire d'un tiers.",
+    "Incorporer l'œuf et assaisonner.",
+    "Servir le chapon découpé et napper de sauce.",
+    "Entourer de la farce et de la polenta."
+  ],
+  "status": "published",
+  "slug": "chapon-fermier-truffe-et-polenta",
+  "publishedAt": 1794738374525,
+  "imageStorageId": "kg2evtqa6rr60pvh5rh1k2wxd58j8rjk",
+  "beautifiedStorageId": "kg29qya833tw1kv9grw93tb7kh8j8c8f"
+}

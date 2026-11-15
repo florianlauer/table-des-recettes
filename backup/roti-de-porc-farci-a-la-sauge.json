@@ -1,0 +1,54 @@
+{
+  "id": "j57e7c99bcphnvknrfq573gw718j7ywy",
+  "creationTime": 1794663223225.292,
+  "title": "Rôti de porc farci à la sauge",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g d'échine de porc désossée prête à rôtir",
+      "quantity": 600,
+      "unit": "g",
+      "label": "échine de porc désossée prête à rôtir"
+    },
+    {
+      "raw": "10 feuilles de sauge",
+      "quantity": 10,
+      "unit": "feuilles",
+      "label": "sauge"
+    },
+    {
+      "raw": "1 cuil. à soupe de moutarde forte",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "moutarde forte"
+    },
+    {
+      "raw": "1 petit-suisse nature",
+      "quantity": 1,
+      "unit": "petit-suisse",
+      "label": "nature"
+    },
+    {
+      "raw": "2 cuil. à soupe de jus de citron",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffer le four thermostat n° 7 (210°C). Placer l'échine de porc ficelée dans une cocotte. La couvrir d'eau froide à hauteur. Porter à ébullition, baisser la flamme et laisser frémir pendant 10 mn. Retirer la viande et la placer sur une assiette en attente. Retirer la ficelle et laisser refroidir 2 mn. Saler et poivrer. Laver et essuyer la sauge. La couper en lanières. Incorporer les lanières au petit-suisse avec la moutarde et le jus de citron. Saler légèrement et poivrer. Dérouler l'échine de porc. Etaler la farce au centre, enrouler la viande à nouveau et la ficeler. Mettre sur un plat allant au four, ajouter le beurre en parcelles sur la viande et 1 cuil. à soupe d'eau. Enfourner et laisser cuire 40 mn. Retourner le rôti et l'arroser à mi-cuisson. Eteindre le four et y laisser le rôti se détendre pendant 5 mn avant de servir. Accompagner de simples légumes cuits dans un bouillon de veau ou encore de pâtes ou de riz."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-farci-a-la-sauge",
+  "publishedAt": 1794663356902,
+  "imageStorageId": "kg2068jperet56z6qtkaync0y98j67va",
+  "beautifiedStorageId": "kg271yd6k9hdryasn7wv88wgcn8j6eyj"
+}

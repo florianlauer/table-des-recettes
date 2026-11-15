@@ -1,0 +1,66 @@
+{
+  "id": "j579ete9th872b02f2ewdn7x558j9d96",
+  "creationTime": 1794738535361.6997,
+  "title": "Poulet rôti en gasconnade",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 poulet fermier Saint-Sever",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet fermier Saint-Sever"
+    },
+    {
+      "raw": "1 boîte d'anchois à l'huile",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "anchois à l'huile"
+    },
+    {
+      "raw": "1/2 citron",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "4 gousses d'ail",
+      "quantity": 4,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "4 belles pommes de terre",
+      "quantity": 4,
+      "unit": null,
+      "label": "belles pommes de terre"
+    },
+    {
+      "raw": "125 g de beurre",
+      "quantity": 125,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Egouttez les anchois. Conservez l'huile. Faites macérer les anchois dans le jus du demi-citron. Versez les gousses d'ail 1 mn dans l'eau bouillante, passez-les rapidement sous l'eau froide puis coupez-les en 4. Lavez les pommes de terre et enveloppez-les dans du papier aluminium. Piquez le poulet avec la pointe d'un couteau et introduisez dans chaque trou 1/2 filet d'anchois et 1/4 de gousse d'ail. Salez et poivrez généreusement l'intérieur du poulet. Enduisez la peau du poulet d'huile d'anchois et laissez-le cuire 1 h à four chaud accompagné des pommes de terre. Pendant ce temps, mixez ensemble le beurre et le reste des anchois avec un tour de moulin à poivre. Servez ce beurre d'anchois sur les pommes de terre coupées en 4 en accompagnement du poulet rôti."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

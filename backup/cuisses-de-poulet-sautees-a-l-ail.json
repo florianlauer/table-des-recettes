@@ -1,0 +1,79 @@
+{
+  "id": "j578kt4pxjapmqxk8d6vq2crdn8j8cfj",
+  "creationTime": 1794738007243.8044,
+  "title": "Cuisses de poulet sautées à l'ail",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 cuisses de poulet fermier coupées en deux",
+      "quantity": 4,
+      "unit": null,
+      "label": "cuisses de poulet fermier coupées en deux"
+    },
+    {
+      "raw": "1 tête d'ail",
+      "quantity": 1,
+      "unit": "tête",
+      "label": "ail"
+    },
+    {
+      "raw": "2 cuil. à soupe de moutarde",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "moutarde"
+    },
+    {
+      "raw": "1 carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 verre de bouillon",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "bouillon"
+    },
+    {
+      "raw": "1 cuil. à café de romarin ou d'herbes de Provence ou de thym",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "romarin ou d'herbes de Provence ou de thym"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites revenir à feu moyen les cuisses de poulet avec l'huile dans une sauteuse, jusqu'à ce qu'elles soient bien dorées.",
+    "Émincez finement l'oignon, que vous ajoutez avec la carotte râpée et le romarin ciselé dès que les cuisses ont commencé à prendre couleur.",
+    "Faites revenir. Salez et poivrez.",
+    "Ajoutez la moutarde, 4 ou 5 gousses d'ail séparées les unes des autres (pas pelées) et le verre de bouillon.",
+    "Couvrez et laissez mijoter pendant 30 min.",
+    "Retournez une ou deux fois en cours de cuisson.",
+    "Découvrez en fin de cuisson pour faire épaissir votre sauce.",
+    "Accompagnez de pâtes fraîches, riz, purée de pommes de terre, légumes vapeur, couscous, lentilles, salade croquante, tranches de pain dorées à la poêle, etc."
+  ],
+  "status": "published",
+  "slug": "cuisses-de-poulet-sautees-a-l-ail",
+  "publishedAt": 1794738100110,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

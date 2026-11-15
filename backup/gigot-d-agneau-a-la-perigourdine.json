@@ -1,0 +1,67 @@
+{
+  "id": "j57avd73j6d60s19zpvwjg5wx58j64c3",
+  "creationTime": 1794663708554.3647,
+  "title": "Gigot d'agneau à la périgourdine",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 gigot d'agneau de 3 à 3,5 kg",
+      "quantity": 1,
+      "unit": "gigot",
+      "label": "agneau"
+    },
+    {
+      "raw": "2 têtes d'ail, 1 gros oignon",
+      "quantity": 2,
+      "unit": "têtes",
+      "label": "ail, 1 gros oignon"
+    },
+    {
+      "raw": "1 clou de girofle",
+      "quantity": 1,
+      "unit": "clou",
+      "label": "girofle"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": "bouquet garni",
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "3 cuil. à soupe de graisse d'oie ou 25 g de beurre et 1 cuil. à soupe d'huile",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "graisse d'oie ou 25 g de beurre et 1 cuil. à soupe d'huile"
+    },
+    {
+      "raw": "2 cuil. à soupe de cognac",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "cognac"
+    },
+    {
+      "raw": "1 bouteille de monbazillac",
+      "quantity": 1,
+      "unit": "bouteille",
+      "label": "monbazillac"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffer le four sur thermostat n° 5 (150 °C). Faire chauffer la matière grasse dans une grande cocotte ou sur la tôle du four et y mettre le gigot, le faire revenir sur toutes ses faces. Arroser avec le cognac tiédi. Eteindre le feu et faire flamber avec les précautions nécessaires. Enlever la première peau des gousses d'ail. Les disposer tout autour du gigot. Ajouter l'oignon piqué du clou de girofle et le bouquet garni. Saler et poivrer la viande. Arroser avec le vin. Couvrir la cocotte ou enfermer le gigot sur la tôle dans une double épaisseur de papier d'aluminium. Mettre au four et laisser cuire pendant 5 h.",
+    "Sortir le gigot du four avec précaution car la viande, confite, se défait. Le dresser sur un grand plat de service. Récupérer et filtrer le jus de cuisson en conservant les gousses d'ail. Napper la viande d'un peu de jus et mettre le reste dans une saucière chaude. Disposer l'ail autour du gigot et servir avec la sauce."
+  ],
+  "status": "published",
+  "slug": "gigot-d-agneau-a-la-perigourdine",
+  "publishedAt": 1794663813602,
+  "imageStorageId": "kg2dbkhgwsv45140ke95769azs8j7jgy",
+  "beautifiedStorageId": "kg249ja13379dectvgr5ftbxgx8j70ew"
+}

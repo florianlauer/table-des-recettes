@@ -1,0 +1,54 @@
+{
+  "id": "j573fmc5yqhnj0k1ew1hgktjmx8j8kx5",
+  "creationTime": 1794738535361.7021,
+  "title": "Le magret de canard au beurre rouge",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "échalotes hachées",
+      "quantity": null,
+      "unit": null,
+      "label": "échalotes hachées"
+    },
+    {
+      "raw": "deux verres de bon vin rouge",
+      "quantity": 2,
+      "unit": "verres",
+      "label": "vin rouge"
+    },
+    {
+      "raw": "20 cl de crème fraîche",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "magrets",
+      "quantity": null,
+      "unit": null,
+      "label": "magrets"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une casserole, faites réduire les échalotes hachées et deux verres de bon vin rouge. Laissez évaporer presque complètement. Ajouter 20 cl de crème fraîche, faites réduire de moitié, et, hors du feu, incorporez 100 g de beurre 1/2 sel. Grillez les magrets à feu vif des deux côtés. Ils doivent rester bien rosés à l'intérieur."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

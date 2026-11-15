@@ -1,0 +1,80 @@
+{
+  "id": "j572nrkc19gwjbmcts80n9m1xh8j9zbq",
+  "creationTime": 1794738007243.805,
+  "title": "Filets Mykonos",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "800 g de filet de dindonneau",
+      "quantity": 800,
+      "unit": "g",
+      "label": "filet de dindonneau"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre de Cayenne",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre de Cayenne"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "romarin",
+      "quantity": null,
+      "unit": null,
+      "label": "romarin"
+    },
+    {
+      "raw": "basilic",
+      "quantity": null,
+      "unit": null,
+      "label": "basilic"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "1 grain d'ail écrasé",
+      "quantity": 1,
+      "unit": "grain",
+      "label": "ail écrasé"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites mariner pendant qq h. la viande coupée en gros dés ds l'huile d'olive à laquelle vs aurez ajouté : le jus de citron, le poivre de Cayenne, ttes les herbes, l'ail et le sel.",
+    "Au moment de la cuisson, disposez la viande ds 1 plat allant au four et faites-la dorer ss le gril pas trop chaud 5 mn sur chq face. Vérifiez la cuisson.",
+    "Servir avec des sauces barbecue."
+  ],
+  "status": "published",
+  "slug": "filets-mykonos",
+  "publishedAt": 1794738100110,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

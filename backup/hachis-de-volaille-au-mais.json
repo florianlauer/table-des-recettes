@@ -1,0 +1,66 @@
+{
+  "id": "j572bvpgrre652wz9vd986zff18j9rza",
+  "creationTime": 1794738167620.958,
+  "title": "Hachis de volaille au maïs",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 boîte 1/2 de maïs doux Bonduelle",
+      "quantity": 1.5,
+      "unit": "boîte",
+      "label": "maïs doux Bonduelle"
+    },
+    {
+      "raw": "1 boîte 1/2 de champignons Pieds et Morceaux Bonduelle",
+      "quantity": 1.5,
+      "unit": "boîte",
+      "label": "champignons Pieds et Morceaux Bonduelle"
+    },
+    {
+      "raw": "3 blancs de volaille",
+      "quantity": 3,
+      "unit": null,
+      "label": "blancs de volaille"
+    },
+    {
+      "raw": "250 cl de crème fraîche",
+      "quantity": 250,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "100 g de gruyère râpé",
+      "quantity": 100,
+      "unit": "g",
+      "label": "gruyère râpé"
+    },
+    {
+      "raw": "Beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "Beurre"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer un hachis fin avec les blancs de volaille, lier à la crème fraîche.",
+    "Egoutter le maïs et les champignons.",
+    "Les faire suer dans du beurre et assaisonner.",
+    "Disposer ces légumes en bordure d'un plat à gratin.",
+    "Dresser le hachis au milieu.",
+    "Napper de crème fraîche et saupoudrer de fromage râpé.",
+    "Gratiner à four chaud."
+  ],
+  "status": "published",
+  "slug": "hachis-de-volaille-au-mais",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

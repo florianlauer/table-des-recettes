@@ -1,0 +1,58 @@
+{
+  "id": "j579nhyz2mhcctfgbn3aymf0cs8j9mw9",
+  "creationTime": 1794738167620.9578,
+  "title": "Poulet blanc",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "poulet",
+      "quantity": null,
+      "unit": null,
+      "label": "poulet"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "huile",
+      "quantity": null,
+      "unit": null,
+      "label": "huile"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "béchamel Knorr",
+      "quantity": null,
+      "unit": null,
+      "label": "béchamel Knorr"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Choisissez une cocotte à fond épais.",
+    "Coupez le poulet en 8 morceaux et faites-le revenir dans un mélange beurre huile.",
+    "Salez, poivrez, couvrez et laissez mijoter 25 mn en remuant de temps à autre.",
+    "Lorsque le poulet est cuit, préparez en 2 mn, dans une petite casserole, la béchamel Knorr, versez-la dans la cocotte en remuant bien.",
+    "Servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "poulet-blanc",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

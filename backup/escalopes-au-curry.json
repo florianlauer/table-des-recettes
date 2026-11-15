@@ -1,0 +1,69 @@
+{
+  "id": "j5762r139k9fc3eyrcg3g9mg958j8mbq",
+  "creationTime": 1794738007243.8052,
+  "title": "Escalopes au curry",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "4 escalopes de dindonneau",
+      "quantity": 4,
+      "unit": null,
+      "label": "escalopes de dindonneau"
+    },
+    {
+      "raw": "1 gros oignon haché finement",
+      "quantity": 1,
+      "unit": "gros",
+      "label": "oignon haché finement"
+    },
+    {
+      "raw": "2 belles tomates épluchées et épépinées",
+      "quantity": 2,
+      "unit": "belles",
+      "label": "tomates épluchées et épépinées"
+    },
+    {
+      "raw": "1 cuil. à soupe de curry",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "curry"
+    },
+    {
+      "raw": "1 grain d'ail écrasé",
+      "quantity": 1,
+      "unit": "grain",
+      "label": "ail écrasé"
+    },
+    {
+      "raw": "1 banane coupée en rondelles",
+      "quantity": 1,
+      "unit": null,
+      "label": "banane coupée en rondelles"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "beurre pour la cuisson",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre pour la cuisson"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laissez fondre le beurre ds 1 poêle, faites-y dorer les escalopes sur chq face et retirez-les.",
+    "Jetez ds la poêle l'oignon haché, laissez fondre ; ajouter les tomates écrasées, le curry et l'ail. Saler. Mélangez.",
+    "Remettez à nouveau les escalopes et laissez mijoter à couvert 15 mn.",
+    "Ajouter la banane ; laissez cuire 5 mn et servir avec du riz créole."
+  ],
+  "status": "published",
+  "slug": "escalopes-au-curry",
+  "publishedAt": 1794738100110,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

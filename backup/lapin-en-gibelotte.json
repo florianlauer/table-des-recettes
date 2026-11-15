@@ -1,0 +1,98 @@
+{
+  "id": "j578v9yapjq845s5k2bbjgrchs8j8dhs",
+  "creationTime": 1794737459778.298,
+  "title": "Lapin en gibelotte",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "un lapin",
+      "quantity": 1,
+      "unit": null,
+      "label": "lapin"
+    },
+    {
+      "raw": "1 cuil. à soupe de farine",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "1 carotte",
+      "quantity": 1,
+      "unit": null,
+      "label": "carotte"
+    },
+    {
+      "raw": "1/2 l de vin blanc sec",
+      "quantity": 0.5,
+      "unit": "l",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 bol de bouillon",
+      "quantity": 1,
+      "unit": "bol",
+      "label": "bouillon"
+    },
+    {
+      "raw": "quatre épices",
+      "quantity": null,
+      "unit": null,
+      "label": "quatre épices"
+    },
+    {
+      "raw": "bouquet garni",
+      "quantity": null,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "petits oignons",
+      "quantity": null,
+      "unit": null,
+      "label": "petits oignons"
+    },
+    {
+      "raw": "sucre en poudre",
+      "quantity": null,
+      "unit": null,
+      "label": "sucre en poudre"
+    },
+    {
+      "raw": "3 cuil. à soupe d'eau",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "eau"
+    },
+    {
+      "raw": "1 verre de madère",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "madère"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faire revenir les morceaux d'un lapin avec 1 cuil. à soupe de farine, 2 oignons, 1 carotte coupés...",
+    "Mouiller avec 1/2 l de vin blanc sec et 1 bol de bouillon, ajouter quatre épices et bouquet garni. Cuire à petit feu 24 petits oignons dans du beurre, avec un peu de sucre en poudre et 3 cuil. à soupe d'eau, jusqu'à évaporation de l'eau.",
+    "Ajouter 1 verre de madère, mélanger le tout avant de servir."
+  ],
+  "status": "published",
+  "slug": "lapin-en-gibelotte",
+  "publishedAt": 1794737742622,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

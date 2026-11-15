@@ -1,0 +1,89 @@
+{
+  "id": "j576mp1parzx1bbq2jeteqv3a98j6g26",
+  "creationTime": 1794663223225.2917,
+  "title": "Mignon de porc",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "12 tranches de filet mignon",
+      "quantity": 12,
+      "unit": "tranches",
+      "label": "filet mignon"
+    },
+    {
+      "raw": "400 g de champignons de Paris",
+      "quantity": 400,
+      "unit": "g",
+      "label": "champignons de Paris"
+    },
+    {
+      "raw": "3 cuil. à soupe de roux pour béchamel Maïzena",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "roux pour béchamel Maïzena"
+    },
+    {
+      "raw": "50 g de beurre ou de margarine",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre ou de margarine"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "30 cl de lait",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "une demi cuil. à café de graines de coriandre",
+      "quantity": 0.5,
+      "unit": "cuil. à café",
+      "label": "graines de coriandre"
+    },
+    {
+      "raw": "une demi cuil. à café de 4-épices",
+      "quantity": 0.5,
+      "unit": "cuil. à café",
+      "label": "4-épices"
+    },
+    {
+      "raw": "1 botte de cresson",
+      "quantity": 1,
+      "unit": "botte",
+      "label": "cresson"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver le cresson. Oter le bout terreux des pieds des champignons, les gratter puis les plonger dans une eau additionnée du jus d'un demi-citron. Les retirer puis les essuyer dans un torchon. Les couper en lamelles.",
+    "Dans une sauteuse, faire fondre la moitié du beurre avec une cuillère à soupe d'huile. Y faire revenir les champignons à feu vif. Baisser le feu puis couvrir. Lorsque les champignons ont rendu toute leur eau de végétation, ajouter la coriandre.",
+    "Laisser cuire 8 mn à feu moyen. Saler et poivrer, mélanger puis disposer dans un plat. Garder la poêle en l'état.",
+    "Préchauffer le four sur la position gril. Faire bouillir le lait. Hors du feu, ajouter le roux pour béchamel en mélangeant au fouet. Faire cuire 1 mn sur feu doux en fouettant. Saler et bien poivrer. Parfumer de 4-épices et du jus du demi-citron restant. Verser sur les champignons. Faire gratiner 5 mn au four.",
+    "Dans la poêle utilisée pour la cuisson des champignons, faire sauter les tranches de filet mignon 3 mn de chaque côté dans le jus de cuisson des champignons.",
+    "Servir la viande sur un lit de cresson et le gratin doré à part."
+  ],
+  "status": "published",
+  "slug": "mignon-de-porc",
+  "publishedAt": 1794663356902,
+  "imageStorageId": "kg27x7v0c0h9fdsgv8ax6fa0e58j6g8p",
+  "beautifiedStorageId": "kg2bbgbvghy9xyk6arwa1apv2s8j7k7t"
+}

@@ -1,0 +1,84 @@
+{
+  "id": "j57dw9na7d38htbd4f54dze4ah8j9aes",
+  "creationTime": 1794738535361.7007,
+  "title": "Fricassée de poulet au beurre d'orange et au maïs blanc",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 boîte de 300 g de maïs blanc Géant Vert",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "maïs blanc Géant Vert"
+    },
+    {
+      "raw": "200 g de riz",
+      "quantity": 200,
+      "unit": "g",
+      "label": "riz"
+    },
+    {
+      "raw": "1 poulet fermier détaillé en six morceaux",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet fermier détaillé en six morceaux"
+    },
+    {
+      "raw": "1 cuillerée à café de graines de coriandre",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "graines de coriandre"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'échalote hachée",
+      "quantity": 2,
+      "unit": "cuillerées à soupe",
+      "label": "échalote hachée"
+    },
+    {
+      "raw": "3 gousses d'ail écrasées",
+      "quantity": 3,
+      "unit": "gousses",
+      "label": "ail écrasées"
+    },
+    {
+      "raw": "3 cuillerées à soupe de chair de tomate",
+      "quantity": 3,
+      "unit": "cuillerées à soupe",
+      "label": "chair de tomate"
+    },
+    {
+      "raw": "1,5 dl de bouillon",
+      "quantity": 1.5,
+      "unit": "dl",
+      "label": "bouillon"
+    },
+    {
+      "raw": "150 g de beurre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "30 g",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "3 oranges dont on aura passé et fait réduire le jus sur le feu pour obtenir 3 cuillerées à soupe de liquide",
+      "quantity": 3,
+      "unit": null,
+      "label": "oranges"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faire revenir en cocotte avec les 30 g de beurre, les morceaux de poulet, ajouter l'échalote, la tomate, la coriandre, l'ail et le bouillon. Faire cuire 35 mn environ. Pendant ce temps, faire cuire le riz à grande eau, et faire sauter le maïs blanc à la poêle avec très peu de beurre. Saler et poivrer. Réserver au chaud. Quand la volaille est cuite, égoutter les morceaux et réserver. Dans une petite casserole, faire le beurre d'orange en chauffant doucement le jus des oranges, laisser réduire, et incorporer les 150 g de beurre coupé en cubes, en fouettant vivement. Napper les morceaux de volaille avec ce beurre et servir sans attendre avec le riz et le maïs blanc."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

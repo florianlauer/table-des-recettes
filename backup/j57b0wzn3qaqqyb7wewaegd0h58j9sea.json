@@ -1,0 +1,48 @@
+{
+  "id": "j57b0wzn3qaqqyb7wewaegd0h58j9sea",
+  "creationTime": 1794738535361.7004,
+  "title": "Poulet mariné sauce barbecue et maïs",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "6 cuil. à soupe de Ketchup Barbecue Amora",
+      "quantity": 6,
+      "unit": "cuil. à soupe",
+      "label": "Ketchup Barbecue Amora"
+    },
+    {
+      "raw": "8 pilons de poulet",
+      "quantity": 8,
+      "unit": null,
+      "label": "pilons de poulet"
+    },
+    {
+      "raw": "1 cuil. à soupe de miel",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "2 cuil. à soupe de vinaigre",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "4 épis de maïs",
+      "quantity": 4,
+      "unit": null,
+      "label": "épis de maïs"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez le Ketchup Barbecue Amora au vinaigre et au miel. Badigeonnez les pilons de poulet avec ce mélange et laissez mariner au réfrigérateur 1h. Préchauffez le four à 180° (th. 6). Disposez les pilons de poulet sur un plat légèrement huilé et enfournez-les 25 minutes environ selon leur grosseur. Préparez les épis de maïs en les faisant cuire 20 minutes dans un mélange d'eau salée et de lait. Présentez le tout dans chaque assiette avec une touche de Ketchup Barbecue Amora."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

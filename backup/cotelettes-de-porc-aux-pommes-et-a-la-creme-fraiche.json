@@ -1,0 +1,71 @@
+{
+  "id": "j574fdfm4dctp1s6cq57843r198j7k14",
+  "creationTime": 1794666145292.533,
+  "title": "Côtelettes de porc aux pommes et à la crème fraîche",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 belles côtelettes de porc fermier",
+      "quantity": 4,
+      "unit": null,
+      "label": "belles côtelettes de porc fermier"
+    },
+    {
+      "raw": "1 noix de beurre",
+      "quantity": 1,
+      "unit": "noix",
+      "label": "beurre"
+    },
+    {
+      "raw": "huile d’olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d’olive"
+    },
+    {
+      "raw": "4 pommes fermes épluchées, évidées et coupées en quartiers",
+      "quantity": 4,
+      "unit": null,
+      "label": "pommes fermes"
+    },
+    {
+      "raw": "100 ml de cidre",
+      "quantity": 100,
+      "unit": "ml",
+      "label": "cidre"
+    },
+    {
+      "raw": "200 g de crème fraîche",
+      "quantity": 200,
+      "unit": "g",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites chauffer le beurre avec un peu d’huile dans une poêle.",
+    "Ajoutez les côtelettes de porc que vous assaisonnez légèrement et laissez cuire env. 5 min, en les retournant une ou deux fois.",
+    "Quand elles sont bien dorées des deux côtés, baissez le feu et ajoutez les pommes. Laissez le tout cuire et dorer lentement jusqu’à ce que la chair du porc ne soit plus rose et les pommes soient bien caramélisées.",
+    "Retirez les côtelettes et les pommes en les gardant au chaud.",
+    "Déglacez la poêle avec le cidre, ajoutez la crème et laissez cuire quelques minutes.",
+    "Assaisonnez et versez la sauce par-dessus les côtelettes et les pommes."
+  ],
+  "status": "published",
+  "slug": "cotelettes-de-porc-aux-pommes-et-a-la-creme-fraiche",
+  "publishedAt": 1794737276825,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

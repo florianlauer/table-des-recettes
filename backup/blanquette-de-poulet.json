@@ -1,0 +1,84 @@
+{
+  "id": "j571xhn2h6tfc9e6z6w9vxhtpd8j8a98",
+  "creationTime": 1794738167620.9573,
+  "title": "Blanquette de poulet",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "75 g de beurre",
+      "quantity": 75,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 cuillères à soupe de farine",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "2 verres d'eau",
+      "quantity": 2,
+      "unit": "verres",
+      "label": "eau"
+    },
+    {
+      "raw": "petits oignons",
+      "quantity": null,
+      "unit": null,
+      "label": "petits oignons"
+    },
+    {
+      "raw": "bouquet garni",
+      "quantity": null,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "restes de poulet",
+      "quantity": null,
+      "unit": null,
+      "label": "restes de poulet"
+    },
+    {
+      "raw": "150 g de riz",
+      "quantity": 150,
+      "unit": "g",
+      "label": "riz"
+    },
+    {
+      "raw": "1 œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    },
+    {
+      "raw": "2 cuillères à soupe de crème fraîche",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites fondre le beurre à feu doux.",
+    "Mettez la farine, mélangez bien, versez l'eau petit à petit en tournant sans arrêt jusqu'à épaississement.",
+    "Salez, poivrez.",
+    "Hors du feu, ajoutez les morceaux de poulet, les oignons, le riz que vous aurez fait cuire préalablement à l'eau, le bouquet garni.",
+    "Faites mijoter 15 à 20 mn sur feu doux.",
+    "Liez la sauce avec le jaune d'œuf et la crème.",
+    "Remettez quelques minutes sur le feu, sans faire bouillir, et servez."
+  ],
+  "status": "published",
+  "slug": "blanquette-de-poulet",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

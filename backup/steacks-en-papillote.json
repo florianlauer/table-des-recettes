@@ -1,0 +1,85 @@
+{
+  "id": "j577x699asfbahqwd1pfsf0cg98j8pey",
+  "creationTime": 1794738167620.9568,
+  "title": "Steacks en papillote",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "4 steacks de dindonneau",
+      "quantity": 4,
+      "unit": null,
+      "label": "steacks de dindonneau"
+    },
+    {
+      "raw": "20 cl de crème fraîche",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "10 brins de ciboulette ciselée",
+      "quantity": 10,
+      "unit": "brins",
+      "label": "ciboulette ciselée"
+    },
+    {
+      "raw": "un peu de porto",
+      "quantity": null,
+      "unit": null,
+      "label": "un peu de porto"
+    },
+    {
+      "raw": "1 échalote hachée",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote hachée"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "beurre pour la cuisson",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "papier alu",
+      "quantity": null,
+      "unit": null,
+      "label": "papier alu"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites chauffer le four (th. 10).",
+    "Laissez fondre et chauffer le beurre dans une poêle ; faites-y dorer les steacks pendant 2 mn sur chaque face ; salez, poivrez.",
+    "Posez chaque steack sur une feuille de papier alu.",
+    "Posez dessus 1 cuil. à café de crème fraîche, 1 pincée de ciboulette et 1 larme de porto ; fermez hermétiquement les papillotes et mettez-les dans un plat allant au four, au fond duquel vous aurez versé 1 verre d'eau chaude.",
+    "Faites cuire au four pendant 10 mn.",
+    "Pendant ce temps, jetez l'échalote dans la poêle et laissez fondre dans le beurre pendant quelques minutes ; ajoutez un peu de vin blanc ; laissez bouillir en décollant les sucs.",
+    "Ajoutez la crème, le reste de ciboulette, le sel, le poivre et laissez encore bouillir quelques minutes.",
+    "Servez les papillotes accompagnées de la sauce en saucière."
+  ],
+  "status": "published",
+  "slug": "steacks-en-papillote",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

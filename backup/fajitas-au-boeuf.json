@@ -1,0 +1,92 @@
+{
+  "id": "j57f3xh3k0h45cc0nax479y1358j7cn3",
+  "creationTime": 1794663708554.3643,
+  "title": "Fajitas au bœuf",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "500 g de viande hachée",
+      "quantity": 500,
+      "unit": "g",
+      "label": "viande hachée"
+    },
+    {
+      "raw": "8 tortillas de blé",
+      "quantity": 8,
+      "unit": null,
+      "label": "tortillas de blé"
+    },
+    {
+      "raw": "300 g de tomates en quartier pelées",
+      "quantity": 300,
+      "unit": "g",
+      "label": "tomates en quartier pelées"
+    },
+    {
+      "raw": "150 g d'oignon haché",
+      "quantity": 150,
+      "unit": "g",
+      "label": "oignon haché"
+    },
+    {
+      "raw": "200 g de poivrons en dés",
+      "quantity": 200,
+      "unit": "g",
+      "label": "poivrons en dés"
+    },
+    {
+      "raw": "2 cuil. à soupe d'huile",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "1 cœur de laitue",
+      "quantity": 1,
+      "unit": "cœur",
+      "label": "laitue"
+    },
+    {
+      "raw": "cumin et paprika en poudre",
+      "quantity": null,
+      "unit": null,
+      "label": "cumin et paprika en poudre"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "50 g de fromage râpé",
+      "quantity": 50,
+      "unit": "g",
+      "label": "fromage râpé"
+    },
+    {
+      "raw": "1 avocat",
+      "quantity": 1,
+      "unit": null,
+      "label": "avocat"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver et découper les tomates en quartiers et les poivrons en dés. Peler et hacher les oignons, les faire blondir à la poêle dans l'huile sur feu moyen en remuant souvent et sans laisser trop brunir, sinon l'oignon développe de l'amertume. Ajouter les dés de poivrons et laisser fondre à feu doux. Ajouter la viande et faire saisir à feu assez vif. Baisser le feu et laisser bien cuire. Ajouter les quartiers de tomates. Assaisonner d'une bonne pincée de cumin et d'une autre de paprika. Laisser mijoter 10 mn.",
+    "Réchauffer les tortillas pendant 10 mn au four préchauffé sur thermostat n° 6 (180 °C).",
+    "Laver la salade, bien essorer les feuilles et les hacher finement au couteau. Servir en présentant sur la table les tortillas, la viande en sauce, la salade, l'avocat, le persil haché et le fromage disposés dans des assiettes et des coupelles."
+  ],
+  "status": "published",
+  "slug": "fajitas-au-boeuf",
+  "publishedAt": 1794663813602,
+  "imageStorageId": "kg27yqss10mz9r32k806f0w6as8j7wm5",
+  "beautifiedStorageId": "kg28jfqgq7pjykq50jwdkk49zn8j7ej7"
+}

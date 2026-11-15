@@ -1,0 +1,72 @@
+{
+  "id": "j575j89hdn04fps1wtd4tpmap58j8meh",
+  "creationTime": 1794738167620.9583,
+  "title": "Curry de poulet à la courgette",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g de blancs de poulet (4 belles escalopes)",
+      "quantity": 600,
+      "unit": "g",
+      "label": "blancs de poulet (4 belles escalopes)"
+    },
+    {
+      "raw": "1 yaourt nature Kremly de Nestlé",
+      "quantity": 1,
+      "unit": null,
+      "label": "yaourt nature Kremly de Nestlé"
+    },
+    {
+      "raw": "1 tablette de bouillon de volaille Maggi",
+      "quantity": 1,
+      "unit": "tablette",
+      "label": "bouillon de volaille Maggi"
+    },
+    {
+      "raw": "1 ou 2 courgettes (environ 400 g)",
+      "quantity": 1,
+      "unit": null,
+      "label": "courgettes (environ 400 g)"
+    },
+    {
+      "raw": "400 ml d'eau",
+      "quantity": 400,
+      "unit": "ml",
+      "label": "eau"
+    },
+    {
+      "raw": "3 cuillerées à café de curry en poudre",
+      "quantity": 3,
+      "unit": "cuillerées à café",
+      "label": "curry en poudre"
+    },
+    {
+      "raw": "1 cuillerée à soupe d'huile",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Lavez et râpez la courgette avec sa peau.",
+    "Coupez les blancs de poulet en gros cubes.",
+    "Dans une sauteuse, faites chauffer l'huile, ajoutez le poulet et faites-le dorer à feu vif.",
+    "Salez et poivrez.",
+    "Ajoutez l'eau, le bouillon de volaille, le curry, la courgette râpée.",
+    "Laissez cuire 5 minutes à feu moyen.",
+    "Hors du feu, ajoutez le yaourt, mélangez et servez."
+  ],
+  "status": "published",
+  "slug": "curry-de-poulet-a-la-courgette",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,9 +1,9 @@
 {
   "formatVersion": "1",
-  "generatedAt": "2026-11-14T13:29:01.834Z",
-  "total": 184,
+  "generatedAt": "2026-11-15T10:31:21.246Z",
+  "total": 233,
   "countsByStatus": {
-    "review": 9,
-    "published": 175
+    "review": 14,
+    "published": 219
   }
 }

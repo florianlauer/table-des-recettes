@@ -1,0 +1,75 @@
+{
+  "id": "j571m053fcswqy4wvr0dkwe9gx8j85nc",
+  "creationTime": 1794737459778.2979,
+  "title": "Émincé au gingembre",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "800 g de sauté de dindonneau (sans os)",
+      "quantity": 800,
+      "unit": "g",
+      "label": "sauté de dindonneau (sans os)"
+    },
+    {
+      "raw": "huile et beurre pour la cuisson",
+      "quantity": null,
+      "unit": null,
+      "label": "huile et beurre pour la cuisson"
+    },
+    {
+      "raw": "10 morceaux de sucre",
+      "quantity": 10,
+      "unit": null,
+      "label": "morceaux de sucre"
+    },
+    {
+      "raw": "10 cl de bouillon de poule en tablettes",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "bouillon de poule en tablettes"
+    },
+    {
+      "raw": "1/2 cuil. à café de gingembre en poudre",
+      "quantity": 0.5,
+      "unit": "cuil. à café",
+      "label": "gingembre en poudre"
+    },
+    {
+      "raw": "1/2 cuil. à café de 4 épices",
+      "quantity": 0.5,
+      "unit": "cuil. à café",
+      "label": "4 épices"
+    },
+    {
+      "raw": "1 cuil. à soupe de Cointreau",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "Cointreau"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Emincez la viande en fines lamelles. Faites-les dorer à la poêle dans le mélange huile/beurre.",
+    "Dans une cocotte, faites fondre le sucre dans 3 cuil. à soupe d'eau. Lorsqu'il est caramélisé, ajoutez le bouillon chaud, le gingembre, les 4 épices, le Cointreau. Mélangez bien.",
+    "Ajoutez la viande et laissez cuire à feu moyen pendant 15 minutes.",
+    "Servez avec du riz créole."
+  ],
+  "status": "published",
+  "slug": "emince-au-gingembre",
+  "publishedAt": 1794737742622,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

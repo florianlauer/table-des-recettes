@@ -1,0 +1,77 @@
+{
+  "id": "j573j4axp9tnk96n2anfmn77a58j8dje",
+  "creationTime": 1794737459778.2974,
+  "title": "Carrés d'agneau fermiers rôtis, à la crème d'ail",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "Deux carrés d'agneau fermiers de 4 à 6 côtes",
+      "quantity": 2,
+      "unit": null,
+      "label": "carrés d'agneau fermiers de 4 à 6 côtes"
+    },
+    {
+      "raw": "60 g de beurre",
+      "quantity": 60,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "Une tête d'ail",
+      "quantity": 1,
+      "unit": null,
+      "label": "tête d'ail"
+    },
+    {
+      "raw": "Deux cuillères à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "Fleur de sel de Guérande",
+      "quantity": null,
+      "unit": null,
+      "label": "Fleur de sel de Guérande"
+    },
+    {
+      "raw": "Poivre du moulin",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre du moulin"
+    },
+    {
+      "raw": "800 g d'épinards frais",
+      "quantity": 800,
+      "unit": "g",
+      "label": "épinards frais"
+    },
+    {
+      "raw": "Quatre petites tomates bien rondes",
+      "quantity": 4,
+      "unit": null,
+      "label": "petites tomates bien rondes"
+    },
+    {
+      "raw": "25 cl de crème fleurette",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "crème fleurette"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Demander à votre boucher de préparer les carrés d'agneau.",
+    "Éplucher l'ail et le blanchir 3 minutes à l'eau. Bien égoutter et mettre à cuire dans la crème fleurette environ 20 minutes. Mixer le tout et garder au chaud.",
+    "Faire revenir dans un plat à four les carrés d'agneau. Assaisonner et laisser cuire 15 minutes à 190°C. Recouvrir ensuite d'une feuille d'aluminium et laisser reposer dans le four éteint.",
+    "Équeuter les épinards, les laver, les cuire dans le beurre jusqu'à évaporation de l'eau de végétation. Assaisonner de poivre et sel.",
+    "Cuire vos tomates au four 8 à 10 minutes à 190°C. Puis dans un plat, les arroser d'huile d'olive, de sel et de poivre, comme pour les carrés.",
+    "Trancher vos carrés d'agneau et les dresser sur des assiettes chaudes, avec la crème d'ail, la tomate et une belle quenelle d'épinards. Parsemer d'une pincée de sel de Guérande. Servez et appréciez !"
+  ],
+  "status": "published",
+  "slug": "carres-d-agneau-fermiers-rotis-a-la-creme-d-ail",
+  "publishedAt": 1794737742622,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

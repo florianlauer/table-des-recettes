@@ -1,0 +1,49 @@
+{
+  "id": "j579zkv37mjprdvs0m5xjqmeys8j8vqw",
+  "creationTime": 1794738535361.7,
+  "title": "Poulet au doux-amer",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "80 g de blanc de poulet cuit (prélevé sur le poulet familial)",
+      "quantity": 80,
+      "unit": "g",
+      "label": "blanc de poulet cuit"
+    },
+    {
+      "raw": "2 endives moyennes",
+      "quantity": 2,
+      "unit": null,
+      "label": "endives moyennes"
+    },
+    {
+      "raw": "1 oreillon de pêche au sirop",
+      "quantity": 1,
+      "unit": "oreillon",
+      "label": "pêche au sirop"
+    },
+    {
+      "raw": "1 c. à soupe rase de riz cuit",
+      "quantity": 1,
+      "unit": "c. à soupe rase",
+      "label": "riz cuit"
+    },
+    {
+      "raw": "1 noisette de beurre",
+      "quantity": 1,
+      "unit": "noisette",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Egouttez la pêche et coupez-la en cubes. Otez la peau du blanc de poulet et coupez-le en petits morceaux. Lavez rapidement les endives, après en avoir détaché les feuilles flétries et creusé les trognons en forme de cône. Coupez-les en 4 dans le sens de la longueur et faites-les cuire 10 mn à la vapeur (ou 8 mn à couvert avec 2 c. à soupe d'eau au micro-ondes). Egouttez-les puis mixez-les avec le reste des ingrédients selon la consistance désirée (très finement au début, plus grossièrement au fur et à mesure que votre bébé apprend à mâcher).",
+    "Servez la moitié de la purée obtenue avec une noisette de beurre et conservez l'autre moitié au réfrigérateur dans un récipient couvert."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

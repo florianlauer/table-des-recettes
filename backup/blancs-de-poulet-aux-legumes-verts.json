@@ -1,0 +1,76 @@
+{
+  "id": "j5775422z9td3dgghg7y3hb2t98j84g1",
+  "creationTime": 1794738007243.8047,
+  "title": "Blancs de poulet aux légumes verts",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "2 courgettes fermes",
+      "quantity": 2,
+      "unit": null,
+      "label": "courgettes fermes"
+    },
+    {
+      "raw": "200 g de pois gourmands",
+      "quantity": 200,
+      "unit": "g",
+      "label": "pois gourmands"
+    },
+    {
+      "raw": "2 échalotes",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "50 g de pistaches décortiquées",
+      "quantity": 50,
+      "unit": "g",
+      "label": "pistaches décortiquées"
+    },
+    {
+      "raw": "2 brins d'estragon",
+      "quantity": 2,
+      "unit": "brins",
+      "label": "estragon"
+    },
+    {
+      "raw": "60 g de beurre",
+      "quantity": 60,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Lavez les courgettes, brossez-les et taillez-les en fines rondelles.",
+    "Épluchez et lavez les pois gourmands.",
+    "Pelez et hachez finement les échalotes.",
+    "Faites fondre le beurre.",
+    "Concassez les pistaches.",
+    "Préchauffez le four à th. 6 (180 °C).",
+    "Découpez 4 feuilles de papier Super alu ou de papier cuisson, étalez-y un peu de beurre fondu.",
+    "Posez par-dessus les blancs de poulet, salez et poivrez.",
+    "Recouvrez de courgettes, de pois gourmands et d'échalotes.",
+    "Disposez quelques feuilles d'estragon, salez un peu à nouveau, arrosez de beurre fondu et parsemez de pistaches.",
+    "Fermez les papillotes et faites cuire 30 min au four."
+  ],
+  "status": "published",
+  "slug": "blancs-de-poulet-aux-legumes-verts",
+  "publishedAt": 1794738100110,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,52 @@
+{
+  "id": "j57d17rpmzhd6dgj2saa3eay0s8j99bp",
+  "creationTime": 1794737459778.2983,
+  "title": "Filets de dindonneau chasseur",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "filets de dindonneau",
+      "quantity": null,
+      "unit": null,
+      "label": "filets de dindonneau"
+    },
+    {
+      "raw": "une cuillerée de cognac",
+      "quantity": 1,
+      "unit": "cuillerée",
+      "label": "cognac"
+    },
+    {
+      "raw": "1/2 verre de bouillon",
+      "quantity": 0.5,
+      "unit": "verre",
+      "label": "bouillon"
+    },
+    {
+      "raw": "eau chaude",
+      "quantity": null,
+      "unit": null,
+      "label": "eau chaude"
+    },
+    {
+      "raw": "sauce chasseur KNORR",
+      "quantity": null,
+      "unit": null,
+      "label": "sauce chasseur KNORR"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faites dorer les filets des deux côtés.",
+    "Flambez avec une cuillerée de cognac.",
+    "Mouillez avec 1/2 verre de bouillon, couvrez et laissez cuire 10 mn.",
+    "Découvrez la sauteuse, conservez les filets au chaud. Ajoutez dans la casserole un peu d'eau chaude (1/4 de litre de liquide en tout).",
+    "Préparez la sauce chasseur KNORR dans ce mélange, nappez le dindonneau. Servez."
+  ],
+  "status": "published",
+  "slug": "filets-de-dindonneau-chasseur",
+  "publishedAt": 1794737742622,
+  "imageStorageId": "kg29dmgdhjksx2t0wg6ddtm7fs8j9pve",
+  "beautifiedStorageId": "kg2d3gvbdt1pp3zpryjzp364dd8j85rj"
+}

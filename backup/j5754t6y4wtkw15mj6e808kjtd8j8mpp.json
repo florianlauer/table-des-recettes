@@ -1,0 +1,64 @@
+{
+  "id": "j5754t6y4wtkw15mj6e808kjtd8j8mpp",
+  "creationTime": 1794738535361.6995,
+  "title": "Cuisses de poulet aux pommes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 cuisses de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "cuisses de poulet"
+    },
+    {
+      "raw": "8 pommes Golden",
+      "quantity": 8,
+      "unit": null,
+      "label": "pommes Golden"
+    },
+    {
+      "raw": "25 cl de cidre brut",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "cidre brut"
+    },
+    {
+      "raw": "10 cl de crème fraîche liquide",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "crème fraîche liquide"
+    },
+    {
+      "raw": "estragon",
+      "quantity": null,
+      "unit": null,
+      "label": "estragon"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Pelez les pommes et coupez-les en quartiers. Faites dorer le poulet dans une cocotte avec un peu d'huile.",
+    "Dans une cocotte, mettez le cidre* et 4 quartiers de pomme, rajoutez les cuisses de poulet, salez, poivrez. Couvrez la cocotte et laissez mijoter pendant 20 minutes environ.",
+    "A part, faites dorer au beurre les quartiers de pommes restants.",
+    "Quand le poulet est cuit, disposez-le dans un plat avec les quartiers de pomme dorés et parsemez d'estragon.",
+    "Mixez la sauce au fond de la cocotte, ajoutez un peu de crème fraîche et mettez dans une saucière."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

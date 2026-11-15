@@ -1,0 +1,114 @@
+{
+  "id": "j576wgtbcmnwz59ax0a13ngcq58j85gy",
+  "creationTime": 1794737459778.2969,
+  "title": "Agneau à la crème de noix de cajou",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "750 g d'épaule d'agneau désossée, détaillée en cubes",
+      "quantity": 750,
+      "unit": "g",
+      "label": "épaule d'agneau désossée, détaillée en cubes"
+    },
+    {
+      "raw": "2 yaoghourts Velouté Nature",
+      "quantity": 2,
+      "unit": null,
+      "label": "yaoghourts Velouté Nature"
+    },
+    {
+      "raw": "4 cuil. à soupe d'huile",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "3 oignons",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "75 g de noix de cajou concassées",
+      "quantity": 75,
+      "unit": "g",
+      "label": "noix de cajou concassées"
+    },
+    {
+      "raw": "1 tomate pelée concassée",
+      "quantity": 1,
+      "unit": null,
+      "label": "tomate pelée concassée"
+    },
+    {
+      "raw": "4 graines de cardamome",
+      "quantity": 4,
+      "unit": null,
+      "label": "graines de cardamome"
+    },
+    {
+      "raw": "1 bâton de cannelle",
+      "quantity": 1,
+      "unit": null,
+      "label": "bâton de cannelle"
+    },
+    {
+      "raw": "1 cuil. à soupe de coriandre en poudre",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "coriandre en poudre"
+    },
+    {
+      "raw": "2 cuil. à café de cumin en poudre",
+      "quantity": 2,
+      "unit": "cuil. à café",
+      "label": "cumin en poudre"
+    },
+    {
+      "raw": "1/2 cuil. à café de curcuma en poudre",
+      "quantity": 0.5,
+      "unit": "cuil. à café",
+      "label": "curcuma en poudre"
+    },
+    {
+      "raw": "de poivre en grains",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre en grains"
+    },
+    {
+      "raw": "de noix muscade râpée",
+      "quantity": null,
+      "unit": null,
+      "label": "noix muscade râpée"
+    },
+    {
+      "raw": "8 clous de girofle",
+      "quantity": 8,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "En cocotte, faites revenir dans l'huile oignons, cardamome et cannelle",
+    "Ajoutez coriandre, cumin, curcuma, clous de girofle et poivre",
+    "Quand ce mélange est sec, versez 3 cuil. à soupe d'eau et laissez cuire 5 min en remuant",
+    "Incorporez les yoghourts",
+    "Ajoutez la viande, la tomate, les noix de cajou",
+    "Salez et portez à ébullition. Couvrez et laissez cuire 1 h à feu doux jusqu'à ce que la viande soit tendre",
+    "Avant de servir, saupoudrez de noix de muscade."
+  ],
+  "status": "published",
+  "slug": "agneau-a-la-creme-de-noix-de-cajou",
+  "publishedAt": 1794737742622,
+  "imageStorageId": "kg23mnpw5j735508y2xxgra14s8j8n6p",
+  "beautifiedStorageId": "kg2ar385ftr8kgw27hysxxj6f18j9pph"
+}

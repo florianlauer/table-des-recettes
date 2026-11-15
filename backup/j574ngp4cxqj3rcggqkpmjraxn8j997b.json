@@ -1,0 +1,60 @@
+{
+  "id": "j574ngp4cxqj3rcggqkpmjraxn8j997b",
+  "creationTime": 1794738535361.7017,
+  "title": "Le rôti de pintade en robe rouge",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "échalotes",
+      "quantity": null,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "pintade",
+      "quantity": null,
+      "unit": null,
+      "label": "pintade"
+    },
+    {
+      "raw": "verre de vin blanc",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "compote de fruits rouges surgelée légèrement sucrée",
+      "quantity": null,
+      "unit": null,
+      "label": "compote de fruits rouges surgelée"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une cocotte où vous aurez fait revenir des échalotes, placez le rôti, un verre de vin blanc, sel, poivre, bouquet garni et un verre d'eau. Une fois la pintade cuite, filtrez le jus de cuisson pour la sauce. Servez avec une compote de fruits rouges surgelée légèrement sucrée."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

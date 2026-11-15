@@ -1,0 +1,68 @@
+{
+  "id": "j575z6zhecjdhpmbhkfv9m3k4n8j76ca",
+  "creationTime": 1794666145292.5332,
+  "title": "Filet de bœuf aux champignons",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 tranches de filet de bœuf de 150 g chacune",
+      "quantity": 4,
+      "unit": null,
+      "label": "tranches de filet de bœuf de 150 g chacune"
+    },
+    {
+      "raw": "250 g de girolles",
+      "quantity": 250,
+      "unit": "g",
+      "label": "girolles"
+    },
+    {
+      "raw": "250 g de champignons de Paris",
+      "quantity": 250,
+      "unit": "g",
+      "label": "champignons de Paris"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "3 cuil. à soupe d’huile",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "1 cuil. à soupe de persil haché",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "persil haché"
+    },
+    {
+      "raw": "1 petite truffe en boîte (avec son jus)",
+      "quantity": 1,
+      "unit": "petite truffe en boîte",
+      "label": "truffe avec son jus"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Nettoyer les girolles et les champignons de Paris, puis les faire sauter dans une poêle anti-adhésive avec 1 cuil. à soupe d’huile en ajoutant la truffe coupée finement. Faire dorer les tranches de filet avec 1 cuil. à soupe d’huile dans une autre poêle anti-adhésive très chaude, laisser cuire 1 minute de chaque côté de manière à ce que la viande ne soit pas trop grillée, saler et poivrer. Réserver sur une assiette.",
+    "Verser le jus de truffe dans la poêle et laisser cuire 2 minutes à feu vif avant d’incorporer le beurre en remuant sur feu plus doux pour obtenir une sauce onctueuse, ajouter les champignons. Saupoudrer de persil haché, bien mélanger. Déposer la viande sur les champignons pour la laisser se réchauffer pendant 2 à 3 minutes.",
+    "Dresser la préparation dans un plat de service et savourer sans attendre."
+  ],
+  "status": "published",
+  "slug": "filet-de-boeuf-aux-champignons",
+  "publishedAt": 1794737276825,
+  "imageStorageId": "kg2chv5y7zkbwj246g97drnd0x8j8j18",
+  "beautifiedStorageId": "kg2ekb4kn9xgzth3dssk0gvq1n8j8nh1"
+}

@@ -1,0 +1,75 @@
+{
+  "id": "j579cfc314hg0vs8124shasmmn8j66dy",
+  "creationTime": 1794666145292.5327,
+  "title": "Rôti de porc laqué à l’ananas",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 ananas",
+      "quantity": 1,
+      "unit": null,
+      "label": "ananas"
+    },
+    {
+      "raw": "400 g de pommes de terre grenaille",
+      "quantity": 400,
+      "unit": "g",
+      "label": "pommes de terre grenaille"
+    },
+    {
+      "raw": "2 filets mignons de porc",
+      "quantity": 2,
+      "unit": null,
+      "label": "filets mignons de porc"
+    },
+    {
+      "raw": "300 ml de jus d’ananas",
+      "quantity": 300,
+      "unit": "ml",
+      "label": "jus d’ananas"
+    },
+    {
+      "raw": "125 ml de sauce soja",
+      "quantity": 125,
+      "unit": "ml",
+      "label": "sauce soja"
+    },
+    {
+      "raw": "125 ml de ketchup",
+      "quantity": 125,
+      "unit": "ml",
+      "label": "ketchup"
+    },
+    {
+      "raw": "1 c. à soupe de vinaigre",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "1 c. à soupe de moutarde",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "moutarde"
+    },
+    {
+      "raw": "1 petit bouquet de thym",
+      "quantity": 1,
+      "unit": "petit bouquet",
+      "label": "thym"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez le ketchup avec la sauce soja, la moutarde, le vinaigre et 100 ml de jus d’ananas. Mettez les filets mignons à mariner dans le mélange, idéalement une nuit au réfrigérateur, sinon au minimum le temps de préchauffer le four à 220°C.",
+    "Lavez les pommes de terre et placez-les dans un grand plat à four. Salez, poivrez, versez les 200 ml restants de jus d’ananas et mettez au four pour 15 minutes de cuisson.",
+    "Épluchez et coupez l’ananas en 6 rondelles.",
+    "Sortez les pommes de terre du four, remuez-les. Déposez les filets mignons marinés sur les pommes et répartissez les rondelles d’ananas autour. Parsemez de thym et enfournez en baissant le four à 210°C pour 25 minutes de cuisson."
+  ],
+  "status": "published",
+  "slug": "roti-de-porc-laque-a-l-ananas",
+  "publishedAt": 1794737276825,
+  "imageStorageId": "kg2cc7jhpyf7yrqxkf7gq2sz998j81p7",
+  "beautifiedStorageId": "kg298d974qye3673csn55bwzk18j92kq"
+}

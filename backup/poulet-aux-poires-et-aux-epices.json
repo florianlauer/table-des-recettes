@@ -1,0 +1,62 @@
+{
+  "id": "j5716aj37drpzs5vwkc61jnb2n8j8d16",
+  "creationTime": 1794738007243.8042,
+  "title": "Poulet aux poires et aux épices",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "800 g de poulet désossé",
+      "quantity": 800,
+      "unit": "g",
+      "label": "poulet désossé"
+    },
+    {
+      "raw": "4 poires type alexandrine",
+      "quantity": 4,
+      "unit": null,
+      "label": "poires type alexandrine"
+    },
+    {
+      "raw": "1 cuillerée à café de curry",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "curry"
+    },
+    {
+      "raw": "1 cuillerée à café de coriandre moulue",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "coriandre moulue"
+    },
+    {
+      "raw": "3 cuillerées à soupe d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuillerées à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez la chair du poulet en cubes. Placez-les dans une jatte, avec les épices, le sel, le poivre.",
+    "Arrosez de 2 cuillerées d'huile d'olive.",
+    "Mélangez bien.",
+    "Placez au frais pendant 20 min.",
+    "Pelez les poires, épépinez-les, détaillez-les en lamelles pas trop fines au-dessus d'un saladier pour en recueillir le jus.",
+    "Faites revenir les cubes de poulet dans un grand faitout, avec le reste d'huile d'olive, pendant 10 à 20 min (le poulet doit être doré).",
+    "Arrosez avec la marinade en cours de cuisson.",
+    "Ajoutez ensuite les poires découpées en lamelles, avec le jus recueilli.",
+    "Faites cuire encore 5 min, disposez dans un plat de service et servez avec de la semoule."
+  ],
+  "status": "published",
+  "slug": "poulet-aux-poires-et-aux-epices",
+  "publishedAt": 1794738100110,
+  "imageStorageId": "kg24hayh9kzfnm9vevff9j9swx8j8pnm",
+  "beautifiedStorageId": "kg2evvttzezms272dasmf6vt518j8q1y"
+}

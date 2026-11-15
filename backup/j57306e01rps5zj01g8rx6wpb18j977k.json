@@ -1,0 +1,63 @@
+{
+  "id": "j57306e01rps5zj01g8rx6wpb18j977k",
+  "creationTime": 1794738535361.7002,
+  "title": "Enchiladas de poulet à la raclette",
+  "type": "plat",
+  "servings": 2,
+  "ingredients": [
+    {
+      "raw": "250 g de blancs de poulet",
+      "quantity": 250,
+      "unit": "g",
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "350 g de légumes à la provençale surgelés",
+      "quantity": 350,
+      "unit": "g",
+      "label": "légumes à la provençale surgelés"
+    },
+    {
+      "raw": "250 g de fromage à raclette",
+      "quantity": 250,
+      "unit": "g",
+      "label": "fromage à raclette"
+    },
+    {
+      "raw": "4 tortillas de blés (ou 4 crêpes épaisses)",
+      "quantity": 4,
+      "unit": null,
+      "label": "tortillas de blés (ou 4 crêpes épaisses)"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "une noisette de beurre",
+      "quantity": 1,
+      "unit": "noisette",
+      "label": "beurre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez les blancs de poulet en fines lanières. Faites-les poêler avec une noisette de beurre à feu doux. Ajoutez les légumes surgelés et faites-les revenir. Versez le tout dans une passoire.",
+    "Coupez le fromage à raclette en petits dés, mettez-les dans un récipient et rajoutez le mélange précédent. Salez, poivrez selon votre goût.",
+    "Répartissez ce mélange sur les tortillas (ou les crêpes) et enroulez-les. Emballez les rouleaux dans du papier sulfurisé.",
+    "Chauffez les rouleaux emballés dans le papier pendant 15 minutes au four th. 5-6."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

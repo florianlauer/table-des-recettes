@@ -1,0 +1,62 @@
+{
+  "id": "j577gfm87tkqrd12fanxj4cfdh8j6mn7",
+  "creationTime": 1794663708554.365,
+  "title": "Côtes d'agneau à la crème d'ail et carottes sautées",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "8 côtes d'agneau",
+      "quantity": 8,
+      "unit": null,
+      "label": "côtes d'agneau"
+    },
+    {
+      "raw": "1 kg de carottes",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "carottes"
+    },
+    {
+      "raw": "2 têtes d'ail",
+      "quantity": 2,
+      "unit": "têtes",
+      "label": "ail"
+    },
+    {
+      "raw": "1 bouillon-cube",
+      "quantity": 1,
+      "unit": "bouillon-cube",
+      "label": "bouillon-cube"
+    },
+    {
+      "raw": "1 petit bouquet de persil",
+      "quantity": 1,
+      "unit": "petit bouquet",
+      "label": "persil"
+    },
+    {
+      "raw": "25 g de beurre",
+      "quantity": 25,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Eplucher les carottes, les laver, les éponger, les tailler en bâtonnets. Faire cuire à l'eau bouillante salée pendant 15 mn. Egoutter.",
+    "Dans une poêle antiadhésive, faire cuire les côtes d'agneau sans matière grasse. Saler, poivrer, réserver la viande au chaud. Déglacer les sucs de cuisson avec deux verres d'eau, ajouter le bouillon-cube délayé dans un peu d'eau, l'ail écrasé, laisser cuire 10 mn.",
+    "Faire fondre le beurre dans une poêle, y faire revenir les carottes. Retirer du feu lorsqu'elles sont dorées, ajouter le persil haché. Servir autour des côtes d'agneau, mixer la préparation à l'ail pour obtenir une purée crémeuse et la présenter à part."
+  ],
+  "status": "published",
+  "slug": "cotes-d-agneau-a-la-creme-d-ail-et-carottes-sautees",
+  "publishedAt": 1794663813602,
+  "imageStorageId": "kg25v5edg11rqctkjn1jp7fy2d8j6p49",
+  "beautifiedStorageId": "kg2cw3q1mwybx6c3605adfh4mx8j7xzg"
+}

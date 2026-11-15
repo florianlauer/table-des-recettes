@@ -1,0 +1,75 @@
+{
+  "id": "j57cg2sj375qy2eng0seg4wp458j9zg4",
+  "creationTime": 1794737459778.2976,
+  "title": "Poulet frit",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 poulet",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1 cuillerée à soupe de persil",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "persil"
+    },
+    {
+      "raw": "1 oeuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "oeuf"
+    },
+    {
+      "raw": "1 cuillerée à café d'eau",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "d'eau"
+    },
+    {
+      "raw": "1 cuillerée à café d'huile",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "d'huile"
+    },
+    {
+      "raw": "chapelure",
+      "quantity": null,
+      "unit": null,
+      "label": "chapelure"
+    },
+    {
+      "raw": "paprika et persil haché",
+      "quantity": null,
+      "unit": null,
+      "label": "paprika et persil haché"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Assaisonnez, parsemez de persil haché et arrosez du jus de 1 citron le poulet coupé en morceaux. Laissez macérer en retournant les morceaux de temps à autre. Egouttez-les et passez-les dans l'oeuf, l'eau et l'huile mélangés en veillant à bien les enduire et ensuite abondamment dans la chapelure.",
+    "Mettez-les dans un plat et laissez reposer 15 minutes.",
+    "Chauffez votre bain de BLANC DE BOEUF et faites frire les morceaux de poulet pendant 15 minutes.",
+    "Suivant goût, parsemez de paprika et persil - assaisonnez et servez."
+  ],
+  "status": "published",
+  "slug": "poulet-frit",
+  "publishedAt": 1794737742622,
+  "imageStorageId": "kg27ryw6ej3ymxfq8kh3hkyfb18j8dxz",
+  "beautifiedStorageId": "kg23nk7n123eeywnp8421yc3218j9yt5"
+}

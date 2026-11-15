@@ -1,0 +1,94 @@
+{
+  "id": "j57a9cwhp8z6mndtzywmcang2d8j73x2",
+  "creationTime": 1794666145292.5337,
+  "title": "Carbonade à la flamande",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "4 oignons de taille moyenne",
+      "quantity": 4,
+      "unit": null,
+      "label": "oignons de taille moyenne"
+    },
+    {
+      "raw": "800 g de paleron de bœuf",
+      "quantity": 800,
+      "unit": "g",
+      "label": "paleron de bœuf"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "saindoux",
+      "quantity": null,
+      "unit": null,
+      "label": "saindoux"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "5 dl de bière",
+      "quantity": 5,
+      "unit": "dl",
+      "label": "bière"
+    },
+    {
+      "raw": "un verre de bouillon de bœuf",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "bouillon de bœuf"
+    },
+    {
+      "raw": "une petite cuillère à café de cassonade",
+      "quantity": 1,
+      "unit": "petite cuillère à café",
+      "label": "cassonade"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Emincez 4 oignons de taille moyenne. Coupez en morceaux 800 g de paleron de bœuf, farinez-les et faites-les se colorer à feu vif dans une poêle avec du saindoux. Egouttez-les et jetez-y les oignons.",
+    "Retirez et disposez dans une cocotte, en couches successives, oignons et morceaux de viande en poivrant et salant à chaque fois. Ajoutez thym, laurier et persil.",
+    "Déglacez la poêle avec 5 dl de bière et un verre de bouillon de bœuf.",
+    "Ajoutez une petite cuillère à café de cassonade et versez sur la viande.",
+    "Couvrez et laissez mijoter très doucement pendant deux heures et demie."
+  ],
+  "status": "published",
+  "slug": "carbonade-a-la-flamande",
+  "publishedAt": 1794737276825,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

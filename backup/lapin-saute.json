@@ -1,0 +1,59 @@
+{
+  "id": "j573mcwn9a0q2jv0tmbtzzkmkd8j9set",
+  "creationTime": 1794738167620.957,
+  "title": "Lapin sauté",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 lapin (200 g par personne)",
+      "quantity": 1,
+      "unit": null,
+      "label": "lapin (200 g par personne)"
+    },
+    {
+      "raw": "1 verre de vin blanc sec",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 branche de thym",
+      "quantity": 1,
+      "unit": "branche",
+      "label": "thym"
+    },
+    {
+      "raw": "2 feuilles de laurier",
+      "quantity": 2,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "1 persil",
+      "quantity": 1,
+      "unit": null,
+      "label": "persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez le lapin en morceaux, attention aux esquilles !",
+    "Jetez les morceaux dans 2 cuillerées d'huile chaude.",
+    "Faites-les dorer, salez, poivrez, ajoutez le thym, le laurier et le verre de vin blanc.",
+    "Couvrez et laissez mijoter 40 mn en remuant de temps en temps.",
+    "Puis saupoudrez avec le hachis d'ail et de persil et remettez 5 mn à feu vif.",
+    "Servez avec des champignons frais."
+  ],
+  "status": "published",
+  "slug": "lapin-saute",
+  "publishedAt": 1794738374525,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

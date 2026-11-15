@@ -1,0 +1,78 @@
+{
+  "id": "j57c7tkbx8hemaqysnxv0sgteh8j8xn7",
+  "creationTime": 1794738535361.7024,
+  "title": "Poulet à la Lorraine",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 poulet",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet"
+    },
+    {
+      "raw": "pâte brisée",
+      "quantity": null,
+      "unit": null,
+      "label": "pâte brisée"
+    },
+    {
+      "raw": "champignons",
+      "quantity": null,
+      "unit": null,
+      "label": "champignons"
+    },
+    {
+      "raw": "250g de veau",
+      "quantity": 250,
+      "unit": "g",
+      "label": "veau"
+    },
+    {
+      "raw": "250g de boeuf",
+      "quantity": 250,
+      "unit": "g",
+      "label": "boeuf"
+    },
+    {
+      "raw": "1/2 litre de bouillon",
+      "quantity": 0.5,
+      "unit": "litre",
+      "label": "bouillon"
+    },
+    {
+      "raw": "lard de poitrine",
+      "quantity": null,
+      "unit": null,
+      "label": "lard de poitrine"
+    },
+    {
+      "raw": "épices",
+      "quantity": null,
+      "unit": null,
+      "label": "épices"
+    },
+    {
+      "raw": "bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "fécule",
+      "quantity": null,
+      "unit": null,
+      "label": "fécule"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Débite t un poulet et piquez les morceaux de lard de poitrine. Faites cuire au four. A part, faites cuire le veau et le boeuf coupés en morceaux dans du bouillon auquel vous ajouterez des épices et un bouquet garni. Enfin, faites cuire au four une timbale de pâte brisée que vous garnirez de champignons épluchés et sautés au beurre. Sur un vaste plat de service, centrez la timbale de champignons et disposez tout autour les morceaux de poulet. Nappez du jus des viandes que vous aurez épaissi avec un soupçon de fécule."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

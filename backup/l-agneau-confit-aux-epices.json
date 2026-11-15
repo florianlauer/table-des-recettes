@@ -1,0 +1,101 @@
+{
+  "id": "j57020033dx6fk2ypzby8ahwjh8j9tms",
+  "creationTime": 1794737459778.297,
+  "title": "L'agneau confit aux épices",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "2 épaules d'agneau",
+      "quantity": 2,
+      "unit": null,
+      "label": "épaules d'agneau"
+    },
+    {
+      "raw": "6 citrons",
+      "quantity": 6,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "6 oignons",
+      "quantity": 6,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "4 gousses d'ail",
+      "quantity": 4,
+      "unit": null,
+      "label": "gousses d'ail"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "1 l de bouillon de volaille",
+      "quantity": 1,
+      "unit": "l",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "125 g de raisins de Corinthe",
+      "quantity": 125,
+      "unit": "g",
+      "label": "raisins de Corinthe"
+    },
+    {
+      "raw": "125 g de raisins de Smyrne",
+      "quantity": 125,
+      "unit": "g",
+      "label": "raisins de Smyrne"
+    },
+    {
+      "raw": "1 cuillerée à café de cumin en poudre",
+      "quantity": 1,
+      "unit": "cuillerée à café",
+      "label": "cumin en poudre"
+    },
+    {
+      "raw": "1 petit bâton de cannelle",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit bâton de cannelle"
+    },
+    {
+      "raw": "1 botte de coriandre fraîche",
+      "quantity": 1,
+      "unit": "botte",
+      "label": "coriandre fraîche"
+    },
+    {
+      "raw": "50 g d'amandes effilées",
+      "quantity": 50,
+      "unit": "g",
+      "label": "amandes effilées"
+    },
+    {
+      "raw": "gros sel, sel fin, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "gros sel, sel fin, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Plongez les citrons dans l'eau bouillante 2 mn puis égouttez-les. Recommencez l'opération quatre fois puis mettez-les dans un bol et roulez-les dans du gros sel. Laissez-les reposer ainsi 24 h puis rincez-les.",
+    "Pelez les oignons et émincez-les.",
+    "Faites dorer les épaules d'agneau dans une grande cocotte en fonte, sur toutes leurs faces, salez-les et poivrez-les. Réservez-les.",
+    "Mettez les oignons dans la cocotte et mélangez 10 mn à feu doux, en remuant sans cesse. Remettez les épaules d'agneau, ajoutez les gousses d'ail et le bouquet garni. Mouillez avec le bouillon de volaille puis ajoutez les raisins, les citrons, les épices et la coriandre ciselée.",
+    "Couvrez la cocotte et glissez-la au four que vous allumez à 160 °C (th. 5 1/2). Laissez cuire 3 h 30.",
+    "Faites griller les amandes dans une poêle sèche. Lorsque l'agneau est cuit, parsemez-le d'amandes et servez."
+  ],
+  "status": "published",
+  "slug": "l-agneau-confit-aux-epices",
+  "publishedAt": 1794737742622,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

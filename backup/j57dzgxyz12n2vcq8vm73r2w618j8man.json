@@ -1,0 +1,66 @@
+{
+  "id": "j57dzgxyz12n2vcq8vm73r2w618j8man",
+  "creationTime": 1794738535361.7012,
+  "title": "Papillotes de poulet",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 poulet de ferme",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet de ferme"
+    },
+    {
+      "raw": "4 tranches de lard",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "lard"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "herbes de Provence",
+      "quantity": null,
+      "unit": null,
+      "label": "herbes de Provence"
+    },
+    {
+      "raw": "2 sachets de riz long grain étuvé Uncle Ben's",
+      "quantity": 2,
+      "unit": "sachets",
+      "label": "riz long grain étuvé Uncle Ben's"
+    },
+    {
+      "raw": "3 tomates",
+      "quantity": 3,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "2 pommes Grany Smith",
+      "quantity": 2,
+      "unit": null,
+      "label": "pommes Grany Smith"
+    },
+    {
+      "raw": "3 yaourts",
+      "quantity": 3,
+      "unit": null,
+      "label": "yaourts"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez le poulet en 4. Entourez chaque morceau avec une tranche de lard parsemée d'herbes de Provence. Dans un saladier versez 2 sachets de riz, ajoutez 3 yaourts nature, 3 tomates et 2 pommes coupées en dés. Mélangez et répartissez de manière équitable au centre de quatre feuilles d'aluminium. Fermez ensuite celles-ci hermétiquement et faites cuire au four Th. 7 (210° C), 35 mn. Servez la papillote dans l'assiette."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": "kg22j22qwxys6wx08g1rzhp9t98j9qps",
+  "beautifiedStorageId": null
+}

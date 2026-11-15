@@ -1,0 +1,118 @@
+{
+  "id": "j57csbzf55hqewqzkwsx5fjv418j83t5",
+  "creationTime": 1794737040918.6887,
+  "title": "Porc aux poivrons et aux girolles",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "500 g d’épaule de porc",
+      "quantity": 500,
+      "unit": "g",
+      "label": "épaule de porc"
+    },
+    {
+      "raw": "125 g de petits lardons",
+      "quantity": 125,
+      "unit": "g",
+      "label": "petits lardons"
+    },
+    {
+      "raw": "1 poivron rouge",
+      "quantity": 1,
+      "unit": null,
+      "label": "poivron rouge"
+    },
+    {
+      "raw": "1 poivron vert",
+      "quantity": 1,
+      "unit": null,
+      "label": "poivron vert"
+    },
+    {
+      "raw": "300 g de girolles",
+      "quantity": 300,
+      "unit": "g",
+      "label": "girolles"
+    },
+    {
+      "raw": "3 tomates",
+      "quantity": 3,
+      "unit": null,
+      "label": "tomates"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "2 gousses d’ail",
+      "quantity": 2,
+      "unit": null,
+      "label": "gousses d’ail"
+    },
+    {
+      "raw": "6 brins de persil",
+      "quantity": 6,
+      "unit": null,
+      "label": "brins de persil"
+    },
+    {
+      "raw": "1 feuille de laurier",
+      "quantity": 1,
+      "unit": null,
+      "label": "feuille de laurier"
+    },
+    {
+      "raw": "1 tablette de concentré de volaille",
+      "quantity": 1,
+      "unit": null,
+      "label": "tablette de concentré de volaille"
+    },
+    {
+      "raw": "1 cuill. à café de paprika doux",
+      "quantity": 1,
+      "unit": "cuill. à café",
+      "label": "paprika doux"
+    },
+    {
+      "raw": "20 g de beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 cuill. à soupe d’huile",
+      "quantity": 2,
+      "unit": "cuill. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Détaillez le porc en cubes.",
+    "Coupez les poivrons en lanières régulières, après en avoir éliminé le pédoncule et les graines.",
+    "Ébouillantez les tomates. Coupez-les en morceaux.",
+    "Dans une cocotte, faites dorer à l’huile les cubes de viande. Retirez-les. Remplacez-les par les lardons. Lorsqu’ils sont rissolés, retirez-les à leur tour.",
+    "Remplacez-les par l’oignon et l’ail pelés et hachés. Laissez-les cuire 2 à 3 min, en remuant avec une cuillère en bois.",
+    "Replacez les viandes. Ajoutez le laurier, le concentré et 25 cl d’eau. Salez, poivrez. Couvrez et laissez cuire à feu doux 50 min.",
+    "Versez dans la cocotte la tomate et le poivron. Saupoudrez de paprika. Mélangez. Rectifiez l’assaisonnement en sel et en poivre si cela vous paraît nécessaire. Laissez cuire 15 min encore.",
+    "Pendant ce temps, nettoyez soigneusement les girolles.",
+    "Faites-les sauter au beurre, dans une poêle, sur feu moyen. 3 à 4 minutes suffisent. Salez, poivrez.",
+    "Au dernier moment, disposez-les sur les légumes et le porc.",
+    "Parsemez de persil finement ciselé et servez aussitôt."
+  ],
+  "status": "published",
+  "slug": "porc-aux-poivrons-et-aux-girolles",
+  "publishedAt": 1794737113552,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

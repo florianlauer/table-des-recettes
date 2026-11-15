@@ -63,9 +63,9 @@
     "Dressez 3 tranches de viande sur chaque assiette et garnissez de Maïs Ultra Croquant Géant Vert® aux haricots verts.",
     "Parsemez de feuilles de sauge et servez aussitôt."
   ],
-  "status": "review",
-  "slug": null,
-  "publishedAt": null,
+  "status": "published",
+  "slug": "filet-mignon-au-mais-ultra-croquant-geant-vert-aux-haricots-verts",
+  "publishedAt": 1794663028592,
   "imageStorageId": null,
   "beautifiedStorageId": null
 }

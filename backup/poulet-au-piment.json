@@ -1,0 +1,42 @@
+{
+  "id": "j571fcqcxrvtrch0n4ncbepmh18j9pn4",
+  "creationTime": 1794738167620.9563,
+  "title": "Poulet au piment",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 poulet fermier de 1,5 kg, 150 g de beurre",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet fermier de 1,5 kg, 150 g de beurre"
+    },
+    {
+      "raw": "2 cuil. à soupe de piment doux en poudre, 3 ou 4 gousses d'ail",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "piment doux en poudre, 3 ou 4 gousses d'ail"
+    },
+    {
+      "raw": "1 grand verre de vin blanc sec, sel, poivre",
+      "quantity": 1,
+      "unit": "grand verre",
+      "label": "vin blanc sec, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Peler puis presser les gousses d'ail.",
+    "Dans une assiette, travailler ensemble en pommade le beurre mou, le piment, la purée d'ail.",
+    "Saler et poivrer.",
+    "Tartiner le poulet vidé et bridé avec cette préparation, le dresser dans un plat allant au four, ranger au frais et laisser la viande s'imprégner de la préparation durant 3 heures.",
+    "Après ce temps de macération, sortir le plat du four, le laisser se réchauffer à température ambiante un moment, le temps de préchauffer le four à thermostat n° 6 (180°C).",
+    "Arroser le poulet avec le vin blanc, enfourner et laisser cuire pendant 1 heure, retourner à mi-cuisson.",
+    "Servir bien chaud avec une purée de pommes de terre."
+  ],
+  "status": "published",
+  "slug": "poulet-au-piment",
+  "publishedAt": 1794738374525,
+  "imageStorageId": "kg2ebrr0330b79d32686n18d6s8j90rr",
+  "beautifiedStorageId": "kg2b88y64s3gp4kyvexe0ne68h8j93nv"
+}
