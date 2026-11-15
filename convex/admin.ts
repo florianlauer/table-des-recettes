@@ -282,13 +282,41 @@ export const detachImage = mutation({
   },
 })
 
+const startExtractionResult = v.union(
+  v.object({ status: v.literal('scheduled') }),
+  v.object({ status: v.literal('already_running') }),
+  v.object({ status: v.literal('no_work') }),
+  v.object({ status: v.literal('rate_limited'), retryAt: v.number() }),
+)
+
+async function startQueue(ctx: MutationCtx) {
+  const now = Date.now()
+  const { liveLease, candidates } = await readQueueWork(ctx, now)
+  if (liveLease) return { status: 'already_running' as const }
+  if (candidates.length === 0) return { status: 'no_work' as const }
+
+  // Non-consuming: an idle press must not spend the quota the drain needs.
+  const limit = await rateLimiter.check(ctx, 'extraction')
+  if (!limit.ok) {
+    return {
+      status: 'rate_limited' as const,
+      retryAt: now + limit.retryAfter,
+    }
+  }
+  await ctx.scheduler.runAfter(0, internal.extract.drain, {})
+  return { status: 'scheduled' as const }
+}
+
 /**
- * Puts a treated scan back in the queue. It drops the drafts first: `finalize` inserts without
- * deduplicating, so leaving them would produce two sets side by side.
+ * Puts a treated scan back in the queue and starts it. It drops the drafts first: `finalize` inserts
+ * without deduplicating, so leaving them would produce two sets side by side.
  */
 export const rescan = mutation({
   args: { adminToken: v.string(), scanId: v.id('scans') },
-  returns: okOrError,
+  returns: v.union(
+    v.object({ ok: v.literal(true), start: startExtractionResult }),
+    v.object({ ok: v.literal(false), error: v.string() }),
+  ),
   handler: async (ctx, { adminToken, scanId }) => {
     requireAdmin(adminToken)
     const scan = await ctx.db.get('scans', scanId)
@@ -320,35 +348,18 @@ export const rescan = mutation({
       imagesChangedAt: undefined,
     })
     await reconcileRetention(ctx, scanId)
-    return succeeded
+    // Same transaction: a requeue nothing starts left the scan « en attente » with no bar, and the
+    // drafts already gone.
+    return { ok: true as const, start: await startQueue(ctx) }
   },
 })
 
 export const startExtraction = mutation({
   args: { adminToken: v.string() },
-  returns: v.union(
-    v.object({ status: v.literal('scheduled') }),
-    v.object({ status: v.literal('already_running') }),
-    v.object({ status: v.literal('no_work') }),
-    v.object({ status: v.literal('rate_limited'), retryAt: v.number() }),
-  ),
+  returns: startExtractionResult,
   handler: async (ctx, { adminToken }) => {
     requireAdmin(adminToken)
-    const now = Date.now()
-    const { liveLease, candidates } = await readQueueWork(ctx, now)
-    if (liveLease) return { status: 'already_running' as const }
-    if (candidates.length === 0) return { status: 'no_work' as const }
-
-    // Non-consuming: an idle press must not spend the quota the drain needs.
-    const limit = await rateLimiter.check(ctx, 'extraction')
-    if (!limit.ok) {
-      return {
-        status: 'rate_limited' as const,
-        retryAt: now + limit.retryAfter,
-      }
-    }
-    await ctx.scheduler.runAfter(0, internal.extract.drain, {})
-    return { status: 'scheduled' as const }
+    return await startQueue(ctx)
   },
 })
 

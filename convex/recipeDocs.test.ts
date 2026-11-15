@@ -183,9 +183,9 @@ describe('the aggregate follows the table through every gesture', () => {
     await draft(t, scanId, 'Brouillon à jeter', 'plat')
     await draft(t, scanId, 'Autre brouillon', 'entree')
 
-    expect(await t.mutation(api.admin.rescan, { adminToken, scanId })).toEqual({
-      ok: true,
-    })
+    expect(
+      await t.mutation(api.admin.rescan, { adminToken, scanId }),
+    ).toMatchObject({ ok: true })
     await expectAggregateMatchesTable(t)
     // Not everything got wiped — which is what makes the line above an assertion rather than a
     // tautology over an empty table.

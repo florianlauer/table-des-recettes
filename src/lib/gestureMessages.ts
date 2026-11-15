@@ -48,6 +48,47 @@ export function extractionMessage(
   }
 }
 
+export type RescanResult =
+  | { ok: true; start: StartExtractionResult }
+  | { ok: false; error: string }
+
+/** A rescan answers twice: the requeue, then the start of the queue it shares with « Lancer ». */
+export function rescanMessage(
+  result: RescanResult,
+  { now }: { now: number },
+): GestureResult {
+  if (!result.ok) return { ok: false, text: result.error }
+  // The running drain picks the next pending scan on its own, this one included.
+  if (result.start.status === 'already_running')
+    return {
+      ok: true,
+      text: 'Scan remis en file : l’extraction en cours le prendra.',
+    }
+  const started = extractionMessage(result.start, { now })
+  // The drafts are gone whatever the queue said: a refusal must not read as « nothing happened ».
+  return started.ok
+    ? started
+    : { ok: false, text: `Scan remis en file. ${started.text}` }
+}
+
+/**
+ * Both extraction buttons start the whole queue, not one scan. `null` means nothing else waits, and
+ * an unknown count warns too: silence must mean « nothing else waits ».
+ */
+export function othersPendingWarning({
+  pendingCount,
+  selfPending,
+}: {
+  pendingCount: number | undefined
+  selfPending: boolean
+}): string | null {
+  if (pendingCount === undefined)
+    return 'La file extrait tous les scans en attente, pas seulement celui-ci.'
+  const others = Math.max(0, pendingCount - (selfPending ? 1 : 0))
+  if (others === 0) return null
+  return `La file extrait aussi ${formatCount(others, 'autre scan en attente', 'autres scans en attente')}.`
+}
+
 /** Names the files that failed rather than counting them: a count does not say what to retry. */
 export function uploadMessage({
   total,

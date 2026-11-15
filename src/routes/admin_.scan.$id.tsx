@@ -9,7 +9,12 @@ import { bulkDuplicateConfirm } from '../lib/duplicateMessages'
 import { formatCount } from '../lib/formatCount'
 import { formatUsd } from '../lib/formatNumber'
 import { estimateFrom } from '../shared/journalStats'
-import { extractionMessage, outcomeMessage } from '../lib/gestureMessages'
+import {
+  extractionMessage,
+  othersPendingWarning,
+  outcomeMessage,
+  rescanMessage,
+} from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../shared/scanLimits'
@@ -86,18 +91,10 @@ function ScanCorrectionPage() {
   // Both extraction buttons start the whole queue, not this scan: the operator is told before older
   // pending scans get extracted, and billed, ahead of it.
   const queue = useAdminQuery(token, api.admin.queueStatus, data ? {} : 'skip')
-  // `null` while the count is unknown, which asks too: silence must mean « nothing else waits ».
-  const queueCount = readyData(queue)?.counts.pending
-  const othersPending =
-    queueCount === undefined
-      ? null
-      : Math.max(0, queueCount - (data?.status === 'pending' ? 1 : 0))
-  const othersWarning =
-    othersPending === null
-      ? 'La file extrait tous les scans en attente, pas seulement celui-ci.'
-      : othersPending > 0
-        ? `La file extrait aussi ${formatCount(othersPending, 'autre scan en attente', 'autres scans en attente')}.`
-        : null
+  const othersWarning = othersPendingWarning({
+    pendingCount: readyData(queue)?.counts.pending,
+    selfPending: data?.status === 'pending',
+  })
   const purged = data != null && data.purgedAt !== null
   const imagesChanged = Boolean(data?.imagesChangedAt)
   const liveEdit = (recipe: RecipeView): Draft | null => {
@@ -304,7 +301,9 @@ function ScanCorrectionPage() {
             ) : (
               <AdminButton
                 gestures={gestures}
-                gesture={pageGesture('rescan')}
+                // The same gesture as « Lancer »: a rescan swaps this button for that one, and its
+                // message has to survive the swap.
+                gesture={pageGesture('extract')}
                 label="Relancer l’extraction"
                 pendingLabel="Relance…"
                 confirm={`Relancer supprime les brouillons de ce scan.${othersWarning ? ` ${othersWarning}` : ''} Continuer ?`}
@@ -314,20 +313,9 @@ function ScanCorrectionPage() {
                     ? 'Les photos de ce scan sont purgées.'
                     : 'Ce scan ne porte aucune image.'
                 }
-                // A rescan alone only puts the scan back in the queue, which nothing then starts: the
-                // page sat on « en attente » with no bar until the operator went back to /admin.
-                run={async () => {
-                  const requeued = await rescan({ adminToken, scanId })
-                  if (!requeued.ok) return outcomeMessage(requeued)
-                  const started = await startExtraction({ adminToken })
-                  // The running drain picks the next pending scan on its own, this one included.
-                  return started.status === 'already_running'
-                    ? {
-                        ok: true,
-                        text: 'Scan remis en file : l’extraction en cours le prendra.',
-                      }
-                    : extractionMessage(started, { now })
-                }}
+                run={async () =>
+                  rescanMessage(await rescan({ adminToken, scanId }), { now })
+                }
               />
             )}
             <AdminButton
