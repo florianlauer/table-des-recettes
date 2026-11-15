@@ -426,7 +426,7 @@ describe('queue status', () => {
       counts: { pending: 2, extracting: 1, done: 1, failed: 1 },
       truncated: false,
       oldestPendingAt: 10,
-      currentLease: { startedAt: now, attempts: 2 },
+      currentLease: { startedAt: now, attempts: 2, createdAt: 30 },
       nextAttemptAt: now + 10_000,
       attemptsCeiling: 2,
     })

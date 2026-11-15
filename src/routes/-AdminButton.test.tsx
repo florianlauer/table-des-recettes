@@ -59,7 +59,8 @@ describe('AdminButton', () => {
     expect(markup).toMatch(/class="btn__label">Embellissement…</)
   })
 
-  test('names the reason it is inert, and points the button at it', () => {
+  // The reason itself is printed by the band's line, through an effect a static render does not run.
+  test('points the button at the reason it is inert', () => {
     const markup = renderToStaticMarkup(
       <AdminButton
         gestures={fakeGestures()}
@@ -71,11 +72,7 @@ describe('AdminButton', () => {
         run={async () => ({ ok: true, text: 'Fait.' })}
       />,
     )
-    const described = markup.match(/aria-describedby="([^"]+)"/)
-    expect(described).not.toBeNull()
-    expect(markup).toContain(
-      `id="${described?.[1]}">Dépublie la recette avant de la supprimer.`,
-    )
+    expect(markup).toMatch(/aria-describedby="[^"]+-reason"/)
   })
 
   test('says nothing about blocking when the control is live', () => {

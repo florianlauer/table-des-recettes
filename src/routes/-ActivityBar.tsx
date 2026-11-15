@@ -3,17 +3,21 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react'
 import type { ReactNode } from 'react'
+import { getClock, getServerTick, getTick, subscribeToTick } from '../lib/clock'
 import { gestureNoteMark, gestureNoteReading } from '../lib/gestureNote'
+import { progressView } from '../lib/gestureProgress'
+import type { MeasuredProgress } from '../lib/gestureProgress'
 import { outcomeKey } from '../lib/gestureRegistry'
 import type { Outcome } from '../lib/gestureRegistry'
 import type { Gestures } from '../lib/useGestures'
-import { GestureProgress } from './-GestureProgress'
 
-/** A job the server owns — a lease, a generation — declared by the row that shows it. */
+/** A job the server owns — a lease, a generation — declared by whatever screen knows of it. */
 type ServerWork = {
   id: string
   label: string
@@ -40,7 +44,7 @@ const EXIT_MS = 220
  * of the window instead of opening space next to the control that was pressed, so a press never moves
  * the page — which is what made the work bench read as untidy.
  *
- * Client gestures come from the registry; server jobs are declared from wherever their row lives,
+ * Client gestures come from the registry; server jobs are declared from wherever they are known,
  * through `ServerActivity`, so no page has to hoist its leases up to here.
  */
 export function AdminActivity({
@@ -104,17 +108,19 @@ function ActivityBar({
   const runs = gestures.runs()
   // Newest first: the result of what was just pressed is the one being looked for.
   const outcomes = [...gestures.outcomes()].sort((a, b) => b.token - a.token)
-  const shown = expanded ? outcomes : outcomes.slice(0, VISIBLE_OUTCOMES)
-  const folded = outcomes.length - shown.length
+  const folded = expanded ? 0 : Math.max(0, outcomes.length - VISIBLE_OUTCOMES)
 
-  // The focus follows a result whose row vanished while it held the focus — accepting, publishing or
-  // deleting takes the row away, and the cursor would otherwise fall back to the top of the document.
+  // The focus follows a result whose control vanished while it held the focus — accepting, publishing
+  // or deleting takes the control away, and the cursor would otherwise fall back to the top of the
+  // document. The claiming result is never folded, so its node exists by the time this runs.
   const nodes = useRef(new Map<string, HTMLElement>())
   const claiming = outcomes.find((outcome) => outcome.stealsFocus) ?? null
   const claimingKey = claiming === null ? null : outcomeKey(claiming)
   useEffect(() => {
     if (claiming === null || claimingKey === null) return
-    nodes.current.get(claimingKey)?.focus()
+    const node = nodes.current.get(claimingKey)
+    if (!node) return
+    node.focus()
     gestures.releaseFocusClaim(claiming.gesture)
     // Keyed by the outcome, not by the array: the effect fires for the message that asked, once.
     // oxlint-disable-next-line react-hooks/exhaustive-deps
@@ -127,7 +133,7 @@ function ActivityBar({
     <section className="activity" aria-label="Activité">
       <div className="activity__inner">
         {server.map((work) => (
-          <GestureProgress
+          <RunEntry
             key={work.id}
             label={work.label}
             subject={work.subject}
@@ -138,7 +144,7 @@ function ActivityBar({
           />
         ))}
         {runs.map((run) => (
-          <GestureProgress
+          <RunEntry
             key={run.token}
             label={run.pendingLabel}
             subject={run.subject}
@@ -149,12 +155,17 @@ function ActivityBar({
             token={run.token}
           />
         ))}
-        {shown.map((outcome) => {
+        {/* Folded results stay mounted, only hidden: a success has to leave on its own timer even
+            while it sits behind « + N autres ». */}
+        {outcomes.map((outcome, index) => {
           const key = outcomeKey(outcome)
           return (
             <OutcomeEntry
               key={key}
               outcome={outcome}
+              hidden={
+                !expanded && index >= VISIBLE_OUTCOMES && !outcome.stealsFocus
+              }
               onDismiss={() => gestures.dismiss(outcome)}
               nodeRef={(node) => {
                 if (node === null) nodes.current.delete(key)
@@ -163,7 +174,7 @@ function ActivityBar({
             />
           )
         })}
-        {(folded > 0 || expanded) && outcomes.length > VISIBLE_OUTCOMES && (
+        {outcomes.length > VISIBLE_OUTCOMES && (
           <p className="activity__more">
             <button
               type="button"
@@ -171,12 +182,103 @@ function ActivityBar({
               aria-expanded={expanded}
               onClick={() => setExpanded(!expanded)}
             >
-              {expanded ? 'Réduire' : `+ ${folded} autres`}
+              {expanded
+                ? 'Réduire'
+                : folded === 1
+                  ? '+ 1 autre'
+                  : `+ ${folded} autres`}
             </button>
           </p>
         )}
       </div>
     </section>
+  )
+}
+
+/**
+ * One running line: what runs, on what, for how long, and — when it can be known — how far along. A
+ * client gesture and a job the server owns draw the same line.
+ *
+ * Nothing is drawn before `PROGRESS_DELAY_MS`: a mutation answering in 250 ms must not flash a line.
+ *
+ * It is the only thing on the page beating at 250 ms. The tick comes from a shared store rather than
+ * page state, so a running line re-renders itself and nothing else. `getClock` is already corrected
+ * against the server, which is what `startedAt` usually comes from.
+ */
+function RunEntry({
+  label,
+  subject = null,
+  startedAt,
+  estimateMs,
+  progress = null,
+  settlingSince = null,
+  token,
+}: {
+  /** The pending label of the gesture, or the name of the server job. */
+  label: string
+  /** What it acts on — a recipe title, a scan. */
+  subject?: string | null
+  /** A server timestamp for a lease, a client one for an upload. */
+  startedAt: number
+  estimateMs: number | null
+  progress?: MeasuredProgress | null
+  settlingSince?: number | null
+  /** Resets the monotonic floor: a new execution starts from zero, not from the last maximum. */
+  token?: number
+}) {
+  const whatId = useId()
+  useSyncExternalStore(subscribeToTick, getTick, getServerTick)
+  const now = getClock()
+
+  // Component-local, written in an effect and never during render: the floor belongs to what is
+  // displayed, not to the shared registry.
+  const floor = useRef(0)
+  const seenToken = useRef(token)
+  if (seenToken.current !== token) {
+    seenToken.current = token
+    floor.current = 0
+  }
+
+  const view = progressView({
+    startedAt,
+    now,
+    progress,
+    estimateMs,
+    floor: floor.current,
+    settlingSince,
+  })
+
+  useEffect(() => {
+    floor.current = view.nextFloor
+  }, [view.nextFloor])
+
+  if (!view.visible) return null
+
+  return (
+    <div className="activity__entry">
+      <p className="activity__what" id={whatId}>
+        <b>{label}</b>
+        {subject && <span className="activity__subject"> · {subject}</span>}
+      </p>
+      <p className="activity__time">{view.text}</p>
+      {view.fraction !== null && (
+        <div
+          className="activity__bar"
+          role="progressbar"
+          aria-labelledby={whatId}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(view.fraction * 100)}
+          aria-valuetext={view.valueText}
+        >
+          {/* `scaleX`, not `width`: the fill eases between two ticks without a layout pass. */}
+          <div
+            className="activity__fill"
+            style={{ transform: `scaleX(${view.fraction})` }}
+          />
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -187,14 +289,18 @@ function ActivityBar({
  */
 function OutcomeEntry({
   outcome,
+  hidden,
   onDismiss,
   nodeRef,
 }: {
   outcome: Outcome
+  hidden: boolean
   onDismiss: () => void
   nodeRef: (node: HTMLElement | null) => void
 }) {
-  const [held, setHeld] = useState(false)
+  // Two flags, not one: the pointer leaving must not release a line the focus still holds.
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const { result, subject } = outcome
   // A ref, not a dependency: the page re-renders on every clock tick, and a fresh callback each time
@@ -215,20 +321,26 @@ function OutcomeEntry({
   }, [leaving])
 
   useEffect(() => {
-    if (!result.ok || held || leaving) return
+    if (!result.ok || hovered || focused || leaving) return
     const timer = window.setTimeout(() => setLeaving(true), SUCCESS_DISPLAY_MS)
     return () => window.clearTimeout(timer)
-  }, [result.ok, held, leaving])
+  }, [result.ok, hovered, focused, leaving])
 
   return (
     <div
       className="activity__entry activity__entry--outcome"
+      // The line holding the focus is never folded away from under it, claim released or not.
+      hidden={hidden && !focused}
       data-ok={result.ok}
       data-leaving={leaving || undefined}
-      onPointerEnter={() => setHeld(true)}
-      onPointerLeave={() => setHeld(false)}
-      onFocus={() => setHeld(true)}
-      onBlur={() => setHeld(false)}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={(event) => {
+        // Moving between the message and its close button stays inside the line.
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setFocused(false)
+      }}
     >
       {/* Keyed by token upstream, so two identical messages in a row are two nodes, and the second
           one is announced instead of being swallowed as unchanged. */}
@@ -241,7 +353,23 @@ function OutcomeEntry({
       <button
         type="button"
         className="activity__close"
-        onClick={() => setLeaving(true)}
+        onClick={(event) => {
+          // The closed line is about to unmount with the focus in it: hand the focus to a neighbour's
+          // close button first, so the next Tab does not start over from the top of the document.
+          const entry = event.currentTarget.closest('.activity__entry')
+          const neighbour = [
+            entry?.nextElementSibling,
+            entry?.previousElementSibling,
+          ]
+            .map((node) =>
+              node instanceof HTMLElement && !node.hidden
+                ? node.querySelector<HTMLElement>('.activity__close')
+                : null,
+            )
+            .find((node) => node != null)
+          neighbour?.focus()
+          setLeaving(true)
+        }}
       >
         <span aria-hidden="true">×</span>
         <span className="visually-hidden">Fermer ce message</span>

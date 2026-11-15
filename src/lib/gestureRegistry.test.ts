@@ -230,14 +230,34 @@ describe('focus claim', () => {
 })
 
 describe('outcome expiry', () => {
-  it('drops the previous message of a row when a new gesture starts on it', () => {
+  it('drops the previous message of a gesture when the same gesture runs again', () => {
     const first = start(emptyRegistry('e'))
     const done = settle(first.state, rowA, first.token, {
       ok: false,
       text: 'Échec.',
     })
-    const again = start(done, rowGesture('a', 'delete'))
-    expect(again.state.outcomes).toEqual({})
+    expect(start(done).state.outcomes).toEqual({})
+  })
+
+  it('keeps a failure when another gesture starts on the same row or the page', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, {
+      ok: false,
+      text: 'Échec.',
+    })
+    expect(start(done, rowGesture('a', 'delete')).state.outcomes).not.toEqual(
+      {},
+    )
+    expect(start(done, publish).state.outcomes).not.toEqual({})
+  })
+
+  it('lets an edit leave the page-wide messages alone', () => {
+    const first = start(emptyRegistry('e'), publish)
+    const done = settle(first.state, publish, first.token, {
+      ok: false,
+      text: 'Échec.',
+    })
+    expect(clearOutcomes(done, rowA).outcomes).not.toEqual({})
   })
 
   it('leaves the messages of other rows alone', () => {

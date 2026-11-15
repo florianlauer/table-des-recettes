@@ -23,7 +23,7 @@ describe('AdminFileInput', () => {
   test('shows the imperative as the control and hides the native button', () => {
     const markup = render()
     expect(markup).toMatch(
-      /class="admin-page__file-button btn--secondary">.*?class="btn__label">Ajouter une photo</,
+      /class="btn btn--secondary">.*?class="btn__label">Ajouter une photo</,
     )
     // The browser writes the native button's text in its own UI language, so it must not be visible.
     expect(markup).toMatch(/<input[^>]*class="visually-hidden"[^>]*type="file"/)
@@ -54,10 +54,13 @@ describe('AdminFileInput', () => {
     expect(markup).toMatch(/class="btn__label">Envoi…</)
   })
 
-  test('disables the input itself, which is what the label styling reads', () => {
-    expect(render({ disabled: true })).toContain('disabled=""')
-    expect(render({ gestures: fakeGestures({ blocked: true }) })).toContain(
-      'disabled=""',
-    )
+  test('disables the input itself and marks its face inert', () => {
+    for (const markup of [
+      render({ disabled: true }),
+      render({ gestures: fakeGestures({ blocked: true }) }),
+    ]) {
+      expect(markup).toContain('disabled=""')
+      expect(markup).toContain('data-inert="true"')
+    }
   })
 })

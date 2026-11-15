@@ -15,13 +15,14 @@ import {
   formatRemaining,
 } from '../lib/queueStatus'
 import { useAttachImage } from '../client/useAttachImage'
+import { formatScanLabel } from '../lib/scanLabel'
 import { useAdminQuery } from '../lib/useAdminQuery'
 import { useGestures } from '../lib/useGestures'
 import type { Gestures } from '../lib/useGestures'
 import { useServerClock } from '../client/useServerClock'
 import { uploadProgress } from '../lib/uploadProgress'
 import { adminHead } from './-adminHead'
-import { AdminActivity } from './-ActivityBar'
+import { AdminActivity, ServerActivity } from './-ActivityBar'
 import { AdminButton } from './-AdminButton'
 import { AdminFileInput } from './-AdminFileInput'
 import { AdminSectionState } from './-AdminSectionState'
@@ -125,7 +126,12 @@ function AdminPage() {
           }}
         />
 
-        <QueueBlock token={token} now={now} gestures={gestures} />
+        <QueueBlock
+          token={token}
+          now={now}
+          gestures={gestures}
+          estimateMs={extractionEstimateMs}
+        />
 
         <section className="admin-page__scans">
           <h2>Scans</h2>
@@ -141,7 +147,6 @@ function AdminPage() {
                 adminToken={adminToken}
                 gestures={gestures}
                 now={now}
-                estimateMs={extractionEstimateMs}
               />
             ) : (
               <p className="empty">Aucun scan.</p>
@@ -171,10 +176,12 @@ function QueueBlock({
   token,
   now,
   gestures,
+  estimateMs,
 }: {
   token: string | null
   now: number
   gestures: Gestures
+  estimateMs: number | null
 }) {
   const adminToken = token ?? ''
   const startExtraction = useMutation(api.admin.startExtraction)
@@ -189,25 +196,6 @@ function QueueBlock({
     now,
   })
 
-  // Above the status lines, not under them: a « Reprise programmée » appearing must not push the
-  // control down. The running lease itself is in the activity bar, declared by its scan's row.
-  const queueButton = (
-    <div className="admin-page__queue-action">
-      <AdminButton
-        gestures={gestures}
-        gesture={pageGesture('extract')}
-        label={button.label}
-        pendingLabel="Relance…"
-        variant="primary"
-        subject="File d’extraction"
-        disabled={!adminToken || button.disabled}
-        run={async () =>
-          extractionMessage(await startExtraction({ adminToken }), { now })
-        }
-      />
-    </div>
-  )
-
   return (
     <section className="admin-page__queue">
       <h2>File d’extraction</h2>
@@ -216,31 +204,57 @@ function QueueBlock({
         absent="Saisis le jeton administrateur pour piloter la file."
         retry={queue.refetch}
       />
+      {/* The real wait: pressing « Démarrer » schedules and returns, the lease runs for tens of
+          seconds. Declared from the queue, which knows the lease even when its scan is past the
+          first page of the list. */}
+      {status?.currentLease && leaseLive && (
+        <ServerActivity
+          id="queue-lease"
+          label="Extraction en cours"
+          subject={formatScanLabel(status.currentLease.createdAt)}
+          startedAt={status.currentLease.startedAt}
+          estimateMs={estimateMs}
+        />
+      )}
+      {/* One typographic line of counts, the way the index sets its filters: a row of tabular
+          figures can be compared, five paragraphs each holding one number could not. */}
+      {status && (
+        <p className="admin-page__counts">
+          <span>
+            En attente <b>{status.counts.pending}</b>
+          </span>
+          <span>
+            En cours <b>{status.counts.extracting}</b>
+          </span>
+          <span>
+            Terminés <b>{status.counts.done}</b>
+          </span>
+          <span>
+            En échec <b>{status.counts.failed}</b>
+          </span>
+          <span>
+            Au plafond <b>{status.attemptsCeiling}</b>
+          </span>
+        </p>
+      )}
+      {/* Rendered once, above the status lines: a « Reprise programmée » appearing must not push the
+          control down. */}
+      <div className="admin-page__queue-action">
+        <AdminButton
+          gestures={gestures}
+          gesture={pageGesture('extract')}
+          label={button.label}
+          pendingLabel="Relance…"
+          variant="primary"
+          subject="File d’extraction"
+          disabled={!adminToken || button.disabled}
+          run={async () =>
+            extractionMessage(await startExtraction({ adminToken }), { now })
+          }
+        />
+      </div>
       {status && (
         <>
-          {/*
-            One typographic line of counts, the way the index sets its filters, instead of five
-            paragraphs each holding one number. Five separate lines could not be compared; a row of
-            tabular figures can.
-          */}
-          <p className="admin-page__counts">
-            <span>
-              En attente <b>{status.counts.pending}</b>
-            </span>
-            <span>
-              En cours <b>{status.counts.extracting}</b>
-            </span>
-            <span>
-              Terminés <b>{status.counts.done}</b>
-            </span>
-            <span>
-              En échec <b>{status.counts.failed}</b>
-            </span>
-            <span>
-              Au plafond <b>{status.attemptsCeiling}</b>
-            </span>
-          </p>
-          {queueButton}
           {status.truncated && <p>Comptages plafonnés à 1000.</p>}
           {status.oldestPendingAt !== null && (
             <p>
@@ -264,7 +278,6 @@ function QueueBlock({
           {stopped && <p>File à l’arrêt.</p>}
         </>
       )}
-      {!status && queueButton}
     </section>
   )
 }

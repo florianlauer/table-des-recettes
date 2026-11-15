@@ -46,15 +46,11 @@ export function AdminActions({ children }: { children: ReactNode }) {
   )
 }
 
-/**
- * Publishes a control's reason into its group's line. Returns `false` outside a group, where the
- * control has to print the reason itself.
- */
-export function useGroupedReason(id: string, reason: string | null): boolean {
+/** Publishes a control's reason into its group's line. */
+export function useGroupedReason(id: string, reason: string | null): void {
   const report = useContext(ReasonsContext)
   useEffect(() => {
     report?.(id, reason)
   }, [report, id, reason])
   useEffect(() => () => report?.(id, null), [report, id])
-  return report !== null
 }

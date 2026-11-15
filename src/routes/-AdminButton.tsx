@@ -9,22 +9,10 @@ import { useGroupedReason } from './-AdminActions'
  */
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'quiet'
 
-/** The row's name as the activity bar should print it: a heading's text, or a title field's value. */
-export function subjectFrom(titleId: string | undefined): string | null {
-  if (!titleId) return null
-  const node = document.getElementById(titleId)
-  const text =
-    node instanceof HTMLInputElement ? node.value : (node?.textContent ?? '')
-  return text.trim() || null
-}
-
 /**
  * One control, one gesture. What the gesture is doing and what came of it go to the activity bar at
  * the top of the window; nothing opens next to the button, so nothing around it moves.
- *
- * The two labels are both rendered, stacked in a single grid cell with the inactive one hidden, so
- * the button keeps the width of the longer of the two. Nothing moves when "Embellir" becomes
- * "Embellissement…".
+ * Nothing moves when "Embellir" becomes "Embellissement…": see `ButtonLabels`.
  */
 export function AdminButton({
   gestures,
@@ -38,8 +26,7 @@ export function AdminButton({
   blockedReason,
   estimateMs = null,
   settle = false,
-  subject,
-  titleId,
+  subject = null,
   describedBy,
 }: {
   gestures: Gestures
@@ -55,10 +42,8 @@ export function AdminButton({
   blockedReason?: string
   estimateMs?: number | null
   settle?: boolean
-  /** What the gesture acts on, for the activity bar. Defaults to the text of `titleId`. */
-  subject?: string
-  /** The row's title, read when pressed so the activity bar names the row. */
-  titleId?: string
+  /** What the gesture acts on — a recipe title, a page — named in the activity bar. */
+  subject?: string | null
   /** Text that says what a terse label acts on, such as the line an « Annuler » cancels. */
   describedBy?: string
 }) {
@@ -69,9 +54,10 @@ export function AdminButton({
   // operator's own precondition is worth a sentence.
   const inert = disabled || running !== null || gestures.blocked(gesture)
   const reason = disabled ? (blockedReason ?? null) : null
-  const grouped = useGroupedReason(reasonId, reason)
+  // Every control with a reason sits in an `AdminActions` group, whose line prints it.
+  useGroupedReason(reasonId, reason)
 
-  const button = (
+  return (
     <button
       type="button"
       className={`btn btn--${variant}`}
@@ -86,7 +72,7 @@ export function AdminButton({
           gesture,
           {
             pendingLabel,
-            subject: subject ?? subjectFrom(titleId),
+            subject,
             estimateMs,
             settle,
           },
@@ -94,30 +80,36 @@ export function AdminButton({
         )
       }}
     >
-      <span className="btn__labels">
-        <span
-          className={running ? 'btn__label btn__label--ghost' : 'btn__label'}
-        >
-          {label}
-        </span>
-        <span
-          className={running ? 'btn__label' : 'btn__label btn__label--ghost'}
-        >
-          {pendingLabel}
-        </span>
-      </span>
+      <ButtonLabels
+        label={label}
+        pendingLabel={pendingLabel}
+        running={running !== null}
+      />
     </button>
   )
+}
 
-  if (grouped || !reason) return button
-
-  // Outside an `AdminActions` group, the control keeps its reason under it.
+/**
+ * Both labels rendered, stacked in one grid cell with the inactive one hidden, so the control keeps the
+ * width of the longer of the two. Shared with the file input, which draws the same face.
+ */
+export function ButtonLabels({
+  label,
+  pendingLabel,
+  running,
+}: {
+  label: string
+  pendingLabel: string
+  running: boolean
+}) {
   return (
-    <div className="gesture-control">
-      {button}
-      <p className="admin-page__blocked" id={reasonId}>
-        {reason}
-      </p>
-    </div>
+    <span className="btn__labels">
+      <span className={running ? 'btn__label btn__label--ghost' : 'btn__label'}>
+        {label}
+      </span>
+      <span className={running ? 'btn__label' : 'btn__label btn__label--ghost'}>
+        {pendingLabel}
+      </span>
+    </span>
   )
 }

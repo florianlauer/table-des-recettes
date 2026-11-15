@@ -11,7 +11,6 @@ import type { NonEmpty } from '../shared/journalStats'
 import type { Gestures } from '../lib/useGestures'
 import { AdminButton } from './-AdminButton'
 import { AdminTable, AdminTableDetail } from './-AdminTable'
-import { ServerActivity } from './-ActivityBar'
 
 /** Read off the server rather than retyped, so a change to the query lands here at compile time. */
 export type Scan = (typeof api.admin.listScans)['_returnType'][number]
@@ -35,13 +34,11 @@ export function ScanTable({
   adminToken,
   gestures,
   now,
-  estimateMs,
 }: {
   rows: NonEmpty<Scan>
   adminToken: string
   gestures: Gestures
   now: number
-  estimateMs: number | null
 }) {
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
 
@@ -98,17 +95,6 @@ export function ScanTable({
                 )}
               </td>
             </tr>
-            {/* The real wait: pressing « Démarrer » schedules and returns, the lease runs for tens of
-                seconds. It is shown in the activity bar, under this scan's name. */}
-            {leaseLive && scan.leaseStartedAt !== null && (
-              <ServerActivity
-                id={`lease:${scan.id}`}
-                label="Extraction en cours"
-                subject={label}
-                startedAt={scan.leaseStartedAt}
-                estimateMs={estimateMs}
-              />
-            )}
             {notes.length > 0 && (
               <AdminTableDetail>
                 {/* Keyed by position: the notes are a fixed ordered set from a pure function, and two

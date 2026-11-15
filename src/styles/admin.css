@@ -88,9 +88,8 @@
 
 /* --- controls: four kinds, told apart before they are read (DESIGN.md § `/admin`) --- */
 
-/* The file input's label is a button in all but element, so it takes the same shape. */
-.btn,
-.admin-page__file-button {
+/* The file input's label draws a `.btn` span too: a button in all but element. */
+.btn {
   display: inline-grid;
   align-items: center;
   border: 1px solid;
@@ -134,11 +133,8 @@
   position: relative;
   margin: 1rem 0;
 }
-.admin-page__file-button {
-  cursor: pointer;
-}
 /* The ring belongs on what is visible: the input keeps the focus, the label shows it. */
-.admin-page__file:has(input:focus-visible) .admin-page__file-button {
+.admin-page__file:has(input:focus-visible) .btn {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
@@ -147,49 +143,48 @@
     color: var(--ochre-hover);
     text-decoration-color: var(--ochre);
   }
-  .btn--primary:not(:disabled):hover,
-  .admin-page__file:has(input:not(:disabled)):hover .btn--primary {
+  .btn--primary:not(:disabled, [data-inert]):hover {
     background: var(--ochre-hover);
     border-color: var(--ochre-hover);
   }
-  .btn--secondary:not(:disabled):hover,
-  .admin-page__file:has(input:not(:disabled)):hover .btn--secondary {
+  .btn--secondary:not(:disabled, [data-inert]):hover {
     color: var(--ochre-hover);
     border-color: var(--ochre-hover);
   }
-  .btn--danger:not(:disabled):hover {
+  .btn--danger:not(:disabled, [data-inert]):hover {
     color: var(--danger-hover);
     border-color: var(--danger-hover);
   }
-  .btn--quiet:not(:disabled):hover {
+  .btn--quiet:not(:disabled, [data-inert]):hover {
     color: var(--ochre-hover);
     text-decoration-color: var(--ochre);
   }
 }
 /* Touch has no hover: this is the only colour confirmation a greasy finger gets. */
 .admin-page a:active,
-.btn--secondary:not(:disabled):active,
-.btn--quiet:not(:disabled):active {
+.btn--secondary:not(:disabled, [data-inert]):active,
+.btn--quiet:not(:disabled, [data-inert]):active {
   color: var(--ochre-hover);
 }
 /* A dead control says so. `not-allowed` rather than `default`: the pointer is the only channel that
    can report the refusal before the click. A running control is disabled too, but it is not dead —
    it keeps its kind and its colour, and only its label changes. */
-.btn:disabled:not([aria-busy='true']),
-.admin-page__file:has(input:disabled):not([aria-busy='true'])
-  .admin-page__file-button {
+.btn:is(:disabled, [data-inert]):not([aria-busy='true']) {
   background: transparent;
   color: var(--rule-strong);
   border-color: var(--rule);
   font-weight: 400;
   cursor: not-allowed;
 }
-.btn--quiet:disabled {
+/* As specific as the rule above, and after it: a dead link-like control stays frameless. */
+.btn.btn--quiet:is(:disabled, [data-inert]):not([aria-busy='true']) {
   border-color: transparent;
   text-decoration-color: var(--rule);
 }
-.btn[aria-busy='true'],
-.admin-page__file[aria-busy='true'] .admin-page__file-button {
+.btn:not(:disabled, [data-inert]) {
+  cursor: pointer;
+}
+.btn[aria-busy='true'] {
   cursor: progress;
 }
 /* The token, and the only way to check what was typed on a phone. Both bottoms sit on the container's
@@ -237,20 +232,6 @@
   font-size: var(--type-meta);
   color: var(--ink-muted);
 }
-/* A control outside any band keeps its reason under it. */
-.gesture-control {
-  display: inline-grid;
-  vertical-align: top;
-  gap: 0.3rem;
-  align-content: start;
-  max-width: 100%;
-}
-.admin-page__blocked {
-  max-width: 34rem;
-  font-size: var(--type-meta);
-  color: var(--ink-muted);
-  margin: 0;
-}
 
 /* --- the activity bar: everything running, and what came of it --- */
 
@@ -280,6 +261,10 @@
   min-height: 3rem;
   padding: 0.4rem 0;
   border-top: 1px solid var(--rule);
+}
+/* The grid above would otherwise beat the browser's own `[hidden] { display: none }`. */
+.activity__entry[hidden] {
+  display: none;
 }
 .activity__entry:first-child {
   border-top: 0;
@@ -342,12 +327,10 @@
    it: with reduced motion nothing here is emitted at all. */
 @media (prefers-reduced-motion: no-preference) {
   /* Pressed: fast in, slower out, so the finger gets an answer and the release is seen. */
-  .btn,
-  .admin-page__file-button {
+  .btn {
     transition: transform 280ms var(--ease-out);
   }
-  .btn:not(:disabled):active,
-  .admin-page__file:has(input:not(:disabled)):active .admin-page__file-button {
+  .btn:not(:disabled, [data-inert]):active {
     transform: scale(0.96);
     transition-duration: 120ms;
   }
@@ -793,6 +776,12 @@
 }
 .scan-page__undo {
   margin: 0;
+  min-width: 0;
+}
+/* The one label that quotes data: an ingredient line can be longer than a phone, so it wraps. */
+.scan-page__undo .btn {
+  white-space: normal;
+  text-align: left;
 }
 .scan-page__ingredient--head {
   margin-bottom: 0.3rem;

@@ -96,11 +96,10 @@ export function ScanSummary({
           )
         }
 
-        const heading = (titleId: string) => (
+        const heading = (
           <div className="scan-page__summary-title">
             <div className="scan-page__summary-field">
               <input
-                id={titleId}
                 aria-label="Titre"
                 value={draft.title}
                 placeholder="Sans titre"

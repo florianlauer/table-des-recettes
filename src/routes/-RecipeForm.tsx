@@ -1,5 +1,5 @@
 import { useMutation } from 'convex/react'
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { duplicateNote } from '../lib/duplicateMessages'
 import { outcomeMessage } from '../lib/gestureMessages'
@@ -84,7 +84,6 @@ export function RecipeForm({
   const publishRecipe = useMutation(api.recipeAdmin.publishRecipe)
   const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
 
-  const titleId = useId()
   const [removed, setRemoved] = useState<{
     index: number
     line: IngredientLine
@@ -139,7 +138,7 @@ export function RecipeForm({
       data-row-id={recipe.id}
       aria-busy={busy}
     >
-      <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
+      <h3>{recipe.title || 'Sans titre'}</h3>
       <p className="scan-page__status">
         {RECIPE_STATUS_LABELS[recipe.status]}
         {recipe.slug && ` · /recette/${recipe.slug}`}
@@ -356,7 +355,7 @@ export function RecipeForm({
           variant={dirty ? 'primary' : 'secondary'}
           disabled={!dirty}
           blockedReason="Rien à enregistrer : le formulaire est celui du serveur."
-          titleId={titleId}
+          subject={recipe.title || 'Sans titre'}
           run={async () =>
             outcomeMessage(
               await saveRecipe({
@@ -403,7 +402,7 @@ export function RecipeForm({
                 ? 'Enregistre tes corrections avant de publier.'
                 : 'Les images ont changé : relis la recette avant de publier.'
             }
-            titleId={titleId}
+            subject={recipe.title || 'Sans titre'}
             run={async () =>
               outcomeMessage(
                 await publishRecipe({ adminToken, recipeId: recipe.id }),
@@ -416,7 +415,7 @@ export function RecipeForm({
             gesture={unpublish}
             label="Dépublier"
             pendingLabel="Dépublication…"
-            titleId={titleId}
+            subject={recipe.title || 'Sans titre'}
             run={async () =>
               outcomeMessage(
                 await unpublishRecipe({ adminToken, recipeId: recipe.id }),
@@ -434,7 +433,7 @@ export function RecipeForm({
           confirm={`Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`}
           disabled={recipe.status === 'published'}
           blockedReason="Dépublie la recette avant de la supprimer."
-          titleId={titleId}
+          subject={recipe.title || 'Sans titre'}
           run={async () =>
             outcomeMessage(
               await deleteRecipe({ adminToken, recipeId: recipe.id }),

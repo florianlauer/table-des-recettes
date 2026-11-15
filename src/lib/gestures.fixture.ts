@@ -20,7 +20,6 @@ export function fakeGestures({
     running: () => running,
     outcome: () => outcome,
     blocked: () => blocked,
-    orphanedOutcomes: () => [],
     runs: () => (running ? [running] : []),
     outcomes: () => (outcome ? [outcome] : []),
     dismiss: () => {},

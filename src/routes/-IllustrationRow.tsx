@@ -47,11 +47,8 @@ export function IllustrationRow({
   gestures: Gestures
   now: number
   estimateMs: number | null
-  /**
-   * Replaces the title line. Handed the id every bar and button is labelled by, so the caller puts it
-   * on whatever names the recipe — the scan summary's title field.
-   */
-  heading?: (titleId: string) => ReactNode
+  /** Replaces the title line: the scan summary puts its editable title field there. */
+  heading?: ReactNode
 }) {
   const attachIllustration = useAttachIllustration(adminToken)
   const detachIllustration = useMutation(api.illustrations.detachIllustration)
@@ -70,7 +67,6 @@ export function IllustrationRow({
 
   const can = illustrationActions(row, { now, leaseMs: BEAUTIFY_LEASE_MS })
   const args = { adminToken, recipeId: row.id }
-  const titleId = useId()
   const photoLineId = useId()
   const generate = rowGesture(row.id, 'generate')
   // Named in every confirmation, so the dialog says which row it is about even when the scan gave
@@ -205,8 +201,9 @@ export function IllustrationRow({
 
   /**
    * A gesture on this screen usually removes its own control: accepting takes "Accepter" away,
-   * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the focus was
-   * on a button that is gone. Marking the outcome orphaned lets the activity bar take that focus.
+   * detaching takes "Retirer la photo" away. The row stays, so nothing marks it — but the focus may
+   * have been on a button that is gone. Marking the outcome orphaned lets the activity bar take the
+   * focus, and only when that button had it.
    */
   const offered = new Set([
     ...gestureRows.filter(({ offered: shown }) => shown).map((g) => g.action),
@@ -217,7 +214,14 @@ export function IllustrationRow({
       if (offered.has(action)) continue
       const gesture = rowGesture(row.id, action)
       if (gestures.outcome(gesture) === null) continue
-      gestures.markOrphaned(gesture)
+      gestures.markOrphaned(gesture, {
+        // The row held the focus and it fell to the document: the vanished control had it. Focus
+        // still on the title field, or anywhere else, stays where it is.
+        stealsFocus:
+          gestures.holdsFocus(row.id) &&
+          (document.activeElement === null ||
+            document.activeElement === document.body),
+      })
     }
   })
 
@@ -237,7 +241,7 @@ export function IllustrationRow({
         confirm={gesture.confirm}
         settle={gesture.settle}
         estimateMs={gesture.settle ? estimateMs : null}
-        titleId={titleId}
+        subject={row.title || 'Sans titre'}
         describedBy={gesture.onPhotoLine ? photoLineId : undefined}
         run={async () => {
           gesture.beforeRun?.()
@@ -253,11 +257,7 @@ export function IllustrationRow({
       data-row-id={row.id}
       aria-busy={busy}
     >
-      {heading ? (
-        heading(titleId)
-      ) : (
-        <h3 id={titleId}>{row.title || 'Sans titre'}</h3>
-      )}
+      {heading ?? <h3>{row.title || 'Sans titre'}</h3>}
       <p>
         {TYPE_LABELS[row.type]} · {recipeStatusLabel(row.status)}
         {row.beautifiedAccepted && ' · embellissement publié'}
@@ -364,7 +364,7 @@ export function IllustrationRow({
           label={row.hasOriginal ? 'Remplacer la photo' : 'Ajouter une photo'}
           pendingLabel="Envoi…"
           variant={row.hasOriginal ? 'secondary' : 'primary'}
-          subject={title}
+          subject={row.title || 'Sans titre'}
           onFiles={async (files, report) => {
             const file = files[0]
             if (!file) return { ok: false, text: 'Aucun fichier.' }

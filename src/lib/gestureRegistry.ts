@@ -6,7 +6,7 @@
  * The hook around it (`useGestures`) holds it in a ref and mirrors it into state for rendering. The
  * ref is the authority; the state is the picture.
  */
-import { conflicts, gestureId, isBlocked } from './gestures'
+import { gestureId, isBlocked } from './gestures'
 import type { Gesture, GestureResult } from './gestures'
 import type { MeasuredProgress } from './gestureProgress'
 
@@ -23,9 +23,12 @@ export type Run = {
   progress: MeasuredProgress | null
   /** Set when the action resolved and the run is waiting for the server state to confirm. */
   settlingSince: number | null
-  /** Set when the row left the data: the outcome is republished at section level. */
+  /**
+   * Set when the control or row it came from left the screen. Its only effect now is a focus handoff
+   * to the activity bar, issued at most once: every outcome is shown there either way.
+   */
   orphaned: boolean
-  /** The row that left held the focus, so the republished outcome has to take it. */
+  /** The control that left held the focus, so the message in the activity bar has to take it. */
   stealsFocus: boolean
 }
 
@@ -34,7 +37,7 @@ export type Outcome = {
   token: number
   result: GestureResult
   subject: string | null
-  /** Republished at section level because the row it belonged to is gone. */
+  /** See `Run.orphaned`: marks the one-shot focus handoff, not where the message is shown. */
   orphaned: boolean
   /**
    * Carried by the outcome rather than by the screen: the flag names *which* message must take the
@@ -76,8 +79,9 @@ export function isGestureBlocked(
  * in the same tick therefore cannot both pass: the first one is already in the map when the second
  * asks.
  *
- * Starting a gesture also clears the outcomes of everything it conflicts with — otherwise a row keeps
- * the message of its previous action next to the one now running, and the two contradict each other.
+ * Starting a gesture also clears its own previous outcome, which the new run is about to replace.
+ * Only its own: results live in the activity bar now, not under a control, and a billed failure on a
+ * row must not vanish because another gesture started on that row or on the page.
  */
 export function claim(
   state: RegistryState,
@@ -120,7 +124,10 @@ export function claim(
       ...state,
       nextToken: token + 1,
       runs: { ...state.runs, [gestureId(gesture)]: run },
-      outcomes: withoutConflicting(state.outcomes, gesture),
+      outcomes: without(
+        state.outcomes,
+        (outcome) => gestureId(outcome.gesture) === gestureId(gesture),
+      ),
     },
   }
 }
@@ -175,13 +182,12 @@ export function awaitObservation(
 }
 
 /**
- * The row left the data. The run *and* the outcome both have to be marked: the gesture that removes
- * its own row usually settles first — the mutation answers, then the query refreshes — so by the time
- * the screen notices the row is gone there is nothing running any more, only a message with nowhere
- * left to be printed.
+ * The row or control left the screen. The run *and* the outcome both have to be marked: the gesture
+ * that removes its own row usually settles first — the mutation answers, then the query refreshes —
+ * so by the time the screen notices the row is gone there is nothing running any more, only a message.
  *
  * Idempotent by design: the screen re-observes on every render, and a second pass must not revive a
- * focus claim the republished message has already honoured.
+ * focus claim the activity bar has already honoured.
  */
 export function markOrphaned(
   state: RegistryState,
@@ -203,7 +209,7 @@ export function markOrphaned(
   }
 }
 
-/** The republished message has taken the focus; the claim must not fire again. */
+/** The message in the activity bar has taken the focus; the claim must not fire again. */
 export function releaseFocusClaim(
   state: RegistryState,
   gesture: Gesture,
@@ -220,7 +226,7 @@ export function releaseFocusClaim(
 /**
  * Ends the run and publishes its outcome. Convex can refresh a query before the mutation publishes
  * its result, so the run — not the row — is what keeps the outcome alive: an orphaned run still
- * settles, and its message resurfaces at section level.
+ * settles, and its message reaches the activity bar.
  */
 export function settle(
   state: RegistryState,
@@ -279,21 +285,33 @@ export function dismiss(
   return { ...state, outcomes }
 }
 
-/** An edit in the form perishes the message that described the value before it. */
+/**
+ * An edit in the form perishes the messages that described the value before it: those of its own row,
+ * and nothing page-wide.
+ */
 export function clearOutcomes(
   state: RegistryState,
   gesture: Gesture,
 ): RegistryState {
-  return { ...state, outcomes: withoutConflicting(state.outcomes, gesture) }
+  const { scope } = gesture
+  return {
+    ...state,
+    outcomes: without(state.outcomes, (outcome) =>
+      scope.kind === 'row'
+        ? outcome.gesture.scope.kind === 'row' &&
+          outcome.gesture.scope.rowId === scope.rowId
+        : gestureId(outcome.gesture) === gestureId(gesture),
+    ),
+  }
 }
 
-function withoutConflicting(
+function without(
   outcomes: Record<string, Outcome>,
-  gesture: Gesture,
+  drop: (outcome: Outcome) => boolean,
 ): Record<string, Outcome> {
   const kept: Record<string, Outcome> = {}
   for (const [key, outcome] of Object.entries(outcomes))
-    if (!conflicts(outcome.gesture, gesture)) kept[key] = outcome
+    if (!drop(outcome)) kept[key] = outcome
   return kept
 }
 

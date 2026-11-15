@@ -1,5 +1,6 @@
 import type { Gesture, GestureResult } from '../lib/gestures'
 import type { Gestures, ReportProgress } from '../lib/useGestures'
+import { ButtonLabels } from './-AdminButton'
 import type { ButtonVariant } from './-AdminButton'
 
 export const IMAGE_ACCEPT =
@@ -39,28 +40,21 @@ export function AdminFileInput({
   const inert = disabled || running !== null || gestures.blocked(gesture)
 
   return (
-    <label
-      className="admin-page__file"
-      data-variant={variant}
-      aria-busy={running !== null || undefined}
-    >
+    <label className="admin-page__file">
       {/* The label *is* the control: every caller already passes an imperative ("Photographier une
           page"), and the native button next to it said "Choose File" — its text comes from the
           browser UI language and no attribute reaches it. So it goes under, and the sentence that
-          was already there takes the click. Both labels stacked, so « Envoi… » keeps the width. */}
-      <span className={`admin-page__file-button btn--${variant}`}>
-        <span className="btn__labels">
-          <span
-            className={running ? 'btn__label btn__label--ghost' : 'btn__label'}
-          >
-            {label}
-          </span>
-          <span
-            className={running ? 'btn__label' : 'btn__label btn__label--ghost'}
-          >
-            {pendingLabel}
-          </span>
-        </span>
+          was already there takes the click. It wears the button's face, inert state included. */}
+      <span
+        className={`btn btn--${variant}`}
+        data-inert={inert || undefined}
+        aria-busy={running !== null || undefined}
+      >
+        <ButtonLabels
+          label={label}
+          pendingLabel={pendingLabel}
+          running={running !== null}
+        />
       </span>
       <input
         className="visually-hidden"

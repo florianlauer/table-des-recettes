@@ -384,7 +384,13 @@ export const queueStatus = query({
     truncated: v.boolean(),
     oldestPendingAt: v.union(v.number(), v.null()),
     currentLease: v.union(
-      v.object({ startedAt: v.number(), attempts: v.number() }),
+      // `createdAt` names the scan in the activity bar, which may not list it: `listScans` stops at
+      // the newest hundred, and the queue leases the oldest first.
+      v.object({
+        startedAt: v.number(),
+        attempts: v.number(),
+        createdAt: v.number(),
+      }),
       v.null(),
     ),
     nextAttemptAt: v.union(v.number(), v.null()),
@@ -421,10 +427,15 @@ export const queueStatus = query({
     const currentLease = extracting.reduce<{
       startedAt: number
       attempts: number
+      createdAt: number
     } | null>((latest, scan) => {
       if (scan.startedAt === undefined) return latest
       if (latest !== null && latest.startedAt >= scan.startedAt) return latest
-      return { startedAt: scan.startedAt, attempts: scan.attempts }
+      return {
+        startedAt: scan.startedAt,
+        attempts: scan.attempts,
+        createdAt: scan.createdAt,
+      }
     }, null)
     const waiting = [...pending, ...extracting]
     const nextAttemptAt = waiting.reduce<number | null>((nearest, scan) => {

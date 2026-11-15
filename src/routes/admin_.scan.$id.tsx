@@ -16,6 +16,7 @@ import {
   rescanMessage,
 } from '../lib/gestureMessages'
 import { pageGesture } from '../lib/gestures'
+import { isLeaseLive } from '../lib/queueStatus'
 import { scanStatusLabel } from '../lib/scanLabel'
 import { MAX_IMAGES_PER_SCAN } from '../shared/scanLimits'
 import { useAdminQuery } from '../lib/useAdminQuery'
@@ -260,15 +261,16 @@ function ScanCorrectionPage() {
               </p>
               {/* The extraction is the server's work, not the click's: the bar hangs on the scan's
                 own `startedAt`, so it is there after a reload too. */}
-              {data.startedAt !== null && (
-                <ServerActivity
-                  id="scan-extraction"
-                  label="Extraction en cours"
-                  subject="Ce scan"
-                  startedAt={data.startedAt}
-                  estimateMs={estimateMs}
-                />
-              )}
+              {data.startedAt !== null &&
+                isLeaseLive({ leaseStartedAt: data.startedAt, now }) && (
+                  <ServerActivity
+                    id="scan-extraction"
+                    label="Extraction en cours"
+                    subject="Ce scan"
+                    startedAt={data.startedAt}
+                    estimateMs={estimateMs}
+                  />
+                )}
               <AdminActions>
                 {/* A scan arriving straight from the capture is still pending, and the queue only starts
                 from a button: without this one, adding its second page meant going back to /admin
