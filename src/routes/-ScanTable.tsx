@@ -11,7 +11,6 @@ import type { NonEmpty } from '../shared/journalStats'
 import type { Gestures } from '../lib/useGestures'
 import { AdminButton } from './-AdminButton'
 import { AdminTable, AdminTableDetail } from './-AdminTable'
-import { GestureProgress } from './-GestureProgress'
 
 /** Read off the server rather than retyped, so a change to the query lands here at compile time. */
 export type Scan = (typeof api.admin.listScans)['_returnType'][number]
@@ -35,13 +34,11 @@ export function ScanTable({
   adminToken,
   gestures,
   now,
-  estimateMs,
 }: {
   rows: NonEmpty<Scan>
   adminToken: string
   gestures: Gestures
   now: number
-  estimateMs: number | null
 }) {
   const purgeScanImages = useMutation(api.admin.purgeScanImages)
 
@@ -54,6 +51,7 @@ export function ScanTable({
           now,
         })
         const notes = scanNotes({ scan, now })
+        const label = formatScanLabel(scan.createdAt)
         return (
           // One `tbody` per scan rather than one per table: it is what carries `data-row-id` for the
           // gesture registry — `closest()` finds it from the button — and it keeps a row and its
@@ -66,7 +64,7 @@ export function ScanTable({
             <tr>
               <th scope="row">
                 <Link to="/admin/scan/$id" params={{ id: scan.id }}>
-                  {formatScanLabel(scan.createdAt)}
+                  {label}
                 </Link>
               </th>
               <td className="admin-table__n">{scan.imageCount}</td>
@@ -85,6 +83,8 @@ export function ScanTable({
                     gesture={purge}
                     label="Purger la photo"
                     pendingLabel="Purge…"
+                    variant="danger"
+                    subject={label}
                     confirm="Purger définitivement cette photo ?"
                     run={async () =>
                       purgeMessage(
@@ -95,21 +95,13 @@ export function ScanTable({
                 )}
               </td>
             </tr>
-            {(notes.length > 0 ||
-              (leaseLive && scan.leaseStartedAt !== null)) && (
+            {notes.length > 0 && (
               <AdminTableDetail>
                 {/* Keyed by position: the notes are a fixed ordered set from a pure function, and two
                     of them can hold the same text. */}
                 {notes.map((note, index) => (
                   <p key={index}>{note}</p>
                 ))}
-                {leaseLive && scan.leaseStartedAt !== null && (
-                  <GestureProgress
-                    startedAt={scan.leaseStartedAt}
-                    estimateMs={estimateMs}
-                    token={scan.leaseStartedAt}
-                  />
-                )}
               </AdminTableDetail>
             )}
           </tbody>

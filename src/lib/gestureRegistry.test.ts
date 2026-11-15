@@ -5,6 +5,7 @@ import {
   changeEpoch,
   claim,
   clearOutcomes,
+  dismiss,
   emptyRegistry,
   isGestureBlocked,
   markOrphaned,
@@ -229,14 +230,34 @@ describe('focus claim', () => {
 })
 
 describe('outcome expiry', () => {
-  it('drops the previous message of a row when a new gesture starts on it', () => {
+  it('drops the previous message of a gesture when the same gesture runs again', () => {
     const first = start(emptyRegistry('e'))
     const done = settle(first.state, rowA, first.token, {
       ok: false,
       text: 'Échec.',
     })
-    const again = start(done, rowGesture('a', 'delete'))
-    expect(again.state.outcomes).toEqual({})
+    expect(start(done).state.outcomes).toEqual({})
+  })
+
+  it('keeps a failure when another gesture starts on the same row or the page', () => {
+    const first = start(emptyRegistry('e'))
+    const done = settle(first.state, rowA, first.token, {
+      ok: false,
+      text: 'Échec.',
+    })
+    expect(start(done, rowGesture('a', 'delete')).state.outcomes).not.toEqual(
+      {},
+    )
+    expect(start(done, publish).state.outcomes).not.toEqual({})
+  })
+
+  it('lets an edit leave the page-wide messages alone', () => {
+    const first = start(emptyRegistry('e'), publish)
+    const done = settle(first.state, publish, first.token, {
+      ok: false,
+      text: 'Échec.',
+    })
+    expect(clearOutcomes(done, rowA).outcomes).not.toEqual({})
   })
 
   it('leaves the messages of other rows alone', () => {
@@ -272,5 +293,28 @@ describe('awaitObservation', () => {
       awaitObservation(first.state, rowA, 99, 4_000).runs['["row","a","save"]']
         ?.settlingSince,
     ).toBeNull()
+  })
+})
+
+describe('dismiss', () => {
+  it('carries the subject from the run to its outcome, then closes it', () => {
+    const run = start(emptyRegistry('e'), rowA, { subject: 'Gratin' })
+    const settled = settle(run.state, rowA, run.token, {
+      ok: true,
+      text: 'Fait.',
+    })
+    expect(Object.values(settled.outcomes)[0]?.subject).toBe('Gratin')
+    expect(dismiss(settled, rowA, run.token).outcomes).toEqual({})
+  })
+
+  it('leaves a newer outcome of the same gesture alone', () => {
+    const first = start(emptyRegistry('e'))
+    const one = settle(first.state, rowA, first.token, { ok: true, text: '1' })
+    const second = start(one)
+    const two = settle(second.state, rowA, second.token, {
+      ok: true,
+      text: '2',
+    })
+    expect(dismiss(two, rowA, first.token)).toBe(two)
   })
 })

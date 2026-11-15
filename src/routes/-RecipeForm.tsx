@@ -1,5 +1,5 @@
 import { useMutation } from 'convex/react'
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { api } from '../../convex/_generated/api'
 import { duplicateNote } from '../lib/duplicateMessages'
 import { outcomeMessage } from '../lib/gestureMessages'
@@ -11,6 +11,7 @@ import { useDebounced } from '../lib/useDebounced'
 import { RECIPE_TYPES, TYPE_LABELS } from '../shared/recipeTypes'
 import type { RecipeType } from '../shared/recipeTypes'
 import type { Gestures } from '../lib/useGestures'
+import { AdminActions } from './-AdminActions'
 import { AdminButton } from './-AdminButton'
 
 type ScanView = NonNullable<
@@ -83,7 +84,6 @@ export function RecipeForm({
   const publishRecipe = useMutation(api.recipeAdmin.publishRecipe)
   const unpublishRecipe = useMutation(api.recipeAdmin.unpublishRecipe)
 
-  const titleId = useId()
   const [removed, setRemoved] = useState<{
     index: number
     line: IngredientLine
@@ -138,7 +138,7 @@ export function RecipeForm({
       data-row-id={recipe.id}
       aria-busy={busy}
     >
-      <h3 id={titleId}>{recipe.title || 'Sans titre'}</h3>
+      <h3>{recipe.title || 'Sans titre'}</h3>
       <p className="scan-page__status">
         {RECIPE_STATUS_LABELS[recipe.status]}
         {recipe.slug && ` · /recette/${recipe.slug}`}
@@ -287,6 +287,7 @@ export function RecipeForm({
                 />
                 <button
                   type="button"
+                  className="btn btn--quiet"
                   onClick={() => {
                     setRemoved({ index, line })
                     edit({
@@ -302,31 +303,37 @@ export function RecipeForm({
             ))}
           </div>
         )}
-        {/* The line came off a photograph: retyping it means going back to the page. Offered until
+        {/* « Rétablir » sits beside « Ajouter une ligne », not above it: appearing on a removal, it
+            pushed the button the operator was about to press. */}
+        <div className="scan-page__line-actions">
+          <button
+            type="button"
+            className="btn btn--secondary"
+            onClick={() =>
+              edit({ ingredients: [...draft.ingredients, { raw: '' }] })
+            }
+          >
+            Ajouter une ligne
+          </button>
+          {/* The line came off a photograph: retyping it means going back to the page. Offered until
             another one is removed, and it returns where it was, not at the end. */}
-        {removed !== null && (
-          <p className="scan-page__undo" role="status">
-            <button
-              type="button"
-              onClick={() => {
-                const ingredients = [...draft.ingredients]
-                ingredients.splice(removed.index, 0, removed.line)
-                setRemoved(null)
-                edit({ ingredients })
-              }}
-            >
-              Rétablir « {removed.line.raw || 'ligne vide'} »
-            </button>
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={() =>
-            edit({ ingredients: [...draft.ingredients, { raw: '' }] })
-          }
-        >
-          Ajouter une ligne
-        </button>
+          {removed !== null && (
+            <p className="scan-page__undo" role="status">
+              <button
+                type="button"
+                className="btn btn--quiet"
+                onClick={() => {
+                  const ingredients = [...draft.ingredients]
+                  ingredients.splice(removed.index, 0, removed.line)
+                  setRemoved(null)
+                  edit({ ingredients })
+                }}
+              >
+                Rétablir « {removed.line.raw || 'ligne vide'} »
+              </button>
+            </p>
+          )}
+        </div>
       </fieldset>
 
       <label className="admin-page__field">
@@ -338,96 +345,102 @@ export function RecipeForm({
         />
       </label>
 
-      <AdminButton
-        gestures={gestures}
-        gesture={save}
-        label="Enregistrer"
-        pendingLabel="Enregistrement…"
-        disabled={!dirty}
-        blockedReason="Rien à enregistrer : le formulaire est celui du serveur."
-        titleId={titleId}
-        run={async () =>
-          outcomeMessage(
-            await saveRecipe({
-              adminToken,
-              recipeId: recipe.id,
-              expectedRevision: recipe.revision,
-              title: draft.title.trim(),
-              type: draft.type,
-              servings:
-                draft.servings.trim() === ''
-                  ? undefined
-                  : Number(draft.servings),
-              ingredients: draft.ingredients,
-              ingredientsInferred: draft.ingredientsInferred,
-              steps: draft.steps
-                .split('\n')
-                .map((step) => step.trim())
-                .filter(Boolean),
-            }),
-          )
-        }
-      />
-
-      {recipe.status === 'review' ? (
+      <AdminActions>
         <AdminButton
           gestures={gestures}
-          gesture={publish}
-          label="Publier"
-          pendingLabel="Publication…"
-          // A warning, not a refusal: two « Tarte aux pommes » from two different books are both
-          // legitimate, and `resolveSlug` already gives the second one its own address. What the
-          // duplicate cannot be is *silent*, so the click has to be confirmed once.
-          confirm={
-            twin
-              ? `${duplicateNote(twin)} Publier ce doublon quand même ?`
-              : undefined
-          }
-          // Publishing a form the operator has already edited would put the stale server value
-          // online — a wrong page, not a lost keystroke.
-          disabled={dirty || publishBlocked}
-          blockedReason={
-            dirty
-              ? 'Enregistre tes corrections avant de publier.'
-              : 'Les images ont changé : relis la recette avant de publier.'
-          }
-          titleId={titleId}
+          gesture={save}
+          label="Enregistrer"
+          pendingLabel="Enregistrement…"
+          // The primary is the next step: saving while there are corrections, publishing once saved.
+          variant={dirty ? 'primary' : 'secondary'}
+          disabled={!dirty}
+          blockedReason="Rien à enregistrer : le formulaire est celui du serveur."
+          subject={recipe.title || 'Sans titre'}
           run={async () =>
             outcomeMessage(
-              await publishRecipe({ adminToken, recipeId: recipe.id }),
+              await saveRecipe({
+                adminToken,
+                recipeId: recipe.id,
+                expectedRevision: recipe.revision,
+                title: draft.title.trim(),
+                type: draft.type,
+                servings:
+                  draft.servings.trim() === ''
+                    ? undefined
+                    : Number(draft.servings),
+                ingredients: draft.ingredients,
+                ingredientsInferred: draft.ingredientsInferred,
+                steps: draft.steps
+                  .split('\n')
+                  .map((step) => step.trim())
+                  .filter(Boolean),
+              }),
             )
           }
         />
-      ) : (
+
+        {recipe.status === 'review' ? (
+          <AdminButton
+            gestures={gestures}
+            gesture={publish}
+            label="Publier"
+            pendingLabel="Publication…"
+            variant={dirty ? 'secondary' : 'primary'}
+            // A warning, not a refusal: two « Tarte aux pommes » from two different books are both
+            // legitimate, and `resolveSlug` already gives the second one its own address. What the
+            // duplicate cannot be is *silent*, so the click has to be confirmed once.
+            confirm={
+              twin
+                ? `${duplicateNote(twin)} Publier ce doublon quand même ?`
+                : undefined
+            }
+            // Publishing a form the operator has already edited would put the stale server value
+            // online — a wrong page, not a lost keystroke.
+            disabled={dirty || publishBlocked}
+            blockedReason={
+              dirty
+                ? 'Enregistre tes corrections avant de publier.'
+                : 'Les images ont changé : relis la recette avant de publier.'
+            }
+            subject={recipe.title || 'Sans titre'}
+            run={async () =>
+              outcomeMessage(
+                await publishRecipe({ adminToken, recipeId: recipe.id }),
+              )
+            }
+          />
+        ) : (
+          <AdminButton
+            gestures={gestures}
+            gesture={unpublish}
+            label="Dépublier"
+            pendingLabel="Dépublication…"
+            subject={recipe.title || 'Sans titre'}
+            run={async () =>
+              outcomeMessage(
+                await unpublishRecipe({ adminToken, recipeId: recipe.id }),
+              )
+            }
+          />
+        )}
+
         <AdminButton
           gestures={gestures}
-          gesture={unpublish}
-          label="Dépublier"
-          pendingLabel="Dépublication…"
-          titleId={titleId}
+          gesture={remove}
+          label="Supprimer"
+          pendingLabel="Suppression…"
+          variant="danger"
+          confirm={`Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`}
+          disabled={recipe.status === 'published'}
+          blockedReason="Dépublie la recette avant de la supprimer."
+          subject={recipe.title || 'Sans titre'}
           run={async () =>
             outcomeMessage(
-              await unpublishRecipe({ adminToken, recipeId: recipe.id }),
+              await deleteRecipe({ adminToken, recipeId: recipe.id }),
             )
           }
         />
-      )}
-
-      <AdminButton
-        gestures={gestures}
-        gesture={remove}
-        label="Supprimer"
-        pendingLabel="Suppression…"
-        confirm={`Supprimer « ${recipe.title || 'sans titre'} » définitivement ?`}
-        disabled={recipe.status === 'published'}
-        blockedReason="Dépublie la recette avant de la supprimer."
-        titleId={titleId}
-        run={async () =>
-          outcomeMessage(
-            await deleteRecipe({ adminToken, recipeId: recipe.id }),
-          )
-        }
-      />
+      </AdminActions>
     </article>
   )
 }

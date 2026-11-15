@@ -11,6 +11,7 @@ import {
   changeEpoch,
   claim,
   clearOutcomes as clearOutcomesIn,
+  dismiss as dismissIn,
   emptyRegistry,
   isGestureBlocked,
   markOrphaned as markOrphanedIn,
@@ -25,6 +26,8 @@ export type ReportProgress = (progress: MeasuredProgress) => void
 
 export type RunOptions = {
   pendingLabel: string
+  /** What the gesture acts on, named in the activity bar. */
+  subject?: string | null
   estimateMs?: number | null
   /**
    * Hold the control until the reactive data shows the transition. Only for gestures whose real work
@@ -42,8 +45,10 @@ export type Gestures = {
   running: (gesture: Gesture) => Run | null
   outcome: (gesture: Gesture) => Outcome | null
   blocked: (gesture: Gesture) => boolean
-  /** Outcomes whose row is gone: the section shows them instead. */
-  orphanedOutcomes: () => Outcome[]
+  /** Everything the activity bar shows: what runs, and what came of it. */
+  runs: () => Run[]
+  outcomes: () => Outcome[]
+  dismiss: (outcome: Outcome) => void
   /**
    * Everything in flight *and* everything that has answered but not yet been read, so a screen can
    * notice that either kind belongs to a row which left the data.
@@ -52,7 +57,7 @@ export type Gestures = {
   /** The reactive data now shows what the gesture was waiting for — or a terminal state. */
   confirm: (gesture: Gesture) => void
   markOrphaned: (gesture: Gesture, options?: { stealsFocus?: boolean }) => void
-  /** The republished message has taken the focus the vanished row was holding. */
+  /** The activity bar has taken the focus the vanished control was holding. */
   releaseFocusClaim: (gesture: Gesture) => void
   clearOutcomes: (gesture: Gesture) => void
   /** Whether the focus still sits in this row, so a disappearance does not steal it from elsewhere. */
@@ -98,7 +103,7 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
   const run = useCallback<Gestures['run']>(
     async (
       gesture,
-      { pendingLabel, estimateMs = null, settle = false },
+      { pendingLabel, subject = null, estimateMs = null, settle = false },
       action,
     ) => {
       // Test-and-set before any await: this is what refuses a second click landing in the same tick,
@@ -106,6 +111,7 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
       const attempt = claim(stateRef.current, {
         gesture,
         pendingLabel,
+        subject,
         startedAt: Date.now(),
         estimateMs,
       })
@@ -152,8 +158,10 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
     running: (gesture) => state.runs[gestureId(gesture)] ?? null,
     outcome: (gesture) => state.outcomes[gestureId(gesture)] ?? null,
     blocked: (gesture) => isGestureBlocked(state, gesture),
-    orphanedOutcomes: () =>
-      Object.values(state.outcomes).filter((outcome) => outcome.orphaned),
+    runs: () => Object.values(state.runs),
+    outcomes: () => Object.values(state.outcomes),
+    dismiss: ({ gesture, token }) =>
+      commit(dismissIn(stateRef.current, gesture, token)),
     liveGestures: () => [
       ...Object.values(state.runs).map((live) => live.gesture),
       ...Object.values(state.outcomes)
@@ -171,8 +179,8 @@ export function useGestures({ epoch }: { epoch: string }): Gestures {
 }
 
 /**
- * Marks every row gesture whose row has left the data — in flight or already answered — so its message
- * resurfaces at section level instead of being unmounted with the row.
+ * Marks every row gesture whose row has left the data — in flight or already answered — so that, if
+ * the row held the focus, the activity bar takes it instead of letting it fall to the document.
  *
  * No dependency array, on purpose: the departure is visible in reactive data, not in a value this hook
  * is handed, so the comparison has to be redone on every render. `markOrphaned` is idempotent, so the

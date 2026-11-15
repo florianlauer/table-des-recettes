@@ -1,15 +1,18 @@
 import { useId } from 'react'
 import type { Gesture, GestureResult } from '../lib/gestures'
 import type { Gestures, ReportProgress } from '../lib/useGestures'
-import { GestureFeedback } from './-GestureFeedback'
+import { useGroupedReason } from './-AdminActions'
 
 /**
- * One control, one gesture, and everything the gesture owes the operator: what it is doing, how long
- * it has been doing it, what came of it, and — when it is inert — why.
- *
- * The two labels are both rendered, stacked in a single grid cell with the inactive one hidden, so
- * the button keeps the width of the longer of the two. Nothing moves when "Embellir" becomes
- * "Embellissement…", which is the whole reason a row can be watched while it works.
+ * Four kinds, told apart before reading: the one gesture a zone exists for, its siblings, what
+ * destroys, and what only toggles or reveals. DESIGN.md § `/admin` — le registre de tri.
+ */
+export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'quiet'
+
+/**
+ * One control, one gesture. What the gesture is doing and what came of it go to the activity bar at
+ * the top of the window; nothing opens next to the button, so nothing around it moves.
+ * Nothing moves when "Embellir" becomes "Embellissement…": see `ButtonLabels`.
  */
 export function AdminButton({
   gestures,
@@ -17,12 +20,13 @@ export function AdminButton({
   label,
   pendingLabel,
   run,
+  variant = 'secondary',
   confirm,
   disabled = false,
   blockedReason,
   estimateMs = null,
   settle = false,
-  titleId,
+  subject = null,
   describedBy,
 }: {
   gestures: Gestures
@@ -30,6 +34,7 @@ export function AdminButton({
   label: string
   pendingLabel: string
   run: (report: ReportProgress) => Promise<GestureResult>
+  variant?: ButtonVariant
   /** Asked before anything happens, exactly as before — a purge and a deletion are irreversible. */
   confirm?: string
   disabled?: boolean
@@ -37,72 +42,74 @@ export function AdminButton({
   blockedReason?: string
   estimateMs?: number | null
   settle?: boolean
-  /** The row's title, so the bar says what progresses rather than progressing anonymously. */
-  titleId?: string
+  /** What the gesture acts on — a recipe title, a page — named in the activity bar. */
+  subject?: string | null
   /** Text that says what a terse label acts on, such as the line an « Annuler » cancels. */
   describedBy?: string
 }) {
   const id = useId()
-  const labelId = `${id}-label`
   const reasonId = `${id}-reason`
   const running = gestures.running(gesture)
-  const outcome = gestures.outcome(gesture)
-  // Three reasons to be dead, and only one of them used to say so. A row's other gesture locks every
-  // sibling control (`conflicts`), which greyed out the whole action band and explained nothing.
-  const locked = running === null && gestures.blocked(gesture)
-  const inert = disabled || running !== null || locked
-  const reason = disabled
-    ? blockedReason
-    : locked
-      ? 'Une autre action est en cours.'
-      : undefined
+  // A sibling's gesture also locks this one; the activity bar already says what runs, so only the
+  // operator's own precondition is worth a sentence.
+  const inert = disabled || running !== null || gestures.blocked(gesture)
+  const reason = disabled ? (blockedReason ?? null) : null
+  // Every control with a reason sits in an `AdminActions` group, whose line prints it.
+  useGroupedReason(reasonId, reason)
 
-  // One box around the four nodes: the surrounding sections are flex rows, and without it the bar
-  // and the result would line up *beside* the control instead of under it.
   return (
-    <div className="gesture-control">
-      <button
-        type="button"
-        disabled={inert}
-        aria-describedby={
-          [describedBy, reason && reasonId].filter(Boolean).join(' ') ||
-          undefined
-        }
-        onClick={() => {
-          if (confirm && !window.confirm(confirm)) return
-          void gestures.run(
-            gesture,
-            { pendingLabel, estimateMs, settle },
-            (report) => run(report),
-          )
-        }}
-      >
-        <span className="btn__labels">
-          <span
-            className={running ? 'btn__label btn__label--ghost' : 'btn__label'}
-            id={labelId}
-          >
-            {label}
-          </span>
-          <span
-            className={running ? 'btn__label' : 'btn__label btn__label--ghost'}
-          >
-            {pendingLabel}
-          </span>
-        </span>
-      </button>
-
-      {reason && (
-        <p className="admin-page__blocked" id={reasonId}>
-          {reason}
-        </p>
-      )}
-
-      <GestureFeedback
-        running={running}
-        outcome={outcome}
-        labelledBy={titleId ? `${labelId} ${titleId}` : labelId}
+    <button
+      type="button"
+      className={`btn btn--${variant}`}
+      disabled={inert}
+      aria-busy={running !== null || undefined}
+      aria-describedby={
+        [describedBy, reason && reasonId].filter(Boolean).join(' ') || undefined
+      }
+      onClick={() => {
+        if (confirm && !window.confirm(confirm)) return
+        void gestures.run(
+          gesture,
+          {
+            pendingLabel,
+            subject,
+            estimateMs,
+            settle,
+          },
+          (report) => run(report),
+        )
+      }}
+    >
+      <ButtonLabels
+        label={label}
+        pendingLabel={pendingLabel}
+        running={running !== null}
       />
-    </div>
+    </button>
+  )
+}
+
+/**
+ * Both labels rendered, stacked in one grid cell with the inactive one hidden, so the control keeps the
+ * width of the longer of the two. Shared with the file input, which draws the same face.
+ */
+export function ButtonLabels({
+  label,
+  pendingLabel,
+  running,
+}: {
+  label: string
+  pendingLabel: string
+  running: boolean
+}) {
+  return (
+    <span className="btn__labels">
+      <span className={running ? 'btn__label btn__label--ghost' : 'btn__label'}>
+        {label}
+      </span>
+      <span className={running ? 'btn__label' : 'btn__label btn__label--ghost'}>
+        {pendingLabel}
+      </span>
+    </span>
   )
 }

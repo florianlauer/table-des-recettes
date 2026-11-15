@@ -57,16 +57,11 @@
 }
 /* 3rem is the 48px floor DESIGN.md sets for a control, expressed so that it follows the text: a
    floor in px stops being a floor the moment someone enlarges the type. § Anti-slop exempts the
-   admin from Fraunces, from the fluid scale and from the type inks — not from the touch floor.
-   Padding alone left these at 44px, on the surface the code itself calls the one thing the admin
-   does *on* a phone. */
+   admin from Fraunces, from the fluid scale and from the type inks — not from the touch floor. */
 .admin-page button {
-  border: 1px solid var(--ochre);
-  background: transparent;
-  color: var(--ink);
   font: inherit;
-  padding: 0.5rem 0.8rem;
   min-height: 3rem;
+  cursor: pointer;
 }
 
 /* The admin is a tool, not a shop window: its links carry their rule at rest. The public surfaces
@@ -84,32 +79,63 @@
   display: inline-block;
   padding: 0.7rem 0;
 }
-.admin-page button {
-  cursor: pointer;
-}
 /* Long values — a file name, a slug, a token — must wrap rather than widen the column: without
    `minmax(0, …)` their min-content width pushes the grid past a 390 px phone, and the scanning
    gesture is the one thing the admin does *on* a phone. */
 .admin-page__field {
   grid-template-columns: minmax(0, 1fr);
 }
-/* The label carries the frame the hidden input can't. Same shape as `.admin-page button`, since it
-   is one; `justify-self` keeps it the width of its sentence instead of the whole column. */
-.admin-page__file {
-  position: relative;
-}
-.admin-page__file-button {
-  display: inline-flex;
+
+/* --- controls: four kinds, told apart before they are read (DESIGN.md § `/admin`) --- */
+
+/* The file input's label draws a `.btn` span too: a button in all but element. */
+.btn {
+  display: inline-grid;
   align-items: center;
-  justify-self: start;
-  border: 1px solid var(--ochre);
-  padding: 0.5rem 0.8rem;
+  border: 1px solid;
+  background: transparent;
+  padding: 0.5rem 0.9rem;
   min-height: 3rem;
-  cursor: pointer;
+  /* One line, always. A label broken over two lines made every button of a band a different height;
+     the band wraps whole buttons instead. */
+  white-space: nowrap;
+}
+/* The one gesture a zone exists for. The only filled control of the system. */
+.btn--primary {
+  background: var(--ochre);
+  border-color: var(--ochre);
+  color: var(--on-ochre);
+  font-weight: 600;
+}
+.btn--secondary {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+/* What destroys: a purge, a deletion, a rejected render. The confirmation still asks; the colour
+   says it before the click. */
+.btn--danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+/* What only toggles or reveals reads as a link, and keeps the touch floor. */
+.btn--quiet {
+  border-color: transparent;
+  padding-inline: 0;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.18em;
+}
+/* The label carries the frame the hidden input can't. */
+.admin-page__file {
+  display: inline-flex;
+  position: relative;
+  margin: 1rem 0;
 }
 /* The ring belongs on what is visible: the input keeps the focus, the label shows it. */
-.admin-page__file:has(input:focus-visible) .admin-page__file-button {
-  outline: 2px solid var(--ochre);
+.admin-page__file:has(input:focus-visible) .btn {
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 @media (hover: hover) {
@@ -117,25 +143,49 @@
     color: var(--ochre-hover);
     text-decoration-color: var(--ochre);
   }
-  .admin-page button:not(:disabled):hover,
-  .admin-page__file:has(input:not(:disabled)):hover .admin-page__file-button {
+  .btn--primary:not(:disabled, [data-inert]):hover {
+    background: var(--ochre-hover);
+    border-color: var(--ochre-hover);
+  }
+  .btn--secondary:not(:disabled, [data-inert]):hover {
     color: var(--ochre-hover);
     border-color: var(--ochre-hover);
   }
+  .btn--danger:not(:disabled, [data-inert]):hover {
+    color: var(--danger-hover);
+    border-color: var(--danger-hover);
+  }
+  .btn--quiet:not(:disabled, [data-inert]):hover {
+    color: var(--ochre-hover);
+    text-decoration-color: var(--ochre);
+  }
 }
-/* Touch has no hover: this is the only confirmation a greasy finger registered. */
+/* Touch has no hover: this is the only colour confirmation a greasy finger gets. */
 .admin-page a:active,
-.admin-page button:not(:disabled):active,
-.admin-page__file:has(input:not(:disabled)):active .admin-page__file-button {
+.btn--secondary:not(:disabled, [data-inert]):active,
+.btn--quiet:not(:disabled, [data-inert]):active {
   color: var(--ochre-hover);
 }
-/* A dead control says so — the precedent is `−` in the servings selector. `not-allowed` rather than
-   `default`: the pointer is the only channel that can report the refusal before the click. */
-.admin-page button:disabled,
-.admin-page__file:has(input:disabled) .admin-page__file-button {
+/* A dead control says so. `not-allowed` rather than `default`: the pointer is the only channel that
+   can report the refusal before the click. A running control is disabled too, but it is not dead —
+   it keeps its kind and its colour, and only its label changes. */
+.btn:is(:disabled, [data-inert]):not([aria-busy='true']) {
+  background: transparent;
   color: var(--rule-strong);
   border-color: var(--rule);
+  font-weight: 400;
   cursor: not-allowed;
+}
+/* As specific as the rule above, and after it: a dead link-like control stays frameless. */
+.btn.btn--quiet:is(:disabled, [data-inert]):not([aria-busy='true']) {
+  border-color: transparent;
+  text-decoration-color: var(--rule);
+}
+.btn:not(:disabled, [data-inert]) {
+  cursor: pointer;
+}
+.btn[aria-busy='true'] {
+  cursor: progress;
 }
 /* The token, and the only way to check what was typed on a phone. Both bottoms sit on the container's
    edge, so the button lines up with the field rather than with its label. */
@@ -164,50 +214,143 @@
   visibility: hidden;
 }
 
-/* The gesture and everything it owes: the bar, the phase, the result, the reason it is inert.
-   `inline-grid`, not `grid`: a block-level box would stretch the button to the width of the page
-   wherever the section is plain block flow, and the bar spans the control rather than the column. */
-.gesture-control {
-  display: inline-grid;
-  vertical-align: top;
-  gap: 0.3rem;
-  align-content: start;
-  max-width: 100%;
+/* A band of controls and the one line under it that says why some are inert. The line is reserved
+   even when empty: a reason that appeared on the first keystroke pushed the band down. Two classes,
+   because the flex parents set `margin: 0` on their own paragraphs. */
+.admin-actions {
+  flex-basis: 100%;
 }
-/* The message sizes the control, so an unbounded sentence would drag the bar across the page. */
-.gesture-control .gesture__note,
-.gesture-control .admin-page__blocked {
-  max-width: 34rem;
+.admin-actions__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.admin-actions .admin-actions__reasons {
+  min-block-size: 1lh;
+  margin: 0.4rem 0 0;
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+}
+
+/* --- the activity bar: everything running, and what came of it --- */
+
+/* Over the page, never in it: opening space next to the pressed control is what moved the page
+   under the operator's finger. Surface and two rules, like an open fold's banner; no shadow. */
+.activity {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  max-height: 50vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-top: 2px solid var(--ochre);
+  border-bottom: 1px solid var(--rule-strong);
+  font-size: var(--type-control);
+}
+.activity__inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.activity__entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 0.8rem;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--rule);
+}
+/* The grid above would otherwise beat the browser's own `[hidden] { display: none }`. */
+.activity__entry[hidden] {
+  display: none;
+}
+.activity__entry:first-child {
+  border-top: 0;
+}
+.activity__what,
+.activity__time {
+  margin: 0;
+}
+.activity__what b {
+  font-weight: 600;
+}
+.activity__subject {
+  color: var(--ink-muted);
+}
+.activity__time {
+  font-size: var(--type-meta);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 /* Not a rule: an object that carries a state, so it answers to 1.4.11 where the rules do not. The
    only pair in the palette where both halves pass — the track against the paper (3.53:1) and the
-   fill against the track (3.75:1). Ochre fails here whatever the track: its best case is 2.90:1 on
-   `--rule`, and that track is itself 1.67:1 on the paper. See DESIGN.md § Mouvement et objets
-   graphiques. */
-.gesture__bar {
+   fill against the track (3.75:1). DESIGN.md § La piste de progression. */
+.activity__bar {
+  grid-column: 1 / -1;
   height: 3px;
+  margin-top: 0.4rem;
+  overflow: hidden;
   background: var(--rule-strong);
 }
-.gesture__fill {
+.activity__fill {
   height: 100%;
   background: var(--ink);
+  transform-origin: left;
 }
-.gesture__note,
-.admin-page__blocked {
-  font-size: var(--type-meta);
-  color: var(--ink-muted);
-  margin: 0.3rem 0 0;
-}
-/* A settled gesture leaves the muted register: it is the answer to something the operator just did,
-   and it competed with the static captions around it. The glyph already carries the verdict — the
-   weight is the second channel, not a replacement for it. */
-.gesture__note[data-ok='true'],
-.gesture__note[data-ok='false'] {
-  color: var(--ink);
-}
-.gesture__note[data-ok='false'] {
+/* A failure is billed work gone wrong: it keeps the weight, and the colour that names it. */
+.activity__entry[data-ok='false'] .activity__what {
+  color: var(--danger);
   font-weight: 600;
 }
+.activity__close {
+  min-width: 3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+@media (hover: hover) {
+  .activity__close:hover {
+    color: var(--ochre-hover);
+  }
+}
+.activity__more {
+  margin: 0;
+}
+
+/* DESIGN.md § Mouvement, the admin's three exceptions. Written inside the guard, never undone after
+   it: with reduced motion nothing here is emitted at all. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Pressed: fast in, slower out, so the finger gets an answer and the release is seen. */
+  .btn {
+    transition: transform 280ms var(--ease-out);
+  }
+  .btn:not(:disabled, [data-inert]):active {
+    transform: scale(0.96);
+    transition-duration: 120ms;
+  }
+  /* The fill eases between two 250 ms ticks instead of jumping; it trails the truth by ~0.4 s. */
+  .activity__fill {
+    transition: transform 400ms linear;
+  }
+  .activity__entry {
+    transition: opacity 220ms var(--ease-out);
+  }
+  .activity__entry[data-leaving] {
+    opacity: 0;
+  }
+  @starting-style {
+    .activity__entry {
+      opacity: 0;
+    }
+  }
+}
+
 /* The admin's failure line. Same register as the storefront's `.failure`: the fact in body ink,
    the one recourse next to it, no icon and no panel. */
 .admin-page__failure {
@@ -330,9 +473,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  /* Not `center`: a control carrying a message is taller than its neighbours, and centring made two
-     buttons on the same line sit at two different heights. They share a top edge. */
-  align-items: flex-start;
+  align-items: center;
 }
 .illustrations__recipe h3 {
   font-family: var(--serif);
@@ -340,12 +481,8 @@
 }
 .illustrations__recipe h3,
 .illustrations__recipe p,
-.illustrations__recipe > label,
-.illustrations__waiting {
+.illustrations__recipe > label {
   flex-basis: 100%;
-  margin: 0;
-}
-.illustrations__waiting p {
   margin: 0;
 }
 /* Stacked and full width, never side by side: the thing being judged is the print screen, and two
@@ -497,23 +634,8 @@
   margin-top: 0.4rem;
 }
 
-/* Qualified by the page, and not by the class alone: `.admin-page button` frames every button of the
-   screen at specificity (0,1,1), so a bare `.illustrations__more` at (0,1,0) lost its `border: 0` and
-   its ochre — the one control meant to read as a sentence was rendering as a framed button in body
-   ink. Nothing else in this file competes with `.admin-page button`, which is why it went unseen. */
-.admin-page .illustrations__more {
+.illustrations__more {
   margin-top: 1rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: var(--type-control);
-  color: var(--ochre);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  cursor: pointer;
-  /* `min-height: 3rem` keeps coming from `.admin-page button`, and it stays: the touch floor holds for
-     a control that reads as a sentence too. Without a frame it costs nothing but room to hit. */
 }
 
 /* --- correction screen --- */
@@ -556,9 +678,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  /* Same reason as `.illustrations__recipe`: "Relancer l'extraction" carries a blocked reason under
-     it, and centring dropped the button beside it half a line lower. */
-  align-items: flex-start;
+  align-items: center;
   margin: 1.5rem 0;
 }
 .scan-page__actions p {
@@ -648,8 +768,20 @@
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
+.scan-page__line-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
 .scan-page__undo {
-  margin: 0 0 0.75rem;
+  margin: 0;
+  min-width: 0;
+}
+/* The one label that quotes data: an ingredient line can be longer than a phone, so it wraps. */
+.scan-page__undo .btn {
+  white-space: normal;
+  text-align: left;
 }
 .scan-page__ingredient--head {
   margin-bottom: 0.3rem;
@@ -675,4 +807,13 @@
     margin-left: 0;
     padding-left: 0.9rem;
   }
+}
+
+/* The queue's label counts down a retry; its width must not follow the digits. */
+.admin-page__queue-action {
+  margin: 1rem 0;
+}
+.admin-page__queue-action .btn {
+  min-inline-size: 13em;
+  font-variant-numeric: tabular-nums;
 }
