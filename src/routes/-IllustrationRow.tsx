@@ -2,7 +2,7 @@ import { useMutation } from 'convex/react'
 import { useEffect, useId, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { api } from '../../convex/_generated/api'
-import { outcomeMessage } from '../lib/gestureMessages'
+import { outcomeMessage, thrownMessage } from '../lib/gestureMessages'
 import { rowGesture } from '../lib/gestures'
 import {
   BEAUTIFY_LEASE_MS,
@@ -368,13 +368,23 @@ export function IllustrationRow({
           onFiles={async (files, report) => {
             const file = files[0]
             if (!file) return { ok: false, text: 'Aucun fichier.' }
-            return outcomeMessage(
-              await attachIllustration(file, {
-                recipeId: row.id,
-                onPhase: (phase) =>
-                  report(uploadProgress({ done: 0, total: 1, phase })),
-              }),
+            const attached = await attachIllustration(file, {
+              recipeId: row.id,
+              onPhase: (phase) =>
+                report(uploadProgress({ done: 0, total: 1, phase })),
+            })
+            if (!attached.ok) return outcomeMessage(attached)
+
+            const generated = await requestBeautify(args).then(
+              outcomeMessage,
+              thrownMessage,
             )
+            return {
+              ok: generated.ok,
+              text: generated.ok
+                ? 'Photo enregistrée. Embellissement lancé.'
+                : `Photo enregistrée. Embellissement non lancé : ${generated.text}`,
+            }
           }}
         />
       )}

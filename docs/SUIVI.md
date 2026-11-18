@@ -120,8 +120,9 @@ Statuts : ✅ fait · ⬜ à faire · ⛔ bloqué.
   passe les deux étapes. Conséquence à retenir : **une PR qui supprime un index ne se voit pas en
   CI** — previews vertes, production en échec.
 
-- **Embellissement et arbitrage** — une génération se lance à la main, jamais automatiquement : on ne
-  paie pas un rendu sur chaque photo posée. Le candidat se compare à l'originale **empilé**, pleine
+- **Embellissement et arbitrage** — l'ajout ou le remplacement d'une photo lance automatiquement son
+  embellissement. « Tout publier » marque les recettes sans photo comme « aucune dans la source »
+  et les retire de « À traiter ». Le candidat se compare à l'originale **empilé**, pleine
   largeur, puis s'accepte, se rejette ou se régénère. Un embellissement publié se dépublie sans
   perdre le rendu payé. Journal `beautifyAttempts` : une ligne par appel terminé, son coût, sa
   latence, sa nature d'échec **et ce que l'humain en a décidé** — c'est la seule métrique qui dise si
