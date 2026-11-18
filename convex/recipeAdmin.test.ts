@@ -6,6 +6,7 @@ import schema from './schema'
 import { RETENTION_AFTER_TREATMENT_MS } from './retention'
 import { SLUG_PROBE_LIMIT } from '../src/shared/scanLimits'
 import { registerComponents } from '../test/convexComponents'
+import { jpeg, listWork } from '../test/illustrationFixtures'
 
 const modules = import.meta.glob('./**/*.ts')
 const adminToken = 'test-secret'
@@ -268,8 +269,8 @@ describe('publishing', () => {
   test('publishes a whole scan and names what it could not', async () => {
     const t = setup()
     const scanId = await newScan(t)
-    await draft(t, scanId, 'Soupe de courge')
-    await draft(t, scanId, '???')
+    const published = await draft(t, scanId, 'Soupe de courge')
+    const refused = await draft(t, scanId, '???')
 
     const result = await t.mutation(api.recipeAdmin.publishScan, {
       adminToken,
@@ -280,6 +281,74 @@ describe('publishing', () => {
       published: 1,
       refused: [{ title: '???' }],
     })
+    expect(await read(t, published)).toMatchObject({
+      noPhotoAvailable: true,
+      illustrationStage: 'source-has-none',
+    })
+    expect(await read(t, refused)).toMatchObject({
+      status: 'review',
+      noPhotoAvailable: false,
+      illustrationStage: 'missing',
+    })
+  })
+
+  test('completes missing photo work for a whole scan without changing existing photos', async () => {
+    const t = setup()
+    const scanId = await newScan(t)
+    const missing = await draft(t, scanId, 'Soupe')
+    const alreadyPublished = await draft(t, scanId, 'Gratin')
+    const marked = await draft(t, scanId, 'Salade')
+    const photographed = await draft(t, scanId, 'Tarte')
+    await t.mutation(api.recipeAdmin.publishRecipe, {
+      adminToken,
+      recipeId: alreadyPublished,
+    })
+    expect(await read(t, alreadyPublished)).toMatchObject({
+      noPhotoAvailable: false,
+      illustrationStage: 'missing',
+    })
+    await t.mutation(api.illustrations.markNoPhotoAvailable, {
+      adminToken,
+      recipeId: marked,
+    })
+    const ticket = await t.mutation(api.admin.generateUploadUrl, {
+      adminToken,
+      purpose: 'illustration',
+    })
+    if (!ticket.ok) throw new Error(ticket.error)
+    const storageId = await t.run((ctx) => ctx.storage.store(jpeg()))
+    await t.mutation(internal.illustrations.commitIllustration, {
+      ticketId: ticket.ticketId,
+      storageId,
+      recipeId: photographed,
+    })
+
+    await expect(
+      t.mutation(api.recipeAdmin.publishScan, { adminToken, scanId }),
+    ).resolves.toEqual({ ok: true, published: 3, refused: [] })
+
+    for (const recipeId of [missing, alreadyPublished, marked]) {
+      expect(await read(t, recipeId)).toMatchObject({
+        status: 'published',
+        noPhotoAvailable: true,
+        illustrationStage: 'source-has-none',
+      })
+    }
+    expect(await read(t, photographed)).toMatchObject({
+      imageStorageId: storageId,
+      noPhotoAvailable: false,
+      illustrationStage: 'to-beautify',
+    })
+    const work = await listWork(t)
+    expect(work.missing.count).toBe(0)
+    expect(work.sourceHasNone.count).toBe(3)
+    expect(work.toBeautify.rows.map(({ id }) => id)).toEqual([photographed])
+
+    const before = await read(t, missing)
+    await expect(
+      t.mutation(api.recipeAdmin.publishScan, { adminToken, scanId }),
+    ).resolves.toEqual({ ok: true, published: 0, refused: [] })
+    expect(await read(t, missing)).toEqual(before)
   })
 
   test('handles a recipe with no parent scan', async () => {

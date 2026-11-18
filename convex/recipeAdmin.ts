@@ -4,6 +4,7 @@ import { mutation } from './_generated/server'
 import type { MutationCtx } from './_generated/server'
 import { requireAdmin } from './auth'
 import { deleteStoredBlob } from './lib/blobs'
+import { writeIllustration } from './lib/illustrationWrites'
 import {
   revisionOf,
   withIllustration,
@@ -342,10 +343,22 @@ export const publishScan = mutation({
     let published = 0
     const refused: { title: string; error: string }[] = []
     for (const recipe of recipes) {
-      if (recipe.status === 'published') continue
-      const result = await publish(ctx, recipe, imagesChanged)
-      if (result.ok) published += 1
-      else refused.push({ title: recipe.title, error: result.error })
+      if (recipe.status !== 'published') {
+        const result = await publish(ctx, recipe, imagesChanged)
+        if (!result.ok) {
+          refused.push({ title: recipe.title, error: result.error })
+          continue
+        }
+        published += 1
+      }
+      if (!recipe.imageStorageId && !recipe.noPhotoAvailable) {
+        await writeIllustration(
+          ctx,
+          recipe,
+          { noPhotoAvailable: true },
+          Date.now(),
+        )
+      }
     }
     await reconcileRetention(ctx, scanId)
     return { ok: true as const, published, refused }

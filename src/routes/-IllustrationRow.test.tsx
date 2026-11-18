@@ -1,14 +1,39 @@
 import { renderToStaticMarkup } from 'react-dom/server.browser'
-import { describe, expect, test, vi } from 'vite-plus/test'
+import { getFunctionName } from 'convex/server'
+import { beforeEach, describe, expect, test, vi } from 'vite-plus/test'
+import type { FunctionReference } from 'convex/server'
 import type { Id } from '../../convex/_generated/dataModel'
 import { fakeGestures } from '../lib/gestures.fixture'
 import { IllustrationRow } from './-IllustrationRow'
 import type { Row } from './-IllustrationRow'
+import { AdminFileInput } from './-AdminFileInput'
 
-vi.mock('convex/react', () => ({ useMutation: () => async () => ({}) }))
-vi.mock('../client/useAttachIllustration', () => ({
-  useAttachIllustration: () => async () => ({}),
+const { attachIllustration, requestBeautify } = vi.hoisted(() => ({
+  attachIllustration: vi.fn(),
+  requestBeautify: vi.fn(),
 }))
+
+vi.mock('convex/react', () => ({
+  useMutation: (mutation: FunctionReference<'mutation'>) =>
+    getFunctionName(mutation) === 'illustrations:requestBeautify'
+      ? requestBeautify
+      : async () => ({ ok: true }),
+}))
+vi.mock('../client/useAttachIllustration', () => ({
+  useAttachIllustration: () => attachIllustration,
+}))
+vi.mock('./-AdminFileInput', async (importOriginal) => {
+  const original = await importOriginal<{
+    AdminFileInput: typeof AdminFileInput
+  }>()
+  return { ...original, AdminFileInput: vi.fn(original.AdminFileInput) }
+})
+
+beforeEach(() => {
+  vi.clearAllMocks()
+  attachIllustration.mockReset().mockResolvedValue({ ok: true })
+  requestBeautify.mockReset().mockResolvedValue({ ok: true })
+})
 
 const row: Row = {
   id: 'recipe-1' as Id<'recipes'>,
@@ -67,4 +92,65 @@ describe('IllustrationRow', () => {
       /class="btn btn--quiet"[^>]*>.*?Aucune dans la source/,
     )
   })
+
+  test('starts beautification only after the photo is attached', async () => {
+    render()
+    const { onFiles } = vi.mocked(AdminFileInput).mock.calls[0]![0]
+    const file = new File(['photo'], 'photo.jpg', { type: 'image/jpeg' })
+    let finishUpload!: (result: { ok: true }) => void
+    attachIllustration.mockReturnValue(
+      new Promise((resolve) => {
+        finishUpload = resolve
+      }),
+    )
+
+    const result = onFiles([file], vi.fn())
+    expect(requestBeautify).not.toHaveBeenCalled()
+    finishUpload({ ok: true })
+
+    await expect(result).resolves.toEqual({
+      ok: true,
+      text: 'Photo enregistrée. Embellissement lancé.',
+    })
+    expect(attachIllustration).toHaveBeenCalledWith(file, {
+      recipeId: row.id,
+      onPhase: expect.any(Function),
+    })
+    expect(requestBeautify).toHaveBeenCalledExactlyOnceWith({
+      adminToken: 'token',
+      recipeId: row.id,
+    })
+  })
+
+  test('does not start beautification when the upload fails', async () => {
+    render()
+    const { onFiles } = vi.mocked(AdminFileInput).mock.calls[0]![0]
+    attachIllustration.mockResolvedValue({ ok: false, error: 'Envoi refusé' })
+
+    await expect(
+      onFiles([new File([], 'photo.jpg')], vi.fn()),
+    ).resolves.toEqual({ ok: false, text: 'Envoi refusé' })
+    expect(requestBeautify).not.toHaveBeenCalled()
+  })
+
+  test.each(['refused', 'thrown'])(
+    'reports a saved photo when generation is %s',
+    async (failure) => {
+      render()
+      const { onFiles } = vi.mocked(AdminFileInput).mock.calls[0]![0]
+      if (failure === 'refused')
+        requestBeautify.mockResolvedValue({
+          ok: false,
+          error: 'Limite atteinte',
+        })
+      else requestBeautify.mockRejectedValue(new Error('Limite atteinte'))
+
+      await expect(
+        onFiles([new File([], 'photo.jpg')], vi.fn()),
+      ).resolves.toEqual({
+        ok: false,
+        text: 'Photo enregistrée. Embellissement non lancé : Limite atteinte',
+      })
+    },
+  )
 })
