@@ -1,0 +1,150 @@
+{
+  "id": "j573dxfqpk9qcq58tx619vpva18j9ht3",
+  "creationTime": 1794739393120.5806,
+  "title": "Sticks de dinde",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "500 g d'escalopes de dinde",
+      "quantity": 500,
+      "unit": "g",
+      "label": "escalopes de dinde"
+    },
+    {
+      "raw": "2 jaunes d'œufs",
+      "quantity": 2,
+      "unit": null,
+      "label": "jaunes d'œufs"
+    },
+    {
+      "raw": "chapelure, huile",
+      "quantity": null,
+      "unit": null,
+      "label": "chapelure, huile"
+    },
+    {
+      "raw": "La sauce skardalia",
+      "quantity": null,
+      "unit": null,
+      "label": "La sauce skardalia"
+    },
+    {
+      "raw": "5 gousses d'ail",
+      "quantity": 5,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "150 g de pommes de terre",
+      "quantity": 150,
+      "unit": "g",
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "1/2 tasse à thé d'huile",
+      "quantity": 0.5,
+      "unit": "tasse à thé",
+      "label": "huile"
+    },
+    {
+      "raw": "vinaigre, sel",
+      "quantity": null,
+      "unit": null,
+      "label": "vinaigre, sel"
+    },
+    {
+      "raw": "Le caviar d'aubergine",
+      "quantity": null,
+      "unit": null,
+      "label": "Le caviar d'aubergine"
+    },
+    {
+      "raw": "500 g d'aubergines",
+      "quantity": 500,
+      "unit": "g",
+      "label": "aubergines"
+    },
+    {
+      "raw": "1/2 tasse à thé d'huile",
+      "quantity": 0.5,
+      "unit": "tasse à thé",
+      "label": "huile"
+    },
+    {
+      "raw": "un filet pour la cuisson",
+      "quantity": null,
+      "unit": "filet",
+      "label": "huile pour la cuisson"
+    },
+    {
+      "raw": "1/2 citron pressé",
+      "quantity": 0.5,
+      "unit": "citron",
+      "label": "citron pressé"
+    },
+    {
+      "raw": "1 gousse d'ail pilée, sel",
+      "quantity": 1,
+      "unit": "gousse",
+      "label": "ail pilée, sel"
+    },
+    {
+      "raw": "Le tzatziki",
+      "quantity": null,
+      "unit": null,
+      "label": "Le tzatziki"
+    },
+    {
+      "raw": "1 tasse à thé de yaourt",
+      "quantity": 1,
+      "unit": "tasse à thé",
+      "label": "yaourt"
+    },
+    {
+      "raw": "1/2 concombre moyen",
+      "quantity": 0.5,
+      "unit": null,
+      "label": "concombre moyen"
+    },
+    {
+      "raw": "2 gousses d'ail pilées",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail pilées"
+    },
+    {
+      "raw": "1 cuil. à soupe d'huile d'olive",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel, poivre, vinaigre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre, vinaigre"
+    },
+    {
+      "raw": "aneth haché",
+      "quantity": null,
+      "unit": null,
+      "label": "aneth haché"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparer les sauces. Pour la skardalia : éplucher et piler les gousses d'ail. Ecraser les pommes de terre cuites en purée grossière. Lier avec 1 à 2 cuil. de vinaigre puis incorporer l'huile doucement en mélangeant. Ranger au frais.",
+    "Pour le caviar d'aubergine : préchauffer le four à th. 7 (210 °C). Laver et sécher les aubergines, les couper en deux dans la longueur, fendre la chair en croix dessinées sur toute la longueur, arroser d'huile et faire cuire au four 40 mn. Prélever la chair, la passer au mixeur avec le jus de citron et le sel. Ajouter l'ail et incorporer l'huile. Ranger au frais.",
+    "Pour le tzatziki : râper le concombre. Le presser dans un linge propre pour le faire dégorger. Le mélanger aux autres ingrédients et ranger au frais.",
+    "Préparer les sticks de dinde : tailler la viande en lanières.",
+    "Dans deux assiettes creuses, disposer les jaunes d'œufs battus en omelette et la chapelure. Plonger les lanières dans les jaunes d'œufs puis dans la chapelure.",
+    "Chauffer l'huile dans une poêle, et y saisir les lanières et laisser dorer et cuire 3 à 4 mn environ.",
+    "Dresser bien chaud dans un plat. Accompagner des sauces."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": "kg23qj93h3trraf25jtmfdkmw18j90jj",
+  "beautifiedStorageId": "kg25wevjm6acmhvjshrb7khpb98j89dm"
+}

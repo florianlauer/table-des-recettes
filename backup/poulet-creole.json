@@ -1,0 +1,46 @@
+{
+  "id": "j5771tqbcxgt0cvycj0n4zy8j18j9g57",
+  "creationTime": 1794739531686.7993,
+  "title": "Poulet créole",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "1 bocal de sauce Créole Amora à l'ananas",
+      "quantity": 1,
+      "unit": "bocal",
+      "label": "sauce Créole Amora à l'ananas"
+    },
+    {
+      "raw": "125 g de riz long grain cuisson rapide",
+      "quantity": 125,
+      "unit": "g",
+      "label": "riz long grain cuisson rapide"
+    },
+    {
+      "raw": "1 tablette de bouillon aux épices",
+      "quantity": 1,
+      "unit": "tablette",
+      "label": "bouillon aux épices"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mettez le riz à cuire dans une grande quantité d'eau bouillante à laquelle vous aurez ajouté le bouillon.",
+    "Découpez aux ciseaux les blancs de poulet en petits cubes.",
+    "Faites-les revenir à la poêle dans un peu de beurre.",
+    "Ajoutez la sauce Créole Amora. Laissez mijoter 2 minutes.",
+    "Égouttez le riz, présentez-le en couronne et disposez le poulet au centre."
+  ],
+  "status": "published",
+  "slug": "poulet-creole",
+  "publishedAt": 1794739950605,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

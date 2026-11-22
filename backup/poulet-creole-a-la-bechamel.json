@@ -1,0 +1,77 @@
+{
+  "id": "j57bxrq8c3hjkht1wm86tby9h58j8crt",
+  "creationTime": 1794739531686.7979,
+  "title": "Poulet créole à la béchamel",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "beurre",
+      "quantity": 20,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "escalopes de poulet",
+      "quantity": null,
+      "unit": null,
+      "label": "escalopes de poulet"
+    },
+    {
+      "raw": "tablette de bouillon de poule",
+      "quantity": 1,
+      "unit": null,
+      "label": "tablette de bouillon de poule"
+    },
+    {
+      "raw": "eau chaude",
+      "quantity": 15,
+      "unit": "cl",
+      "label": "eau chaude"
+    },
+    {
+      "raw": "cuillère à soupe de curry en poudre",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "curry en poudre"
+    },
+    {
+      "raw": "sauce Béchamel Knorr",
+      "quantity": null,
+      "unit": null,
+      "label": "sauce Béchamel Knorr"
+    },
+    {
+      "raw": "lait",
+      "quantity": 0.5,
+      "unit": "L",
+      "label": "lait"
+    },
+    {
+      "raw": "riz basmati",
+      "quantity": null,
+      "unit": null,
+      "label": "riz basmati"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Dans une cocotte faites dorer un oignon pelé et coupé en dés avec 20 g de beurre (5 à 10 mn).",
+    "Puis ajoutez 4 escalopes de poulet coupées en petits morceaux et laissez dorer à feu vif 10 mn.",
+    "Diluez 1 tablette de bouillon de poule dans 15 cl d'eau chaude et ajoutez-y 1 cuillère à soupe de curry en poudre.",
+    "Versez le bouillon dans la cocotte et laissez mijoter à feu doux 30 mn, puis retirez le poulet et réservez-le dans un grand plat.",
+    "Pendant ce temps, préparez la sauce Béchamel Knorr avec 1/2 L de lait puis mélangez-la avec la sauce au curry et laissez mijoter 10 mn.",
+    "Versez cette sauce sur le poulet et accompagnez de riz basmati."
+  ],
+  "status": "published",
+  "slug": "poulet-creole-a-la-bechamel",
+  "publishedAt": 1794739950605,
+  "imageStorageId": "kg2dwkg0e3j9bwhw35bf3vc0m98j9hrt",
+  "beautifiedStorageId": "kg2ehdjhs5ses9r747echd2x1x8j9fqh"
+}

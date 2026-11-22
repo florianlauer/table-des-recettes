@@ -1,0 +1,61 @@
+{
+  "id": "j578sa4ngr0r42530fg8wffnwh8j8p4w",
+  "creationTime": 1794739113454.3193,
+  "title": "Éventail de volaille",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de volaille de 180 g",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de volaille de 180 g"
+    },
+    {
+      "raw": "4 oignons, 200 g de champignons",
+      "quantity": 4,
+      "unit": null,
+      "label": "oignons, 200 g de champignons"
+    },
+    {
+      "raw": "2 cuil. à soupe de fines herbes",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "fines herbes"
+    },
+    {
+      "raw": "4 cuil. à soupe de crème",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "crème"
+    },
+    {
+      "raw": "1 cuil. à café de jus de citron",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "1 cuil. à café de paprika",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "paprika"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mélangez les champignons coupés en fines lamelles et les herbes. Incisez les blancs de volaille, glissez un peu du mélange dans les entailles. Mettez les oignons émincés dans le panier perforé, posez la volaille dessus, recouvrez du reste de champignons, salez et poivrez. Faites cuire 20 min à feu moyen.",
+    "Puis mélangez crème, jus de citron, paprika, salez, poivrez, réchauffez légèrement et accompagnez la volaille."
+  ],
+  "status": "published",
+  "slug": "eventail-de-volaille",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

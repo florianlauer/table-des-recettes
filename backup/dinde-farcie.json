@@ -1,0 +1,83 @@
+{
+  "id": "j575xrr19e88ajvf2ygpxq0kvd8jf8tv",
+  "creationTime": 1794994943553.337,
+  "title": "Dinde farcie",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 dinde",
+      "quantity": 1,
+      "unit": null,
+      "label": "dinde"
+    },
+    {
+      "raw": "8 tranches de pain de mie",
+      "quantity": 8,
+      "unit": "tranches",
+      "label": "pain de mie"
+    },
+    {
+      "raw": "2 bouquets de cerfeuil",
+      "quantity": 2,
+      "unit": "bouquets",
+      "label": "cerfeuil"
+    },
+    {
+      "raw": "5 échalotes",
+      "quantity": 5,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "250 g de noisettes",
+      "quantity": 250,
+      "unit": "g",
+      "label": "noisettes"
+    },
+    {
+      "raw": "20 cl de lait",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "lait"
+    },
+    {
+      "raw": "10 cl de vin blanc",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "10 cl de bouillon de volaille",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "2 c. à s. d'huile",
+      "quantity": 2,
+      "unit": "c. à s.",
+      "label": "huile"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four th. 6 (180 °C).",
+    "Trempez les tranches de pain de mie dans le lait. Mettez-les dans le bol d'un mixeur avec les noisettes, les échalotes pelées et coupées en morceaux et le cerfeuil effeuillé. Salez, poivrez et mixez jusqu'à obtention d'une farce.",
+    "Garnissez l'intérieur de la dinde avec la farce, puis cousez l'ouverture avec de la ficelle de cuisine.",
+    "Mettez la dinde dans un plat à four, salez, poivrez, et arrosez d'huile. Versez le vin et le bouillon dans le fond du plat et enfournez.",
+    "Faites cuire 2 h 30 en arrosant souvent.",
+    "Quand la dinde est cuite, sortez-la du four, mettez-la dans un plat de service et accompagnez-la du jus de cuisson, que vous aurez fait réduire quelques minutes à feu vif."
+  ],
+  "status": "published",
+  "slug": "dinde-farcie",
+  "publishedAt": 1794995211168,
+  "imageStorageId": "kg2cnba7jzffcbz4ag1091zfqs8jfrm8",
+  "beautifiedStorageId": "kg20cqh303bmfak3r5nswc2b3n8jeb1d"
+}

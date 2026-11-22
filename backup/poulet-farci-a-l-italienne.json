@@ -1,0 +1,143 @@
+{
+  "id": "j57d3sd3yhjc5dvp5vqzbehxvh8j9p92",
+  "creationTime": 1794739113454.3174,
+  "title": "Poulet farci à l’italienne",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "24 olives vertes et noires dénoyautées",
+      "quantity": 24,
+      "unit": null,
+      "label": "olives vertes et noires dénoyautées"
+    },
+    {
+      "raw": "2 gousses d’ail",
+      "quantity": 2,
+      "unit": null,
+      "label": "gousses d’ail"
+    },
+    {
+      "raw": "1 tomate",
+      "quantity": 1,
+      "unit": null,
+      "label": "tomate"
+    },
+    {
+      "raw": "250 g de pain rassis",
+      "quantity": 250,
+      "unit": "g",
+      "label": "pain rassis"
+    },
+    {
+      "raw": "2 cuil. à soupe de persil plat",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "persil plat"
+    },
+    {
+      "raw": "1 cuil. à soupe d’huile d’olive",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "huile d’olive"
+    },
+    {
+      "raw": "15 g de beurre",
+      "quantity": 15,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "500 g de tomates",
+      "quantity": 500,
+      "unit": "g",
+      "label": "tomates"
+    },
+    {
+      "raw": "1 aubergine",
+      "quantity": 1,
+      "unit": null,
+      "label": "aubergine"
+    },
+    {
+      "raw": "2 petites courgettes",
+      "quantity": 2,
+      "unit": null,
+      "label": "petites courgettes"
+    },
+    {
+      "raw": "1 poivron rouge, 1 jaune",
+      "quantity": 1,
+      "unit": null,
+      "label": "poivron rouge, 1 jaune"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "1 gousse d’ail",
+      "quantity": 1,
+      "unit": null,
+      "label": "gousse d’ail"
+    },
+    {
+      "raw": "12,5 cl d’huile d’olive",
+      "quantity": 12.5,
+      "unit": "cl",
+      "label": "huile d’olive"
+    },
+    {
+      "raw": "4 cuil. à soupe de vin blanc",
+      "quantity": 4,
+      "unit": "cuil. à soupe",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "1 branche de thym",
+      "quantity": 1,
+      "unit": null,
+      "label": "branche de thym"
+    },
+    {
+      "raw": "1 branche de romarin",
+      "quantity": 1,
+      "unit": null,
+      "label": "branche de romarin"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préparez la ratatouille : lavez l’aubergine, coupez-la en rondelles. Faites-les dégorger 20 min.",
+    "Pelez les tomates, coupez-les en 4, épépinez-les. Coupez les courgettes en rondelles. Émincez l’oignon. Épépinez les poivrons, coupez-les en lanières. Pelez, puis pressez l’ail.",
+    "Épongez les rondelles d’aubergine. Faites revenir tous les légumes, ainsi que les oignons, 2 à 3 min, séparément, dans un peu d’huile chaude.",
+    "Versez tout dans une cocotte. Ajoutez thym et romarin, salez, poivrez. Arrosez du vin et d’un filet d’huile. Laissez mijoter à couvert, 30 min.",
+    "Préchauffez votre four sur th. 6-7 (200 °C). Hachez olives et ail. Coupez la tomate en dés. Émiettez le pain. Mélangez olives, ail, pain rassis, tomate et persil haché. Salez, poivrez.",
+    "Fendez les blancs dans la longueur. Garnissez-les de farce. Faites-les dorer à la poêle, dans le mélange d’huile et de beurre, 3 min de chaque côté. Terminez la cuisson au four, 20 min. Servez avec la ratatouille."
+  ],
+  "status": "published",
+  "slug": "poulet-farci-a-l-italienne",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

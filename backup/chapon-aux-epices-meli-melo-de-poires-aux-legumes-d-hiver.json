@@ -1,0 +1,105 @@
+{
+  "id": "j57czpav4qmf4q7dx91p2y8d0x8jffff",
+  "creationTime": 1795002810715.7588,
+  "title": "Chapon aux épices, méli-mélo de poires aux légumes d'hiver",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 chapon de 3 kg préparé et vidé",
+      "quantity": 1,
+      "unit": null,
+      "label": "chapon de 3 kg préparé et vidé"
+    },
+    {
+      "raw": "2 c. à soupe de cannelle, de coriandre, de cumin en poudre, de baies roses",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "cannelle, de coriandre, de cumin en poudre, de baies roses"
+    },
+    {
+      "raw": "4 c. à soupe d'huile d'olive",
+      "quantity": 4,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "4 citrons verts",
+      "quantity": 4,
+      "unit": null,
+      "label": "citrons verts"
+    },
+    {
+      "raw": "4 carottes",
+      "quantity": 4,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "1 bulbe de céleri-rave",
+      "quantity": 1,
+      "unit": "bulbe",
+      "label": "céleri-rave"
+    },
+    {
+      "raw": "4 échalotes, sel, poivre",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes, sel, poivre"
+    },
+    {
+      "raw": "2 c. à soupe d'huile d'olive + 20 g de beurre",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "huile d'olive + 20 g de beurre"
+    },
+    {
+      "raw": "2 branches de thym",
+      "quantity": 2,
+      "unit": "branches",
+      "label": "thym"
+    },
+    {
+      "raw": "10 cl de bouillon de volaille",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "4 poires",
+      "quantity": 4,
+      "unit": null,
+      "label": "poires"
+    },
+    {
+      "raw": "400 g de châtaignes sous vide ou en boîte",
+      "quantity": 400,
+      "unit": "g",
+      "label": "châtaignes sous vide ou en boîte"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez le four th. 6-7 (200 °C) et disposez le chapon dans un plat",
+    "Badigeonnez-le avec le mélange épices-huile d'olive",
+    "Recouvrez-le de rondelles de citrons verts",
+    "Faites cuire le chapon 3 h environ en l'arrosant régulièrement.",
+    "Epluchez carottes, céleri et échalotes",
+    "Découpez les carottes en rondelles, le céleri en bâtonnets",
+    "Hachez les échalotes et faites-les blondir en cocotte, avec l'huile d'olive et le beurre",
+    "Ajoutez carottes et céleri",
+    "Parsemez de thym",
+    "Versez le bouillon chaud",
+    "Couvrez et laissez cuire à feu doux 30 min",
+    "Coupez les poires avec la peau en quartiers",
+    "Retirez le centre, ajoutez-les dans la cocotte avec les châtaignes",
+    "Salez, poivrez",
+    "Mélangez et laissez cuire 5 min",
+    "Servez le chapon avec le méli-mélo de poires aux légumes d'hiver."
+  ],
+  "status": "published",
+  "slug": "chapon-aux-epices-meli-melo-de-poires-aux-legumes-d-hiver",
+  "publishedAt": 1795002898393,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,142 @@
+{
+  "id": "j572spbfc5a3nrd2qvh978egth8j9cqq",
+  "creationTime": 1794739113454.3184,
+  "title": "Le chapon des Landes « ivre d’Armagnac",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 jeune chapon d’environ 2,800 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "jeune chapon d’environ 2,800 kg"
+    },
+    {
+      "raw": "2 gros pieds de cochon précuits, coupés chacun en 4 morceaux",
+      "quantity": 2,
+      "unit": null,
+      "label": "gros pieds de cochon précuits, coupés chacun en 4 morceaux"
+    },
+    {
+      "raw": "250 g de lard de poitrine fumée taillé en 16 fines tranches",
+      "quantity": 250,
+      "unit": "g",
+      "label": "lard de poitrine fumée taillé en 16 fines tranches"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "4 cuillers à soupe d’huile d’olive",
+      "quantity": 4,
+      "unit": "cuillers à soupe",
+      "label": "huile d’olive"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "400 g de rouge de carotte",
+      "quantity": 400,
+      "unit": "g",
+      "label": "rouge de carotte"
+    },
+    {
+      "raw": "200 g de gros oignons",
+      "quantity": 200,
+      "unit": "g",
+      "label": "gros oignons"
+    },
+    {
+      "raw": "75 cl de vin rouge de madiran",
+      "quantity": 75,
+      "unit": "cl",
+      "label": "vin rouge de madiran"
+    },
+    {
+      "raw": "1 gros bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "gros bouquet garni"
+    },
+    {
+      "raw": "6 gousses d’ail",
+      "quantity": 6,
+      "unit": null,
+      "label": "gousses d’ail"
+    },
+    {
+      "raw": "2 grosses poires d’orange",
+      "quantity": 2,
+      "unit": null,
+      "label": "grosses poires d’orange"
+    },
+    {
+      "raw": "30 cl d’Armagnac",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "Armagnac"
+    },
+    {
+      "raw": "1 l de bouillon de volaille",
+      "quantity": 1,
+      "unit": "l",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "2 cuillers à soupe de sucre en poudre",
+      "quantity": 2,
+      "unit": "cuillers à soupe",
+      "label": "sucre en poudre"
+    },
+    {
+      "raw": "50 g de farine",
+      "quantity": 50,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "16 boules de potiron cuites à l’eau salée",
+      "quantity": 16,
+      "unit": null,
+      "label": "boules de potiron cuites à l’eau salée"
+    },
+    {
+      "raw": "32 petits oignons dits « grelots »",
+      "quantity": 32,
+      "unit": null,
+      "label": "petits oignons dits « grelots »"
+    },
+    {
+      "raw": "32 petits champignons de Paris",
+      "quantity": 32,
+      "unit": null,
+      "label": "petits champignons de Paris"
+    },
+    {
+      "raw": "1 bouquet de persil",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet de persil"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La veille, découper le chapon en 16 morceaux, saler, poivrer. Enrouler chaque morceau dans une tranche de lard maintenue par un pique-olive en bois. Faire mariner jusqu’au lendemain.",
+    "Le lendemain, essorer les morceaux et les faire dorer dans l’huile d’olive, 5 mn de chaque côté.",
+    "Egoutter et transvaser dans une cocotte contenant les 50 g de beurre préalablement chauffé. Faire revenir, tout en saupoudrant du sucre en poudre, puis des 50 g de farine. Ajouter les pieds de cochon sur l’ensemble.",
+    "Verser l’Armagnac, flamber en partie et ajouter vin et bouquet garni de la marinade, ainsi que les gousses d’ail et le bouillon de volaille. Porter à ébullition, couvrir et cuire à four doux à tout petit bouillon pendant 1 heure 3/4, 1/2 heure avant la fin de la cuisson, ajouter les petits oignons et les champignons sautés à brun.",
+    "Egoutter les morceaux de chapon et de pieds de cochon, les petits oignons, les champignons et le bouquet garni. Oter les pique-olive. Broyer le jus de cuisson au mixer avec la moitié des dés de carottes et d’oignons et les écorces d’orange. Pour obtenir une sauce onctueuse, passer au chinois et en napper les morceaux de chapon. Parsemer de petits oignons, de champignons et du persil haché. Décorer avec les 16 petites boules de potiron."
+  ],
+  "status": "published",
+  "slug": "le-chapon-des-landes-ivre-d-armagnac",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

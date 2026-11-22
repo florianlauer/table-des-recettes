@@ -1,0 +1,98 @@
+{
+  "id": "j5768naew76fvdf26bsze32qn18j9grm",
+  "creationTime": 1794739113454.3176,
+  "title": "Blanquette de dinde aux marrons",
+  "type": "plat",
+  "servings": 10,
+  "ingredients": [
+    {
+      "raw": "1 dinde coupée en morceaux",
+      "quantity": 1,
+      "unit": null,
+      "label": "dinde coupée en morceaux"
+    },
+    {
+      "raw": "3 carottes",
+      "quantity": 3,
+      "unit": null,
+      "label": "carottes"
+    },
+    {
+      "raw": "2 poireaux",
+      "quantity": 2,
+      "unit": null,
+      "label": "poireaux"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "4 capsules de cardamome ouvertes",
+      "quantity": 4,
+      "unit": null,
+      "label": "capsules de cardamome ouvertes"
+    },
+    {
+      "raw": "2 clous de girofle",
+      "quantity": 2,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "1 cuil. à café de poivre en grains",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "poivre en grains"
+    },
+    {
+      "raw": "1 cuil. à soupe d’huile",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "500 g de marrons surgelés",
+      "quantity": 500,
+      "unit": "g",
+      "label": "marrons surgelés"
+    },
+    {
+      "raw": "3 cuil. à soupe de crème fraîche épaisse",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "crème fraîche épaisse"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Épluchez et émincez poireaux et carottes.",
+    "Faites-les suer avec le beurre et l’huile dans un grand faitout.",
+    "Ajoutez le bouquet garni, les morceaux de dinde puis les épices, enfermées dans une gaze.",
+    "Couvrez à peine d’eau froide, portez à frémissement, salez et laissez cuire 1 h 30, en écumant souvent.",
+    "Ajoutez les marrons encore congelés et faites-les cuire jusqu’à ce qu’ils s’écrasent (env. 15 min).",
+    "Otez la dinde, le bouquet garni, la gaze d’épices.",
+    "Mixez la sauce et ajustez sa consistance.",
+    "Liez-la avec la crème fraîche et rectifiez l’assaisonnement.",
+    "Remettez la dinde dans la sauce et servez accompagnée d’une purée de céleri (surgelée)."
+  ],
+  "status": "published",
+  "slug": "blanquette-de-dinde-aux-marrons",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

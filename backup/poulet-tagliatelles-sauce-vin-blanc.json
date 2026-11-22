@@ -1,0 +1,84 @@
+{
+  "id": "j5742vn8vc7pzmss3k2191h0j58jefhq",
+  "creationTime": 1794994943553.3364,
+  "title": "Poulet tagliatelles, sauce vin blanc",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 poulet de Bresse de 1,8 kg à 2 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet de Bresse de 1,8 kg à 2 kg"
+    },
+    {
+      "raw": "40 cl de vinaigre de Xérès Le Savoir des Saveurs",
+      "quantity": 40,
+      "unit": "cl",
+      "label": "vinaigre de Xérès Le Savoir des Saveurs"
+    },
+    {
+      "raw": "30 cl de Riesling AOC 2000 Sélection U",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "Riesling AOC 2000 Sélection U"
+    },
+    {
+      "raw": "30 cl de crème fraîche",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "100 g de beurre",
+      "quantity": 100,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 têtes d'ail",
+      "quantity": 2,
+      "unit": null,
+      "label": "têtes d'ail"
+    },
+    {
+      "raw": "1 boîte de tomates entières pelées U",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "tomates entières pelées U"
+    },
+    {
+      "raw": "1/2 botte de ciboulette",
+      "quantity": 0.5,
+      "unit": "botte",
+      "label": "ciboulette"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    },
+    {
+      "raw": "500 g de Petits Nids Pâtes d'Alsace U",
+      "quantity": 500,
+      "unit": "g",
+      "label": "Petits Nids Pâtes d'Alsace U"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Epépinez votre tomate pelée et coupez-la en petits dés. Lavez vos gousses d'ail sans les éplucher.",
+    "Découpez le poulet en 8 morceaux et faites-les dorer au beurre quelques minutes dans votre sauteuse. Salez et poivrez.",
+    "Mouillez les morceaux de poulet de vinaigre et de vin blanc. Ajoutez les gousses d'ail «en chemise» et les petits dés de tomate.",
+    "Couvrez votre sauteuse et laissez mijoter à feu doux pendant environ 20 minutes.",
+    "Retirez les morceaux de volaille et laissez réduire la sauce. Incorporez alors la crème fraîche, puis rectifiez l'assaisonnement à votre goût.",
+    "Dressez les morceaux de volaille dans un plat chaud. Nappez-les de la sauce et parsemez l'ensemble de ciboulette finement ciselée.",
+    "Accompagnez le tout de Petits Nids Pâtes d'Alsace U. Servez et régalez-vous !"
+  ],
+  "status": "published",
+  "slug": "poulet-tagliatelles-sauce-vin-blanc",
+  "publishedAt": 1794995211168,
+  "imageStorageId": "kg27vb9yt0sb2e05tyrr4c6nz18jexr3",
+  "beautifiedStorageId": "kg2dz95qs80ytq125vdpgjbkb98je3zy"
+}

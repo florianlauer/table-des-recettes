@@ -1,0 +1,80 @@
+{
+  "id": "j576cgaj97fr4gfg2zrzp1kcsh8j8tfd",
+  "creationTime": 1794739531686.798,
+  "title": "Poulet aux abricots",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "50 g de raisins secs blonds",
+      "quantity": 50,
+      "unit": "g",
+      "label": "raisins secs blonds"
+    },
+    {
+      "raw": "4 blancs de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "2 oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "2 c. à soupe de miel",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "miel"
+    },
+    {
+      "raw": "1 c. à café de cannelle",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "cannelle"
+    },
+    {
+      "raw": "1 c. à café de cumin en poudre",
+      "quantity": 1,
+      "unit": "c. à café",
+      "label": "cumin en poudre"
+    },
+    {
+      "raw": "20 g d'amandes effilées",
+      "quantity": 20,
+      "unit": "g",
+      "label": "amandes effilées"
+    },
+    {
+      "raw": "30 g de beurre",
+      "quantity": 30,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 c. à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "c. à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Réhydratez les abricots et les raisins dans un récipient d'eau tiède. Pelez et émincez finement les oignons. Faites légèrement dorer les amandes à la poêle.",
+    "Détaillez les blancs de poulet en petits morceaux, faites-les revenir de tous les côtés dans une cocotte huilée. Poudrez d'épices, mélangez bien.",
+    "Ajoutez le miel, les fruits secs égouttés, salez et poivrez. Versez 20 cl d'eau, couvrez et laissez cuire environ 45 minutes. Surveillez qu'il reste suffisamment de liquide, sinon ajoutez de l'eau. Décorez d'amandes grillées."
+  ],
+  "status": "published",
+  "slug": "poulet-aux-abricots",
+  "publishedAt": 1794739950605,
+  "imageStorageId": "kg2d40exega65qa0r177db427x8j9f9t",
+  "beautifiedStorageId": "kg2awqhf43pkpah4xa1bykcvfn8j8xpz"
+}

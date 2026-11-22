@@ -1,0 +1,57 @@
+{
+  "id": "j5767zx4jcvdtpxfnmsgg6qhc58j8qpr",
+  "creationTime": 1794739113454.319,
+  "title": "Poulet de Bresse au vinaigre",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 poulet de Bresse (1,5 kg) coupé en 8",
+      "quantity": 1,
+      "unit": null,
+      "label": "poulet de Bresse (1,5 kg) coupé en 8"
+    },
+    {
+      "raw": "2 cuil. à soupe d’huile, 125 g de beurre",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "huile, 125 g de beurre"
+    },
+    {
+      "raw": "6 gousses d’ail, 2 tomates",
+      "quantity": 6,
+      "unit": null,
+      "label": "gousses d’ail, 2 tomates"
+    },
+    {
+      "raw": "25 cl de vinaigre de vin, 1/2 l de bouillon de volaille",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "vinaigre de vin, 1/2 l de bouillon de volaille"
+    },
+    {
+      "raw": "1 cuil. à soupe de crème épaisse",
+      "quantity": 1,
+      "unit": "cuil. à soupe",
+      "label": "crème épaisse"
+    },
+    {
+      "raw": "cerfeuil, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "cerfeuil, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites dorer les morceaux de poulet de tous côtés dans une cocotte contenant le mélange huile + beurre (25 g) chaud. Salez, poivrez, ajoutez l’ail non pelé, puis mélangez le tout.",
+    "Versez le vinaigre, portez à ébullition, ajoutez les tomates pelées et épépinées, couvrez et laissez cuire 25 min à feu moyen.",
+    "Réservez le poulet, versez le bouillon de volaille dans la cocotte, laissez réduire d’1/3 à feu vif.",
+    "Passez cette sauce au chinois en pressant l’ail, incorporez le beurre (100 g) par petites parcelles en fouettant, liez avec la crème, nappez le poulet et décorez le plat de cerfeuil."
+  ],
+  "status": "published",
+  "slug": "poulet-de-bresse-au-vinaigre",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

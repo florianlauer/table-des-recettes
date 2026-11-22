@@ -70,9 +70,9 @@
   "steps": [
     "Débite t un poulet et piquez les morceaux de lard de poitrine. Faites cuire au four. A part, faites cuire le veau et le boeuf coupés en morceaux dans du bouillon auquel vous ajouterez des épices et un bouquet garni. Enfin, faites cuire au four une timbale de pâte brisée que vous garnirez de champignons épluchés et sautés au beurre. Sur un vaste plat de service, centrez la timbale de champignons et disposez tout autour les morceaux de poulet. Nappez du jus des viandes que vous aurez épaissi avec un soupçon de fécule."
   ],
-  "status": "review",
-  "slug": null,
-  "publishedAt": null,
+  "status": "published",
+  "slug": "poulet-a-la-lorraine",
+  "publishedAt": 1794738916665,
   "imageStorageId": null,
   "beautifiedStorageId": null
 }

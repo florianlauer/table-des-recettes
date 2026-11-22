@@ -1,0 +1,63 @@
+{
+  "id": "j5716w20dd7ffesb1x6s34j2sn8j8esd",
+  "creationTime": 1794739113454.3186,
+  "title": "Ailerons de volailles Germaine",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "16 ailerons de volailles",
+      "quantity": 16,
+      "unit": null,
+      "label": "ailerons de volailles"
+    },
+    {
+      "raw": "1 verre de vin blanc",
+      "quantity": 1,
+      "unit": "verre",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "5 cuillerées à soupe d’échalotes hachées",
+      "quantity": 5,
+      "unit": "cuillerées à soupe",
+      "label": "échalotes hachées"
+    },
+    {
+      "raw": "3 gousses d’ail hachées",
+      "quantity": 3,
+      "unit": null,
+      "label": "gousses d’ail hachées"
+    },
+    {
+      "raw": "4 cuillerées à soupe de persil haché",
+      "quantity": 4,
+      "unit": "cuillerées à soupe",
+      "label": "persil haché"
+    },
+    {
+      "raw": "70 g de Fruit d’Or Spécial Cuisson",
+      "quantity": 70,
+      "unit": "g",
+      "label": "Fruit d’Or Spécial Cuisson"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez les ailerons en trois parties (l’aileron comprend deux articulations. En coupant chacune d’elles, vous obtiendrez 3 morceaux).",
+    "Faites revenir les ailerons vivement avec Fruit d’Or Spécial Cuisson. Ajoutez les échalotes ciselées et l’ail haché, puis le beurre.",
+    "Laissez cuire 5 minutes puis déglacez avec le vin blanc.",
+    "Ajoutez le persil au moment de servir."
+  ],
+  "status": "published",
+  "slug": "ailerons-de-volailles-germaine",
+  "publishedAt": 1794739261166,
+  "imageStorageId": "kg26xsy6s7j3hywefhxhgbescs8j86cw",
+  "beautifiedStorageId": "kg29rrqhzkfj11a8n02nj9yjwn8j9c1v"
+}

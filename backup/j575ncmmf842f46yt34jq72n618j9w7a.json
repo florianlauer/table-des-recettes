@@ -1,0 +1,78 @@
+{
+  "id": "j575ncmmf842f46yt34jq72n618j9w7a",
+  "creationTime": 1794739393120.5823,
+  "title": "Dinde rôtie aux fruits secs",
+  "type": "plat",
+  "servings": 8,
+  "ingredients": [
+    {
+      "raw": "1 dinde de 3 kg environ",
+      "quantity": 1,
+      "unit": null,
+      "label": "dinde de 3 kg environ"
+    },
+    {
+      "raw": "2 kg de marrons",
+      "quantity": 2,
+      "unit": "kg",
+      "label": "marrons"
+    },
+    {
+      "raw": "500 g d'abricots secs",
+      "quantity": 500,
+      "unit": "g",
+      "label": "abricots secs"
+    },
+    {
+      "raw": "150 g de raisins de Smyrne",
+      "quantity": 150,
+      "unit": "g",
+      "label": "raisins de Smyrne"
+    },
+    {
+      "raw": "125 g d'amandes mondées",
+      "quantity": 125,
+      "unit": "g",
+      "label": "amandes mondées"
+    },
+    {
+      "raw": "2 cuil. à soupe de pignons",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "pignons"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "2 brins de thym",
+      "quantity": 2,
+      "unit": "brins",
+      "label": "thym"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "3 h à l'avance, mettez les raisins secs et les abricots à gonfler dans de l'eau tiède.",
+    "Préchauffez le four à 230 °C (th. 7 1/2-8). Salez et poivrez l'intérieur de la dinde, émiettez-y le thym et glissez-y 50 g de beurre; posez-la sur la lèche-frite du four et tartinez-la avec le reste de beurre ramolli.",
+    "Enfournez pour 2 h; après 45 min., ramenez le thermostat à 160 °C (th. 5 1/2). Arrosez souvent au besoin, après 30 min. de cuisson, ajoutez 2 cuil. d'eau chaude dans la lèche-frite.",
+    "Lorsque la dinde cuit depuis environ 1 heure, préparez les marrons. Pratiquez sur chacun une large incision en croix en entamant à la fois l'écorce et la peau, puis faites-les griller à sec, dans une sauteuse, sur bon feu, pendant 10 à 12 mn en les remuant le plus souvent possible.",
+    "Epluchez-les quand ils sont encore brûlants et mettez-les dans la lèche-frite autour de la dinde (ils doivent baigner dans le jus de cuisson; au besoin, ajoutez encore un peu d'eau chaude).",
+    "25 mn avant la fin de la cuisson, ajoutez les abricots et les raisins égouttés et 15 mn plus tard, les amandes et les pignons.",
+    "Servez la dinde entourée de tous ces fruits et décorez-la éventuellement avec quelques brins de menthe. Présentez le jus à part en saucière chaude."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

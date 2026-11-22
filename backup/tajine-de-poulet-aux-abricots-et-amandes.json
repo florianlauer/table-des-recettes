@@ -1,0 +1,107 @@
+{
+  "id": "j57ctsadsq3pzxb72548ks3wnh8j8878",
+  "creationTime": 1794739531686.8,
+  "title": "Tajine de poulet aux abricots et amandes",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 cuisses de poulet (ou 4 blancs de poulet pour une option plus légère)",
+      "quantity": 4,
+      "unit": null,
+      "label": "cuisses de poulet"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "200 g d'abricots secs",
+      "quantity": 200,
+      "unit": "g",
+      "label": "abricots secs"
+    },
+    {
+      "raw": "50 g d'amandes effilées",
+      "quantity": 50,
+      "unit": "g",
+      "label": "amandes effilées"
+    },
+    {
+      "raw": "400 ml de bouillon de volaille",
+      "quantity": 400,
+      "unit": "ml",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "1 c.à.c de cumin moulu",
+      "quantity": 1,
+      "unit": "c.à.c",
+      "label": "cumin moulu"
+    },
+    {
+      "raw": "1 c.à.c de coriandre moulue",
+      "quantity": 1,
+      "unit": "c.à.c",
+      "label": "coriandre moulue"
+    },
+    {
+      "raw": "1 c.à.c de cannelle",
+      "quantity": 1,
+      "unit": "c.à.c",
+      "label": "cannelle"
+    },
+    {
+      "raw": "1 c.à.c de curcuma",
+      "quantity": 1,
+      "unit": "c.à.c",
+      "label": "curcuma"
+    },
+    {
+      "raw": "2 c.à.s d'huile d'olive",
+      "quantity": 2,
+      "unit": "c.à.s",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "1 bouquet de coriandre fraîche (ou persil)",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "coriandre fraîche"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    },
+    {
+      "raw": "1 piment frais",
+      "quantity": 1,
+      "unit": null,
+      "label": "piment frais"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Émincez l'oignon et hachez l'ail. Faites légèrement griller les amandes à sec dans une poêle. Réservez.",
+    "Salez et poivrez les morceaux de poulet et faites-les dorer dans une cocotte ou dans un tajine. Retirez et réservez.",
+    "Dans la même cocotte, faites revenir l'oignon et l'ail. Ajoutez les épices et mélangez.",
+    "Remettez le poulet dans la cocotte. Ajoutez les abricots secs et le bouillon de volaille. Portez à ébullition, réduisez le feu et laissez mijoter à couvert pendant 40 minutes. Pendant la cuisson, vérifiez que le liquide ne s'évapore pas trop. Ajoutez un peu d'eau si nécessaire.",
+    "À la fin de la cuisson, ajoutez les amandes grillées et la coriandre fraîche ciselée. Ajustez l'assaisonnement si besoin.",
+    "Servez le tajine accompagné de semoule, de riz complet ou de pain pita."
+  ],
+  "status": "published",
+  "slug": "tajine-de-poulet-aux-abricots-et-amandes",
+  "publishedAt": 1794739950605,
+  "imageStorageId": "kg29bpaqa75mh7vt9rd5m0gztx8j84ah",
+  "beautifiedStorageId": "kg20n17hbr257wnkkkp19hkmtx8j96yh"
+}

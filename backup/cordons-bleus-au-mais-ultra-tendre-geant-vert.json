@@ -1,0 +1,74 @@
+{
+  "id": "j57c1jzjg9tnp5cpemggxmrexs8j8gb2",
+  "creationTime": 1794739286177.754,
+  "title": "Cordons bleus au maïs ultra tendre Géant Vert",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 tranches de blanc de dinde d'environ 150g chacune",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "blanc de dinde d'environ 150g chacune"
+    },
+    {
+      "raw": "4 tranches de jambon blanc",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "jambon blanc"
+    },
+    {
+      "raw": "80g d'emmental",
+      "quantity": 80,
+      "unit": "g",
+      "label": "emmental"
+    },
+    {
+      "raw": "1 boîte de 285g de Maïs Ultra Tendre Géant Vert®",
+      "quantity": 1,
+      "unit": "boîte",
+      "label": "285g de Maïs Ultra Tendre Géant Vert®"
+    },
+    {
+      "raw": "beurre",
+      "quantity": null,
+      "unit": null,
+      "label": "beurre"
+    },
+    {
+      "raw": "huile de tournesol",
+      "quantity": null,
+      "unit": null,
+      "label": "huile de tournesol"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "4 piques à brochettes en bois",
+      "quantity": 4,
+      "unit": null,
+      "label": "piques à brochettes en bois"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Aplatissez les tranches de dinde, puis salez et poivrez-les de tous les côtés.",
+    "Coupez l'emmental en 4 tranches minces, puis disposez-les sur chaque blanc de dinde.",
+    "Recouvrez de tranches de jambon.",
+    "Découpez le jambon autour des blancs de dinde (il ne doit pas dépasser).",
+    "Pliez ces cordons bleus en 2, avec la dinde à l'extérieur, et maintenez-les repliés en y plantant un pique en bois en diagonale.",
+    "Faites chauffer 20g de beurre et 1 c. à s. d'huile dans une poêle et faites-y dorer vos cordons bleus 12 à 15 min à feu moyen, en retournant de temps en temps.",
+    "Versez le Maïs Ultra Tendre Géant Vert® dans une casserole et faites-le chauffer quelques minutes à feu doux.",
+    "Salez et poivrez, puis coupez le feu et ajoutez une noix de beurre.",
+    "Servez ce maïs égoutté autour des cordons bleus."
+  ],
+  "status": "published",
+  "slug": "cordons-bleus-au-mais-ultra-tendre-geant-vert",
+  "publishedAt": 1794739323714,
+  "imageStorageId": "kg20z5deqb59372v9wkje3w2as8j9xv9",
+  "beautifiedStorageId": "kg21ddm4ayz096xp7qqp7c9gys8j8d8h"
+}

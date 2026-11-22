@@ -1,0 +1,74 @@
+{
+  "id": "j57b0t2ehvjk3t1w3aej5jyj498j86j7",
+  "creationTime": 1794739531686.7976,
+  "title": "Sauté de dinde à la moutarde et aux amandes",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 blancs de volaille",
+      "quantity": 6,
+      "unit": null,
+      "label": "blancs de volaille"
+    },
+    {
+      "raw": "3 cuil. à soupe de moutarde à l'ancienne",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "moutarde à l'ancienne"
+    },
+    {
+      "raw": "50 g d'amandes effilées",
+      "quantity": 50,
+      "unit": "g",
+      "label": "amandes effilées"
+    },
+    {
+      "raw": "1 oignon",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon"
+    },
+    {
+      "raw": "500 g de tagliatelles",
+      "quantity": 500,
+      "unit": "g",
+      "label": "tagliatelles"
+    },
+    {
+      "raw": "30 cl de crème liquide",
+      "quantity": 30,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "75 g de beurre",
+      "quantity": 75,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Taillez les blancs de volaille en lamelles.",
+    "Epluchez et émincez l'oignon.",
+    "Dans une sauteuse, faites blondir les oignons avec 25 g de beurre sans cesser de remuer.",
+    "Au bout de 3 min, ajoutez les blancs de volaille et faites-les revenir sur feu vif pendant 3 min sans cesser de remuer.",
+    "Versez la crème, la moutarde et les amandes, salez et poivrez.",
+    "Mélangez et laissez cuire encore 5 min.",
+    "Faites cuire les tagliatelles dans une grande quantité d'eau bouillante salée selon le temps de cuisson indiqué.",
+    "Egouttez et assaisonnez avec le reste de beurre.",
+    "Servez les tagliatelles à part."
+  ],
+  "status": "published",
+  "slug": "saute-de-dinde-a-la-moutarde-et-aux-amandes",
+  "publishedAt": 1794739950605,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

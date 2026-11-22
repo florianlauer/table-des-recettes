@@ -56,9 +56,9 @@
     "Quand le poulet est cuit, disposez-le dans un plat avec les quartiers de pomme dorés et parsemez d'estragon.",
     "Mixez la sauce au fond de la cocotte, ajoutez un peu de crème fraîche et mettez dans une saucière."
   ],
-  "status": "review",
-  "slug": null,
-  "publishedAt": null,
+  "status": "published",
+  "slug": "cuisses-de-poulet-aux-pommes",
+  "publishedAt": 1794738916665,
   "imageStorageId": null,
   "beautifiedStorageId": null
 }

@@ -52,9 +52,9 @@
   "steps": [
     "Découper des morceaux de 3 cm de long de maasdam ou gouda. Entourer chaque morceau d'une lamelle de jambon d'Aoste, puis d'un rectangle d'escalope de dindonneau en insérant entre les deux une feuille de sauge. Enfiler ces paupiettes sur des brochettes en bois. Saler, poivrer. Cuire sur le barbecue ou sous le gril du four."
   ],
-  "status": "review",
-  "slug": null,
-  "publishedAt": null,
+  "status": "published",
+  "slug": "brochettes-de-dindonneau",
+  "publishedAt": 1794738916665,
   "imageStorageId": null,
   "beautifiedStorageId": null
 }

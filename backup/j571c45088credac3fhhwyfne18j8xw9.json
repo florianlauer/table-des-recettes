@@ -1,0 +1,75 @@
+{
+  "id": "j571c45088credac3fhhwyfne18j8xw9",
+  "creationTime": 1794739393120.5818,
+  "title": "Magret de canard, sauce à l'orange",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "un magret de canard",
+      "quantity": 1,
+      "unit": null,
+      "label": "magret de canard"
+    },
+    {
+      "raw": "pommes de terre",
+      "quantity": null,
+      "unit": null,
+      "label": "pommes de terre"
+    },
+    {
+      "raw": "tranche de foie de canard",
+      "quantity": 1,
+      "unit": "tranche",
+      "label": "foie de canard"
+    },
+    {
+      "raw": "zestes d'orange",
+      "quantity": null,
+      "unit": null,
+      "label": "zestes d'orange"
+    },
+    {
+      "raw": "grains de poivre vert",
+      "quantity": null,
+      "unit": null,
+      "label": "grains de poivre vert"
+    },
+    {
+      "raw": "œuf",
+      "quantity": 1,
+      "unit": null,
+      "label": "œuf"
+    },
+    {
+      "raw": "moutarde",
+      "quantity": null,
+      "unit": null,
+      "label": "moutarde"
+    },
+    {
+      "raw": "vinaigre",
+      "quantity": null,
+      "unit": null,
+      "label": "vinaigre"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Rôtir au four un magret de canard, 10 min. pour le garder rosé.",
+    "Peler et couper en rondelles des pommes de terre. Entre deux rondelles, poser une tranche de foie de canard. Rôtir.",
+    "Ajouter zestes d'orange et grains de poivre vert à une sauce légère émulsionnée (œuf, moutarde, vinaigre, huile d'olive).",
+    "Débiter le magret en tranches et dresser sur la sauce avec les millefeuilles de pommes de terre."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

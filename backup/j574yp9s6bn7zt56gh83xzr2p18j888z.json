@@ -1,0 +1,93 @@
+{
+  "id": "j574yp9s6bn7zt56gh83xzr2p18j888z",
+  "creationTime": 1794739393120.5813,
+  "title": "Coq au riesling",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "un coq de 1,5 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "coq de 1,5 kg"
+    },
+    {
+      "raw": "1 échalote",
+      "quantity": 1,
+      "unit": null,
+      "label": "échalote"
+    },
+    {
+      "raw": "25 cl d'eau salée",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "eau salée"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "estragon",
+      "quantity": null,
+      "unit": null,
+      "label": "estragon"
+    },
+    {
+      "raw": "persil hachés",
+      "quantity": null,
+      "unit": null,
+      "label": "persil hachés"
+    },
+    {
+      "raw": "50 cl de riesling",
+      "quantity": 50,
+      "unit": "cl",
+      "label": "riesling"
+    },
+    {
+      "raw": "200 g de champignons lamellés",
+      "quantity": 200,
+      "unit": "g",
+      "label": "champignons lamellés"
+    },
+    {
+      "raw": "farine",
+      "quantity": null,
+      "unit": null,
+      "label": "farine"
+    },
+    {
+      "raw": "200 g de crème fraîche",
+      "quantity": 200,
+      "unit": "g",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Cuire 20 min. les abattis d'un coq de 1,5 kg et 1 échalote dans 25 cl d'eau salée.",
+    "Couper le reste du coq en huit, saisir. Ajouter 2 gousses d'ail, estragon et persil hachés. Mijoter 25 min. dans le bouillon des abattis et 50 cl de riesling.",
+    "Ajouter 200 g de champignons lamellés dorés avec de la farine. Cuire encore 10 min.",
+    "Retirer le coq et incorporer 200 g de crème fraîche, saler, poivrer. Napper les morceaux de coq."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

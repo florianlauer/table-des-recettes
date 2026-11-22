@@ -1,0 +1,97 @@
+{
+  "id": "j57ea7mdj25rx8j4w3wv5fhb458j822m",
+  "creationTime": 1794739393120.5808,
+  "title": "Moussaka de dinde",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 grosses aubergines",
+      "quantity": 6,
+      "unit": null,
+      "label": "grosses aubergines"
+    },
+    {
+      "raw": "1 oignon haché",
+      "quantity": 1,
+      "unit": null,
+      "label": "oignon haché"
+    },
+    {
+      "raw": "1 kg de filet de dinde",
+      "quantity": 1,
+      "unit": "kg",
+      "label": "filet de dinde"
+    },
+    {
+      "raw": "1/2 tasse de vin blanc",
+      "quantity": 0.5,
+      "unit": "tasse",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "1/2 tasse d'huile d'olive",
+      "quantity": 0.5,
+      "unit": "tasse",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "2 tomates mûres",
+      "quantity": 2,
+      "unit": null,
+      "label": "tomates mûres"
+    },
+    {
+      "raw": "persil",
+      "quantity": null,
+      "unit": null,
+      "label": "persil"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    },
+    {
+      "raw": "40 g de farine",
+      "quantity": 40,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "0,5 l de lait chaud",
+      "quantity": 0.5,
+      "unit": "l",
+      "label": "lait chaud"
+    },
+    {
+      "raw": "1 pincée de muscade",
+      "quantity": 1,
+      "unit": "pincée",
+      "label": "muscade"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Laver les aubergines. Les détailler en tranches et les faire blanchir à l'eau bouillante salée pendant 3 mn. Les égoutter.",
+    "Détailler le filet de dinde en dés.",
+    "Dans une poêle, faire chauffer l'huile d'olive et y faire revenir l'oignon avec les dés de filet de dinde.",
+    "Ajouter le vin, les tomates pelées, épépinées et concassées, et le persil, sel et poivre. Laisser mijoter 15 mn.",
+    "Préparer la béchamel : mélanger la farine et le beurre en tournant sur feu moyen. Lorsque le beurre est fondu, hors du feu, verser un peu de lait chaud et remuer. Continuer à verser le lait en remuant jusqu'à obtenir un mélange bien lisse. Saler, poivrer, parfumer de muscade et remettre sur feu doux. Laisser cuire jusqu'à ce que la sauce épaississe.",
+    "Mélanger avec la préparation à la dinde et à la tomate.",
+    "Dans des cercles, des moules ronds individuels graissés ou un grand plat à gratin, disposer la moitié des rondelles d'aubergines. Répartir le mélange dinde-tomate-béchamel sur le reste des aubergines. Saler et poivrer.",
+    "Faire cuire à four préchauffé thermostat n° 6 (180 °C) pendant 25 mn (portions individuelles) ou 35 mn (grand plat unique)."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": "kg29z0d88d4whhpskbz2572yn18j8b43",
+  "beautifiedStorageId": "kg2evk0px6pa6dykzhp3r46xxn8jf9sv"
+}

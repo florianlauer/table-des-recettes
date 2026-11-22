@@ -1,0 +1,67 @@
+{
+  "id": "j57akfrh768c55tj56x0kc1t5n8j8h0b",
+  "creationTime": 1794739113454.3179,
+  "title": "Escalopes à la parmesane",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "6 escalopes de dinde assez minces de 150 g chacune environ",
+      "quantity": 6,
+      "unit": null,
+      "label": "escalopes de dinde assez minces de 150 g chacune environ"
+    },
+    {
+      "raw": "250 g de champignons",
+      "quantity": 250,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "1 pot de crème fraîche (150 g)",
+      "quantity": 1,
+      "unit": "pot",
+      "label": "crème fraîche (150 g)"
+    },
+    {
+      "raw": "80 g de beurre",
+      "quantity": 80,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 cuillerée à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillerée à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "6 tranches minces de jambon de Parme",
+      "quantity": 6,
+      "unit": null,
+      "label": "tranches minces de jambon de Parme"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Passez les escalopes dans la farine.",
+    "Chauffez la moitié du beurre dans une grande poêle et faites-y revenir les escalopes 5 minutes de chaque côté.",
+    "Retirez-les, salez, poivrez et tenez au chaud.",
+    "Nettoyez les champignons (lavez-les et essuyez-les) et émincez-les.",
+    "Dans une petite casserole, faites fondre le reste du beurre. Ajoutez les champignons et laissez cuire doucement pendant 10 minutes. Versez alors la crème et mélangez.",
+    "Allumez votre four (thermostat 8).",
+    "Disposez les escalopes en une seule couche dans un plat à four ; couvrez chacune d’elles d’une tranche de jambon et nappez de sauce. Mettez au four 10 minutes.",
+    "Servez bien chaud dans le plat de cuisson."
+  ],
+  "status": "published",
+  "slug": "escalopes-a-la-parmesane",
+  "publishedAt": 1794739261166,
+  "imageStorageId": "kg29am1jtbccpnbhpwfvce0kp58j9vyr",
+  "beautifiedStorageId": "kg2909r5906s9hg9w9zmxhzbtd8j9fd3"
+}

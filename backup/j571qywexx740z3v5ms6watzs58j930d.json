@@ -1,0 +1,75 @@
+{
+  "id": "j571qywexx740z3v5ms6watzs58j930d",
+  "creationTime": 1794739393120.5815,
+  "title": "Pintade Vallée d'Auge",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "morceaux d'une pintade",
+      "quantity": 1,
+      "unit": null,
+      "label": "pintade"
+    },
+    {
+      "raw": "2 échalotes hachées",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes hachées"
+    },
+    {
+      "raw": "200 g de champignons en lamelles",
+      "quantity": 200,
+      "unit": "g",
+      "label": "champignons en lamelles"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "laurier",
+      "quantity": null,
+      "unit": null,
+      "label": "laurier"
+    },
+    {
+      "raw": "5 cl de calvados",
+      "quantity": 5,
+      "unit": "cl",
+      "label": "calvados"
+    },
+    {
+      "raw": "20 cl de crème fraîche",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "2 pommes pelées, épépinées et coupées en lamelles",
+      "quantity": 2,
+      "unit": null,
+      "label": "pommes"
+    },
+    {
+      "raw": "filet de citron",
+      "quantity": 1,
+      "unit": "filet",
+      "label": "citron"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faire revenir à \"blanc\" les morceaux d'une pintade. Ajouter 2 échalotes hachées, 200 g de champignons en lamelles, thym et laurier. Remuer 2 min à feu vif.",
+    "Flamber avec 5 cl de calvados. Saler, poivrer, incorporer 20 cl de crème fraîche. Mijoter 20 min.",
+    "Faire dorer 10 min 2 pommes pelées, épépinées et coupées en lamelles, arroser d'un filet de citron.",
+    "Présenter le tout dans le plat de service."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

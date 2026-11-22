@@ -1,0 +1,83 @@
+{
+  "id": "j57fy5kd989zkvr0mjwdw6njrh8j9sfq",
+  "creationTime": 1794739393120.581,
+  "title": "Lapin aux olives",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 lapin de 1,2 kg environ",
+      "quantity": 1,
+      "unit": null,
+      "label": "lapin de 1,2 kg environ"
+    },
+    {
+      "raw": "200 g d'olives noires",
+      "quantity": 200,
+      "unit": "g",
+      "label": "olives noires"
+    },
+    {
+      "raw": "200 g de lard de poitrine fumée",
+      "quantity": 200,
+      "unit": "g",
+      "label": "lard de poitrine fumée"
+    },
+    {
+      "raw": "3 échalotes",
+      "quantity": 3,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "3 verres de vin blanc sec",
+      "quantity": 3,
+      "unit": "verres",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "1 c. à soupe d'huile",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "huile"
+    },
+    {
+      "raw": "Romarin",
+      "quantity": null,
+      "unit": null,
+      "label": "Romarin"
+    },
+    {
+      "raw": "Sel",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel"
+    },
+    {
+      "raw": "Poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Couper le lapin en six morceaux et le lard de poitrine en lardons. Hacher les échalotes. Peler l'ail et le piler.",
+    "Faire chauffer l'huile dans une cocotte et y faire revenir les lardons et les morceaux de lapin. Quand ils sont dorés sur toutes les faces, ajouter les échalotes hachées et l'ail écrasé. Bien remuer, puis mouiller avec le vin blanc sec.",
+    "Ajouter ensuite les olives et un brin de romarin. Saler, poivrer.",
+    "Couvrir et laisser cuire à feu doux 50 mn environ.",
+    "À la fin de la cuisson, goûter et rectifier l'assaisonnement en sel et en poivre si nécessaire.",
+    "Servir accompagné de pâtes fraîches ou d'une purée de pommes de terre."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,81 @@
+{
+  "id": "j578m3qdt5qyf6b0na0dmv3aen8j8j5n",
+  "creationTime": 1794739531686.7986,
+  "title": "Julienne de volaille au curry",
+  "type": "entree",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "400 g de blanc de dinde",
+      "quantity": 400,
+      "unit": "g",
+      "label": "blanc de dinde"
+    },
+    {
+      "raw": "1 pomme moyenne (150 g) Granny Smith",
+      "quantity": 1,
+      "unit": null,
+      "label": "pomme moyenne Granny Smith"
+    },
+    {
+      "raw": "1 banane",
+      "quantity": 1,
+      "unit": null,
+      "label": "banane"
+    },
+    {
+      "raw": "50 g de groseilles ou de tomates cerise",
+      "quantity": 50,
+      "unit": "g",
+      "label": "groseilles ou de tomates cerise"
+    },
+    {
+      "raw": "1 cuillère à café de poudre de curry",
+      "quantity": 1,
+      "unit": "cuillère à café",
+      "label": "poudre de curry"
+    },
+    {
+      "raw": "1 citron",
+      "quantity": 1,
+      "unit": null,
+      "label": "citron"
+    },
+    {
+      "raw": "1/2 litre de bouillon de volaille",
+      "quantity": 0.5,
+      "unit": "litre",
+      "label": "bouillon de volaille"
+    },
+    {
+      "raw": "vinaigrette : 3 cuillères à soupe d'huile ISIO 4",
+      "quantity": 3,
+      "unit": "cuillères à soupe",
+      "label": "huile ISIO 4"
+    },
+    {
+      "raw": "1 cuillère à soupe de jus de citron",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "jus de citron"
+    },
+    {
+      "raw": "sel / poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel / poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Frotter le blanc de volaille avec un 1/2 citron, faire cuire à couvert pendant 25 minutes à feu doux dans le bouillon. Laisser refroidir dans le bouillon (environ 1h/1h30).",
+    "Dans un saladier, mélanger la vinaigrette et le curry. Couper en julienne la pomme et la banane, les mettre dans le saladier.",
+    "Une fois refroidi, tailler le blanc en tronçons de 4 cm de longueur, puis les retailler dans l'autre sens en julienne. Ajouter au reste et mélanger délicatement.",
+    "Disposer en dôme dans vos assiettes et décorer avec des petites tomates cerise."
+  ],
+  "status": "published",
+  "slug": "julienne-de-volaille-au-curry",
+  "publishedAt": 1794739950605,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

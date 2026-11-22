@@ -1,0 +1,60 @@
+{
+  "id": "j57ajk3dqw3ep24wz0cafyy5998jfkhe",
+  "creationTime": 1794994943553.3372,
+  "title": "Le lapin à la moutarde",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 petit lapin",
+      "quantity": 1,
+      "unit": null,
+      "label": "petit lapin"
+    },
+    {
+      "raw": "1 cuil. à s. d'huile d'arachide",
+      "quantity": 1,
+      "unit": "cuil. à s.",
+      "label": "huile d'arachide"
+    },
+    {
+      "raw": "3 cuil. à s. de moutarde à l'ancienne",
+      "quantity": 3,
+      "unit": "cuil. à s.",
+      "label": "moutarde à l'ancienne"
+    },
+    {
+      "raw": "3 cuil. à s. de crème fraîche",
+      "quantity": 3,
+      "unit": "cuil. à s.",
+      "label": "crème fraîche"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "1 brin de thym",
+      "quantity": 1,
+      "unit": "brin",
+      "label": "thym"
+    },
+    {
+      "raw": "sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Préchauffez votre four th. 7. Coupez le lapin en morceaux et badigeonnez-les de moutarde. Huilez un grand plat et déposez-y le lapin en morceaux. Parsemez de noisettes de beurre et enfournez. Une demi-heure plus tard, sortez le plat et nappez-le de crème fraîche et du reste de moutarde, salez et poivrez. Enfournez encore 10 min et servez très chaud en nappant de sauce et ajoutant le thym."
+  ],
+  "status": "published",
+  "slug": "le-lapin-a-la-moutarde",
+  "publishedAt": 1794995211168,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

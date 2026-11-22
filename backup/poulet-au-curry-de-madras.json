@@ -1,0 +1,52 @@
+{
+  "id": "j5729cs2gztkdevw6sp1hdfcyn8j91jy",
+  "creationTime": 1794739531686.799,
+  "title": "Poulet au curry de Madras",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de poulet",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de poulet"
+    },
+    {
+      "raw": "1 salade de mâche",
+      "quantity": 1,
+      "unit": null,
+      "label": "salade de mâche"
+    },
+    {
+      "raw": "1 bocal de sauce Curry Amora",
+      "quantity": 1,
+      "unit": "bocal",
+      "label": "sauce Curry Amora"
+    },
+    {
+      "raw": "4 cuillerées de vinaigrette toute prête Amora",
+      "quantity": 4,
+      "unit": "cuillerées",
+      "label": "vinaigrette toute prête Amora"
+    },
+    {
+      "raw": "1 bouquet de coriandre fraîche (ou surgelée)",
+      "quantity": 1,
+      "unit": "bouquet",
+      "label": "coriandre fraîche"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Découpez des dés de poulet et faites-les revenir dans une poêle avec un peu de beurre.",
+    "Ajoutez la sauce Curry Amora et laissez mijoter 2 minutes.",
+    "Épluchez et lavez la mâche.",
+    "Assaisonnez avec la vinaigrette toute prête.",
+    "Servez le poulet bien chaud, décoré de coriandre fraîche ciselée et accompagnez de la mâche."
+  ],
+  "status": "published",
+  "slug": "poulet-au-curry-de-madras",
+  "publishedAt": 1794739950605,
+  "imageStorageId": "kg25854azpbf300ynjs6dkxd0d8j8v5e",
+  "beautifiedStorageId": "kg28cgackc215w70cdsbsbpxs18j939y"
+}

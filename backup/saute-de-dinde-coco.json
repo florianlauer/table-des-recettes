@@ -1,0 +1,69 @@
+{
+  "id": "j5758yd3tp1nwkbjjk5kdb11458j9f0y",
+  "creationTime": 1794739531686.7983,
+  "title": "Sauté de dinde coco",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 kilo de sauté de dinde",
+      "quantity": 1,
+      "unit": "kilo",
+      "label": "sauté de dinde"
+    },
+    {
+      "raw": "50 cl de lait de coco",
+      "quantity": 50,
+      "unit": "cl",
+      "label": "lait de coco"
+    },
+    {
+      "raw": "3 oignons",
+      "quantity": 3,
+      "unit": null,
+      "label": "oignons"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": "gousses",
+      "label": "ail"
+    },
+    {
+      "raw": "3 pommes Granny",
+      "quantity": 3,
+      "unit": null,
+      "label": "pommes Granny"
+    },
+    {
+      "raw": "2 c. à café de curry",
+      "quantity": 2,
+      "unit": "c. à café",
+      "label": "curry"
+    },
+    {
+      "raw": "huile d'olive",
+      "quantity": null,
+      "unit": null,
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "50 g de noix de cajou",
+      "quantity": 50,
+      "unit": "g",
+      "label": "noix de cajou"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dans une cocotte, faire chauffer 2 c. à soupe d'huile d'olive, y faire dorer la viande avec les oignons émincés et l'ail haché.",
+    "Saupoudrer de curry et ajouter le lait de coco. Laisser mijoter 1 heure.",
+    "A mi-cuisson, ajouter les pommes épluchées et coupées en dés.",
+    "Au moment de servir, parsemer de noix de cajou mixées."
+  ],
+  "status": "published",
+  "slug": "saute-de-dinde-coco",
+  "publishedAt": 1794739950605,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

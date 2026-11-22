@@ -1,0 +1,99 @@
+{
+  "id": "j57f4mp32m658r1b2ssxt358jd8j826p",
+  "creationTime": 1794739393120.582,
+  "title": "Dindonneau au vin rouge",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 blancs de dindonneau",
+      "quantity": 4,
+      "unit": null,
+      "label": "blancs de dindonneau"
+    },
+    {
+      "raw": "cognac",
+      "quantity": null,
+      "unit": null,
+      "label": "cognac"
+    },
+    {
+      "raw": "50 g de lard en dés",
+      "quantity": 50,
+      "unit": "g",
+      "label": "lard en dés"
+    },
+    {
+      "raw": "150 g de champignons",
+      "quantity": 150,
+      "unit": "g",
+      "label": "champignons"
+    },
+    {
+      "raw": "10 petits oignons",
+      "quantity": 10,
+      "unit": null,
+      "label": "petits oignons"
+    },
+    {
+      "raw": "4 petites carottes",
+      "quantity": 4,
+      "unit": null,
+      "label": "petites carottes"
+    },
+    {
+      "raw": "une courgette",
+      "quantity": 1,
+      "unit": null,
+      "label": "courgette"
+    },
+    {
+      "raw": "1 cuil à café de farine",
+      "quantity": 1,
+      "unit": "cuil à café",
+      "label": "farine"
+    },
+    {
+      "raw": "100 ml de bouillon",
+      "quantity": 100,
+      "unit": "ml",
+      "label": "bouillon"
+    },
+    {
+      "raw": "100 ml de bourgogne rouge",
+      "quantity": 100,
+      "unit": "ml",
+      "label": "bourgogne rouge"
+    },
+    {
+      "raw": "thym",
+      "quantity": null,
+      "unit": null,
+      "label": "thym"
+    },
+    {
+      "raw": "sel",
+      "quantity": null,
+      "unit": null,
+      "label": "sel"
+    },
+    {
+      "raw": "poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "poivre"
+    }
+  ],
+  "ingredientsInferred": true,
+  "steps": [
+    "Faire revenir 4 blancs de dindonneau. Flamber au cognac. Retirer et maintenir au chaud.",
+    "Dans le fond de cuisson, faire revenir 50 g de lard en dés, 150 g de champignons, 10 petits oignons, 4 petites carottes et les morceaux d'une courgette.",
+    "Ajouter 1 cuil à café de farine, 100 ml de bouillon, 100 ml de bourgogne rouge, thym, sel, poivre. Mijoter 10 min.",
+    "Sur assiettes chaudes, disposer les filets et les légumes, napper avec la sauce."
+  ],
+  "status": "review",
+  "slug": null,
+  "publishedAt": null,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

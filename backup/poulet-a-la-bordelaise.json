@@ -1,0 +1,74 @@
+{
+  "id": "j57f0hjeyspzsg0k5vqvxhbc6n8j8jxj",
+  "creationTime": 1794739531686.7988,
+  "title": "Poulet à la bordelaise",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 poulet fermier de 1 kilo environ",
+      "quantity": 1,
+      "unit": "kilo",
+      "label": "poulet fermier"
+    },
+    {
+      "raw": "300 g de cèpes",
+      "quantity": 300,
+      "unit": "g",
+      "label": "cèpes"
+    },
+    {
+      "raw": "4 échalotes",
+      "quantity": 4,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "1/2 bouteille de bordeaux rouge",
+      "quantity": 0.5,
+      "unit": "bouteille",
+      "label": "bordeaux rouge"
+    },
+    {
+      "raw": "40 g de beurre",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "20 g de farine",
+      "quantity": 20,
+      "unit": "g",
+      "label": "farine"
+    },
+    {
+      "raw": "1 c. à soupe de persil haché",
+      "quantity": 1,
+      "unit": "c. à soupe",
+      "label": "persil haché"
+    },
+    {
+      "raw": "1 bouquet garni",
+      "quantity": 1,
+      "unit": null,
+      "label": "bouquet garni"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Coupez le poulet en morceaux et dégraissez-le. Laissez un peu de peau sur les cuisses et les ailes. Emincez les échalotes. Coupez les cèpes en lamelles.",
+    "Placez une cocotte sur feu doux, faites dorer les morceaux de poulet dans le beurre, puis retirez-les. Dorez ensuite les échalotes et ajoutez les cèpes. Salez, parsemez de persil haché. Laissez suer les champignons. Ajoutez la farine, puis le vin très progressivement et 1 verre d'eau. Remettez les morceaux de poulet et le bouquet garni. Salez et poivrez.",
+    "Couvrez et laissez mijoter sur feu doux pendant 45 min. Ajoutez un peu d'eau si nécessaire. Otez le bouquet garni. Servez."
+  ],
+  "status": "published",
+  "slug": "poulet-a-la-bordelaise",
+  "publishedAt": 1794739950605,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

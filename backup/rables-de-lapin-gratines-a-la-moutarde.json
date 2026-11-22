@@ -1,0 +1,75 @@
+{
+  "id": "j57eqm6j21a2gafcdg4cmvqys58jfy5g",
+  "creationTime": 1795002810715.7585,
+  "title": "Râbles de lapin gratinés à la moutarde",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "4 râbles de lapin",
+      "quantity": 4,
+      "unit": null,
+      "label": "râbles de lapin"
+    },
+    {
+      "raw": "60 g de moutarde Amora® fine et forte",
+      "quantity": 60,
+      "unit": "g",
+      "label": "moutarde Amora® fine et forte"
+    },
+    {
+      "raw": "80 g de comté en lamelles",
+      "quantity": 80,
+      "unit": "g",
+      "label": "comté en lamelles"
+    },
+    {
+      "raw": "2 échalotes",
+      "quantity": 2,
+      "unit": null,
+      "label": "échalotes"
+    },
+    {
+      "raw": "2 gousses d'ail",
+      "quantity": 2,
+      "unit": null,
+      "label": "gousses d'ail"
+    },
+    {
+      "raw": "10 cl de vin blanc",
+      "quantity": 10,
+      "unit": "cl",
+      "label": "vin blanc"
+    },
+    {
+      "raw": "2 feuilles de sauge",
+      "quantity": 2,
+      "unit": "feuilles",
+      "label": "sauge"
+    },
+    {
+      "raw": "Huile d'Olive Vierge extra Maille®",
+      "quantity": null,
+      "unit": null,
+      "label": "Huile d'Olive Vierge extra Maille®"
+    },
+    {
+      "raw": "Sel et poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel et poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Peler et émincer les échalotes. Peler et écraser l'ail.",
+    "Faire colorer les râbles de lapin dans une poêle chaude, avec un filet d'huile d'olive. Déglacer avec le vin blanc et ajouter la moutarde.",
+    "Ajouter les échalotes, l'ail, la sauge, 10 cl d'eau, couvrir et laisser cuire 10 min à couvert.",
+    "Égoutter et disposer les râbles dans un plat à gratin, parsemer de lamelles de comté et enfourner 5 min sous le grill. Servir par exemple avec une purée de vitelotte."
+  ],
+  "status": "published",
+  "slug": "rables-de-lapin-gratines-a-la-moutarde",
+  "publishedAt": 1795002898393,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

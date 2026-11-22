@@ -1,0 +1,71 @@
+{
+  "id": "j57fxrdv95f0nwmdbaf6j28e258jfamp",
+  "creationTime": 1794994943553.3367,
+  "title": "Lapin aux pruneaux",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 lapin coupé en morceaux",
+      "quantity": 1,
+      "unit": null,
+      "label": "lapin coupé en morceaux"
+    },
+    {
+      "raw": "300 g de pruneaux dénoyautés",
+      "quantity": 300,
+      "unit": "g",
+      "label": "pruneaux dénoyautés"
+    },
+    {
+      "raw": "4 petits oignons",
+      "quantity": 4,
+      "unit": null,
+      "label": "petits oignons"
+    },
+    {
+      "raw": "40 cl de thé corsé",
+      "quantity": 40,
+      "unit": "cl",
+      "label": "thé corsé"
+    },
+    {
+      "raw": "40 g de margarine Fruit d'Or",
+      "quantity": 40,
+      "unit": "g",
+      "label": "margarine Fruit d'Or"
+    },
+    {
+      "raw": "25 cl de vin blanc sec",
+      "quantity": 25,
+      "unit": "cl",
+      "label": "vin blanc sec"
+    },
+    {
+      "raw": "3 cuil. à soupe de vinaigre",
+      "quantity": 3,
+      "unit": "cuil. à soupe",
+      "label": "vinaigre"
+    },
+    {
+      "raw": "sel, poivre, laurier, romarin",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre, laurier, romarin"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites gonfler les pruneaux dans le thé chaud pendant 3 heures.",
+    "Dans une cocotte, faites sauter à feu vif les morceaux de lapin dans 30 g de margarine Fruit d'Or jusqu'à ce qu'ils soient bien dorés. Salez, poivrez.",
+    "Retirez la cocotte du feu. Ajoutez les oignons, le vin*, un brin de romarin et une feuille de laurier.",
+    "Couvrez et replacez la cocotte sur feu doux, et laissez mijoter 30 mn.",
+    "Egouttez les pruneaux et faites-les sauter rapidement dans la margarine Fruit d'Or restante. Déglacez avec le vinaigre et versez dans la cocotte.",
+    "Poursuivez la cuisson encore 10 mn et servez dans un plat chaud."
+  ],
+  "status": "published",
+  "slug": "lapin-aux-pruneaux",
+  "publishedAt": 1794994988517,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

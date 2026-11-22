@@ -1,0 +1,70 @@
+{
+  "id": "j574nmjzgy46vzx6kvevnyv2d58j9tzx",
+  "creationTime": 1794739113454.318,
+  "title": "Dinde aux marrons",
+  "type": "plat",
+  "servings": null,
+  "ingredients": [
+    {
+      "raw": "1 dinde de 3,5 kg",
+      "quantity": 1,
+      "unit": null,
+      "label": "dinde de 3,5 kg"
+    },
+    {
+      "raw": "3 blancs de volaille",
+      "quantity": 3,
+      "unit": null,
+      "label": "blancs de volaille"
+    },
+    {
+      "raw": "œufs",
+      "quantity": null,
+      "unit": null,
+      "label": "œufs"
+    },
+    {
+      "raw": "20 cl de crème liquide",
+      "quantity": 20,
+      "unit": "cl",
+      "label": "crème liquide"
+    },
+    {
+      "raw": "100 g de pain de mie",
+      "quantity": 100,
+      "unit": "g",
+      "label": "pain de mie"
+    },
+    {
+      "raw": "250 g de marrons cuits pour la farce (et à volonté pour la garniture)",
+      "quantity": 250,
+      "unit": "g",
+      "label": "marrons cuits pour la farce (et à volonté pour la garniture)"
+    },
+    {
+      "raw": "50 g de beurre",
+      "quantity": 50,
+      "unit": "g",
+      "label": "beurre"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Mixez les blancs de volaille, puis leur incorporez les œufs et la crème liquide. Ajoutez ensuite les champignons sautés pendant 5 mn au beurre, les marrons égouttés, et le pain de mie émietté.",
+    "Rectifiez l’assaisonnement, puis farcez la dinde avec ce mélange.",
+    "Préchauffez le four à 180 °C (th. 6).",
+    "Ficelez la dinde en prenant soin de bien refermer l’ouverture, puis enfournez pour 2 heures.",
+    "Servez avec des marrons et des mini-légumes."
+  ],
+  "status": "published",
+  "slug": "dinde-aux-marrons",
+  "publishedAt": 1794739261166,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

@@ -1,0 +1,55 @@
+{
+  "id": "j57b53d74e2hvdvbyb5rec2kk58j9094",
+  "creationTime": 1794739113454.3188,
+  "title": "Canette au cidre",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "1 canette (1,2 kg)",
+      "quantity": 1,
+      "unit": null,
+      "label": "canette (1,2 kg)"
+    },
+    {
+      "raw": "2 oignons, 2 branches de céleri",
+      "quantity": 2,
+      "unit": null,
+      "label": "oignons, 2 branches de céleri"
+    },
+    {
+      "raw": "6 pommes (reinette), 80 g de raisins secs, 1 citron",
+      "quantity": 6,
+      "unit": null,
+      "label": "pommes (reinette), 80 g de raisins secs, 1 citron"
+    },
+    {
+      "raw": "60 g de chapelure, 60 g de beurre",
+      "quantity": 60,
+      "unit": "g",
+      "label": "chapelure, beurre"
+    },
+    {
+      "raw": "2 cuil. à soupe de calvados, 20 cl de cidre",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "calvados, 20 cl de cidre"
+    },
+    {
+      "raw": "muscade, sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "muscade, sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Faites revenir doucement dans 40 g de beurre pendant 5 min, les oignons et le céleri émincés finement. Ajoutez 2 pommes coupées en dés et citronnées, cuisez en remuant constamment jusqu’à l’obtention d’une compote (20 min). Puis incorporez la chapelure, le calvados, la muscade râpée, et farcissez la canette vidée, salée et poivrée à l’intérieur.",
+    "Enduisez-la du reste de beurre, entourez-la des 4 pommes évidées et coupées en deux, répartissez les raisins secs et mettez au four (th. 7/200 °C) pendant 40 min en arrosant régulièrement de cidre."
+  ],
+  "status": "published",
+  "slug": "canette-au-cidre",
+  "publishedAt": 1794739261166,
+  "imageStorageId": "kg2847vadv78k0rfc4q9sv3vzx8j827w",
+  "beautifiedStorageId": "kg274wh3mesh00k7172xp0v1ax8j8ksd"
+}

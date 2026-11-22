@@ -1,0 +1,92 @@
+{
+  "id": "j57f7z4dye4e3hnys2qht3a6158jf8ya",
+  "creationTime": 1795002810715.759,
+  "title": "Lapin à l'italienne",
+  "type": "plat",
+  "servings": 5,
+  "ingredients": [
+    {
+      "raw": "Lapin décongelé",
+      "quantity": null,
+      "unit": null,
+      "label": "Lapin décongelé"
+    },
+    {
+      "raw": "3 cuillères d'huile d'olive",
+      "quantity": 3,
+      "unit": "cuillères",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "200 g de poitrine de porc prétranchée décongelée",
+      "quantity": 200,
+      "unit": "g",
+      "label": "poitrine de porc prétranchée décongelée"
+    },
+    {
+      "raw": "1 céleri",
+      "quantity": 1,
+      "unit": null,
+      "label": "céleri"
+    },
+    {
+      "raw": "150 g d'olives vertes",
+      "quantity": 150,
+      "unit": "g",
+      "label": "olives vertes"
+    },
+    {
+      "raw": "4 carrés d'arôme bouquet garni",
+      "quantity": 4,
+      "unit": "carrés",
+      "label": "arôme bouquet garni"
+    },
+    {
+      "raw": "1/2 litre de bouillon de bœuf",
+      "quantity": 0.5,
+      "unit": "litre",
+      "label": "bouillon de bœuf"
+    },
+    {
+      "raw": "1 cuillère à soupe de farine",
+      "quantity": 1,
+      "unit": "cuillère à soupe",
+      "label": "farine"
+    },
+    {
+      "raw": "250 g d'oignons émincés",
+      "quantity": 250,
+      "unit": "g",
+      "label": "oignons émincés"
+    },
+    {
+      "raw": "2 cuillères à soupe de câpres au vinaigre",
+      "quantity": 2,
+      "unit": "cuillères à soupe",
+      "label": "câpres au vinaigre"
+    },
+    {
+      "raw": "Sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "Sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Après décongélation, coupez le lapin en morceaux.",
+    "Faites-le revenir le lapin pour qu'il soit doré puis retirez les morceaux.",
+    "Chauffez votre huile d'olive et rissolez les oignons, puis ajoutez la poitrine de porc, les olives et le céleri coupé en morceaux.",
+    "Ajoutez le lapin, saupoudrez de farine, puis mouillez avec du bouillon chaud et de l'eau pour quasiment immerger le lapin.",
+    "Parfumez votre préparation en ajoutant vos carrés de bouquet garni.",
+    "Couvrez et laissez mitonner 1 heure, jusqu'à ce que le jus de cuisson soit bien épais et au moins diminué de moitié.",
+    "Salez à votre convenance en prenant garde aux olives qui sont généralement très salées.",
+    "Ajoutez les câpres et le poivre.",
+    "Laissez à nouveau cuire à feu doux une dizaine de minutes, servez chaud accompagné de pâtes fraîches ou de riz."
+  ],
+  "status": "published",
+  "slug": "lapin-a-l-italienne",
+  "publishedAt": 1795002898393,
+  "imageStorageId": null,
+  "beautifiedStorageId": null
+}

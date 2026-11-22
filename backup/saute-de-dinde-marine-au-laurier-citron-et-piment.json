@@ -1,0 +1,68 @@
+{
+  "id": "j577nz9xapshvdaqj3nj1s2aan8j8ntc",
+  "creationTime": 1794739531686.7974,
+  "title": "Sauté de dinde mariné au laurier, citron et piment",
+  "type": "plat",
+  "servings": 4,
+  "ingredients": [
+    {
+      "raw": "600 g d'escalopes de dinde",
+      "quantity": 600,
+      "unit": "g",
+      "label": "escalopes de dinde"
+    },
+    {
+      "raw": "2 gros oignons",
+      "quantity": 2,
+      "unit": null,
+      "label": "gros oignons"
+    },
+    {
+      "raw": "2 citrons",
+      "quantity": 2,
+      "unit": null,
+      "label": "citrons"
+    },
+    {
+      "raw": "4 feuilles de laurier",
+      "quantity": 4,
+      "unit": "feuilles",
+      "label": "laurier"
+    },
+    {
+      "raw": "1/4 de cuillerée à café de piment de Cayenne",
+      "quantity": 0.25,
+      "unit": "cuillerée à café",
+      "label": "piment de Cayenne"
+    },
+    {
+      "raw": "2 cuillerées à soupe d'huile d'olive",
+      "quantity": 2,
+      "unit": "cuillerées à soupe",
+      "label": "huile d'olive"
+    },
+    {
+      "raw": "sel, poivre",
+      "quantity": null,
+      "unit": null,
+      "label": "sel, poivre"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "La veille, détaillez les escalopes en gros dés, pressez les deux citrons",
+    "Versez le jus sur les dés de dinde, dans une jatte",
+    "Saupoudrez de piment de Cayenne, ajoutez les feuilles de laurier, mélangez bien, et faites mariner une nuit au frais",
+    "Le lendemain, pelez et hachez les oignons",
+    "Faites-les revenir dans une cocotte, à l'huile d'olive, jusqu'à ce qu'ils soient transparents",
+    "Ajoutez les dés de dinde marinés, faites cuire 10 min environ à feu doux en remuant",
+    "Ajoutez de l'eau si besoin",
+    "Salez et poivrez",
+    "Réservez et faites réchauffer quelques minutes, dans la cocotte ou au micro-ondes, avant de servir."
+  ],
+  "status": "published",
+  "slug": "saute-de-dinde-marine-au-laurier-citron-et-piment",
+  "publishedAt": 1794739950605,
+  "imageStorageId": "kg2cmkfh0ve6bvnfddphnpbrfx8j9gt4",
+  "beautifiedStorageId": "kg2ahvdt0ha4146sar3vd6b5p58j89vz"
+}

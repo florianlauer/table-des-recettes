@@ -1,0 +1,94 @@
+{
+  "id": "j5769aabc741mgxpkp40tt15ps8jer45",
+  "creationTime": 1795002810715.7583,
+  "title": "Dinde farcie aux dattes",
+  "type": "plat",
+  "servings": 6,
+  "ingredients": [
+    {
+      "raw": "1 dinde (3 kg)",
+      "quantity": 1,
+      "unit": null,
+      "label": "dinde (3 kg)"
+    },
+    {
+      "raw": "20 dattes",
+      "quantity": 20,
+      "unit": null,
+      "label": "dattes"
+    },
+    {
+      "raw": "2 Petit Suisse Danone",
+      "quantity": 2,
+      "unit": null,
+      "label": "Petit Suisse Danone"
+    },
+    {
+      "raw": "1 cuil. à café de muscade",
+      "quantity": 1,
+      "unit": "cuil. à café",
+      "label": "muscade"
+    },
+    {
+      "raw": "2 cuil. à soupe de cognac",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "cognac"
+    },
+    {
+      "raw": "2 pincées de sel",
+      "quantity": 2,
+      "unit": "pincées",
+      "label": "sel"
+    },
+    {
+      "raw": "2 cuil. à soupe de pistaches décortiquées (en réserver pour décorer)",
+      "quantity": 2,
+      "unit": "cuil. à soupe",
+      "label": "pistaches décortiquées"
+    },
+    {
+      "raw": "2 clous de girofle",
+      "quantity": 2,
+      "unit": null,
+      "label": "clous de girofle"
+    },
+    {
+      "raw": "1 bâton de cannelle",
+      "quantity": 1,
+      "unit": "bâton",
+      "label": "cannelle"
+    },
+    {
+      "raw": "4 tranches de Pain d'Epices Vandamme",
+      "quantity": 4,
+      "unit": "tranches",
+      "label": "Pain d'Epices Vandamme"
+    },
+    {
+      "raw": "40 g de beurre mou",
+      "quantity": 40,
+      "unit": "g",
+      "label": "beurre mou"
+    },
+    {
+      "raw": "8 échalotes",
+      "quantity": 8,
+      "unit": null,
+      "label": "échalotes"
+    }
+  ],
+  "ingredientsInferred": false,
+  "steps": [
+    "Dénoyautez et coupez les dattes en morceaux. Dans un bol, mélangez-les avec les petits suisses, la noix de muscade, le cognac et le sel",
+    "Ajoutez les pistaches, les clous de girofle et le pain d'épices passé au mixeur",
+    "Farcissez la dinde de cette préparation et du bâton de cannelle",
+    "Enduisez-la de beurre et posez-la dans un plat sur un lit d'échalotes émincées",
+    "Faites-la cuire 2 h 30 à 3 h au four (préchauffé) à 220 °C, th. 7, en la retournant toutes les 15 min et en l'arrosant d'un peu d'eau."
+  ],
+  "status": "published",
+  "slug": "dinde-farcie-aux-dattes",
+  "publishedAt": 1795002898393,
+  "imageStorageId": "kg2e27bmbphjvdzfhrcsx64max8je98s",
+  "beautifiedStorageId": "kg22mypsw89sn9nb2m4dx9f2x98jfrdq"
+}
